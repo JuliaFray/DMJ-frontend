@@ -1,0 +1,36 @@
+.error input {
+    border-color: red
+}
+
+.error span {
+    color: red;
+}
+
+.summaryError {
+    color: rgba(255, 0, 0, 0.404)
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.form input {
+    width: 300px;
+    height: 20px;
+    margin-bottom: 10px;
+    border: 2px solid #333;
+    border-radius: 7px;
+}
+
+.form button {
+    width: 100px;
+    height: 25px;
+    background-color: #333;
+    color: white;
+    border: 1px solid #333;
+    border-radius: 10px;
+    margin-top: 30px;
+} 

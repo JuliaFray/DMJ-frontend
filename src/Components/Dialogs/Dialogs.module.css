@@ -1,0 +1,68 @@
+.dialogs {
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+    grid-gap: 10px;
+}
+
+.dialogItems {
+    display: block;
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 10px;
+}
+
+.dialogItems .active {
+    background-color: #333;
+}
+.dialogItem {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1px solid #333;
+}
+
+.dialogItem:last-child {
+    border-bottom: none;
+}
+
+.dialogItem a {
+    text-decoration: none;
+    color: #333;
+}
+
+.dialogItem a {
+    text-decoration: none;
+}
+
+.dialogItem a.active {
+    text-decoration: none;
+    color: white;
+}
+
+.dialogItem img {
+    width: 30px;
+    height: auto;
+    
+}
+
+.messages {
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.messageItem {
+    padding: 10px;
+    border: 1px solid #333;
+    width: 50%;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.messageItem:nth-child(2n) {
+    align-self: flex-end;
+}
