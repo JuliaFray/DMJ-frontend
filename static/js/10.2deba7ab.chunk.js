@@ -1,0 +1,2 @@
+(this["webpackJsonpmy-project-react"]=this["webpackJsonpmy-project-react"]||[]).push([[10],{299:function(t,e,n){},306:function(t,e,n){"use strict";n.r(e);var c=n(0),r=n.n(c);n(299);e.default=function(t){return r.a.createElement("div",null,"Video")}}}]);
+//# sourceMappingURL=10.2deba7ab.chunk.js.map

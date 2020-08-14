@@ -1,0 +1,2 @@
+(this["webpackJsonpmy-project-react"]=this["webpackJsonpmy-project-react"]||[]).push([[8],{300:function(t,n,i){t.exports={notif:"Notifications_notif__20oRf"}},307:function(t,n,i){"use strict";i.r(n);var o=i(0),e=i.n(o),c=i(300),a=i.n(c);n.default=function(t){return e.a.createElement("div",{className:a.a.notif},"Notifications")}}}]);
+//# sourceMappingURL=8.e1067794.chunk.js.map
