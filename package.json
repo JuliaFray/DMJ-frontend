@@ -2,7 +2,7 @@
   "name": "my-project-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://juliafray.github.io/Social-Network/",
+  "homepage": "https://juliafray.github.io/SocialNetwork/",
   "dependencies": {
     "@loadable/component": "^5.13.1",
     "@testing-library/jest-dom": "^4.2.4",
