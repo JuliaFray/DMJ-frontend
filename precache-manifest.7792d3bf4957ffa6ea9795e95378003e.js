@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "02decb50c05348f0318dbd7e00bc444a",
+    "revision": "c39dfb7108616ccd7fd223e80787142e",
     "url": "/SocialNetwork/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/SocialNetwork/static/css/10.bb07f15f.chunk.css"
   },
   {
-    "revision": "70022174143abf047170",
-    "url": "/SocialNetwork/static/css/3.26cb6c0a.chunk.css"
+    "revision": "b6eb63255b6dc2f6dab5",
+    "url": "/SocialNetwork/static/css/3.fe2ccb00.chunk.css"
   },
   {
     "revision": "41933bea56c95d5a40df",
@@ -36,8 +36,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/SocialNetwork/static/css/9.0ab0ac3b.chunk.css"
   },
   {
-    "revision": "64af9cf488e4430d126e",
-    "url": "/SocialNetwork/static/css/main.48b77bb2.chunk.css"
+    "revision": "fef10e33c771515f6df2",
+    "url": "/SocialNetwork/static/css/main.cd671d81.chunk.css"
   },
   {
     "revision": "5b4f2c5f426ee547c65d",
@@ -52,8 +52,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/SocialNetwork/static/js/2.eee259b2.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "70022174143abf047170",
-    "url": "/SocialNetwork/static/js/3.88858f4a.chunk.js"
+    "revision": "b6eb63255b6dc2f6dab5",
+    "url": "/SocialNetwork/static/js/3.a1ec9b5f.chunk.js"
   },
   {
     "revision": "41933bea56c95d5a40df",
@@ -84,12 +84,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/SocialNetwork/static/js/9.dc07c89f.chunk.js"
   },
   {
-    "revision": "64af9cf488e4430d126e",
-    "url": "/SocialNetwork/static/js/main.210763fd.chunk.js"
+    "revision": "fef10e33c771515f6df2",
+    "url": "/SocialNetwork/static/js/main.b2cfc9a4.chunk.js"
   },
   {
-    "revision": "e8718d1445da55f7a8d6",
-    "url": "/SocialNetwork/static/js/runtime-main.0a2277ce.js"
+    "revision": "5f50c8dca513899aa6c4",
+    "url": "/SocialNetwork/static/js/runtime-main.a2f72196.js"
   },
   {
     "revision": "628d46fcce1a46c64f780cd58000ae03",
