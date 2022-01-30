@@ -11,7 +11,7 @@ const Profile = (props) => {
   return (
     <div>
       {/* <img src='https://jssors8.azureedge.net/demos/image-slider/img/faded-monaco-scenery-evening-dark-picjumbo-com-image.jpg' /> */}
-      <Description profile={props.profile} status = {props.status} updateUserStatus = {props.updateUserStatus} />
+      <Description profile={props.profile} status = {props.status} updateUserStatus = {props.updateUserStatus} isOwner = {props.isOwner} savePhoto = {props.savePhoto}/>
       <PostsContainer
         postsData={props.posts}
       />

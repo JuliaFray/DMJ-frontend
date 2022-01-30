@@ -1,33 +1,29 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
-import { Field } from 'redux-form';
-import { requiredField } from './../../Utils/Validators/validator';
-import { Input, createField } from './../Common/FormsControls/FormsControls';
+import {reduxForm} from 'redux-form';
+import {requiredField} from './../../Utils/Validators/validator';
+import {createField, Input} from './../Common/FormsControls/FormsControls';
 import StyleSheet from './../Common/FormsControls/FormControls.module.css';
 
+const LoginForm = ({handleSubmit, error}) => {
+	return (
+		<div>
+			<form onSubmit={handleSubmit}>
+				{createField('Login', 'email', [requiredField], Input)}
+				{createField('Passwowd', 'password', [requiredField], Input, 'password')}
+				{createField(null, 'rememberMe', [], Input, 'checkbox', 'Remember me')}
 
-// let maxLength10 = maxLengthCreator(10)
+				{error && <div className={StyleSheet.summaryError}> {error} </div>}
 
-const LoginForm = ({ handleSubmit, error }) => {
-    return (
-        <div >
-            <form onSubmit={handleSubmit} >
-                {createField('Login', 'email', [requiredField], Input)}
-                {createField('Passwowd', 'password', [requiredField], Input, 'password')}
-                {createField(null, 'rememberMe', [], Input, 'checkbox', 'Remember me')} 
-
-                {error && <div className={StyleSheet.summaryError}> {error} </div>}
-
-                <div className = {StyleSheet.btn}>
-                    <button>Login</button>
-                </div>
-            </form>
-        </div>
-    )
-}
+				<div className={StyleSheet.btn}>
+					<button>Login</button>
+				</div>
+			</form>
+		</div>
+	)
+};
 
 const reduxLoginForm = reduxForm({
-    form: 'login'
+	form: 'login'
 })(LoginForm);
 
 export default reduxLoginForm;

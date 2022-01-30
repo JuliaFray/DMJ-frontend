@@ -3,10 +3,11 @@ import React from 'react';
 // import Preloader from './../../Common/Preloader/Preloader';
 
 class ProfileStatus extends React.Component {
+    
 
     state = {
         editMode: false,
-        status: this.props.status
+        status: this.props.status || 'my status'
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -37,6 +38,7 @@ class ProfileStatus extends React.Component {
     }
 
     render() {
+        console.log(this.props)
         return (
             <div>
                 {!this.state.editMode &&

@@ -55,6 +55,7 @@ export const profileAPI = {
             instance
                 .get(`profile/status/${userId}`)
                 .then(response => {
+                    debugger
                     return response.data
                 })
         )
@@ -64,6 +65,20 @@ export const profileAPI = {
         return (
             instance
                 .put(`profile/status`, { status: status })
+                .then(response => {
+                    return response.data
+                })
+        )
+    },
+
+    updatePhoto(photos) {
+        return (
+            instance
+                .post(`profile/photo`, photos, {
+                    headers: {
+                        'Content-Type' : 'multipart/form-data'
+                    }
+                })
                 .then(response => {
                     return response
                 })
@@ -103,4 +118,4 @@ export const loginAPI = {
                 })
         )
     }
-}
+};

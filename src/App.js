@@ -1,14 +1,14 @@
 import loadable from '@loadable/component';
-import React, { Suspense } from 'react';
-import { connect, Provider } from 'react-redux';
-import { BrowserRouter, Route, withRouter } from 'react-router-dom';
-import { compose } from 'redux';
+import React, {Suspense} from 'react';
+import {connect, Provider} from 'react-redux';
+import {HashRouter, Route, withRouter} from 'react-router-dom';
+import {compose} from 'redux';
 import './App.css';
 import Preloader from './Components/Common/Preloader/Preloader';
 import HeaderContainer from './Components/Header/HeaderContainer';
 import Login from './Components/Login/Login';
 import Nav from './Components/Navbar/Navbar';
-import { initializeApp } from './redux/APP-reducer';
+import {initializeApp} from './redux/APP-reducer';
 import store from './redux/redux-store';
 
 const ProfileContainer = loadable(() => import('./Components/Profile/ProfileContainer'));
@@ -22,56 +22,52 @@ const AllUsersContainer = loadable(() => import('./Components/AllUsers/AllUsersC
 
 class AppMain extends React.Component {
 
-  componentDidMount() {
-    this.props.initializeApp()
-  }
+	componentDidMount() {
+		this.props.initializeApp()
+	}
 
-  render() {
-    // if (!this.props.initialized) {
-    //   return <Preloader />
-    // }
+	render() {
+		return (
+			<div className='app-wrapper'>
+				<HeaderContainer/>
+				<Nav/>
 
-    return (
-      <div className='app-wrapper'>
-        <HeaderContainer />
-        <Nav />
+				<div className='app-wrapper-content'>
+					<Suspense fallback={<div><Preloader/></div>}>
+						<Route path='/dialogs' render={() => <DialogsContainer/>}/>
+						<Route path='/profile/:userId?' render={() => <ProfileContainer/>}/>
+						<Route path='/news' render={() => <News/>}/>
+						<Route path='/settings' render={() => <Settings/>}/>
+						<Route path='/music' render={() => <Music/>}/>
+						<Route path='/video' render={() => <Video/>}/>
+						<Route path='/notifications' render={() => <Notifications/>}/>
+						<Route path='/users' render={() => <AllUsersContainer/>}/>
+					</Suspense>
 
-        <div className='app-wrapper-content'>
-          <Suspense fallback={<div> <Preloader /> </div>}>
-            <Route path='/dialogs' render={() => <DialogsContainer />} />
-            <Route path='/profile/:userId?' render={() => <ProfileContainer />} />
-            <Route path='/news' render={() => <News />} />
-            <Route path='/settings' render={() => <Settings />} />
-            <Route path='/music' render={() => <Music />} />
-            <Route path='/video' render={() => <Video />} />
-            <Route path='/notifications' render={() => <Notifications />} />
-            <Route path='/users' render={() => <AllUsersContainer />} />
-          </Suspense>
-
-          <Route path='/login' render={() => <Login />} />
-        </div>
-      </div>
-    )
-  }
-};
+					<Route path='/login' render={() => <Login/>}/>
+				</div>
+			</div>
+		)
+	}
+}
 
 const mapStateToProps = (state) => ({
-  initialized: state.app.initialized
-})
+	initialized: state.app.initialized
+});
 
 const AppContainer = compose(
-  connect(mapStateToProps, { initializeApp }),
-  withRouter
+	connect(mapStateToProps, {initializeApp}),
+	withRouter
 )(AppMain);
 
 const App = () => {
-  return <BrowserRouter>
-    <React.StrictMode>
-      <Provider store={store}>
-        <AppContainer />
-      </Provider>
-    </React.StrictMode>
-  </BrowserRouter>
+	return <HashRouter>
+		<React.StrictMode>
+			<Provider store={store}>
+				<AppContainer/>
+			</Provider>
+		</React.StrictMode>
+	</HashRouter>
 };
 
 export default App;
