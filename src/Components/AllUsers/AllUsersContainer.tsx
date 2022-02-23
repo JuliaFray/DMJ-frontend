@@ -4,8 +4,16 @@ import AllUsers from './AllUsers';
 import React, {ComponentType} from 'react';
 import Preloader from '../Common/Preloader/Preloader';
 import {compose} from 'redux';
-import {getCurrentPage, getFollowingInProgress, getIsFetching, getPageSize, getTotalUsersCount, getUsers} from '../../redux/users-selectors';
-import {UserType} from '../../types/types';
+import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getIsFetching,
+    getPageSize,
+    getTotalUsersCount,
+    getUsers,
+    getUsersSearchTerm
+} from '../../redux/users-selectors';
+import {FilterType, UserType} from '../../types/types';
 import {AppStateType} from "../../redux/redux-store";
 
 type MapStatePropsType = {
@@ -14,13 +22,14 @@ type MapStatePropsType = {
     pageSize: number,
     currentPage: number,
     users: Array<UserType>,
-    followingInProgress: Array<number>
+    followingInProgress: Array<number>,
+    filter: FilterType
 }
 
 type MapDispatchPropsType = {
-    requestUsers: (pageSize: number, currentPage: number) => void,
-    followUserTC: (userId: number) => Promise<void>,
-    unfollowUserTC: (userId: number) => Promise<void>
+    requestUsers: (pageSize: number, currentPage: number, filter: FilterType) => void,
+    followUserTC: (userId: number) => void,
+    unfollowUserTC: (userId: number) => void
 }
 
 type PropsType = MapStatePropsType & MapDispatchPropsType
@@ -28,13 +37,18 @@ type PropsType = MapStatePropsType & MapDispatchPropsType
 class Users extends React.Component<PropsType> {
 
     componentDidMount() {
-        const {currentPage, pageSize} = this.props;
-        this.props.requestUsers(currentPage, pageSize);
+        const {currentPage, pageSize, filter} = this.props;
+        this.props.requestUsers(pageSize, currentPage, filter);
     }
 
     onPageChanged = (pageNumber: number) => {
+        const {pageSize, filter} = this.props;
+        this.props.requestUsers(pageSize, pageNumber, filter);
+    };
+
+    onFilterChanged = (filter: FilterType) => {
         const {pageSize} = this.props;
-        this.props.requestUsers(pageSize, pageNumber);
+        this.props.requestUsers(pageSize, 1, filter);
     };
 
     render() {
@@ -44,11 +58,14 @@ class Users extends React.Component<PropsType> {
                 totalUsersCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
                 currentPage={this.props.currentPage}
+                term={this.props.filter.term}
                 onPageChanged={this.onPageChanged}
+                onFilterChanged={this.onFilterChanged}
                 users={this.props.users}
                 followingInProgress={this.props.followingInProgress}
                 followUserTC={this.props.followUserTC}
                 unfollowUserTC={this.props.unfollowUserTC}
+                isFetching={this.props.isFetching}
             />
         </>
     }
@@ -62,7 +79,8 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
         totalUsersCount: getTotalUsersCount(state),
         currentPage: getCurrentPage(state),
         isFetching: getIsFetching(state),
-        followingInProgress: getFollowingInProgress(state)
+        followingInProgress: getFollowingInProgress(state),
+        filter: getUsersSearchTerm(state)
     }
 };
 

@@ -12,7 +12,7 @@ type PropsType = {
     isFetching: boolean,
     dialogs: Array<SimpleNameObjType>,
     messages: Array<MessageType>,
-    sendMsg: (text: string) => Promise<void>
+    sendMsg: (text: string) => void
 }
 
 class DialogsContainer extends React.Component<PropsType> {

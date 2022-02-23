@@ -27,3 +27,7 @@ export const getUserId = (state: AppStateType) => {
 export const getIsFetching = (state: AppStateType) => {
     return state.usersPage.isFetching
 };
+
+export const getUsersSearchTerm = (state: AppStateType) => {
+    return state.usersPage.filter
+};

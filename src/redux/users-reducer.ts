@@ -1,6 +1,6 @@
 import {usersAPI} from '../api/users-api';
 import {updateObjectInArray} from '../Utils/Validators/helpers';
-import {UserType} from '../types/types';
+import {FilterType, UserType} from '../types/types';
 import {Dispatch} from 'redux';
 import {GenericThunkType, InferActionType} from './redux-store';
 import {GenericResponseType, ResultCodeEnum} from '../api/api-types';
@@ -12,7 +12,8 @@ export type InitialStateType = {
     currentPage: number,
     isFetching: boolean,
     followingInProgress: Array<number>,
-    userId: number | null
+    userId: number | null,
+    filter: FilterType
 }
 type ActionsType = InferActionType<typeof actions>;
 type DispatchType = Dispatch<ActionsType>;
@@ -20,12 +21,16 @@ type ThunkType = GenericThunkType<ActionsType>;
 
 let initialState: InitialStateType = {
     users: [],
-    pageSize: 10,
+    pageSize: 20,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,
     followingInProgress: [],
-    userId: null
+    userId: null,
+    filter: {
+        term: '',
+        friend: null
+    }
 };
 
 const usersReducer = (state = initialState, action: ActionsType): InitialStateType => {
@@ -59,6 +64,8 @@ const usersReducer = (state = initialState, action: ActionsType): InitialStateTy
                     ? [...state.followingInProgress, action.userId]
                     : []
             };
+        case 'SN/USER/SET_FILTER':
+            return {...state, filter: action.payload};
         default:
             return state;
     }
@@ -75,15 +82,17 @@ export const actions = {
         type: 'SN/USER/TOGGLE_IS_FOLLOWING_PROGRESS',
         followingInProgress,
         userId
-    } as const)
+    } as const),
+    setFilter: (filter: FilterType) => ({type: 'SN/USER/SET_FILTER', payload: filter} as const)
 };
 
 
 // thunk creator
-export const requestUsers = (pageSize: number, currentPage: number): ThunkType => async (dispatch, getState) => {
+export const requestUsers = (pageSize: number, currentPage: number, filter: FilterType): ThunkType => async (dispatch, getState) => {
     dispatch(actions.setIsFetching(true));
     dispatch(actions.setCurrentPage(currentPage));
-    let usersData = await usersAPI.getUsers(pageSize, currentPage);
+    dispatch(actions.setFilter(filter));
+    let usersData = await usersAPI.getUsers(pageSize, currentPage, filter);
     dispatch(actions.setUsers(usersData.items));
     dispatch(actions.setTotalUsersCount(usersData.totalCount));
     dispatch(actions.setIsFetching(false));

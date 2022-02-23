@@ -13,7 +13,7 @@ type MapStatePropsType = {
 }
 
 type MapDispatchPropsType = {
-    login: (email: string, password: string, rememberMe: boolean, captcha: string | null) => Promise<void>
+    login: (email: string, password: string, rememberMe: boolean, captcha: string | null) => void
 }
 
 type PropsType = MapStatePropsType & MapDispatchPropsType;
