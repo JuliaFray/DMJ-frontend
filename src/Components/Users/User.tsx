@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavLink} from "react-router-dom";
-import StyleSheet from './AllUsers.module.css'
+import StyleSheet from './Users.module.css'
 import {UserType} from "../../types/types";
 
 type PropsType = {

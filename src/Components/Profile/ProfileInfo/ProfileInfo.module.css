@@ -1,5 +1,18 @@
-.decriptionBlock {
-    padding: 20px;
+.descriptionBlock {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.avatar{
+    width: 250px;
+    height: auto;
+}
+
+.profileData {
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 40px;
 }
 .contacts {
     padding-left: 10px;
@@ -8,6 +21,12 @@
     border: solid #8f0d11 2px;
     color: sandybrown;
 }
-.userPhoto {
-    max-width: 200px;
+
+.btn {
+    background-color: #333;
+    border: 1px solid #333;
+    border-radius: 10px;
+    color: white;
+    height: 40px;
+    width: 100px;
 }

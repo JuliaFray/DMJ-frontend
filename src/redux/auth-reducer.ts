@@ -7,7 +7,7 @@ import {securityAPI} from '../api/security-api';
 import {Action} from 'redux';
 
 type InitialStateType = {
-    id: number | null,
+    id: number,
     email: string | null,
     login: string | null,
     isAuth: boolean,
@@ -19,7 +19,7 @@ type ActionsType = InferActionType<typeof actions> | Action<typeof stopSubmit>;
 type ThunkType = GenericThunkType<ActionsType>;
 
 let initialState: InitialStateType = {
-    id: null,
+    id: 0,
     email: null,
     login: null,
     isAuth: false,
@@ -60,7 +60,7 @@ export const authUser = (): ThunkType => async (dispatch) => {
     }
 };
 
-export const login = (email: string, password: string, rememberMe: boolean, captcha: string): ThunkType => async (dispatch) => {
+export const login = (email: string, password: string, rememberMe: boolean, captcha: string | null): ThunkType => async (dispatch) => {
     let loginData = await loginAPI.login(email, password, rememberMe, captcha);
     if(loginData.resultCode === ResultCodeEnum.Success) {
         dispatch(authUser())
@@ -76,7 +76,7 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
 export const logout = (): ThunkType => async (dispatch) => {
     let response = await loginAPI.logout();
     if(response.resultCode === ResultCodeEnum.Success) {
-        dispatch(actions.setAuthUserData({id: null, email: null, login: null, isAuth: false, captchaUrl: null}))
+        dispatch(actions.setAuthUserData({id: 0, email: null, login: null, isAuth: false, captchaUrl: null}))
     }
 };
 

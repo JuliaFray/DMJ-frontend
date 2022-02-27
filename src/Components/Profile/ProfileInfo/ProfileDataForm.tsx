@@ -32,6 +32,7 @@ const ProfileDataForm: React.FC<InjectedFormProps<ProfileType, PropsType> & Prop
 			<div className={s.formSummaryError}>
                 {error}
 			</div>}
+            <button className={s.btn} onClick={handleSubmit}>Save</button>
         </form>
     )
 };

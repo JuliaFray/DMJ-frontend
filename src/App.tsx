@@ -1,94 +1,71 @@
 import loadable from '@loadable/component';
-import React, {ComponentType} from 'react';
-import {HashRouter, Route, Switch, withRouter, Redirect} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {HashRouter, Redirect, Route, Switch} from 'react-router-dom';
 import './App.css';
-import HeaderContainer from './Components/Header/HeaderContainer';
 import Nav from './Components/Navbar/Navbar';
-import Login from './Components/Login/Login';
-import store, {AppStateType} from './redux/redux-store';
-import {compose} from 'redux';
-import {connect, Provider} from 'react-redux';
+import {Login} from './Components/Login/Login';
+import store from './redux/redux-store';
+import {Provider, useDispatch} from 'react-redux';
 import {initializeApp} from './redux/app-reducer';
 import {withSuspense} from './Components/HOC/withSuspense';
+import Header from './Components/Header/Header';
+import { QueryParamProvider } from 'use-query-params';
 
-const ProfileContainer = loadable(() => import('./Components/Profile/ProfileContainer'));
-const DialogsContainer = loadable(() => import('./Components/Dialogs/DialogsContainer'));
+const Profile = loadable(() => import('./Components/Profile/ProfilePage'));
+const Dialogs = loadable(() => import('./Components/Dialogs/DialogsPage'));
 const Music = loadable(() => import('./Components/Music/Music'));
 const News = loadable(() => import('./Components/News/News'));
 const Video = loadable(() => import('./Components/Video/Video'));
 const Notifications = loadable(() => import('./Components/Notifications/Notifications'));
 const Settings = loadable(() => import('./Components/Settings/Settings'));
-const AllUsersContainer = loadable(() => import('./Components/AllUsers/AllUsersContainer'));
+const Users = loadable(() => import('./Components/Users/UsersPage'));
 
-type MapPropsType = ReturnType<typeof mapStateToProps>
-type DispatchPropsType = {
-    initializeApp: () => void
-}
-
-const SuspendedDialogs = withSuspense(DialogsContainer);
-const SuspendedProfile = withSuspense(ProfileContainer);
+const SuspendedDialogs = withSuspense(Dialogs);
+const SuspendedProfile = withSuspense(Profile);
 const SuspendedNews = withSuspense(News);
 const SuspendedSettings = withSuspense(Settings);
 const SuspendedMusic = withSuspense(Music);
 const SuspendedVideo = withSuspense(Video);
 const SuspendedNotifications = withSuspense(Notifications);
-const SuspendedUsers = withSuspense(AllUsersContainer);
+const SuspendedUsers = withSuspense(Users);
 
-class AppMain extends React.Component<MapPropsType & DispatchPropsType> {
+const AppMain: React.FC = () => {
 
-    catchAllUnhandledErrors(e: Event): void {
-        alert('Some error occurred')
-    };
+    // const initialized = useSelector((state: AppStateType) => state.app.initialized);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(initializeApp())
+    }, []);
 
-    componentWillUnmount(): void {
-        window.removeEventListener('UnhandledRejection', this.catchAllUnhandledErrors)
-    }
+    return (
+        <div className='app-wrapper'>
+            <Header/>
+            <Nav/>
+            <div className='app-wrapper-content'>
+                <Switch>
+                    <Route exact path='/' render={() => <Redirect to={'/profile'}/>}/>
+                    <Route path='/profile/:userId?' render={() => <SuspendedProfile/>}/>
 
-    componentDidMount(): void {
-        this.props.initializeApp();
-        window.addEventListener('UnhandledRejection', this.catchAllUnhandledErrors)
-    }
-
-    render() {
-        return (
-            <div className='app-wrapper'>
-                <HeaderContainer/>
-                <Nav/>
-                <div className='app-wrapper-content'>
-                    <Switch>
-                        <Route exact path='/' render={() => <Redirect to={'/profile'}/>}/>
-                        <Route path='/profile/:userId?' render={() => <SuspendedProfile/>}/>
-
-                        <Route path='/dialogs' render={() => <SuspendedDialogs/>}/>
-                        <Route path='/news' render={() => <SuspendedNews/>}/>
-                        <Route path='/settings' render={() => <SuspendedSettings/>}/>
-                        <Route path='/music' render={() => <SuspendedMusic/>}/>
-                        <Route path='/video' render={() => <SuspendedVideo/>}/>
-                        <Route path='/notifications' render={() => <SuspendedNotifications/>}/>
-                        <Route path='/users' render={() => <SuspendedUsers/>}/>
-                        {/*<Route path='*' render={() => <div>404 NOT FOUND</div>}/>*/}
-                    </Switch>
-                    <Route path='/login' render={() => <Login/>}/></div>
-            </div>
-        )
-    }
-}
-
-const mapStateToProps = (state: AppStateType) => ({
-    initialized: state.app.initialized
-});
-
-const AppContainer = compose<ComponentType>(
-    connect(
-        mapStateToProps, {initializeApp}),
-    withRouter
-)(AppMain);
+                    <Route path='/dialogs' render={() => <SuspendedDialogs/>}/>
+                    <Route path='/news' render={() => <SuspendedNews/>}/>
+                    <Route path='/settings' render={() => <SuspendedSettings/>}/>
+                    <Route path='/music' render={() => <SuspendedMusic/>}/>
+                    <Route path='/video' render={() => <SuspendedVideo/>}/>
+                    <Route path='/notifications' render={() => <SuspendedNotifications/>}/>
+                    <Route path='/users' render={() => <SuspendedUsers/>}/>
+                </Switch>
+                <Route path='/login' render={() => <Login/>}/></div>
+        </div>
+    )
+};
 
 const App: React.FC = () => {
     return <HashRouter>
         <React.StrictMode>
             <Provider store={store}>
-                <AppContainer/>
+                <QueryParamProvider ReactRouterRoute={Route}>
+                    <AppMain/>
+                </QueryParamProvider>
             </Provider>
         </React.StrictMode>
     </HashRouter>

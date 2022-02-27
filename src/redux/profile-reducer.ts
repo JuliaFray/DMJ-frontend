@@ -88,14 +88,14 @@ export const deletePost = (postId: number): ThunkType => async (dispatch) => {
 
 };
 
-export const savePhoto = (photos: File): ThunkType => async (dispatch) => {
+export const saveProfilePhoto = (photos: File): ThunkType => async (dispatch) => {
     let response = await profileAPI.savePhoto(photos);
     if (response.resultCode === ResultCodeEnum.Success) {
         dispatch(actions.updatePhoto(response.data.photos))
     }
 };
 
-export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch, getState) => {
+export const saveUserProfile = (profile: ProfileType): ThunkType => async (dispatch, getState) => {
     const userId = getState().auth.id;
     const data = await profileAPI.saveProfile(profile);
 

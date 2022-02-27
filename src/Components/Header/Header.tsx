@@ -1,14 +1,20 @@
 import React from 'react';
 import StyleSheet from './Header.module.css';
 import {NavLink} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {getIsAuth, getLogin} from '../../redux/auth-selectors';
+import {logout} from '../../redux/auth-reducer';
 
-type PropsType = {
-    isAuth: boolean,
-	login: string | null,
-    logout: () => {}
-}
+const Header: React.FC = () => {
 
-const Header: React.FC<PropsType> = (props) => {
+    const isAuth = useSelector(getIsAuth);
+    const login = useSelector(getLogin);
+    const dispatch = useDispatch();
+
+    const onLogout = () => {
+        dispatch(logout)
+    };
+
     return (
         <header className={StyleSheet.header}>
 
@@ -17,9 +23,9 @@ const Header: React.FC<PropsType> = (props) => {
             </div>
 
             <div className={StyleSheet.loginBlock}>
-                {props.isAuth
-                    ? <div>{props.login}
-                        <button className={StyleSheet.btn} onClick={props.logout}>Logout</button>
+                {isAuth
+                    ? <div>{login}
+                        <button className={StyleSheet.btn} onClick={onLogout}>Logout</button>
                     </div>
                     : <NavLink to={'/login'}>login</NavLink>}
 

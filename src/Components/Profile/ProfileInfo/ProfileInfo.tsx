@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useState} from 'react';
-import './ProfileInfo.module.css';
+import s from './ProfileInfo.module.css';
 import Preloader from './../../Common/Preloader/Preloader';
 import userPhoto from './../../../assets/avatar.jpg';
 import ProfileDataForm from './ProfileDataForm';
@@ -21,7 +21,8 @@ const ProfileInfo: React.FC<PropsType> = ({profile, status, updateUserStatus, is
         return <Preloader/>
     }
     const onSubmit = (formData: ProfileType) => {
-        saveProfile(formData)
+        saveProfile(formData);
+        setEditMode(false);
     };
 
     const mainPhotoSelect = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,10 +32,11 @@ const ProfileInfo: React.FC<PropsType> = ({profile, status, updateUserStatus, is
     };
 
     return (
-        <div className='s.descriptionBlock'>
-            <img alt={'avatar'} src={profile.photos.large != null ? profile.photos.large : userPhoto}/>
-
-            {isOwner && <input type={'file'} onChange={mainPhotoSelect}/>}
+        <div className={s.descriptionBlock}>
+            <div>
+                <img className={s.avatar} alt={'avatar'} src={profile.photos.large != null ? profile.photos.large : userPhoto}/>
+                {isOwner && <input className={s.btn} type={'file'} onChange={mainPhotoSelect}/>}
+            </div>
 
             {editMode
                 ? <ProfileDataForm initialValues={profile} onSubmit={onSubmit} profile={profile}/>
@@ -57,10 +59,7 @@ type ProfileDataPropsType = {
 
 const ProfileData: React.FC<ProfileDataPropsType> = (props) => {
     return (
-        <div>
-            {props.isOwner && <div>
-				<button onClick={props.goToEditMode}>Edit</button>
-			</div>}
+        <div className={s.profileData}>
             <div>
                 <b>Full name</b>: {props.profile.fullName}
             </div>
@@ -81,6 +80,9 @@ const ProfileData: React.FC<ProfileDataPropsType> = (props) => {
                 return <Contact key={key} contactTitle={key} contactValue={props.profile.contacts[key as keyof ContactsType]}/>
             })}
             </div>
+            {props.isOwner && <div>
+				<button className={s.btn} onClick={props.goToEditMode}>Edit</button>
+			</div>}
         </div>
     )
 };

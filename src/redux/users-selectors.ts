@@ -28,6 +28,6 @@ export const getIsFetching = (state: AppStateType) => {
     return state.usersPage.isFetching
 };
 
-export const getUsersSearchTerm = (state: AppStateType) => {
+export const getUsersFilter = (state: AppStateType) => {
     return state.usersPage.filter
 };

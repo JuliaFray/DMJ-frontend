@@ -3,7 +3,7 @@ import {instance} from './api';
 import {FilterType} from '../types/types';
 
 export const usersAPI = {
-    getUsers(pageSize = 20, currentPage = 1, filter: FilterType) {
+    getUsers(pageSize = 10, currentPage = 1, filter: FilterType) {
         let url: string = `users?count=${pageSize}&page=${currentPage}`;
         url = filter.term.trim().length === 0 ? url : url + `&term=${filter.term}`;
         url = filter.friend === null ? url : url + `&friend=${filter.friend}`;

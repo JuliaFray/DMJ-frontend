@@ -21,7 +21,7 @@ type ThunkType = GenericThunkType<ActionsType>;
 
 let initialState: InitialStateType = {
     users: [],
-    pageSize: 20,
+    pageSize: 10,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,
@@ -88,7 +88,7 @@ export const actions = {
 
 
 // thunk creator
-export const requestUsers = (pageSize: number, currentPage: number, filter: FilterType): ThunkType => async (dispatch, getState) => {
+export const requestAllUsers = (pageSize: number, currentPage: number, filter: FilterType): ThunkType => async (dispatch, getState) => {
     dispatch(actions.setIsFetching(true));
     dispatch(actions.setCurrentPage(currentPage));
     dispatch(actions.setFilter(filter));

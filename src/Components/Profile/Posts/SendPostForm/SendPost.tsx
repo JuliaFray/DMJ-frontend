@@ -12,7 +12,7 @@ export type FormDataType = {
 
 type FormDataKeys = GenericFormDataKeys<FormDataType>
 
-const SendPost: React.FC<InjectedFormProps<FormDataType>> = (props) => {
+const SendPostForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
 
     return (
         <form className={StyleSheet.sendMsg} onSubmit={props.handleSubmit}>
@@ -24,6 +24,6 @@ const SendPost: React.FC<InjectedFormProps<FormDataType>> = (props) => {
 
 const reduxPostForm = reduxForm<FormDataType>({
     form: 'posts'
-})(SendPost);
+})(SendPostForm);
 
 export default reduxPostForm;
