@@ -19,3 +19,7 @@ export const getAuthId = (state: AppStateType) => {
 export const getLogin = (state: AppStateType) => {
     return state.auth.login
 };
+
+export const getAvatar = (state: AppStateType) => {
+    return state.profilePage.profile?.photos.small
+}

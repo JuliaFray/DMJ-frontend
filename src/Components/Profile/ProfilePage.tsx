@@ -7,6 +7,8 @@ import {getUserProfile, getUserStatus, saveProfilePhoto, saveUserProfile, update
 import Posts from './Posts/Posts';
 import {getAuthId} from '../../redux/auth-selectors';
 import {useHistory, useLocation} from 'react-router-dom';
+import {UploadFile} from 'antd/es/upload/interface';
+import {Divider} from 'antd';
 
 const ProfilePage: React.FC = React.memo(() => {
 
@@ -34,7 +36,7 @@ const ProfilePage: React.FC = React.memo(() => {
         dispatch(updateUserStatus(status));
     };
 
-    const savePhoto = (photos: File) => {
+    const savePhoto = (photos: UploadFile) => {
         dispatch(saveProfilePhoto(photos))
     };
 
@@ -51,6 +53,7 @@ const ProfilePage: React.FC = React.memo(() => {
                          isOwner={isOwner}
                          savePhoto={savePhoto}
                          saveProfile={saveProfile}/>
+            {isOwner ? <Divider /> : null}
             {isOwner ? <Posts/> : null}
         </div>
     );

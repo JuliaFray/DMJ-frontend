@@ -4,6 +4,7 @@ import {GenericThunkType, InferActionType} from './redux-store';
 import {ResultCodeEnum} from '../api/api-types';
 import {stopSubmit} from 'redux-form';
 import {Action} from 'redux';
+import {UploadFile} from 'antd/es/upload/interface';
 
 type InitialStateType = {
     posts: Array<PostType>,
@@ -88,7 +89,7 @@ export const deletePost = (postId: number): ThunkType => async (dispatch) => {
 
 };
 
-export const saveProfilePhoto = (photos: File): ThunkType => async (dispatch) => {
+export const saveProfilePhoto = (photos: UploadFile): ThunkType => async (dispatch) => {
     let response = await profileAPI.savePhoto(photos);
     if (response.resultCode === ResultCodeEnum.Success) {
         dispatch(actions.updatePhoto(response.data.photos))

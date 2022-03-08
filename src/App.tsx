@@ -1,15 +1,20 @@
 import loadable from '@loadable/component';
 import React, {useEffect} from 'react';
-import {HashRouter, Redirect, Route, Switch} from 'react-router-dom';
-import './App.css';
-import Nav from './Components/Navbar/Navbar';
+import {HashRouter, Link, Redirect, Route, Switch} from 'react-router-dom';
+// import 'antd/lib/style/themes/default.less';
+// import 'antd/dist/antd.css';
+// import './styles/main.less';
+import './styles/css/antd.css';
 import {Login} from './Components/Login/Login';
 import store from './redux/redux-store';
 import {Provider, useDispatch} from 'react-redux';
 import {initializeApp} from './redux/app-reducer';
 import {withSuspense} from './Components/HOC/withSuspense';
-import Header from './Components/Header/Header';
-import { QueryParamProvider } from 'use-query-params';
+import {QueryParamProvider} from 'use-query-params';
+import {Layout, Menu} from 'antd';
+import HeaderComponent from './Components/Header/HeaderComponent';
+
+const {Content, Sider} = Layout;
 
 const Profile = loadable(() => import('./Components/Profile/ProfilePage'));
 const Dialogs = loadable(() => import('./Components/Dialogs/DialogsPage'));
@@ -38,24 +43,46 @@ const AppMain: React.FC = () => {
     }, []);
 
     return (
-        <div className='app-wrapper'>
-            <Header/>
-            <Nav/>
-            <div className='app-wrapper-content'>
-                <Switch>
-                    <Route exact path='/' render={() => <Redirect to={'/profile'}/>}/>
-                    <Route path='/profile/:userId?' render={() => <SuspendedProfile/>}/>
+        <Layout>
+            <HeaderComponent/>
+            <Content style={{padding: '0 50px'}}>
+                <Layout>
+                    <Sider className="site-layout-background" width={200}>
+                        <Menu
+                            mode="inline"
+                            style={{height: '100%'}}>
+                            <Menu.Item key="1"> <Link to='/profile'>Profile</Link></Menu.Item>
+                            <Menu.Item key="2"><Link to='/friends'>Friends</Link></Menu.Item>
+                            <Menu.Item key="3"><Link to='/dialogs'>Messages</Link></Menu.Item>
+                            <Menu.Item key="4"><Link to='/music'>Music</Link></Menu.Item>
+                            {/*<Menu.Item key="5"><Link to='/news'>News</Link></Menu.Item>*/}
+                            {/*<Menu.Item key="6"><Link to='/notifications'>Notifications</Link></Menu.Item>*/}
+                            <Menu.Item key="5"><Link to='/users'>All Users</Link></Menu.Item>
+                            {/*<Menu.Item key="6"><Link to='/settings'>Settings</Link></Menu.Item>*/}
+                        </Menu>
+                    </Sider>
+                    <Content className="site-layout-background" style={{
+                        padding: 24,
+                        margin: 0,
+                        minHeight: 280,
+                    }}>
+                        <Switch>
+                            <Route exact path='/' render={() => <Redirect to={'/profile'}/>}/>
+                            <Route path='/profile/:userId?' render={() => <SuspendedProfile/>}/>
 
-                    <Route path='/dialogs' render={() => <SuspendedDialogs/>}/>
-                    <Route path='/news' render={() => <SuspendedNews/>}/>
-                    <Route path='/settings' render={() => <SuspendedSettings/>}/>
-                    <Route path='/music' render={() => <SuspendedMusic/>}/>
-                    <Route path='/video' render={() => <SuspendedVideo/>}/>
-                    <Route path='/notifications' render={() => <SuspendedNotifications/>}/>
-                    <Route path='/users' render={() => <SuspendedUsers/>}/>
-                </Switch>
-                <Route path='/login' render={() => <Login/>}/></div>
-        </div>
+                            <Route path='/dialogs' render={() => <SuspendedDialogs/>}/>
+                            <Route path='/news' render={() => <SuspendedNews/>}/>
+                            <Route path='/settings' render={() => <SuspendedSettings/>}/>
+                            <Route path='/music' render={() => <SuspendedMusic/>}/>
+                            <Route path='/video' render={() => <SuspendedVideo/>}/>
+                            <Route path='/notifications' render={() => <SuspendedNotifications/>}/>
+                            <Route path='/users' render={() => <SuspendedUsers/>}/>
+                        </Switch>
+                        <Route path='/login' render={() => <Login/>}/>
+                    </Content>
+                </Layout>
+            </Content>
+        </Layout>
     )
 };
 

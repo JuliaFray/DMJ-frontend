@@ -1,16 +1,20 @@
 import React, {ChangeEvent, useState} from 'react';
-import s from './ProfileInfo.module.css';
 import Preloader from './../../Common/Preloader/Preloader';
 import userPhoto from './../../../assets/avatar.jpg';
 import ProfileDataForm from './ProfileDataForm';
 import {ContactsType, ProfileType} from '../../../types/types';
+import {Button, Col, Descriptions, Image, Row, Upload} from 'antd';
+import './../../../styles/css/antd.css';
+import {UploadOutlined} from '@ant-design/icons';
+import {UploadChangeParam} from 'antd/es/upload';
+import {UploadFile} from 'antd/es/upload/interface';
 
 type PropsType = {
     profile: ProfileType | null,
     isOwner: boolean,
     status: string,
     saveProfile: (profile: ProfileType) => void,
-    savePhoto: (file: File) => void,
+    savePhoto: (file: UploadFile) => void,
     updateUserStatus: (text: string) => void
 }
 
@@ -22,32 +26,37 @@ const ProfileInfo: React.FC<PropsType> = ({profile, status, updateUserStatus, is
     }
     const onSubmit = (formData: ProfileType) => {
         saveProfile(formData);
+        console.log(formData)
         setEditMode(false);
     };
 
-    const mainPhotoSelect = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.length) {
-            savePhoto(e.target.files[0])
+    const mainPhotoSelect = (info: UploadChangeParam) => {
+        if (info.fileList.length) {
+            savePhoto(info.file)
         }
     };
 
     return (
-        <div className={s.descriptionBlock}>
-            <div>
-                <img className={s.avatar} alt={'avatar'} src={profile.photos.large != null ? profile.photos.large : userPhoto}/>
-                {isOwner && <input className={s.btn} type={'file'} onChange={mainPhotoSelect}/>}
-            </div>
+        <Row>
+            <Col span={8}>
+                <Row>
+                    <Image width={200} style={{borderRadius: '50%'}} src={profile.photos.large != null ? profile.photos.large : userPhoto}/>
+                </Row>
+                <Row>
+                    {isOwner && <Upload onChange={mainPhotoSelect}><Button type={'primary'} icon={<UploadOutlined/>}>Click to Upload</Button></Upload>}
+                </Row>
+            </Col>
+            <Col span={16}>
+                {editMode
+                    ? <ProfileDataForm initialValues={profile} onSubmit={onSubmit} profile={profile}/>
+                    : <ProfileData profile={profile}
+                                   isOwner={isOwner}
+                                   goToEditMode={() => {
+                                       setEditMode(true)
+                                   }}/>}
 
-            {editMode
-                ? <ProfileDataForm initialValues={profile} onSubmit={onSubmit} profile={profile}/>
-                : <ProfileData profile={profile}
-                               isOwner={isOwner}
-                               goToEditMode={() => {
-                                   setEditMode(true)
-                               }}/>}
-
-
-        </div>
+            </Col>
+        </Row>
     )
 };
 
@@ -59,43 +68,25 @@ type ProfileDataPropsType = {
 
 const ProfileData: React.FC<ProfileDataPropsType> = (props) => {
     return (
-        <div className={s.profileData}>
-            <div>
-                <b>Full name</b>: {props.profile.fullName}
-            </div>
-            <div>
-                <b>Looking for a job:</b>{props.profile.lookingForAJob ? 'yes' : 'no'}
-            </div>
-            {props.profile.lookingForAJob &&
-			<div>
-				<b>My prof skills:</b>{props.profile.lookingForAJobDescription}
-			</div>
-            }
-            <div>
-                <b>About me:</b>{props.profile.aboutMe}
-            </div>
-            <div>
-                <br/>
-                <b>Contacts:</b> {Object.keys(props.profile.contacts).map(key => {
-                return <Contact key={key} contactTitle={key} contactValue={props.profile.contacts[key as keyof ContactsType]}/>
-            })}
-            </div>
-            {props.isOwner && <div>
-				<button className={s.btn} onClick={props.goToEditMode}>Edit</button>
-			</div>}
-        </div>
-    )
-};
-
-type ContactsPropsType = {
-    contactTitle: string,
-    contactValue: string
-}
-
-const Contact: React.FC<ContactsPropsType> = ({contactTitle, contactValue}) => {
-    return (
         <div>
-            <b>{contactTitle}</b>: {contactValue}
+            <Descriptions title={props.profile.fullName}>
+                <Descriptions.Item label="Looking for a job:">{props.profile.lookingForAJob ? 'yes' : 'no'}</Descriptions.Item>
+                <Descriptions.Item label="My prof skills:">{props.profile.lookingForAJobDescription}</Descriptions.Item>
+                <Descriptions.Item label="About me:">
+                    {props.profile.aboutMe}
+                </Descriptions.Item>
+            </Descriptions>
+
+            <Descriptions title="Contacts">
+                {Object.keys(props.profile.contacts).map(key => {
+                    return <Descriptions.Item key={key} label={key} span={2}>{props.profile.contacts[key as keyof ContactsType]}
+                    </Descriptions.Item>
+                })}
+            </Descriptions>
+
+            {props.isOwner && <div>
+				<Button type="primary" onClick={props.goToEditMode}>Edit</Button>
+			</div>}
         </div>
     )
 };

@@ -10,7 +10,6 @@ import {followUser, requestAllUsers, unfollowUser} from '../../redux/users-reduc
 import Preloader from '../Common/Preloader/Preloader';
 import {useHistory} from 'react-router-dom';
 import {parse, stringify} from 'querystring';
-import {useQueryParam, StringParam} from 'use-query-params';
 
 type QueryParamsType = { term?: string, page?: string, friend?: string };
 const UsersPage: React.FC = React.memo(() => {
@@ -22,8 +21,6 @@ const UsersPage: React.FC = React.memo(() => {
     const users = useSelector(getUsers);
     const followingInProgress = useSelector(getFollowingInProgress);
     const isFetching = useSelector(getIsFetching);
-
-    const friend = useQueryParam('friend', StringParam);
 
     const dispatch = useDispatch();
     const history = useHistory();

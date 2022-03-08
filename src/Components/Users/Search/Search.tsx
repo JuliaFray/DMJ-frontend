@@ -4,6 +4,7 @@ import {FilterType} from '../../../types/types';
 import s from './Search.module.css';
 import {useSelector} from 'react-redux';
 import {getUsersFilter} from '../../../redux/users-selectors';
+import {Button, Input, Select,} from 'antd';
 
 type PropsType = {
     onSubmit: (values: FilterType) => void,
@@ -20,8 +21,10 @@ const searchFormValidate = (values: FormType) => {
     const errors: any = {};
     return errors;
 };
+const {Option} = Select;
 
 const SearchForm: React.FC<PropsType> = React.memo((props) => {
+
 
     const filter = useSelector(getUsersFilter);
 
@@ -40,6 +43,18 @@ const SearchForm: React.FC<PropsType> = React.memo((props) => {
     };
 
     return <div>
+
+
+        {/*<Input.Group compact>*/}
+        {/*    <Input name={'term'} style={{width: '70%'}} placeholder={'Search...'}/>*/}
+        {/*    <Select style={{width: '20%'}} defaultValue="null">*/}
+        {/*        <Option value={'null'}>All</Option>*/}
+        {/*        <Option value={'true'}>Friends</Option>*/}
+        {/*        <Option value={'false'}>Enemies</Option>*/}
+        {/*    </Select>*/}
+        {/*    <Button type="primary" disabled={props.isFetching}>Search</Button>*/}
+        {/*</Input.Group>*/}
+
         <Formik initialValues={{term: filter.term, friend: String(filter.friend) as FriendFormType}}
                 enableReinitialize
                 validate={searchFormValidate}
