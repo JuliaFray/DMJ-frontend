@@ -35,7 +35,7 @@ const Avatar: React.FC<PropsType> = (props) => {
     return (
         <div className={StyleSheet.avatar}>
             <div className={StyleSheet.avatarImg}>
-                <img alt='icon' src={props.profile.photos.large || 'https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png'}/>
+                <img alt='icon' src={props.profile.photos?.large || 'https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png'}/>
 
                 <div>
                     {props.isOwner && <div>

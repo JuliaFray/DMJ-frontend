@@ -1,5 +1,5 @@
 import {CaptchaResponseType} from "./api-types";
-import {instance} from "./api";
+import instance from "./api";
 
 export const securityAPI = {
     getCaptchaUrl() {

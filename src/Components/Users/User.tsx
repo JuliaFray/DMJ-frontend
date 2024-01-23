@@ -16,8 +16,8 @@ const User: React.FC<PropsType> = ({user, followingInProgress, unfollow, follow}
         <div className={StyleSheet.card}>
                 <span className={StyleSheet.col}>
                     <div>
-                        <NavLink to={'/profile/' + user.id}>
-                            <img alt='icon' src={user.photos.small != null ? user.photos.small :
+                        <NavLink to={'/' + user.id}>
+                            <img alt='icon' src={user.photos?.small != null ? user.photos?.small :
                                 'https://w7.pngwing.com/pngs/549/17/png-transparent-social-media-avatar-social-network-computer-icons-communication-social-media-computer-network-black-internet.png'}
                                  className={StyleSheet.photo}
                             />

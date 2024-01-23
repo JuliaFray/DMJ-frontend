@@ -7,7 +7,7 @@ import {securityAPI} from '../api/security-api';
 import {Action} from 'redux';
 
 type InitialStateType = {
-    id: number,
+    id: string,
     email: string | null,
     login: string | null,
     isAuth: boolean,
@@ -19,7 +19,7 @@ type ActionsType = InferActionType<typeof actions> | Action<typeof stopSubmit>;
 type ThunkType = GenericThunkType<ActionsType>;
 
 let initialState: InitialStateType = {
-    id: 0,
+    id: '',
     email: null,
     login: null,
     isAuth: false,
@@ -55,29 +55,34 @@ export const actions = {
 export const authUser = (): ThunkType => async (dispatch) => {
     let meData = await authAPI.me();
     if(meData.resultCode === ResultCodeEnum.Success) {
-        let {id, email, login} = meData.data;
-        dispatch(actions.setAuthUserData({id: id, email: email, login: login, isAuth: true, captchaUrl: null}))
+        let {_id, email, fullName} = meData.data;
+        dispatch(actions.setAuthUserData({id: _id, email: email, login: fullName, isAuth: true, captchaUrl: null}))
     }
 };
 
 export const login = (email: string, password: string, rememberMe: boolean, captcha: string | null): ThunkType => async (dispatch) => {
     let loginData = await loginAPI.login(email, password, rememberMe, captcha);
     if(loginData.resultCode === ResultCodeEnum.Success) {
+        if ('token' in loginData) {
+            window.localStorage.setItem('token', loginData.token)
+        }
         dispatch(authUser())
     } else {
         if(loginData.resultCode === ResultCodeEnum.CaptchaIsRequired) {
             dispatch(getCaptchaUrl());
         }
-        let message = loginData.messages.length > 0 ? loginData.messages[0] : 'Some error';
+        let message = 'Some error';
         dispatch(stopSubmit('login', {_error: message}));
     }
 };
 
 export const logout = (): ThunkType => async (dispatch) => {
-    let response = await loginAPI.logout();
-    if(response.resultCode === ResultCodeEnum.Success) {
-        dispatch(actions.setAuthUserData({id: 0, email: null, login: null, isAuth: false, captchaUrl: null}))
-    }
+    // let response = await loginAPI.logout();
+    // if(response.resultCode === ResultCodeEnum.Success) {
+    //
+    // }
+    dispatch(actions.setAuthUserData({id: '', email: null, login: null, isAuth: false, captchaUrl: null}));
+    window.localStorage.removeItem('token');
 };
 
 export const getCaptchaUrl = (): ThunkType => async (dispatch) => {

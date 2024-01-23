@@ -6,30 +6,32 @@ import {getProfile, getStatus} from '../../redux/profile-selectors';
 import {getUserProfile, getUserStatus, saveProfilePhoto, saveUserProfile, updateUserStatus} from '../../redux/profile-reducer';
 import Posts from './Posts/Posts';
 import {getAuthId} from '../../redux/auth-selectors';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useHistory, useLocation, useParams} from 'react-router-dom';
 import {UploadFile} from 'antd/es/upload/interface';
 import {Divider} from 'antd';
 
 const ProfilePage: React.FC = React.memo(() => {
 
     const authorizeUserId = useSelector(getAuthId);
-    const location = useLocation();
-    const history = useHistory();
-    let userId: number = +location.pathname.split('/')[location.pathname.split('/').length - 1];
+    const params = useParams();
+
+    // @ts-ignore
+    let userId: string = params.id;
 
     useEffect(() => {
-        if (userId) {
-            dispatch(getUserProfile(+userId));
-            dispatch(getUserStatus(+userId));
+        if(userId) {
+            dispatch(getUserProfile(userId));
+            // dispatch(getUserStatus(userId));
         } else {
             dispatch(getUserProfile(authorizeUserId));
-            dispatch(getUserStatus(authorizeUserId));
+            // dispatch(getUserStatus(authorizeUserId));
         }
     }, [userId]);
 
+
     const profile = useSelector(getProfile);
     const status = useSelector(getStatus);
-    const isOwner = +userId === authorizeUserId || !userId;
+    const isOwner = userId === authorizeUserId || !userId;
     const dispatch = useDispatch();
 
     const updateStatus = (status: string) => {
@@ -53,7 +55,7 @@ const ProfilePage: React.FC = React.memo(() => {
                          isOwner={isOwner}
                          savePhoto={savePhoto}
                          saveProfile={saveProfile}/>
-            {isOwner ? <Divider /> : null}
+            {isOwner ? <Divider/> : null}
             {isOwner ? <Posts/> : null}
         </div>
     );

@@ -1,18 +1,18 @@
 import {GenericResponseType, PhotoResponseType} from "./api-types";
-import {ProfileType} from "../types/types";
+import {PostType, ProfileType} from "../types/types";
 import instance from "./api";
 import {UploadFile} from 'antd/es/upload/interface';
 
-export const profileAPI = {
-    getProfile(userId: string) {
+export const postAPI = {
+    getAll() {
         return instance
-            .get<GenericResponseType<ProfileType>>(`profile/${userId}`)
+            .get<GenericResponseType<PostType[]>>(`posts`)
             .then(response => {
                 return response.data
             })
     },
 
-    getStatus(userId: string) {
+    getOne(userId: string) {
         return instance
             .get<string>(`profile/status/${userId}`)
             .then(response => {
@@ -20,15 +20,15 @@ export const profileAPI = {
             })
     },
 
-    updateStatus(status: string) {
+    createPost(post: PostType) {
         return instance
-            .put<GenericResponseType>(`profile/status`, {status: status})
+            .post<GenericResponseType>(`posts`, post)
             .then(response => {
                 return response.data
             })
     },
 
-    savePhoto(photos: UploadFile) {
+    updatePost(photos: UploadFile) {
         return instance
             .post<GenericResponseType<PhotoResponseType>>(`profile/photo`, photos, {
                 headers: {'Content-Type': 'multipart/form-data'}
@@ -38,7 +38,7 @@ export const profileAPI = {
             })
     },
 
-    saveProfile(profile: ProfileType) {
+    deletePost(profile: ProfileType) {
         return instance
             .put<GenericResponseType>(`profile`, profile)
             .then(response => {

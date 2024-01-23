@@ -1,5 +1,5 @@
 import {GenericResponseType, UsersResponseType} from './api-types';
-import {instance} from './api';
+import instance from './api';
 import {FilterType} from '../types/types';
 
 export const usersAPI = {

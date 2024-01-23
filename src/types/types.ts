@@ -1,8 +1,12 @@
 export type PostType = {
-    id: number,
-    message: string,
-    like: number,
-    dislike: number
+    id: string,
+    text: string,
+    title: string,
+    tags: string[],
+    like?: number,
+    dislike?: number,
+    viewsCount?: number,
+    imageUrl?: string
 }
 
 export type ContactsType = {

@@ -21,5 +21,5 @@ export const getLogin = (state: AppStateType) => {
 };
 
 export const getAvatar = (state: AppStateType) => {
-    return state.profilePage.profile?.photos.small
+    return state.profilePage.profile?.photos?.small
 }

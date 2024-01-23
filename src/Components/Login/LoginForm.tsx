@@ -25,7 +25,7 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType, PropsType> & PropsType
             <form onSubmit={handleSubmit}>
                 {createField<FormDataKeys>('Login', 'email', [requiredField], Input)}
                 {createField<FormDataKeys>('Password', 'password', [requiredField], Input, 'password')}
-                {createField<FormDataKeys>('', 'rememberMe', [], CheckBox, 'checkbox', 'Remember me')}
+                {/*{createField<FormDataKeys>('', 'rememberMe', [], CheckBox, 'checkbox', 'Remember me')}*/}
 
                 {captchaUrl && <img alt='captchaUrl' src={captchaUrl}/>}
                 {captchaUrl && createField<FormDataKeys>('Enter symbols...', 'captcha', [requiredField], Input)}
@@ -33,7 +33,7 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType, PropsType> & PropsType
                 {error && <div className={StyleSheet.summaryError}> {error} </div>}
 
                 <div className={StyleSheet.btn}>
-                    <button>Login</button>
+                    <button>Войти</button>
                 </div>
             </form>
         </div>

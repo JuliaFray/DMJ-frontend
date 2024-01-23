@@ -1,14 +1,17 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import StyleSheet from './Navbar.module.css';
+import {useSelector} from 'react-redux';
+import {getAuthId} from '../../redux/auth-selectors';
 
 
 const Nav = () => {
+    const userId = useSelector(getAuthId);
     return (
         <div>
             <nav className={`${StyleSheet.nav}`}>
                 <div className={`${StyleSheet.item}`}>
-                    <NavLink to='/profile'>Profile</NavLink>
+                    <NavLink to={`/${userId}`}>Profile</NavLink>
                 </div>
                 <div className={StyleSheet.item}>
                     <NavLink to='/friends'>Friends</NavLink>
