@@ -3,6 +3,7 @@ import StyleSheet from './Description.module.css';
 import Preloader from '../../Common/Preloader/Preloader';
 import ProfileStatusWithHooks from '../ProfileInfo/ProfileStatusWithHooks';
 import {ProfileType} from '../../../types/types';
+import instance from '../../../api/api';
 
 type PropsType = {
     profile: ProfileType | null,

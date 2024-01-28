@@ -3,14 +3,14 @@ import {NavLink} from "react-router-dom";
 import StyleSheet from './Users.module.css'
 import {UserType} from "../../types/types";
 
-type PropsType = {
+type UserPropsType = {
     user: UserType,
-    followingInProgress: Array<number>,
-    follow: (userId: number) => void,
-    unfollow: (userId: number) => void
+    followingInProgress: Array<string>,
+    follow: (userId: string) => void,
+    unfollow: (userId: string) => void
 }
 
-const User: React.FC<PropsType> = ({user, followingInProgress, unfollow, follow}) => {
+const User: React.FC<UserPropsType> = ({user, followingInProgress, unfollow, follow}) => {
     return (
 
         <div className={StyleSheet.card}>
@@ -42,7 +42,7 @@ const User: React.FC<PropsType> = ({user, followingInProgress, unfollow, follow}
                 </span>
             <span className={StyleSheet.col}>
                     <span>
-                        <div className={StyleSheet.name}>{user.name}</div>
+                        <div className={StyleSheet.name}>{user.fullName}</div>
                         <div className={StyleSheet.status}>{user.status}</div>
                     </span>
                 </span>

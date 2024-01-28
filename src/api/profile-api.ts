@@ -12,17 +12,9 @@ export const profileAPI = {
             })
     },
 
-    getStatus(userId: string) {
-        return instance
-            .get<string>(`profile/status/${userId}`)
-            .then(response => {
-                return response.data
-            })
-    },
-
     updateStatus(status: string) {
         return instance
-            .put<GenericResponseType>(`profile/status`, {status: status})
+            .put<GenericResponseType<void>>(`profile/status`, {status: status})
             .then(response => {
                 return response.data
             })
@@ -40,7 +32,7 @@ export const profileAPI = {
 
     saveProfile(profile: ProfileType) {
         return instance
-            .put<GenericResponseType>(`profile`, profile)
+            .put<GenericResponseType<void>>(`profile`, profile)
             .then(response => {
                 return response.data
             });

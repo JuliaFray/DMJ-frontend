@@ -1,7 +1,6 @@
-import {GenericResponseType, PhotoResponseType} from "./api-types";
-import {PostType, ProfileType} from "../types/types";
+import {GenericResponseType} from "./api-types";
+import {PostEditType, PostType} from "../types/types";
 import instance from "./api";
-import {UploadFile} from 'antd/es/upload/interface';
 
 export const postAPI = {
     getAll() {
@@ -12,35 +11,33 @@ export const postAPI = {
             })
     },
 
-    getOne(userId: string) {
+    getOne(postId: string) {
         return instance
-            .get<string>(`profile/status/${userId}`)
+            .get<GenericResponseType<PostType>>(`posts/${postId}`)
             .then(response => {
                 return response.data
             })
     },
 
-    createPost(post: PostType) {
+    createPost(post: PostEditType) {
         return instance
-            .post<GenericResponseType>(`posts`, post)
+            .post<GenericResponseType<PostType>>(`posts`, post)
             .then(response => {
                 return response.data
             })
     },
 
-    updatePost(photos: UploadFile) {
+    updatePost(post: PostEditType, id: string) {
         return instance
-            .post<GenericResponseType<PhotoResponseType>>(`profile/photo`, photos, {
-                headers: {'Content-Type': 'multipart/form-data'}
-            })
+            .put<GenericResponseType<void>>(`posts/${id}`, {...post})
             .then(response => {
                 return response.data
             })
     },
 
-    deletePost(profile: ProfileType) {
+    deletePost(postId: string) {
         return instance
-            .put<GenericResponseType>(`profile`, profile)
+            .delete<GenericResponseType<void>>(`posts/${postId}`,)
             .then(response => {
                 return response.data
             });

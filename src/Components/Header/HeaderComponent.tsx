@@ -1,58 +1,120 @@
 import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {getAvatar, getIsAuth, getLogin} from '../../redux/auth-selectors';
-import {logout} from '../../redux/auth-reducer';
-import {Avatar, Button, Col, Image, Menu, Row, Tooltip} from 'antd';
-import {UserOutlined} from '@ant-design/icons';
-import {Link} from 'react-router-dom';
-import logo from '../../assets/Logo.png';
-import {Header} from 'antd/es/layout/layout';
+import {useDispatch} from 'react-redux';
 import '../../styles/main.less';
-import {LogoutIcon} from '../Common/CustomIcon';
-import s from './Header.module.css';
+import {authActions} from '../../redux/auth/auth-slice';
+import Logout from '@mui/icons-material/Logout';
+import IconButton from '@mui/material/IconButton';
+import {AppBar, Box, Toolbar, Typography} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+
+
+type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 const HeaderComponent: React.FC = () => {
 
-    const isAuth = useSelector(getIsAuth);
-    const login = useSelector(getLogin);
     const dispatch = useDispatch();
-    const avatar = useSelector(getAvatar);
 
     const onLogout = () => {
-        dispatch(logout())
+        dispatch(authActions.logout())
     };
 
+    const [state, setState] = React.useState({
+        top: false,
+        left: false,
+        bottom: false,
+        right: false,
+    });
+
+    const list = (anchor: Anchor) => (
+        <Box
+            sx={{width: 250}}
+            role="presentation"
+            onClick={toggleDrawer(anchor, false)}
+            onKeyDown={toggleDrawer(anchor, false)}
+        >
+            <List>
+                {['Профиль'].map((text, index) => (
+                    <ListItem key={text} disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
+                            </ListItemIcon>
+                            <ListItemText primary={text}/>
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+            <Divider/>
+            <List>
+                {['Чат'].map((text, index) => (
+                    <ListItem key={text} disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
+                            </ListItemIcon>
+                            <ListItemText primary={text}/>
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+        </Box>
+    );
+
+    const toggleDrawer =
+        (anchor: Anchor, open: boolean) =>
+            (event: React.KeyboardEvent | React.MouseEvent) => {
+                if(
+                    event &&
+                    event.type === 'keydown' &&
+                    ((event as React.KeyboardEvent).key === 'Tab' ||
+                        (event as React.KeyboardEvent).key === 'Shift')
+                ) {
+                    return;
+                }
+
+                setState({...state, [anchor]: open});
+            };
+
     return (
-        <Header className={'header'}>
-            <Row>
-                <Col span={4}>
-                    <span className={'logo'}><Image width={50} src={logo}/></span>
-                </Col>
-                <Col span={17}>
-                    <Menu theme="dark" mode="horizontal">
-                        <Menu.Item key="1"><Link to='/notifications'>Notifications</Link></Menu.Item>
-                        <Menu.Item key="2"><Link to='/news'>News</Link></Menu.Item>
-                        <Menu.Item key="3"><Link to='/settings'>Settings</Link></Menu.Item>
-                    </Menu>
-                </Col>
-                <Col span={3} className={s.loginBlock} flex={'auto'}>
-                    {isAuth
-                        ? <span >
-                            {avatar
-                                ? <Tooltip placement="bottom" title={login}>
-                                    <Avatar src={<Image src={avatar} style={{width: 32}}/>}/>
-                                </Tooltip>
-                                : <Avatar icon={<UserOutlined/>}/>
-                            }
-                            <Button className={s.logout} type={'link'} icon={<LogoutIcon onClick={() => onLogout()}/>} size={'middle'}/>
-                                </span>
-                        : null}
-                </Col>
-            </Row>
-        </Header>
+        <Box sx={{flexGrow: 1}}>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{mr: 2}}
+                    >
+                        <MenuIcon onClick={toggleDrawer('left', true)}>{'left'}</MenuIcon>
+                        <SwipeableDrawer
+                            anchor={'left'}
+                            open={state['left']}
+                            onClose={toggleDrawer('left', false)}
+                            onOpen={toggleDrawer('left', true)}
+                        >
+                            {list('left')}
+                        </SwipeableDrawer>
+                    </IconButton>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                        BLOG
+                    </Typography>
+                    <IconButton onClick={onLogout} color="info" aria-label="logout">
+                        <Logout/>
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
+        </Box>
     );
 };
 
 export default HeaderComponent;
-
-// lessc "./src/styles/main.less ./src/styles/css/antd.css"

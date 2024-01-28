@@ -1,23 +1,23 @@
 import React from 'react';
 import {InjectedFormProps, reduxForm} from 'redux-form';
 import {requiredField} from '../../Utils/Validators/validator';
-import {CheckBox, createField, GenericFormDataKeys, Input} from '../Common/FormsControls/FormsControls';
+import {createField, GenericFormDataKeys, Input} from '../Common/FormsControls/FormsControls';
 import StyleSheet from './../Common/FormsControls/FormControls.module.css';
 
 type PropsType = {
     captchaUrl: string | null
 }
 
-export type FormDataType = {
+export type LoginDataType = {
     email: string,
     password: string,
-    rememberMe: boolean,
-    captcha: string | null
+    rememberMe?: boolean,
+    captcha?: string | null
 }
 
-type FormDataKeys = GenericFormDataKeys<FormDataType>;
+type FormDataKeys = GenericFormDataKeys<LoginDataType>;
 
-const LoginForm: React.FC<InjectedFormProps<FormDataType, PropsType> & PropsType> = (
+const LoginForm: React.FC<InjectedFormProps<LoginDataType, PropsType> & PropsType> = (
     {handleSubmit, error, captchaUrl}
 ) => {
     return (
@@ -40,7 +40,7 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType, PropsType> & PropsType
     )
 };
 
-const reduxLoginForm = reduxForm<FormDataType, PropsType>({
+const reduxLoginForm = reduxForm<LoginDataType, PropsType>({
     form: 'login'
 })(LoginForm);
 

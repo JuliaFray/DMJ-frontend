@@ -1,12 +1,21 @@
 export type PostType = {
-    id: string,
-    text: string,
+    _id: string,
     title: string,
+    text: string,
     tags: string[],
-    like?: number,
-    dislike?: number,
+    imageUrl: string,
+    author?: UserType
     viewsCount?: number,
-    imageUrl?: string
+    likes?: number,
+    dateStr: string,
+}
+
+export type PostEditType = {
+    _id?: string,
+    title: string,
+    text: string,
+    imageUrl: string,
+    tags: string
 }
 
 export type ContactsType = {
@@ -33,11 +42,12 @@ export type ProfileType = {
     contacts: ContactsType,
     photos: PhotoType,
     aboutMe?: string,
+    status: string
 }
 
 export type UserType = {
-    id: number,
-    name: string,
+    id: string,
+    fullName: string,
     photos: PhotoType,
     status: string,
     followed: boolean

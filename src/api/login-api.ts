@@ -1,10 +1,11 @@
 import {GenericResponseType, LoginResponseType} from "./api-types";
 import instance from "./api";
+import {LoginDataType} from '../Components/Login/LoginForm';
 
 export const loginAPI = {
-    login(email: string, password: string, rememeberMe = false, captcha: string | null = null) {
+    login(data: LoginDataType) {
         return instance
-            .post<LoginResponseType>(`auth/login`, {email, password, rememeberMe, captcha})
+            .post<LoginResponseType>(`auth/login`, data)
             .then(response => {
                 return response.data
             })
@@ -12,7 +13,7 @@ export const loginAPI = {
 
     logout() {
         return instance
-            .delete<GenericResponseType>(`auth/login`)
+            .delete<GenericResponseType<void>>(`auth/login`)
             .then(response => {
                 return response.data
             })

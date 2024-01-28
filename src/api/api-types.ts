@@ -8,21 +8,15 @@ export enum ResultCodeEnum {
 
 export type GenericResponseType<D = {}> = {
     data: D,
-    messages?: Array<string>,
+    message: string,
     resultCode: ResultCodeEnum
 }
 
-
-export type MeResponseType = {
-    _id: string,
-    email: string,
-    fullName: string
-}
-
 export type LoginResponseType = {
-    resultCode: ResultCodeEnum,
-    data: any
     token: string,
+    data: UserType,
+    message: string,
+    resultCode: ResultCodeEnum,
 }
 
 export type CaptchaResponseType = {
@@ -34,7 +28,7 @@ export type PhotoResponseType = {
 }
 
 export type UsersResponseType = {
-    items: Array<UserType>,
+    items: UserType[],
     totalCount: number,
     error: string | null
 }

@@ -1,44 +1,66 @@
 import React from 'react';
-import LoginForm, {FormDataType} from './LoginForm'
+import {LoginDataType} from './LoginForm'
 import {useDispatch, useSelector} from 'react-redux';
-import {login} from '../../redux/auth-reducer'
-import {Redirect} from 'react-router-dom';
-import StyleSheet from './../Common/FormsControls/FormControls.module.css';
-import {getAuthId, getCaptchaUrl, getIsAuth} from '../../redux/auth-selectors';
+import {login} from '../../redux/auth/auth-thunks'
+import {Navigate} from 'react-router-dom';
+import {getIsAuth} from '../../redux/auth/auth-selectors';
+import {Button, Container, Paper, Typography} from '@mui/material';
+import TextField from "@mui/material/TextField";
+import styles from "./Login.module.css";
+import {useForm} from 'react-hook-form';
 
 export const Login: React.FC = () => {
 
-    const captchaUrl = useSelector(getCaptchaUrl);
+    const {register, handleSubmit, formState: {errors, isValid}} = useForm({
+        defaultValues: {
+            email: 'test5@test.ru',
+            password: '12345'
+        },
+        mode: 'onChange'
+    });
     const isAuth = useSelector(getIsAuth);
-    const userId = useSelector(getAuthId);
 
     const dispatch = useDispatch();
 
-    const onSubmit = (formData: FormDataType) => {
-        dispatch(login(formData.email, formData.password, formData.rememberMe, formData.captcha))
+    const onSubmit = (formData: LoginDataType) => {
+        dispatch(login({userData: formData}));
     };
 
-    if (isAuth) {
-        return <Redirect to={`/${userId}`}/>
+    if(isAuth) {
+        return <Navigate to={`/posts`}/>
     }
 
     return (
-        <div className={StyleSheet.form}>
-            <h1>Войти в аккаунт</h1>
-            {/*<p>*/}
-            {/*    Login : free@samuraijs.com*/}
-            {/*</p>*/}
-            <p>
-                Login : test5@test.ru
-            </p>
-            {/*<p>*/}
-            {/*    Password : free*/}
-            {/*</p>*/}
-            <p>
-                Password : 12345
-            </p>
-            <LoginForm onSubmit={onSubmit} captchaUrl={captchaUrl}/>
-        </div>
+        <Container style={{height: "100vh"}}>
+            <Paper classes={{root: styles.root}}>
+                <Typography classes={{root: styles.title}} variant="h5">
+                    Вход в аккаунт
+                </Typography>
+                <form onSubmit={handleSubmit((values: LoginDataType) => onSubmit(values))}>
+                    <TextField
+                        className={styles.field}
+                        label='E-mail'
+                        fullWidth
+                        error={Boolean(errors.email?.message)}
+                        helperText={errors.email?.message}
+                        {...register('email', {required: 'Обязательно для заполнения'})}
+                    />
+
+                    <TextField
+                        className={styles.field}
+                        label='Пароль'
+                        fullWidth
+                        error={Boolean(errors.password?.message)}
+                        helperText={errors.password?.message}
+                        {...register('password', {required: 'Обязательно для заполнения'})}/>
+
+                    <Button type={'submit'} size='large' disabled={!isValid}
+                            variant='contained' fullWidth>
+                        Войти
+                    </Button>
+                </form>
+            </Paper>
+        </Container>
     )
 };
 

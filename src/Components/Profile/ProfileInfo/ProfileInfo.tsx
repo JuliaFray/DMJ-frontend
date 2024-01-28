@@ -1,27 +1,25 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {useState} from 'react';
 import Preloader from './../../Common/Preloader/Preloader';
 import userPhoto from './../../../assets/avatar.jpg';
 import ProfileDataForm from './ProfileDataForm';
 import {ContactsType, ProfileType} from '../../../types/types';
-import {Button, Col, Descriptions, Image, Row, Upload} from 'antd';
+import {Button, Col, Descriptions, Image, Row} from 'antd';
 import './../../../styles/css/antd.css';
-import {UploadOutlined} from '@ant-design/icons';
 import {UploadChangeParam} from 'antd/es/upload';
 import {UploadFile} from 'antd/es/upload/interface';
 
 type PropsType = {
     profile: ProfileType | null,
     isOwner: boolean,
-    status: string,
     saveProfile: (profile: ProfileType) => void,
     savePhoto: (file: UploadFile) => void,
     updateUserStatus: (text: string) => void
 }
 
-const ProfileInfo: React.FC<PropsType> = ({profile, status, updateUserStatus, isOwner, savePhoto, saveProfile}) => {
+const ProfileInfo: React.FC<PropsType> = ({profile, updateUserStatus, isOwner, savePhoto, saveProfile}) => {
     let [editMode, setEditMode] = useState(false);
 
-    if (!profile) {
+    if(!profile) {
         return <Preloader/>
     }
     const onSubmit = (formData: ProfileType) => {
@@ -29,11 +27,11 @@ const ProfileInfo: React.FC<PropsType> = ({profile, status, updateUserStatus, is
         setEditMode(false);
     };
 
-    const mainPhotoSelect = (info: UploadChangeParam) => {
-        if (info.fileList.length) {
-            savePhoto(info.file)
-        }
-    };
+    // const mainPhotoSelect = (info: UploadChangeParam) => {
+    //     if(info.fileList.length) {
+    //         savePhoto(info.file)
+    //     }
+    // };
 
     return (
         <Row>
@@ -84,8 +82,8 @@ const ProfileData: React.FC<ProfileDataPropsType> = (props) => {
             </Descriptions>
 
             {props.isOwner && <div>
-				<Button type="primary" onClick={props.goToEditMode}>Редактировать</Button>
-			</div>}
+                <Button type="primary" onClick={props.goToEditMode}>Редактировать</Button>
+            </div>}
         </div>
     )
 };

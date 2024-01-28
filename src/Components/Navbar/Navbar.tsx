@@ -2,7 +2,7 @@ import React from 'react';
 import {NavLink} from 'react-router-dom';
 import StyleSheet from './Navbar.module.css';
 import {useSelector} from 'react-redux';
-import {getAuthId} from '../../redux/auth-selectors';
+import {getAuthId} from '../../redux/auth/auth-selectors';
 
 
 const Nav = () => {

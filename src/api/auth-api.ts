@@ -1,10 +1,10 @@
-import {GenericResponseType, MeResponseType} from "./api-types";
-import instance from "./api";
+import {GenericResponseType} from './api-types';
+import instance from './api';
 
 export const authAPI = {
-    me() {
+    checkStatus() {
         return instance
-            .get<GenericResponseType<MeResponseType>>(`auth/status`)
+            .get<GenericResponseType<void>>(`auth/status`)
             .then(response => {
                 return response.data
             })

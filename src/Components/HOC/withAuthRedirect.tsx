@@ -1,26 +1,28 @@
 import React from 'react';
-import {Redirect} from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {AppStateType} from '../../redux/redux-store';
+import {RootState} from '../../redux/redux-store';
+import {JSX} from 'react/jsx-runtime';
+import IntrinsicAttributes = JSX.IntrinsicAttributes;
 
 type MapStateType = {
     isAuth: boolean
 }
 
-let mapStateToPropsForRedirect = (state: AppStateType) => ({
+let mapStateToPropsForRedirect = (state: RootState) => ({
     isAuth: state.auth.isAuth
 });
 
-function withAuthRedirect<T>(Component: React.ComponentType<T>) {
+function withAuthRedirect<T extends IntrinsicAttributes>(Component: React.ComponentType<T>) {
     const RedirectComponent: React.FC<MapStateType> = (props) => {
         let {isAuth, ...restProps} = props;
         if(!isAuth) {
-            return <Redirect to={'/login'}/>
+            return <Navigate to={'/login'}/>
         }
         return <Component {...restProps as T} />
     };
 
-    return connect<MapStateType, {}, T, AppStateType>(mapStateToPropsForRedirect)(RedirectComponent);
+    return connect<MapStateType, {}, T, RootState>(mapStateToPropsForRedirect)(RedirectComponent);
 }
 
 export default withAuthRedirect;

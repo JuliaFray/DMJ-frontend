@@ -3,7 +3,7 @@ import {Field, WrappedFieldProps} from "redux-form";
 import {ValidatorType} from "../../../Utils/Validators/validator";
 import styles from './FormControls.module.css'
 
-const FormControl: React.FC<WrappedFieldProps> = ({meta: {touched, error}, children}) => {
+const FormControl: React.FC<WrappedFieldProps> = ({meta: {touched, error}}, children) => {
     const hasError = touched && error;
     return (
         <div className={styles.formControl + " " + (hasError ? styles.error : "")}>

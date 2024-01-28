@@ -15,23 +15,23 @@ const ProfileDataForm: React.FC<InjectedFormProps<ProfileType, PropsType> & Prop
 
     return (
         <form onSubmit={handleSubmit}>
-            {createField<FormDataKeys>('FullName', 'fullName', [requiredField], Input)}
-            {createField<FormDataKeys>('Ищу работу', 'lookingForAJob', [requiredField], Input, 'checkbox', 'Looking for a job')}
-            {createField<FormDataKeys>('Мои навыки', 'lookingForAJobDescription', [requiredField], TextArea)}
-            {createField<FormDataKeys>('Обо мне', 'aboutMe', [requiredField], TextArea)}
-            <div>
-                <br/>
-                <b>Контакты:</b> {Object.keys(profile.contacts).map(key => {
-                return <div className={s.contacts}>
-                    <b>{key}:</b>
-                    {createField(key, 'contacts.' + key, [], Input)}
-                </div>
-            })}
-            </div>
-            {error &&
-			<div className={s.formSummaryError}>
-                {error}
-			</div>}
+            {/*{createField<FormDataKeys>('FullName', 'fullName', [requiredField], Input)}*/}
+            {/*{createField<FormDataKeys>('Ищу работу', 'lookingForAJob', [requiredField], Input, 'checkbox', 'Looking for a job')}*/}
+            {/*{createField<FormDataKeys>('Мои навыки', 'lookingForAJobDescription', [requiredField], TextArea)}*/}
+            {/*{createField<FormDataKeys>('Обо мне', 'aboutMe', [requiredField], TextArea)}*/}
+            {/*<div>*/}
+            {/*    <br/>*/}
+            {/*    <b>Контакты:</b> {Object.keys(profile.contacts).map(key => {*/}
+            {/*    return <div className={s.contacts}>*/}
+            {/*        <b>{key}:</b>*/}
+            {/*        {createField(key, 'contacts.' + key, [], Input)}*/}
+            {/*    </div>*/}
+            {/*})}*/}
+            {/*</div>*/}
+            {/*{error &&*/}
+			{/*<div className={s.formSummaryError}>*/}
+            {/*    {error}*/}
+			{/*</div>}*/}
             <button className={s.btn} onClick={handleSubmit}>Сохранить</button>
         </form>
     )

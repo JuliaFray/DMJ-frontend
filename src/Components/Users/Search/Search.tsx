@@ -3,7 +3,7 @@ import React from 'react';
 import {FilterType} from '../../../types/types';
 import s from './Search.module.css';
 import {useSelector} from 'react-redux';
-import {getUsersFilter} from '../../../redux/users-selectors';
+import {getUsersFilter} from '../../../redux/users/users-selectors';
 import {Button, Input, Select,} from 'antd';
 
 type PropsType = {

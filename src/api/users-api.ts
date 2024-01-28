@@ -8,23 +8,23 @@ export const usersAPI = {
         url = filter.term.trim().length === 0 ? url : url + `&term=${filter.term}`;
         url = filter.friend === null ? url : url + `&friend=${filter.friend}`;
         return instance
-            .get<UsersResponseType>(url)
+            .get<GenericResponseType<UsersResponseType>>(url)
             .then(response => {
                 return response.data
             })
     },
 
-    followUsers(userId: number) {
+    followUsers(userId: string) {
         return instance
-            .post<GenericResponseType>(`follow/${userId}`)
+            .post<GenericResponseType<void>>(`follow/${userId}`)
             .then(response => {
                 return response.data
             })
     },
 
-    unfollowUsers(userId: number) {
+    unfollowUsers(userId: string) {
         return instance
-            .delete<GenericResponseType>(`follow/${userId}`)
+            .delete<GenericResponseType<void>>(`follow/${userId}`)
             .then(response => {
                 return response.data
             })
