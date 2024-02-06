@@ -1,11 +1,28 @@
 import {GenericResponseType} from "./api-types";
 import {PostEditType, PostType} from "../types/types";
 import instance from "./api";
+import {markPostFavorite} from '../redux/posts/posts-thunks';
 
 export const postAPI = {
     getAll() {
         return instance
             .get<GenericResponseType<PostType[]>>(`posts`)
+            .then(response => {
+                return response.data
+            })
+    },
+
+    markPostFavorite(postId: string) {
+        return instance
+            .put<GenericResponseType<void>>(`posts/${postId}/like`)
+            .then(response => {
+                return response.data
+            })
+    },
+
+    getPopular() {
+        return instance
+            .get<GenericResponseType<PostType>>(`posts/popular`)
             .then(response => {
                 return response.data
             })

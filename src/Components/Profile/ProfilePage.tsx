@@ -9,6 +9,8 @@ import {getAuthId} from '../../redux/auth/auth-selectors';
 import {useParams} from 'react-router-dom';
 import {UploadFile} from 'antd/es/upload/interface';
 import {Divider} from 'antd';
+import {compose} from 'redux';
+import withAuthRedirect from '../HOC/withAuthRedirect';
 
 const ProfilePage: React.FC = React.memo(() => {
 
@@ -18,6 +20,7 @@ const ProfilePage: React.FC = React.memo(() => {
     let userId: string = params.id || '';
 
     useEffect(() => {
+        console.log(userId)
         if(userId) {
             dispatch(getUserProfile({userId}));
         } else {
@@ -57,4 +60,4 @@ const ProfilePage: React.FC = React.memo(() => {
     );
 });
 
-export default ProfilePage;
+export default compose<React.ComponentType>(withAuthRedirect)(ProfilePage);

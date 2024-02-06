@@ -10,6 +10,7 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {useAppDispatch} from "../../../hook/hooks";
 import {createPost, editPost, getOnePost} from "../../../redux/posts/posts-thunks";
+import {BASE_URL} from "../../../api/api";
 
 export const AddPost = () => {
 
@@ -114,7 +115,7 @@ export const AddPost = () => {
                 )}
                 {!!imageUrl && (
                     <img className={styles.image} src={imageUrl.includes('http')
-                        ? imageUrl : `http://localhost:8000${imageUrl}`} alt="Uploaded"/>
+                        ? imageUrl : `${BASE_URL}${imageUrl}`} alt="Uploaded"/>
                 )}
                 <br/>
                 <br/>

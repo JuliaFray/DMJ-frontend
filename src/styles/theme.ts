@@ -17,5 +17,8 @@ export const theme = createTheme({
         info: {
             main: '#fff'
         }
-    }
+    },
+    typography: {
+        fontSize: 14,
+    },
 });

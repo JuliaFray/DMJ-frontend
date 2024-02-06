@@ -4,9 +4,9 @@ export type PostType = {
     text: string,
     tags: string[],
     imageUrl: string,
-    author?: UserType
-    viewsCount?: number,
-    likes?: number,
+    author: UserType
+    viewsCount: number,
+    likes: number,
     dateStr: string,
 }
 
@@ -46,7 +46,7 @@ export type ProfileType = {
 }
 
 export type UserType = {
-    id: string,
+    _id: string,
     fullName: string,
     photos: PhotoType,
     status: string,

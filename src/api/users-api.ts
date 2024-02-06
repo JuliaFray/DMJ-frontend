@@ -8,7 +8,7 @@ export const usersAPI = {
         url = filter.term.trim().length === 0 ? url : url + `&term=${filter.term}`;
         url = filter.friend === null ? url : url + `&friend=${filter.friend}`;
         return instance
-            .get<GenericResponseType<UsersResponseType>>(url)
+            .get<UsersResponseType>(url)
             .then(response => {
                 return response.data
             })

@@ -67,16 +67,16 @@ const ProfileData: React.FC<ProfileDataPropsType> = (props) => {
     return (
         <div>
             <Descriptions title={props.profile.fullName}>
-                <Descriptions.Item label="Ищу работу">{props.profile.lookingForAJob ? 'да' : 'нет'}</Descriptions.Item>
-                <Descriptions.Item label="Мои навыки">{props.profile.lookingForAJobDescription}</Descriptions.Item>
+                <Descriptions.Item label="Ищу работу">{props?.profile?.lookingForAJob ? 'да' : 'нет'}</Descriptions.Item>
+                <Descriptions.Item label="Мои навыки">{props?.profile?.lookingForAJobDescription}</Descriptions.Item>
                 <Descriptions.Item label="Обо мне">
-                    {props.profile.aboutMe}
+                    {props?.profile?.aboutMe}
                 </Descriptions.Item>
             </Descriptions>
 
             <Descriptions title="Контакты">
-                {Object.keys(props?.profile?.contacts).map(key => {
-                    return <Descriptions.Item key={key} label={key} span={2}>{props.profile.contacts[key as keyof ContactsType]}
+                {props?.profile?.contacts && Object.keys(props?.profile?.contacts).map(key => {
+                    return <Descriptions.Item key={key} label={key} span={2}>{props?.profile?.contacts[key as keyof ContactsType]}
                     </Descriptions.Item>
                 })}
             </Descriptions>

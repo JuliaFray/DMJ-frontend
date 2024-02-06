@@ -17,6 +17,9 @@ import {
 import {followUser, getAllUsers, unfollowUser} from '../../redux/users/users-thunks';
 import Preloader from '../Common/Preloader/Preloader';
 import {useParams} from 'react-router-dom';
+import {useAppDispatch} from '../../hook/hooks';
+import {compose} from 'redux';
+import withAuthRedirect from '../HOC/withAuthRedirect';
 // import {parse, stringify} from 'querystring';
 
 type QueryParamsType = { term?: string, page?: string, friend?: string };
@@ -30,8 +33,10 @@ const UsersPage: React.FC = React.memo(() => {
     const followingInProgress = useSelector(getFollowingInProgress);
     const isFetching = useSelector(getIsFetching);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const history: any = useParams();
+
+    console.log(users)
 
     useEffect(() => {
         // const parsedSearch = parse(history.location.search.substring(1)) as QueryParamsType;
@@ -62,10 +67,10 @@ const UsersPage: React.FC = React.memo(() => {
         if(filter.friend !== null) query.friend = String(filter.friend);
         if(currentPage !== 1) query.page = currentPage.toString();
 
-        history.push({
-            pathname: '/users',
-            search: query
-        });
+        // history.push({
+        //     pathname: '/users',
+        //     search: query
+        // });
     }, [filter, currentPage]);
 
     const onPageChanged = (pageNumber: number) => {
@@ -102,8 +107,8 @@ const UsersPage: React.FC = React.memo(() => {
             </div>
             <div className={StyleSheet.cards}>
                 {
-                    users.map((u: UserType) => <User user={u}
-                                                     key={u.id}
+                    users && users.map((u: UserType) => <User user={u}
+                                                     key={u._id}
                                                      followingInProgress={followingInProgress}
                                                      unfollow={unfollow}
                                                      follow={follow}/>)
@@ -115,4 +120,4 @@ const UsersPage: React.FC = React.memo(() => {
     )
 });
 
-export default UsersPage;
+export default compose<React.ComponentType>(withAuthRedirect)(UsersPage);

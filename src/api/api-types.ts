@@ -28,7 +28,7 @@ export type PhotoResponseType = {
 }
 
 export type UsersResponseType = {
-    items: UserType[],
+    data: UserType[],
     totalCount: number,
-    error: string | null
+    resultCode: ResultCodeEnum,
 }

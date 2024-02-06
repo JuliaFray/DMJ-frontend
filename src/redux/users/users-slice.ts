@@ -47,8 +47,10 @@ const usersSlice = createSlice({
             })
             .addCase(getAllUsers.fulfilled, (state, action) => {
                 state.isFetching = false;
-                state.users = action.payload?.items;
-                state.totalUsersCount = action.payload?.totalCount;
+                if (action.payload) {
+                    state.users = action.payload.data;
+                    state.totalUsersCount = action.payload.totalCount;
+                }
             })
             .addCase(getAllUsers.rejected, (state, action) => {
                 state.isFetching = false;

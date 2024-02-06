@@ -16,7 +16,7 @@ const User: React.FC<UserPropsType> = ({user, followingInProgress, unfollow, fol
         <div className={StyleSheet.card}>
                 <span className={StyleSheet.col}>
                     <div>
-                        <NavLink to={'/' + user.id}>
+                        <NavLink to={'/users/' + user._id}>
                             <img alt='icon' src={user.photos?.small != null ? user.photos?.small :
                                 'https://w7.pngwing.com/pngs/549/17/png-transparent-social-media-avatar-social-network-computer-icons-communication-social-media-computer-network-black-internet.png'}
                                  className={StyleSheet.photo}
@@ -26,15 +26,15 @@ const User: React.FC<UserPropsType> = ({user, followingInProgress, unfollow, fol
                     <div>
                         {user.followed
                             ? <button className={StyleSheet.btn} disabled={followingInProgress
-                                .some(id => id === user.id)}
+                                .some(id => id === user._id)}
                                       onClick={() => {
-                                          unfollow(user.id)
+                                          unfollow(user._id)
                                       }}>
                                 Unfollow</button>
                             : <button className={StyleSheet.btn} disabled={followingInProgress
-                                .some(id => id === user.id)}
+                                .some(id => id === user._id)}
                                       onClick={() => {
-                                          follow(user.id)
+                                          follow(user._id)
                                       }}>
                                 Follow</button>}
 

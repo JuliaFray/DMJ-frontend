@@ -19,6 +19,34 @@ export const getAllPosts = createAsyncThunk<PostType[], {}, { rejectValue: strin
     }
 );
 
+export const markPostFavorite = createAsyncThunk<void, { postId: string }, { rejectValue: string }>(
+    'posts/favorite', async (data, thunkAPI) => {
+        const response = await postAPI.markPostFavorite(data.postId);
+        try {
+            if(response.resultCode === ResultCodeEnum.Error) {
+                return thunkAPI.rejectWithValue(response.message);
+            }
+            return response.data;
+        } catch(e) {
+            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+        }
+    }
+);
+
+export const getPopularPost = createAsyncThunk<PostType, {}, { rejectValue: string }>(
+    'posts/popular', async (__, thunkAPI) => {
+        const response = await postAPI.getPopular();
+        try {
+            if(response.resultCode === ResultCodeEnum.Error) {
+                return thunkAPI.rejectWithValue(response.message);
+            }
+            return response.data;
+        } catch(e) {
+            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+        }
+    }
+);
+
 export const getOnePost = createAsyncThunk<PostType, { postId: string }, { rejectValue: string }>(
     'posts/one', async (data, thunkAPI) => {
         try {

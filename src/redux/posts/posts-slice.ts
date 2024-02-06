@@ -1,17 +1,19 @@
 import {PostType} from '../../types/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {createPost, deletePost, editPost, getAllPosts, getOnePost} from './posts-thunks';
+import {createPost, deletePost, editPost, getAllPosts, getOnePost, getPopularPost, markPostFavorite} from './posts-thunks';
 
 type InitialStateType = {
     posts: PostType[],
     newPostId: string,
     isFetching: boolean,
+    popularPost: PostType | null
 }
 
 const initialState: InitialStateType = {
     posts: [],
     newPostId: '',
-    isFetching: false
+    isFetching: false,
+    popularPost: null
 };
 
 const postsSlice = createSlice({
@@ -38,6 +40,28 @@ const postsSlice = createSlice({
             .addCase(getAllPosts.rejected, (state) => {
                 state.isFetching = false;
                 state.posts = [];
+            })
+            //=====markPostFavorite=====//
+            .addCase(markPostFavorite.pending, (state) => {
+                state.isFetching = true;
+            })
+            .addCase(markPostFavorite.fulfilled, (state) => {
+                state.isFetching = false;
+            })
+            .addCase(markPostFavorite.rejected, (state) => {
+                state.isFetching = false;
+            })
+            //=====getPopularPost=====//
+            .addCase(getPopularPost.pending, (state) => {
+                state.isFetching = true;
+            })
+            .addCase(getPopularPost.fulfilled, (state, action) => {
+                state.isFetching = false;
+                state.popularPost = action.payload;
+            })
+            .addCase(getPopularPost.rejected, (state) => {
+                state.isFetching = false;
+                state.popularPost = null;
             })
             //=====getOnePost=====//
             .addCase(getOnePost.pending, (state) => {

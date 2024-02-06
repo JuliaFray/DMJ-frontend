@@ -44,7 +44,7 @@ const authSlice = createSlice({
                 state.isFetching = false;
                 if(action.payload) {
                     state.isAuth = true;
-                    state.id = action.payload.id;
+                    state.id = action.payload._id;
                 }
             })
             .addCase(login.rejected, (state) => {

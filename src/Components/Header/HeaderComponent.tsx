@@ -1,7 +1,6 @@
 import React from 'react';
-import {useDispatch} from 'react-redux';
-import '../../styles/main.less';
-import {authActions} from '../../redux/auth/auth-slice';
+import {useSelector} from 'react-redux';
+import {Link} from 'react-router-dom';
 import Logout from '@mui/icons-material/Logout';
 import IconButton from '@mui/material/IconButton';
 import {AppBar, Box, Toolbar, Typography} from '@mui/material';
@@ -14,25 +13,37 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
+import {authActions} from '../../redux/auth/auth-slice';
+import {getAuthId, getIsAuth} from '../../redux/auth/auth-selectors';
+import {useAppDispatch} from '../../hook/hooks';
+import styles from './Header.module.scss';
 
-
-type Anchor = 'top' | 'left' | 'bottom' | 'right';
+type Anchor = 'left';
+type ItemType = { name: string, link: string, icon: React.JSX.Element }
 
 const HeaderComponent: React.FC = () => {
 
-    const dispatch = useDispatch();
+    const userId = useSelector(getAuthId);
+    const isAuth = useSelector(getIsAuth);
+    const dispatch = useAppDispatch();
+
+    const [state, setState] = React.useState({left: false,});
+
+    const items: ItemType[] = [
+        {name: 'Блог', link: `/posts`, icon: <InboxIcon/>},
+        {name: 'Профиль', link: `/users/${userId}`, icon: <MailIcon/>},
+        {name: 'Все пользователи', link: `/users`, icon: <MailIcon/>},
+        {name: 'Сообщения', link: `/dialogs`, icon: <MailIcon/>},
+        {name: 'Новости', link: `/news`, icon: <MailIcon/>},
+        {name: 'Музыка', link: `/music`, icon: <MailIcon/>},
+        {name: 'Видео', link: `/video`, icon: <MailIcon/>},
+        {name: 'Карты', link: `/map`, icon: <MailIcon/>},
+        {name: 'Настройки', link: `/settings`, icon: <MailIcon/>},
+    ];
 
     const onLogout = () => {
         dispatch(authActions.logout())
     };
-
-    const [state, setState] = React.useState({
-        top: false,
-        left: false,
-        bottom: false,
-        right: false,
-    });
 
     const list = (anchor: Anchor) => (
         <Box
@@ -42,26 +53,15 @@ const HeaderComponent: React.FC = () => {
             onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
-                {['Профиль'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
+                {items.map((item: ItemType, index) => (
+                    <ListItem key={index} disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
+                                {item.icon}
                             </ListItemIcon>
-                            <ListItemText primary={text}/>
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Divider/>
-            <List>
-                {['Чат'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
-                            </ListItemIcon>
-                            <ListItemText primary={text}/>
+                            <Link to={item.link}>
+                                <ListItemText primary={item.name}/>
+                            </Link>
                         </ListItemButton>
                     </ListItem>
                 ))}
@@ -69,48 +69,45 @@ const HeaderComponent: React.FC = () => {
         </Box>
     );
 
-    const toggleDrawer =
-        (anchor: Anchor, open: boolean) =>
-            (event: React.KeyboardEvent | React.MouseEvent) => {
-                if(
-                    event &&
-                    event.type === 'keydown' &&
-                    ((event as React.KeyboardEvent).key === 'Tab' ||
-                        (event as React.KeyboardEvent).key === 'Shift')
-                ) {
-                    return;
-                }
+    const toggleDrawer = (anchor: Anchor, open: boolean) =>
+        (event: React.KeyboardEvent | React.MouseEvent) => {
+            if(event && event.type === 'keydown' &&
+                ((event as React.KeyboardEvent).key === 'Tab' ||
+                    (event as React.KeyboardEvent).key === 'Shift')
+            ) {
+                return;
+            }
 
-                setState({...state, [anchor]: open});
-            };
+            setState({...state, [anchor]: open});
+        };
 
     return (
-        <Box sx={{flexGrow: 1}}>
+        <Box sx={{flexGrow: 1}} className={styles.header}>
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{mr: 2}}
-                    >
-                        <MenuIcon onClick={toggleDrawer('left', true)}>{'left'}</MenuIcon>
-                        <SwipeableDrawer
-                            anchor={'left'}
-                            open={state['left']}
-                            onClose={toggleDrawer('left', false)}
-                            onOpen={toggleDrawer('left', true)}
+                    {isAuth && <>
+                        <IconButton size="large" edge="start"
+                                    color="inherit" aria-label="menu" sx={{mr: 2}}
                         >
-                            {list('left')}
-                        </SwipeableDrawer>
-                    </IconButton>
-                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                        BLOG
-                    </Typography>
-                    <IconButton onClick={onLogout} color="info" aria-label="logout">
-                        <Logout/>
-                    </IconButton>
+                            <MenuIcon onClick={toggleDrawer('left', true)}>{'left'}</MenuIcon>
+                            <SwipeableDrawer
+                                anchor={'left'}
+                                open={state['left']}
+                                onClose={toggleDrawer('left', false)}
+                                onOpen={toggleDrawer('left', true)}
+                            >
+                                {list('left')}
+                            </SwipeableDrawer>
+                        </IconButton>
+                        <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                            <Link to={'/posts'}>
+                                BLOG
+                            </Link>
+                        </Typography>
+                        <IconButton onClick={onLogout} color="info" aria-label="logout">
+                            <Logout/>
+                        </IconButton>
+                    </>}
                 </Toolbar>
             </AppBar>
         </Box>

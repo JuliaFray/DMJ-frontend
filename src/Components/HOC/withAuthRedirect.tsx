@@ -2,21 +2,24 @@ import React from 'react';
 import {Navigate} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {RootState} from '../../redux/redux-store';
-import {JSX} from 'react/jsx-runtime';
-import IntrinsicAttributes = JSX.IntrinsicAttributes;
 
 type MapStateType = {
     isAuth: boolean
 }
 
+type MapDispatchProps = {}
+
 let mapStateToPropsForRedirect = (state: RootState) => ({
     isAuth: state.auth.isAuth
 });
 
-function withAuthRedirect<T extends IntrinsicAttributes>(Component: React.ComponentType<T>) {
+type HocProps = MapStateType & MapDispatchProps;
+
+function withAuthRedirect<T extends HocProps>(Component: React.ComponentType<T>) {
     const RedirectComponent: React.FC<MapStateType> = (props) => {
+
         let {isAuth, ...restProps} = props;
-        if(!isAuth) {
+        if(!isAuth || !window.localStorage.getItem('token')) {
             return <Navigate to={'/login'}/>
         }
         return <Component {...restProps as T} />
@@ -24,5 +27,6 @@ function withAuthRedirect<T extends IntrinsicAttributes>(Component: React.Compon
 
     return connect<MapStateType, {}, T, RootState>(mapStateToPropsForRedirect)(RedirectComponent);
 }
+
 
 export default withAuthRedirect;
