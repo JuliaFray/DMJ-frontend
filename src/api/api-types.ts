@@ -3,6 +3,7 @@ import {PhotoType, UserType} from '../types/types';
 export enum ResultCodeEnum {
     Success = 0,
     Error = 1,
+    ValidationError = 2,
     CaptchaIsRequired = 10
 }
 

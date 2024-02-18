@@ -105,3 +105,17 @@ export const deletePost = createAsyncThunk<void, { payload: PostType }, { reject
         }
     }
 );
+
+export const getLastTags = createAsyncThunk<string[], {}, { rejectValue: string }>(
+    'posts/tags', async (__, thunkAPI) => {
+        const response = await postAPI.getLastTags();
+        try {
+            if(response.resultCode === ResultCodeEnum.Error) {
+                return thunkAPI.rejectWithValue(response.message);
+            }
+            return response.data;
+        } catch(e) {
+            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+        }
+    }
+);

@@ -11,3 +11,11 @@ export const getPosts = (state: RootState) => {
 export const getPost = (state: RootState) => {
     return state.posts.popularPost
 };
+
+export const getLastFetchedTags = (state: RootState) => {
+    return state.posts.tags
+};
+
+export const getIsFetching = (state: RootState) => {
+    return state.posts.isFetching;
+};

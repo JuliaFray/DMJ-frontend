@@ -12,6 +12,14 @@ export const postAPI = {
             })
     },
 
+    getLastTags() {
+        return instance
+            .get<GenericResponseType<string[]>>(`tags`)
+            .then(response => {
+                return response.data
+            })
+    },
+
     markPostFavorite(postId: string) {
         return instance
             .put<GenericResponseType<void>>(`posts/${postId}/like`)

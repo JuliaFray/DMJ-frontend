@@ -13,6 +13,7 @@ import {AddPost} from './Components/Posts/AddPost/AddPost';
 import {FullPost} from './Components/Posts/FullPost';
 import {useAppDispatch} from './hook/hooks';
 import {checkAuth} from './redux/auth/auth-thunks';
+import {Registration} from './Components/Registration/Registration';
 
 const Profile = loadable(() => import('./Components/Profile/ProfilePage'));
 const PostPage = loadable(() => import('./Components/Posts/PostPage'));
@@ -51,6 +52,7 @@ const Main: React.FC = () => {
                 <Route path='/users' element={<Users/>}/>
 
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/register" element={<Registration/>}/>
 
                 {/*<Route path='/dialogs' element={<SuspendedDialogs/>}/>*/}
                 {/*<Route path='/news' element={<SuspendedNews/>}/>*/}

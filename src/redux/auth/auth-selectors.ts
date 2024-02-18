@@ -11,3 +11,11 @@ export const getIsFetching = (state: RootState) => {
 export const getAuthId = (state: RootState) => {
     return state.auth.id
 };
+
+export const getAuthErrors = (state: RootState) => {
+    return state.auth.errors
+};
+
+export const getGlobalError = (state: RootState) => {
+    return state.auth.globalError
+};

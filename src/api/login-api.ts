@@ -3,6 +3,14 @@ import instance from "./api";
 import {LoginDataType} from '../Components/Login/LoginForm';
 
 export const loginAPI = {
+    register(data: LoginDataType) {
+        return instance
+            .post<LoginResponseType>(`auth/register`, data)
+            .then(response => {
+                return response.data
+            })
+    },
+
     login(data: LoginDataType) {
         return instance
             .post<LoginResponseType>(`auth/login`, data)

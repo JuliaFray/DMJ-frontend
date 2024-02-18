@@ -2,39 +2,39 @@ import React, {useEffect} from 'react';
 import {compose} from 'redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link, NavLink} from 'react-router-dom';
-import {Box, Fab, Grid, styled, Tooltip, Typography, useTheme} from '@mui/material';
+import {Box, Fab, Grid, Tooltip, Typography, useTheme} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 import {DoubleArrow} from '@mui/icons-material';
-import {getIsFetching} from '../../redux/auth/auth-selectors';
-import {getPost, getPosts} from '../../redux/posts/posts-selectors';
-import {getAllPosts, getPopularPost} from '../../redux/posts/posts-thunks';
+import {getIsFetching, getLastFetchedTags, getPost, getPosts} from '../../redux/posts/posts-selectors';
+import {getAllPosts, getLastTags, getPopularPost} from '../../redux/posts/posts-thunks';
 import {PostType} from '../../types/types';
 import {PostCard} from './PostCard/PostCard';
 import {PostSkeleton} from './PostSkeleton';
 import withAuthRedirect from '../HOC/withAuthRedirect';
 import styles from './PostPage.module.scss';
-import Paper from '@mui/material/Paper';
-import {SideBlock} from '../Common/SideBlock/SideBlockComponent';
+import {TagsBlock} from './TagsBlock';
 
 const PostPage: React.FC = React.memo(() => {
 
     const isFetching = useSelector(getIsFetching);
     const posts = useSelector(getPosts);
     const popularPost = useSelector(getPost);
+    const tags = useSelector(getLastFetchedTags);
     const dispatch = useDispatch();
     const theme = useTheme();
 
     useEffect(() => {
         dispatch(getAllPosts({}));
         dispatch(getPopularPost({}));
+        dispatch(getLastTags({}))
     }, [])
 
     let mappedPost = posts.map((el: PostType) =>
         <Grid item xs={6} key={el._id}>
-            <PostCard key={el._id} post={el} avatarAbbr={el.author?.fullName.substring(0, 1).toUpperCase() || 'U'}/>
+            <PostCard key={el._id} post={el} avatarAbbr={el.author?.fullName?.substring(0, 1).toUpperCase() || 'U'}/>
         </Grid>
     );
 
@@ -43,15 +43,6 @@ const PostPage: React.FC = React.memo(() => {
             <PostSkeleton key={index}/>
         </Grid>
     )
-
-
-    const Item = styled(Paper)(({theme: any}) => ({
-        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-        ...theme.typography.body2,
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-    }));
 
     return (
         <Grid container spacing={3} className={styles.posts}>
@@ -77,7 +68,7 @@ const PostPage: React.FC = React.memo(() => {
                                 {popularPost.title}
                             </Typography>
                             <Typography variant="body2">
-                                {popularPost.text.substring(0, 200)}...
+                                {popularPost.text?.substring(0, 200)}...
                             </Typography>
                         </CardContent>
 
@@ -133,7 +124,7 @@ const PostPage: React.FC = React.memo(() => {
             </Grid>
 
             <Grid item xs>
-                <SideBlock title={'Тэги'} children={<Item/>}/>
+                <TagsBlock items={tags} isLoading={isFetching}/>
             </Grid>
 
         </Grid>

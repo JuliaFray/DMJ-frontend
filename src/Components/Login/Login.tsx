@@ -2,11 +2,11 @@ import React from 'react';
 import {LoginDataType} from './LoginForm'
 import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../../redux/auth/auth-thunks'
-import {Navigate} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 import {getIsAuth} from '../../redux/auth/auth-selectors';
 import {Button, Container, Paper, Typography} from '@mui/material';
 import TextField from "@mui/material/TextField";
-import styles from "./Login.module.css";
+import styles from "./Login.module.scss";
 import {useForm} from 'react-hook-form';
 
 export const Login: React.FC = () => {
@@ -54,11 +54,14 @@ export const Login: React.FC = () => {
                         helperText={errors.password?.message}
                         {...register('password', {required: 'Обязательно для заполнения'})}/>
 
+
+
                     <Button type={'submit'} size='large' disabled={!isValid}
                             variant='contained' fullWidth>
                         Войти
                     </Button>
                 </form>
+                <Link className={styles.link} to={'/register'}>Создать аккаунт</Link>
             </Paper>
         </Container>
     )
