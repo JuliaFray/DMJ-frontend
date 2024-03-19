@@ -1,11 +1,11 @@
 import React from 'react';
 import StyleSheet from './SideBar.module.css';
 import FriendItem from './FriendItem/FriendItem'
-import {SimpleNameObjType} from "../../types/types";
+import {SimpleNameObj} from "../../types/types";
 
 type PropsType = {
     data: {
-        sidebar: Array<SimpleNameObjType>
+        sidebar: Array<SimpleNameObj>
     }
 }
 

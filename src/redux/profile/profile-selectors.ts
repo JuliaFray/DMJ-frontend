@@ -5,5 +5,14 @@ export const getProfile = (state: RootState) => {
 };
 
 export const getStatus = (state: RootState) => {
-    return state.profile?.profile?.status
+    return ''
+};
+
+export const getProfileAvatar = (state: RootState) => {
+    return state.profile?.profile?.avatarUrl;
+};
+
+export const getProfileFullName = (state: RootState) => {
+    const profile = state.profile?.profile || '';
+    return profile ? (`${profile.secondName} ${profile.firstName} ${profile.lastName}`) : '';
 };

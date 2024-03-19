@@ -1,9 +1,9 @@
-import {GenericResponseType, LoginResponseType} from "./api-types";
-import instance from "./api";
-import {LoginDataType} from '../Components/Login/LoginForm';
+import {GenericResponseType, LoginResponseType} from './api-types';
+import instance from './api';
+import {ILoginData} from '../types/types';
 
 export const loginAPI = {
-    register(data: LoginDataType) {
+    register(data: ILoginData) {
         return instance
             .post<LoginResponseType>(`auth/register`, data)
             .then(response => {
@@ -11,7 +11,7 @@ export const loginAPI = {
             })
     },
 
-    login(data: LoginDataType) {
+    login(data: ILoginData) {
         return instance
             .post<LoginResponseType>(`auth/login`, data)
             .then(response => {

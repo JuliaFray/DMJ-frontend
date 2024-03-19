@@ -1,9 +1,9 @@
 import React from 'react';
 import StyleSheet from './../Dialogs.module.css';
 import {NavLink} from 'react-router-dom';
-import {SimpleNameObjType} from "../../../types/types";
+import {SimpleNameObj} from "../../../types/types";
 
-const DialogItem: React.FC<SimpleNameObjType> = (props) => {
+const DialogItem: React.FC<SimpleNameObj> = (props) => {
     return (
         <div className={StyleSheet.dialogItem}>
             <div>

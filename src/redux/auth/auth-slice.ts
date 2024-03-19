@@ -50,7 +50,8 @@ const authSlice = createSlice({
             })
             .addCase(checkAuth.fulfilled, (state, action) => {
                 state.isFetching = false;
-                state.isAuth = action.payload;
+                state.isAuth = !!action.payload;
+                state.id = action.payload
             })
             .addCase(checkAuth.rejected, (state) => {
                 state.isFetching = false;

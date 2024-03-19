@@ -9,7 +9,7 @@ export const getPosts = (state: RootState) => {
 };
 
 export const getPost = (state: RootState) => {
-    return state.posts.popularPost
+    return state.posts.post
 };
 
 export const getLastFetchedTags = (state: RootState) => {

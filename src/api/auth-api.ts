@@ -4,7 +4,7 @@ import instance from './api';
 export const authAPI = {
     checkStatus() {
         return instance
-            .get<GenericResponseType<void>>(`auth/status`)
+            .get<GenericResponseType<string>>(`auth/status`)
             .then(response => {
                 return response.data
             })

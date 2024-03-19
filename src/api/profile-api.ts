@@ -1,12 +1,12 @@
 import {GenericResponseType, PhotoResponseType} from "./api-types";
-import {ProfileType} from "../types/types";
+import {IProfile} from "../types/types";
 import instance from "./api";
 import {UploadFile} from 'antd/es/upload/interface';
 
 export const profileAPI = {
     getProfile(userId: string) {
         return instance
-            .get<GenericResponseType<ProfileType>>(`profile/${userId}`)
+            .get<GenericResponseType<IProfile>>(`profile/${userId}`)
             .then(response => {
                 return response.data
             })
@@ -30,7 +30,7 @@ export const profileAPI = {
             })
     },
 
-    saveProfile(profile: ProfileType) {
+    saveProfile(profile: IProfile) {
         return instance
             .put<GenericResponseType<void>>(`profile`, profile)
             .then(response => {

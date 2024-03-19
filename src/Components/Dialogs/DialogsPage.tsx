@@ -6,7 +6,7 @@ import SendMsg, {FormDataType} from './SendMsg/SendMsg';
 import {useDispatch, useSelector} from 'react-redux';
 import {getDialogs, getMessages} from '../../redux/dialog/dialogs-selectors';
 import {actions} from '../../redux/dialog/dialog-reducer';
-import {MessageType, SimpleNameObjType} from '../../types/types';
+import {IMessage, SimpleNameObj} from '../../types/types';
 
 
 const DialogsPage: React.FC = () => {
@@ -20,8 +20,8 @@ const DialogsPage: React.FC = () => {
         dispatch(actions.sendMsg(values.message))
     };
 
-    let dialogsElements = dialogs.map((el: SimpleNameObjType) => <DialogItem id={el.id} name={el.name} key={el.id}/>);
-    let messagesElements = messages.map((el: MessageType) => <MessageItem id={el.id} message={el.message} key={el.id}/>);
+    let dialogsElements = dialogs.map((el: SimpleNameObj) => <DialogItem id={el.id} name={el.name} key={el.id}/>);
+    let messagesElements = messages.map((el: IMessage) => <MessageItem id={el.id} message={el.message} key={el.id}/>);
 
     return (
         <>

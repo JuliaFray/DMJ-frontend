@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import Paginator from '../Paginator/Paginator';
 import User from './User';
 import StyleSheet from './Users.module.css';
-import {FilterType, UserType} from "../../types/types";
+import {IFilter, IUser} from "../../types/types";
 import SearchForm from './Search/Search';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -77,11 +77,11 @@ const UsersPage: React.FC = React.memo(() => {
         requestUsers(pageSize, pageNumber, filter);
     };
 
-    const requestUsers = (pageSize: number, pageNumber: number, filter: FilterType) => {
+    const requestUsers = (pageSize: number, pageNumber: number, filter: IFilter) => {
         dispatch(getAllUsers({pageSize, currentPage: pageNumber, filter}))
     };
 
-    const onFilterChanged = (filter: FilterType) => {
+    const onFilterChanged = (filter: IFilter) => {
         dispatch(getAllUsers({pageSize, currentPage: 1, filter}))
     };
 
@@ -107,11 +107,11 @@ const UsersPage: React.FC = React.memo(() => {
             </div>
             <div className={StyleSheet.cards}>
                 {
-                    users && users.map((u: UserType) => <User user={u}
-                                                     key={u._id}
-                                                     followingInProgress={followingInProgress}
-                                                     unfollow={unfollow}
-                                                     follow={follow}/>)
+                    users && users.map((u: IUser) => <User user={u}
+                                                           key={u._id}
+                                                           followingInProgress={followingInProgress}
+                                                           unfollow={unfollow}
+                                                           follow={follow}/>)
                 }
             </div>
             <Paginator currentPage={currentPage} onPageChanged={onPageChanged}

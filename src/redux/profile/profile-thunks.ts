@@ -1,9 +1,9 @@
 import {profileAPI} from '../../api/profile-api';
 import {ResultCodeEnum} from '../../api/api-types';
-import {ProfileType} from '../../types/types';
+import {IProfile} from '../../types/types';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
-export const getUserProfile = createAsyncThunk<ProfileType, { userId: string }, { rejectValue: string }>(
+export const getUserProfile = createAsyncThunk<IProfile, { userId: string }, { rejectValue: string }>(
     'profile', async (data, thunkAPI) => {
         const response = await profileAPI.getProfile(data.userId);
         if(response.resultCode === ResultCodeEnum.Error) {
@@ -13,15 +13,15 @@ export const getUserProfile = createAsyncThunk<ProfileType, { userId: string }, 
     }
 );
 
-export const updateUserStatus = createAsyncThunk<void, { status: string }, { rejectValue: string }>(
-    'profile/status', async (data, thunkAPI) => {
-        const response = await profileAPI.updateStatus(data.status);
-        if(response.resultCode === ResultCodeEnum.Error) {
-            return thunkAPI.rejectWithValue(response.message)
-        }
-        return response.data;
-    }
-);
+// export const updateUserStatus = createAsyncThunk<void, { status: string }, { rejectValue: string }>(
+//     'profile/status', async (data, thunkAPI) => {
+//         const response = await profileAPI.updateStatus(data.status);
+//         if(response.resultCode === ResultCodeEnum.Error) {
+//             return thunkAPI.rejectWithValue(response.message)
+//         }
+//         return response.data;
+//     }
+// );
 
 // export const saveProfilePhoto = (photos: UploadFile): ThunkType => async (dispatch) => {
 //     let response = await profileAPI.savePhoto(photos);
@@ -30,7 +30,7 @@ export const updateUserStatus = createAsyncThunk<void, { status: string }, { rej
 //     }
 // };
 //
-export const saveUserProfile = createAsyncThunk<void, { profile: ProfileType }, { rejectValue: string }>(
+export const saveUserProfile = createAsyncThunk<void, { profile: IProfile }, { rejectValue: string }>(
     'profile/save', async (data, thunkAPI) => {
         const response = await profileAPI.saveProfile(data.profile);
 

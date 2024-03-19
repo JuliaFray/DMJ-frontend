@@ -1,8 +1,8 @@
 import React from 'react';
 import StyleSheet from './../Dialogs.module.css';
-import {MessageType} from "../../../types/types";
+import {IMessage} from "../../../types/types";
 
-const MessageItem: React.FC<MessageType> = (props) => {
+const MessageItem: React.FC<IMessage> = (props) => {
     return (
         <div className={StyleSheet.messageItem}>
             {props.message}

@@ -1,28 +1,33 @@
 import React, {useState} from 'react';
 import Preloader from './../../Common/Preloader/Preloader';
-import userPhoto from './../../../assets/avatar.jpg';
-import ProfileDataForm from './ProfileDataForm';
-import {ContactsType, ProfileType} from '../../../types/types';
-import {Button, Col, Descriptions, Image, Row} from 'antd';
-import './../../../styles/css/antd.css';
-import {UploadChangeParam} from 'antd/es/upload';
+import {IContact, IProfile} from '../../../types/types';
 import {UploadFile} from 'antd/es/upload/interface';
+import {NO_AVATAR} from '../../../Utils/DictConstants';
+import {Box, Container, Divider, Tab, Tabs, Typography} from '@mui/material';
+import styles from '../ProfileInfo/ProfileInfo.module.scss';
+import {BASE_URL} from '../../../api/api';
+import Avatar from '@mui/material/Avatar';
 
 type PropsType = {
-    profile: ProfileType | null,
+    profile: IProfile | null,
     isOwner: boolean,
-    saveProfile: (profile: ProfileType) => void,
+    saveProfile: (profile: IProfile) => void,
     savePhoto: (file: UploadFile) => void,
-    updateUserStatus: (text: string) => void
 }
 
-const ProfileInfo: React.FC<PropsType> = ({profile, updateUserStatus, isOwner, savePhoto, saveProfile}) => {
+const ProfileInfo: React.FC<PropsType> = ({profile, isOwner, savePhoto, saveProfile}) => {
     let [editMode, setEditMode] = useState(false);
+
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
 
     if(!profile) {
         return <Preloader/>
     }
-    const onSubmit = (formData: ProfileType) => {
+    const onSubmit = (formData: IProfile) => {
         saveProfile(formData);
         setEditMode(false);
     };
@@ -33,32 +38,73 @@ const ProfileInfo: React.FC<PropsType> = ({profile, updateUserStatus, isOwner, s
     //     }
     // };
 
-    return (
-        <Row>
-            <Col span={8}>
-                <Row>
-                    <Image width={200} style={{borderRadius: '50%'}} src={profile.photos?.large != null ? profile.photos.large : userPhoto}/>
-                </Row>
-                <Row>
-                    {/*{isOwner && <Upload onChange={mainPhotoSelect}><Button type={'primary'} icon={<UploadOutlined/>}>Click to Upload</Button></Upload>}*/}
-                </Row>
-            </Col>
-            <Col span={16}>
-                {editMode
-                    ? <ProfileDataForm initialValues={profile} onSubmit={onSubmit} profile={profile}/>
-                    : <ProfileData profile={profile}
-                                   isOwner={isOwner}
-                                   goToEditMode={() => {
-                                       setEditMode(true)
-                                   }}/>}
 
-            </Col>
-        </Row>
+    const avatarSrc = !!profile.avatarUrl ? profile.avatarUrl.includes('http')
+        ? profile.avatarUrl : `${BASE_URL}${profile.avatarUrl}` : NO_AVATAR;
+
+
+    interface TabPanelProps {
+        children?: React.ReactNode;
+        index: number;
+        value: number;
+    }
+
+    function TabPanel(props: TabPanelProps) {
+        const {children, value, index, ...other} = props;
+
+        return (
+            <div
+                role="tabpanel"
+                hidden={value !== index}
+                id={`vertical-tabpanel-${index}`}
+                aria-labelledby={`vertical-tab-${index}`}
+                {...other}
+            >
+                {value === index && (
+                    <Box sx={{p: 3}}>
+                        <Typography>{children}</Typography>
+                    </Box>
+                )}
+            </div>
+        );
+    }
+
+    return (<>
+            <Container className={styles.mainBlock}>
+                <Avatar className={styles.avatar} src={avatarSrc}
+                        alt={!!profile.avatarUrl ? 'Uploaded' : ''}/>
+            </Container>
+
+            <Divider/>
+
+            <Container maxWidth="sm">
+                <Tabs value={value} onChange={handleChange} centered>
+                    <Tab label="О себе"/>
+                    <Tab label="Избранные посты"/>
+                    <Tab label="Третья вкладка"/>
+                </Tabs>
+
+                <TabPanel value={value} index={0}>
+                    <ProfileData profile={profile}
+                                 isOwner={isOwner}
+                                 goToEditMode={() => {
+                                     setEditMode(true)
+                                 }}/>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    Item Two
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                    Item Three
+                </TabPanel>
+            </Container>
+        </>
+
     )
 };
 
 type ProfileDataPropsType = {
-    profile: ProfileType,
+    profile: IProfile,
     isOwner: boolean,
     goToEditMode: () => void
 }
@@ -66,24 +112,22 @@ type ProfileDataPropsType = {
 const ProfileData: React.FC<ProfileDataPropsType> = (props) => {
     return (
         <div>
-            <Descriptions title={props.profile.fullName}>
-                <Descriptions.Item label="Ищу работу">{props?.profile?.lookingForAJob ? 'да' : 'нет'}</Descriptions.Item>
-                <Descriptions.Item label="Мои навыки">{props?.profile?.lookingForAJobDescription}</Descriptions.Item>
-                <Descriptions.Item label="Обо мне">
-                    {props?.profile?.aboutMe}
-                </Descriptions.Item>
-            </Descriptions>
+            <div>
+                {`${props.profile.firstName} ${props.profile.secondName} ${props.profile.lastName}`}
+            </div>
 
-            <Descriptions title="Контакты">
+            <div>
+                Контакты
                 {props?.profile?.contacts && Object.keys(props?.profile?.contacts).map(key => {
-                    return <Descriptions.Item key={key} label={key} span={2}>{props?.profile?.contacts[key as keyof ContactsType]}
-                    </Descriptions.Item>
-                })}
-            </Descriptions>
+                    return <div key={key}>{props?.profile?.contacts[key as keyof IContact]}
 
-            {props.isOwner && <div>
-                <Button type="primary" onClick={props.goToEditMode}>Редактировать</Button>
-            </div>}
+                        {key}</div>
+                })}
+            </div>
+
+            {/*{props.isOwner && <div>*/}
+            {/*    <Button type="primary" onClick={props.goToEditMode}>Редактировать</Button>*/}
+            {/*</div>}*/}
         </div>
     )
 };

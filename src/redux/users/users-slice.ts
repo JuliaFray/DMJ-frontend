@@ -1,16 +1,16 @@
-import {FilterType, UserType} from '../../types/types';
+import {IFilter, IUser} from '../../types/types';
 import {createSlice} from '@reduxjs/toolkit';
 import {getAllUsers} from './users-thunks';
 
 export type InitialStateType = {
-    users: Array<UserType>,
+    users: Array<IUser>,
     pageSize: number,
     totalUsersCount: number,
     currentPage: number,
     isFetching: boolean,
     followingInProgress: Array<string>,
     userId: number | null,
-    filter: FilterType
+    filter: IFilter
 }
 
 let initialState: InitialStateType = {

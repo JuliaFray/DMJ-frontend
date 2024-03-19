@@ -1,12 +1,11 @@
 import {GenericResponseType} from "./api-types";
-import {PostEditType, PostType} from "../types/types";
+import {IComment, IPost, IPostEdit} from "../types/types";
 import instance from "./api";
-import {markPostFavorite} from '../redux/posts/posts-thunks';
 
 export const postAPI = {
     getAll() {
         return instance
-            .get<GenericResponseType<PostType[]>>(`posts`)
+            .get<GenericResponseType<IPost[]>>(`posts`)
             .then(response => {
                 return response.data
             })
@@ -30,7 +29,7 @@ export const postAPI = {
 
     getPopular() {
         return instance
-            .get<GenericResponseType<PostType>>(`posts/popular`)
+            .get<GenericResponseType<IPost>>(`posts/popular`)
             .then(response => {
                 return response.data
             })
@@ -38,21 +37,21 @@ export const postAPI = {
 
     getOne(postId: string) {
         return instance
-            .get<GenericResponseType<PostType>>(`posts/${postId}`)
+            .get<GenericResponseType<IPost>>(`posts/${postId}`)
             .then(response => {
                 return response.data
             })
     },
 
-    createPost(post: PostEditType) {
+    createPost(post: IPostEdit) {
         return instance
-            .post<GenericResponseType<PostType>>(`posts`, post)
+            .post<GenericResponseType<IPost>>(`posts`, post)
             .then(response => {
                 return response.data
             })
     },
 
-    updatePost(post: PostEditType, id: string) {
+    updatePost(post: IPostEdit, id: string) {
         return instance
             .put<GenericResponseType<void>>(`posts/${id}`, {...post})
             .then(response => {
@@ -66,5 +65,13 @@ export const postAPI = {
             .then(response => {
                 return response.data
             });
-    }
+    },
+
+    createPostComment(comment: IComment, postId: string) {
+        return instance
+            .post<GenericResponseType<IPost>>(`posts/${postId}/comment`, comment)
+            .then(response => {
+                return response.data
+            })
+    },
 };

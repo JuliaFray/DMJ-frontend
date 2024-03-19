@@ -8,20 +8,28 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import Skeleton from "@mui/material/Skeleton";
+import {IComment} from '../../../types/types';
+import {NO_AVATAR} from '../../../Utils/DictConstants';
 
-// @ts-ignore
-export const CommentsBlock = ({items, children, isLoading = true}) => {
+export type IComments = {
+    items: IComment[],
+    children: any,
+    isLoading: boolean
+}
+
+export const CommentsBlock: React.FC<IComments> = ({items, children, isLoading = true}) => {
+
     return (
         <SideBlock title="Комментарии">
             <List>
-                {(isLoading ? [...Array(5)] : items).map((obj: any, i: number) => (
+                {(isLoading ? [...Array(5)] : items)?.map((obj: any, i: number) => (
                     <React.Fragment key={i}>
                         <ListItem alignItems="flex-start">
                             <ListItemAvatar>
                                 {isLoading ? (
                                     <Skeleton variant="circular" width={40} height={40}/>
                                 ) : (
-                                    <Avatar alt={obj.user.fullName} src={obj.user.avatarUrl}/>
+                                    <Avatar alt={obj.author.firstName || NO_AVATAR} src={obj.author.avatarUrl}/>
                                 )}
                             </ListItemAvatar>
                             {isLoading ? (
@@ -31,7 +39,7 @@ export const CommentsBlock = ({items, children, isLoading = true}) => {
                                 </div>
                             ) : (
                                 <ListItemText
-                                    primary={obj.user.fullName}
+                                    primary={obj.author.firstName}
                                     secondary={obj.text}
                                 />
                             )}

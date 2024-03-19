@@ -1,6 +1,6 @@
 import loadable from '@loadable/component';
 import React from 'react';
-import {HashRouter, Route, Routes} from 'react-router-dom';
+import {HashRouter, Route, Routes, useLocation} from 'react-router-dom';
 import './styles/css/antd.css';
 import {Login} from './Components/Login/Login';
 import store from './redux/redux-store';
@@ -10,13 +10,13 @@ import {ThemeProvider} from '@mui/material/styles';
 import {theme} from './styles/theme';
 import {Container} from '@mui/material';
 import {AddPost} from './Components/Posts/AddPost/AddPost';
-import {FullPost} from './Components/Posts/FullPost';
 import {useAppDispatch} from './hook/hooks';
 import {checkAuth} from './redux/auth/auth-thunks';
 import {Registration} from './Components/Registration/Registration';
 
 const Profile = loadable(() => import('./Components/Profile/ProfilePage'));
-const PostPage = loadable(() => import('./Components/Posts/PostPage'));
+const PostsPage = loadable(() => import('./Components/Posts/PostPage'));
+const FullPostPage = loadable(() => import('./Components/Posts/FullPost'));
 const Users = loadable(() => import('./Components/Users/UsersPage'));
 
 
@@ -38,13 +38,15 @@ const Main: React.FC = () => {
         dispatch(checkAuth({}));
     }
 
+    const location = useLocation()
+
     return <>
         <HeaderComponent/>
-        <Container fixed style={{height: "93vh", marginTop: 20}}>
-            <Routes>
-                <Route path='/' element={<PostPage/>}/>
-                <Route path='/posts' element={<PostPage/>}/>
-                <Route path='/posts/:id' element={<FullPost/>}/>
+        <Container fixed style={{height: "93vh", marginTop: 20}} maxWidth={'xl'}>
+            <Routes location={location}>
+                <Route path='/' element={<PostsPage/>}/>
+                <Route path='/posts' element={<PostsPage/>}/>
+                <Route path='/posts/:id' element={<FullPostPage/>}/>
                 <Route path='/posts/:id/edit' element={<AddPost/>}/>
                 <Route path='/add-post' element={<AddPost/>}/>
 

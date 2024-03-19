@@ -10,12 +10,13 @@ import IconButton from '@mui/material/IconButton';
 import {DoubleArrow} from '@mui/icons-material';
 import {getIsFetching, getLastFetchedTags, getPost, getPosts} from '../../redux/posts/posts-selectors';
 import {getAllPosts, getLastTags, getPopularPost} from '../../redux/posts/posts-thunks';
-import {PostType} from '../../types/types';
+import {IPost} from '../../types/types';
 import {PostCard} from './PostCard/PostCard';
 import {PostSkeleton} from './PostSkeleton';
 import withAuthRedirect from '../HOC/withAuthRedirect';
 import styles from './PostPage.module.scss';
 import {TagsBlock} from './TagsBlock';
+import {BASE_URL} from '../../api/api';
 
 const PostPage: React.FC = React.memo(() => {
 
@@ -32,9 +33,9 @@ const PostPage: React.FC = React.memo(() => {
         dispatch(getLastTags({}))
     }, [])
 
-    let mappedPost = posts.map((el: PostType) =>
-        <Grid item xs={6} key={el._id}>
-            <PostCard key={el._id} post={el} avatarAbbr={el.author?.fullName?.substring(0, 1).toUpperCase() || 'U'}/>
+    let mappedPost = posts.map((el: IPost) =>
+        <Grid item md={6} key={el._id}>
+            <PostCard key={el._id} post={el} avatarAbbr={el.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}/>
         </Grid>
     );
 
@@ -46,12 +47,12 @@ const PostPage: React.FC = React.memo(() => {
 
     return (
         <Grid container spacing={3} className={styles.posts}>
-            <Grid item xs></Grid>
+            <Grid item md={1}></Grid>
 
-            <Grid item xs={6}>
+            <Grid item md={8}>
                 {popularPost && <Card
                     sx={{
-                        height: 250,
+                        height: 300,
                         mx: 'auto',
                         margin: 0,
                         position: 'relative',
@@ -62,13 +63,13 @@ const PostPage: React.FC = React.memo(() => {
                         display: 'flex'
                     }}
                 >
-                    <Box sx={{display: 'flex', flexDirection: 'column', width: 400}}>
+                    <Box sx={{display: 'flex', flexDirection: 'column', width: 750}}>
                         <CardContent sx={{flex: '1 0 auto'}}>
-                            <Typography variant="h3" component="div">
+                            <Typography variant="h4" component="div">
                                 {popularPost.title}
                             </Typography>
                             <Typography variant="body2">
-                                {popularPost.text?.substring(0, 200)}...
+                                {popularPost.text?.substring(0, 100)}...
                             </Typography>
                         </CardContent>
 
@@ -88,10 +89,17 @@ const PostPage: React.FC = React.memo(() => {
                                 }
                             }}
                         >
-                            <img style={{width: '100%', height: 300}}
-                                 src={popularPost.imageUrl}
-                                 alt='Uploaded'
-                            />
+                            {popularPost.imageUrl &&
+                                <img style={{
+                                    width: '100%',
+                                    height: 300,
+                                    backgroundPosition: 'center',
+                                    backgroundRepeat: 'no-repeat',
+                                    backgroundSize: 'cover'
+                                }}
+                                     src={popularPost.imageUrl.includes('http')
+                                         ? popularPost.imageUrl : `${BASE_URL}${popularPost.imageUrl}`} alt="Uploaded"
+                                />}
                         </Box>
 
                     </Box>
@@ -123,7 +131,7 @@ const PostPage: React.FC = React.memo(() => {
                 </Grid>
             </Grid>
 
-            <Grid item xs>
+            <Grid item md={3}>
                 <TagsBlock items={tags} isLoading={isFetching}/>
             </Grid>
 

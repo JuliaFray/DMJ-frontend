@@ -1,12 +1,12 @@
-import {PostType} from '../../types/types';
+import {IPost} from '../../types/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {createPost, deletePost, editPost, getAllPosts, getLastTags, getOnePost, getPopularPost, markPostFavorite} from './posts-thunks';
+import {createPost, createPostComment, deletePost, editPost, getAllPosts, getLastTags, getOnePost, getPopularPost, markPostFavorite} from './posts-thunks';
 
 type InitialStateType = {
-    posts: PostType[],
+    posts: IPost[],
     newPostId: string,
     isFetching: boolean,
-    popularPost: PostType | null,
+    post: IPost | null,
     tags: string[]
 }
 
@@ -14,7 +14,7 @@ const initialState: InitialStateType = {
     posts: [],
     newPostId: '',
     isFetching: false,
-    popularPost: null,
+    post: null,
     tags: []
 };
 
@@ -35,7 +35,7 @@ const postsSlice = createSlice({
                 state.isFetching = true;
                 state.posts = [];
             })
-            .addCase(getAllPosts.fulfilled, (state, action: PayloadAction<PostType[]>) => {
+            .addCase(getAllPosts.fulfilled, (state, action: PayloadAction<IPost[]>) => {
                 state.isFetching = false;
                 state.posts = action.payload;
             })
@@ -62,11 +62,11 @@ const postsSlice = createSlice({
             })
             .addCase(getPopularPost.fulfilled, (state, action) => {
                 state.isFetching = false;
-                state.popularPost = action.payload;
+                state.post = action.payload;
             })
             .addCase(getPopularPost.rejected, (state) => {
                 state.isFetching = false;
-                state.popularPost = null;
+                state.post = null;
             })
             //=====getOnePost=====//
             .addCase(getOnePost.pending, (state) => {
@@ -74,9 +74,11 @@ const postsSlice = createSlice({
             })
             .addCase(getOnePost.fulfilled, (state, action) => {
                 state.isFetching = false;
+                state.post = action.payload;
             })
             .addCase(getOnePost.rejected, (state) => {
                 state.isFetching = false;
+                state.post = null;
             })
             //=====editPost=====//
             .addCase(editPost.pending, (state) => {
@@ -108,6 +110,16 @@ const postsSlice = createSlice({
                 state.posts = state.posts.filter(p => p._id !== action.meta.arg.payload._id)
             })
             .addCase(deletePost.rejected, (state) => {
+                state.isFetching = false;
+            })
+            //=====createPostComment=====//
+            .addCase(createPostComment.pending, (state) => {
+                state.isFetching = true;
+            })
+            .addCase(createPostComment.fulfilled, (state) => {
+                state.isFetching = false;
+            })
+            .addCase(createPostComment.rejected, (state) => {
                 state.isFetching = false;
             })
     }

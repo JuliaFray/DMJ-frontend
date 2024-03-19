@@ -12,12 +12,13 @@ import {PostSkeleton} from '../PostSkeleton';
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
-import {PostType} from '../../../types/types';
+import {IPost} from '../../../types/types';
 import {deletePost} from '../../../redux/posts/posts-thunks';
 import ReactMarkdown from 'react-markdown';
+import {BASE_URL} from '../../../api/api';
 
 export type PostPropsType = {
-    post: PostType,
+    post: IPost,
     isFullPost: boolean,
     isLoading: boolean,
     isEditable: boolean
@@ -53,14 +54,13 @@ export const Post: React.FC<PostPropsType> = ({
                 </div>
             )}
             {!!post.imageUrl && (
-                <img
+                <img src={post.imageUrl.includes('http')
+                    ? post.imageUrl : `${BASE_URL}${post.imageUrl}`} alt="Uploaded"
                     className={clsx(styles.image, {[styles.imageFull]: isFullPost})}
-                    src={post.imageUrl}
-                    alt={post.title}
                 />
             )}
             <div className={styles.wrapper}>
-                <UserInfo avatarUrl={''} fullName={post.author?.fullName} additionalText={'post.createdAt'}/>
+                <UserInfo avatarUrl={''} fullName={post.author?.firstName} additionalText={post.createdAt}/>
                 <div className={styles.indention}>
                     <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
                         {isFullPost ? post.title : <Link to={`/posts/${post._id}`}>{post.title}</Link>}
@@ -73,7 +73,7 @@ export const Post: React.FC<PostPropsType> = ({
                         ))}
                     </ul>
                     <ReactMarkdown children={post.text}/>
-                    {/*{children && <div className={styles.content}>{children}</div>}*/}
+
                     <ul className={styles.postDetails}>
                         <li>
                             <EyeIcon/>
@@ -81,7 +81,7 @@ export const Post: React.FC<PostPropsType> = ({
                         </li>
                         <li>
                             <CommentIcon/>
-                            {/*<span>{commentsCount}</span>*/}
+                            <span>{post.comments?.length}</span>
                         </li>
                     </ul>
                 </div>

@@ -1,4 +1,4 @@
-import {PhotoType, UserType} from '../types/types';
+import {IPhoto, IUser} from '../types/types';
 
 export enum ResultCodeEnum {
     Success = 0,
@@ -15,7 +15,7 @@ export type GenericResponseType<D = {}> = {
 
 export type LoginResponseType = {
     token: string,
-    data: UserType,
+    data: IUser,
     message: string,
     resultCode: ResultCodeEnum,
 }
@@ -25,11 +25,11 @@ export type CaptchaResponseType = {
 }
 
 export type PhotoResponseType = {
-    photos: PhotoType
+    photos: IPhoto
 }
 
 export type UsersResponseType = {
-    data: UserType[],
+    data: IUser[],
     totalCount: number,
     resultCode: ResultCodeEnum,
 }

@@ -1,11 +1,11 @@
-import {FilterType} from '../../types/types';
+import {IFilter} from '../../types/types';
 import {usersAPI} from '../../api/users-api';
 import {GenericResponseType, ResultCodeEnum, UsersResponseType} from '../../api/api-types';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
 const ERROR = 'error'
 
-export const getAllUsers = createAsyncThunk<UsersResponseType, { pageSize: number, currentPage: number, filter: FilterType }>(
+export const getAllUsers = createAsyncThunk<UsersResponseType, { pageSize: number, currentPage: number, filter: IFilter }>(
     'users', async (data, thunkAPI) => {
         const response = await usersAPI.getUsers(data.pageSize, data.currentPage, data.filter);
         if(response.resultCode === ResultCodeEnum.Error) {

@@ -1,10 +1,10 @@
-import {MessageType, SimpleNameObjType} from '../../types/types';
+import {IMessage, SimpleNameObj} from '../../types/types';
 import {Dispatch} from 'redux';
 import {GenericThunkType, InferActionType} from '../redux-store';
 
 type InitialStateType = {
-    messages: Array<MessageType>,
-    dialogs: Array<SimpleNameObjType>
+    messages: Array<IMessage>,
+    dialogs: Array<SimpleNameObj>
 };
 type ActionsType = InferActionType<typeof actions>;
 type DispatchType = Dispatch<ActionsType>;
@@ -31,7 +31,7 @@ const dialogReducer = (state = initialState, action: ActionsType): InitialStateT
 
     switch(action.type) {
         case 'SN/DIALOG/SEND_MSG':
-            let newMsg: MessageType = {
+            let newMsg: IMessage = {
                 id: state.messages.length + 1,
                 message: action.newMsgText
             };

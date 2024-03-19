@@ -1,13 +1,13 @@
 import {ErrorMessage, Field, Form, Formik} from 'formik';
 import React from 'react';
-import {FilterType} from '../../../types/types';
+import {IFilter} from '../../../types/types';
 import s from './Search.module.css';
 import {useSelector} from 'react-redux';
 import {getUsersFilter} from '../../../redux/users/users-selectors';
 import {Button, Input, Select,} from 'antd';
 
 type PropsType = {
-    onSubmit: (values: FilterType) => void,
+    onSubmit: (values: IFilter) => void,
     isFetching: boolean
 }
 
@@ -29,7 +29,7 @@ const SearchForm: React.FC<PropsType> = React.memo((props) => {
     const filter = useSelector(getUsersFilter);
 
     const searchFormSubmit = (values: FormType, {setSubmitting}: { setSubmitting: (isSubmitting: boolean) => void }) => {
-        const convertedValues: FilterType = {
+        const convertedValues: IFilter = {
             term: values.term,
             friend: values.friend === 'null'
                 ? null

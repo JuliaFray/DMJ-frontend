@@ -1,17 +1,17 @@
 import React from 'react';
 import {InjectedFormProps, reduxForm} from 'redux-form';
 import {createField, GenericFormDataKeys, Input, TextArea} from '../../Common/FormsControls/FormsControls';
-import s from './ProfileInfo.module.css';
-import {ProfileType} from '../../../types/types';
+import s from './ProfileInfo.module.scss';
+import {IProfile} from '../../../types/types';
 import {requiredField} from '../../../Utils/Validators/validator';
 
 type PropsType = {
-    profile: ProfileType
+    profile: IProfile
 }
 
-type FormDataKeys = GenericFormDataKeys<ProfileType>;
+type FormDataKeys = GenericFormDataKeys<IProfile>;
 
-const ProfileDataForm: React.FC<InjectedFormProps<ProfileType, PropsType> & PropsType> = ({profile, error, handleSubmit}) => {
+const ProfileDataForm: React.FC<InjectedFormProps<IProfile, PropsType> & PropsType> = ({profile, error, handleSubmit}) => {
 
     return (
         <form onSubmit={handleSubmit}>
@@ -37,4 +37,4 @@ const ProfileDataForm: React.FC<InjectedFormProps<ProfileType, PropsType> & Prop
     )
 };
 
-export default reduxForm<ProfileType, PropsType>({form: 'profile-edit'})(ProfileDataForm);
+export default reduxForm<IProfile, PropsType>({form: 'profile-edit'})(ProfileDataForm);

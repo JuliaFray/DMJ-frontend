@@ -10,7 +10,7 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {useAppDispatch} from "../../../hook/hooks";
 import {createPost, editPost, getOnePost} from "../../../redux/posts/posts-thunks";
-import {BASE_URL} from "../../../api/api";
+import instance, {BASE_URL} from "../../../api/api";
 
 export const AddPost = () => {
 
@@ -47,8 +47,8 @@ export const AddPost = () => {
         try {
             const formData = new FormData();
             formData.append('image', event.target.files[0]);
-            // const {data} = await axios.post('/upload', formData);
-            // setImageUrl(data.url);
+            const {data} = await instance.post(`/upload`, formData);
+            setImageUrl(data.url);
         } catch (err) {
             console.warn(err);
             alert('Ошибка при загрузке файла');

@@ -2,11 +2,11 @@ import React, {ChangeEvent} from 'react';
 import StyleSheet from './Description.module.css';
 import Preloader from '../../Common/Preloader/Preloader';
 import ProfileStatusWithHooks from '../ProfileInfo/ProfileStatusWithHooks';
-import {ProfileType} from '../../../types/types';
-import instance from '../../../api/api';
+import {IProfile} from '../../../types/types';
+import {NO_AVATAR} from '../../../Utils/DictConstants';
 
 type PropsType = {
-    profile: ProfileType | null,
+    profile: IProfile | null,
     isOwner: boolean,
     status: string,
 
@@ -36,13 +36,13 @@ const Avatar: React.FC<PropsType> = (props) => {
     return (
         <div className={StyleSheet.avatar}>
             <div className={StyleSheet.avatarImg}>
-                <img alt='icon' src={props.profile.photos?.large || 'https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png'}/>
+                <img alt='icon' src={props.profile.avatarUrl || NO_AVATAR}/>
 
                 <div>
                     {props.isOwner && <div>
-						<input type={'file'} className={StyleSheet.btn} onChange={onMainPhotoSelected} name={'file'} id={'file'}/>
-						<label form='file'>Choose a file</label>
-					</div>}
+                        <input type={'file'} className={StyleSheet.btn} onChange={onMainPhotoSelected} name={'file'} id={'file'}/>
+                        <label form='file'>Choose a file</label>
+                    </div>}
                 </div>
 
             </div>
@@ -51,7 +51,7 @@ const Avatar: React.FC<PropsType> = (props) => {
             <div className={StyleSheet.description}>
                 <div className={StyleSheet.item}>
                     <div className={StyleSheet.name}>Name:</div>
-                    <div className={StyleSheet.key}>{props.profile.fullName}</div>
+                    <div className={StyleSheet.key}>{props.profile.firstName}</div>
                 </div>
 
                 <div className={StyleSheet.item}>
@@ -70,10 +70,10 @@ const Avatar: React.FC<PropsType> = (props) => {
 
                 </div>
 
-                <div className={StyleSheet.item}>
-                    <div className={StyleSheet.name}>LookingForAJob:</div>
-                    <div className={StyleSheet.key}>{props.profile.lookingForAJobDescription}</div>
-                </div>
+                {/*<div className={StyleSheet.item}>*/}
+                {/*    <div className={StyleSheet.name}>LookingForAJob:</div>*/}
+                {/*    <div className={StyleSheet.key}>{props.profile.lookingForAJobDescription}</div>*/}
+                {/*</div>*/}
             </div>
         </div>
     )

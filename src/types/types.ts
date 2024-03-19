@@ -1,16 +1,25 @@
-export type PostType = {
+export type ILoginData = {
+    email: string,
+    password: string,
+    rememberMe?: boolean,
+    captcha?: string | null
+}
+
+export type IPost = {
     _id: string,
     title: string,
     text: string,
     tags: string[],
     imageUrl: string,
-    author: UserType
+    author: IUser
     viewsCount: number,
     likes: number,
     dateStr: string,
+    createdAt: Date,
+    comments: IComment[]
 }
 
-export type PostEditType = {
+export type IPostEdit = {
     _id?: string,
     title: string,
     text: string,
@@ -18,52 +27,54 @@ export type PostEditType = {
     tags: string
 }
 
-export type ContactsType = {
+export type IContact = {
     github: string,
-    vk: string,
-    facebook: string,
-    Instagram: string,
-    twitter: string,
     website: string,
-    youtube: string,
-    mainLink: string
+    phone: string
 }
 
-export type PhotoType = {
+export type IPhoto = {
     small: string,
     large: string
 }
 
-export type ProfileType = {
-    userId: number,
-    lookingForAJob: boolean,
-    lookingForAJobDescription: string,
-    fullName: string,
-    contacts: ContactsType,
-    photos: PhotoType,
-    aboutMe?: string,
-    status: string
+export type IComment = {
+    text: string,
+    author?: {
+        firstName: string,
+        secondName: string,
+        lastName?: string,
+    } | null
 }
 
-export type UserType = {
+export type IProfile = {
+    userId: string,
+    firstName: string,
+    secondName: string,
+    lastName?: string,
+    contacts: IContact,
+    avatarUrl: string
+}
+
+export type IUser = {
     _id: string,
-    fullName: string,
-    photos: PhotoType,
-    status: string,
-    followed: boolean
+    firstName: string,
+    secondName: string,
+    lastName?: string,
+    avatarUrl: string
 }
 
-export type SimpleNameObjType = {
+export type SimpleNameObj = {
     id: number,
     name: string
 }
 
-export type MessageType = {
+export type IMessage = {
     id: number,
     message: string
 }
 
-export type FilterType = {
+export type IFilter = {
     term: string,
     friend: boolean | null
 }
