@@ -39,7 +39,7 @@ export const CommentsBlock: React.FC<IComments> = ({items, children, isLoading =
                                 </div>
                             ) : (
                                 <ListItemText
-                                    primary={obj.author.firstName}
+                                    primary={`${obj.author.firstName} ${obj.author.secondName} ${obj.author.lastName ? obj.author.lastName : ''}`}
                                     secondary={obj.text}
                                 />
                             )}

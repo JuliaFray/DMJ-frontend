@@ -34,6 +34,7 @@ const postsSlice = createSlice({
             .addCase(getAllPosts.pending, (state) => {
                 state.isFetching = true;
                 state.posts = [];
+                state.post = null;
             })
             .addCase(getAllPosts.fulfilled, (state, action: PayloadAction<IPost[]>) => {
                 state.isFetching = false;
@@ -71,6 +72,7 @@ const postsSlice = createSlice({
             //=====getOnePost=====//
             .addCase(getOnePost.pending, (state) => {
                 state.isFetching = true;
+                state.post = null;
             })
             .addCase(getOnePost.fulfilled, (state, action) => {
                 state.isFetching = false;

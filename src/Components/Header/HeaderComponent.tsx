@@ -32,13 +32,13 @@ const HeaderComponent: React.FC = () => {
     const items: ItemType[] = [
         {name: 'Блог', link: `/posts`, icon: <InboxIcon/>},
         {name: 'Профиль', link: `/users/${userId}`, icon: <MailIcon/>},
-        {name: 'Все пользователи', link: `/users`, icon: <MailIcon/>},
-        {name: 'Сообщения', link: `/dialogs`, icon: <MailIcon/>},
-        {name: 'Новости', link: `/news`, icon: <MailIcon/>},
-        {name: 'Музыка', link: `/music`, icon: <MailIcon/>},
-        {name: 'Видео', link: `/video`, icon: <MailIcon/>},
-        {name: 'Карты', link: `/map`, icon: <MailIcon/>},
-        {name: 'Настройки', link: `/settings`, icon: <MailIcon/>},
+        // {name: 'Все пользователи', link: `/users`, icon: <MailIcon/>},
+        // {name: 'Сообщения', link: `/dialogs`, icon: <MailIcon/>},
+        // {name: 'Новости', link: `/news`, icon: <MailIcon/>},
+        // {name: 'Музыка', link: `/music`, icon: <MailIcon/>},
+        // {name: 'Видео', link: `/video`, icon: <MailIcon/>},
+        // {name: 'Карты', link: `/map`, icon: <MailIcon/>},
+        // {name: 'Настройки', link: `/settings`, icon: <MailIcon/>},
     ];
 
     const onLogout = () => {

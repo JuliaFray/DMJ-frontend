@@ -113,7 +113,7 @@ const ProfileData: React.FC<ProfileDataPropsType> = (props) => {
     return (
         <div>
             <div>
-                {`${props.profile.firstName} ${props.profile.secondName} ${props.profile.lastName}`}
+                {`${props.profile.firstName} ${props.profile.secondName} ${props.profile.lastName ? props.profile.lastName : ''}`}
             </div>
 
             <div>

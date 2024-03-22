@@ -16,7 +16,6 @@ import {PostSkeleton} from './PostSkeleton';
 import withAuthRedirect from '../HOC/withAuthRedirect';
 import styles from './PostPage.module.scss';
 import {TagsBlock} from './TagsBlock';
-import {BASE_URL} from '../../api/api';
 
 const PostPage: React.FC = React.memo(() => {
 
@@ -45,6 +44,8 @@ const PostPage: React.FC = React.memo(() => {
         </Grid>
     )
 
+    const image = `data:image/jpeg;base64,${popularPost?.image?.data?.toString()}`;
+
     return (
         <Grid container spacing={3} className={styles.posts}>
             <Grid item md={1}></Grid>
@@ -63,7 +64,7 @@ const PostPage: React.FC = React.memo(() => {
                         display: 'flex'
                     }}
                 >
-                    <Box sx={{display: 'flex', flexDirection: 'column', width: 750}}>
+                    <Box sx={{display: 'flex', flexDirection: 'column'}}>
                         <CardContent sx={{flex: '1 0 auto'}}>
                             <Typography variant="h4" component="div">
                                 {popularPost.title}
@@ -89,7 +90,7 @@ const PostPage: React.FC = React.memo(() => {
                                 }
                             }}
                         >
-                            {popularPost.imageUrl &&
+                            {popularPost.image &&
                                 <img style={{
                                     width: '100%',
                                     height: 300,
@@ -97,8 +98,7 @@ const PostPage: React.FC = React.memo(() => {
                                     backgroundRepeat: 'no-repeat',
                                     backgroundSize: 'cover'
                                 }}
-                                     src={popularPost.imageUrl.includes('http')
-                                         ? popularPost.imageUrl : `${BASE_URL}${popularPost.imageUrl}`} alt="Uploaded"
+                                     src={image}
                                 />}
                         </Box>
 

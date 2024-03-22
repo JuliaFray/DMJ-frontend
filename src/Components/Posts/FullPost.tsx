@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {useAppDispatch} from '../../hook/hooks';
 import {getOnePost} from '../../redux/posts/posts-thunks';
@@ -9,7 +9,6 @@ import withAuthRedirect from '../HOC/withAuthRedirect';
 import {compose} from 'redux';
 import {useSelector} from 'react-redux';
 import {getIsFetching, getPost} from '../../redux/posts/posts-selectors';
-import {getUserId} from '../../redux/users/users-selectors';
 import {getAuthId} from '../../redux/auth/auth-selectors';
 
 const FullPost: React.FC = React.memo(() => {

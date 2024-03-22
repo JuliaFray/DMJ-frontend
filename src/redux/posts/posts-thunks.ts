@@ -58,7 +58,6 @@ export const getOnePost = createAsyncThunk<IPost, { postId: string }, { rejectVa
         } catch(e) {
             return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
         }
-
     }
 );
 

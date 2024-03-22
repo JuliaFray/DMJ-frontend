@@ -15,7 +15,6 @@ import {useDispatch} from "react-redux";
 import {IPost} from '../../../types/types';
 import {deletePost} from '../../../redux/posts/posts-thunks';
 import ReactMarkdown from 'react-markdown';
-import {BASE_URL} from '../../../api/api';
 
 export type PostPropsType = {
     post: IPost,
@@ -39,6 +38,8 @@ export const Post: React.FC<PostPropsType> = ({
         return <PostSkeleton/>;
     }
 
+    const image = `data:image/jpeg;base64,${post.image?.data}`;
+
     return (
         <div className={clsx(styles.root, {[styles.rootFull]: isFullPost})}>
             {isEditable && (
@@ -53,14 +54,10 @@ export const Post: React.FC<PostPropsType> = ({
                     </IconButton>
                 </div>
             )}
-            {!!post.imageUrl && (
-                <img src={post.imageUrl.includes('http')
-                    ? post.imageUrl : `${BASE_URL}${post.imageUrl}`} alt="Uploaded"
-                    className={clsx(styles.image, {[styles.imageFull]: isFullPost})}
-                />
-            )}
+            {post.imageId && post.image?.data && (<img className={styles.image} src={image}></img>)}
+
             <div className={styles.wrapper}>
-                <UserInfo avatarUrl={''} fullName={post.author?.firstName} additionalText={post.createdAt}/>
+                <UserInfo avatarUrl={''} fullName={`${post.author.firstName} ${post.author.secondName} ${post.author.lastName ? post.author.lastName : ''}`} additionalText={post.createdAt}/>
                 <div className={styles.indention}>
                     <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
                         {isFullPost ? post.title : <Link to={`/posts/${post._id}`}>{post.title}</Link>}

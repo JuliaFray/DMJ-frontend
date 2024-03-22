@@ -39,8 +39,10 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
         dispatch(markPostFavorite({postId: post._id}));
     }
 
+    // const image = `data:${post.imageId?.contentType};base64,${post.imageId?.data?.toString()}`;
+
     return (
-        <Card sx={{maxWidth: 345, height: 350}}>
+        <Card sx={{height: 250}}>
             <CardHeader
                 sx={{height: 100}}
                 avatar={
@@ -55,14 +57,13 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
             }}
             />
 
-            {!!post.imageUrl
-                ? <CardMedia
-                    component="img"
-                    height="100"
-                    image={post.imageUrl?.includes('http')
-                        ? post.imageUrl : `${BASE_URL}${post.imageUrl}`}
-                    alt="Uploaded"/>
-                : <Box sx={{height: 100}}></Box>}
+            {/*{!!image*/}
+            {/*    ? <CardMedia*/}
+            {/*        component="img"*/}
+            {/*        height="100"*/}
+            {/*        image={image}*/}
+            {/*        alt={'img'}/>*/}
+            {/*    : <Box sx={{height: 100}}></Box>}*/}
 
             <CardContent>
                 <Typography variant="body2" color="text.secondary">

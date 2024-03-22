@@ -10,7 +10,8 @@ export type IPost = {
     title: string,
     text: string,
     tags: string[],
-    imageUrl: string,
+    imageId?: string,
+    image?: IImage,
     author: IUser
     viewsCount: number,
     likes: number,
@@ -19,11 +20,17 @@ export type IPost = {
     comments: IComment[]
 }
 
+export type IImage = {
+    _id: string,
+    files_id: string,
+    data: string
+};
+
 export type IPostEdit = {
     _id?: string,
     title: string,
     text: string,
-    imageUrl: string,
+    imageId: string,
     tags: string
 }
 
