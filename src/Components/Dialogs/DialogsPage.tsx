@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getDialogs, getMessages} from '../../redux/dialog/dialogs-selectors';
 import {actions} from '../../redux/dialog/dialog-reducer';
 import {IMessage, SimpleNameObj} from '../../types/types';
+import {useAppSelector} from '../../hook/hooks';
 
 
 const DialogsPage: React.FC = () => {

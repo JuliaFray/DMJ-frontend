@@ -5,6 +5,7 @@ import s from './Search.module.css';
 import {useSelector} from 'react-redux';
 import {getUsersFilter} from '../../../redux/users/users-selectors';
 import {Button, Input, Select,} from 'antd';
+import {useAppSelector} from '../../../hook/hooks';
 
 type PropsType = {
     onSubmit: (values: IFilter) => void,

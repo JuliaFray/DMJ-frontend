@@ -10,13 +10,12 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import ListItemText from '@mui/material/ListItemText';
 import {authActions} from '../../redux/auth/auth-slice';
 import {getAuthId, getIsAuth} from '../../redux/auth/auth-selectors';
-import {useAppDispatch} from '../../hook/hooks';
+import {useAppDispatch, useAppSelector} from '../../hook/hooks';
 import styles from './Header.module.scss';
+import {AccountBox, LibraryBooks} from '@mui/icons-material';
 
 type Anchor = 'left';
 type ItemType = { name: string, link: string, icon: React.JSX.Element }
@@ -30,15 +29,10 @@ const HeaderComponent: React.FC = () => {
     const [state, setState] = React.useState({left: false,});
 
     const items: ItemType[] = [
-        {name: 'Блог', link: `/posts`, icon: <InboxIcon/>},
-        {name: 'Профиль', link: `/users/${userId}`, icon: <MailIcon/>},
-        // {name: 'Все пользователи', link: `/users`, icon: <MailIcon/>},
-        // {name: 'Сообщения', link: `/dialogs`, icon: <MailIcon/>},
-        // {name: 'Новости', link: `/news`, icon: <MailIcon/>},
-        // {name: 'Музыка', link: `/music`, icon: <MailIcon/>},
-        // {name: 'Видео', link: `/video`, icon: <MailIcon/>},
-        // {name: 'Карты', link: `/map`, icon: <MailIcon/>},
-        // {name: 'Настройки', link: `/settings`, icon: <MailIcon/>},
+        {name: 'Блог', link: `/posts`, icon: <LibraryBooks/>},
+        {name: 'Профиль', link: `/users/${userId}`, icon: <AccountBox/>},
+        // {name: 'Все пользователи', link: `/users`, icon: <Groups/>},
+        // {name: 'Сообщения', link: `/dialogs`, icon: <ChatBubble/>}
     ];
 
     const onLogout = () => {

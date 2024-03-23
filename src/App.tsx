@@ -1,6 +1,6 @@
 import loadable from '@loadable/component';
 import React from 'react';
-import {HashRouter, Route, Routes, useLocation} from 'react-router-dom';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import './styles/css/antd.css';
 import {Login} from './Components/Login/Login';
 import store from './redux/redux-store';
@@ -21,13 +21,15 @@ const Users = loadable(() => import('./Components/Users/UsersPage'));
 
 
 const App: React.FC = () => {
-    return <HashRouter>
-        <Provider store={store}>
-            <ThemeProvider theme={theme}>
-                <Main/>
-            </ThemeProvider>
-        </Provider>
-    </HashRouter>
+    return (
+        <BrowserRouter>
+            <Provider store={store}>
+                <ThemeProvider theme={theme}>
+                    <Main/>
+                </ThemeProvider>
+            </Provider>
+        </BrowserRouter>
+    );
 };
 
 const Main: React.FC = () => {
@@ -38,12 +40,10 @@ const Main: React.FC = () => {
         dispatch(checkAuth({}));
     }
 
-    const location = useLocation()
-
     return <>
         <HeaderComponent/>
         <Container fixed style={{height: "93vh", marginTop: 20}} maxWidth={'xl'}>
-            <Routes location={location}>
+            <Routes>
                 <Route path='/' element={<PostsPage/>}/>
                 <Route path='/posts' element={<PostsPage/>}/>
                 <Route path='/posts/:id' element={<FullPostPage/>}/>
@@ -55,13 +55,6 @@ const Main: React.FC = () => {
 
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Registration/>}/>
-
-                {/*<Route path='/dialogs' element={<SuspendedDialogs/>}/>*/}
-                {/*<Route path='/news' element={<SuspendedNews/>}/>*/}
-                {/*<Route path='/settings' element={<SuspendedSettings/>}/>*/}
-                {/*<Route path='/music' element={<SuspendedMusic/>}/>*/}
-                {/*<Route path='/video' element={<SuspendedVideo/>}/>*/}
-                {/*<Route path='/notifications' element={<SuspendedNotifications/>}/>*/}
 
             </Routes>
         </Container>

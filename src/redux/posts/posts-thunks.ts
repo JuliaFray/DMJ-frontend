@@ -2,12 +2,13 @@ import {ResultCodeEnum} from '../../api/api-types';
 import {IComment, IPost, IPostEdit} from '../../types/types';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {postAPI} from '../../api/post-api';
+import {darken} from '@mui/material';
 
 const UNDEFINED_ERROR = "Неизвестная ошибка"
 
-export const getAllPosts = createAsyncThunk<IPost[], {}, { rejectValue: string }>(
-    'posts', async (__, thunkAPI) => {
-        const response = await postAPI.getAll();
+export const getAllPosts = createAsyncThunk<IPost[], {query: string}, { rejectValue: string }>(
+    'posts', async (data, thunkAPI) => {
+        const response = await postAPI.getAll(data.query);
         try {
             if(response.resultCode === ResultCodeEnum.Error) {
                 return thunkAPI.rejectWithValue(response.message);
@@ -68,7 +69,7 @@ export const editPost = createAsyncThunk<void, { post: IPostEdit, id: string }, 
             if(response.resultCode === ResultCodeEnum.Error) {
                 return thunkAPI.rejectWithValue(response.message)
             }
-            thunkAPI.dispatch(getAllPosts({}));
+            thunkAPI.dispatch(getAllPosts({query: ''}));
             return response.data;
         } catch(e) {
             return thunkAPI.rejectWithValue(UNDEFINED_ERROR);

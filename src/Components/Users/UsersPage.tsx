@@ -4,7 +4,7 @@ import User from './User';
 import StyleSheet from './Users.module.css';
 import {IFilter, IUser} from "../../types/types";
 import SearchForm from './Search/Search';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {
     getCurrentPage,
     getFollowingInProgress,
@@ -15,11 +15,11 @@ import {
     getUsersFilter
 } from '../../redux/users/users-selectors';
 import {followUser, getAllUsers, unfollowUser} from '../../redux/users/users-thunks';
-import Preloader from '../Common/Preloader/Preloader';
 import {useParams} from 'react-router-dom';
-import {useAppDispatch} from '../../hook/hooks';
+import {useAppDispatch, useAppSelector} from '../../hook/hooks';
 import {compose} from 'redux';
 import withAuthRedirect from '../HOC/withAuthRedirect';
+import {CircularProgress} from '@mui/material';
 // import {parse, stringify} from 'querystring';
 
 type QueryParamsType = { term?: string, page?: string, friend?: string };
@@ -101,7 +101,7 @@ const UsersPage: React.FC = React.memo(() => {
 
     return (
         <div>
-            {isFetching ? <Preloader/> : null}
+            {isFetching ? <CircularProgress/> : null}
             <div className={StyleSheet.search}>
                 <SearchForm onSubmit={onFilterChanged} isFetching={isFetching}/>
             </div>

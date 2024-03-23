@@ -1,6 +1,6 @@
 import {IProfile} from '../../types/types';
 import {createSlice} from '@reduxjs/toolkit';
-import {getUserProfile, saveUserProfile} from './profile-thunks';
+import {getUserProfile, saveProfilePhoto, saveUserProfile} from './profile-thunks';
 
 type InitialStateType = {
     profile: IProfile | null,
@@ -54,6 +54,20 @@ const profileSlice = createSlice({
                 }
             })
             .addCase(saveUserProfile.rejected, (state, action) => {
+                state.isFetching = false;
+            })
+            //=====saveUserProfilePhoto=====//
+            .addCase(saveProfilePhoto.pending, (state, action) => {
+                state.isFetching = true;
+            })
+            .addCase(saveProfilePhoto.fulfilled, (state, action) => {
+                state.isFetching = false;
+                if(state.profile && action.payload) {
+                    state.profile.avatar = [action.payload];
+                    state.profile.avatarId = action.payload._id;
+                }
+            })
+            .addCase(saveProfilePhoto.rejected, (state, action) => {
                 state.isFetching = false;
             })
     }

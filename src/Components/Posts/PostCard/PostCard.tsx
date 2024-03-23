@@ -2,7 +2,6 @@ import * as React from 'react';
 import {useState} from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
@@ -14,10 +13,9 @@ import {IPost} from '../../../types/types';
 import {markPostFavorite} from '../../../redux/posts/posts-thunks';
 import Badge from '@mui/material/Badge';
 import {Link} from 'react-router-dom';
-import {DoubleArrow, Visibility} from '@mui/icons-material';
-import {Box, Tooltip} from '@mui/material';
+import {DoubleArrow, Grade, Visibility} from '@mui/icons-material';
+import {Tooltip} from '@mui/material';
 import {useAppDispatch} from '../../../hook/hooks';
-import {BASE_URL} from '../../../api/api';
 import {NO_AVATAR} from '../../../Utils/DictConstants';
 
 export type PostCardProps = {
@@ -39,31 +37,23 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
         dispatch(markPostFavorite({postId: post._id}));
     }
 
-    // const image = `data:${post.imageId?.contentType};base64,${post.imageId?.data?.toString()}`;
-
+    const image = `data:image/jpeg;base64,${post.author.avatar[0].data.toString()}`;
     return (
         <Card sx={{height: 250}}>
             <CardHeader
                 sx={{height: 100}}
                 avatar={
-                    <Avatar alt={post.author.firstName} src={post.author.avatarUrl || NO_AVATAR} sx={{bgcolor: red[500]}} aria-label="recipe">
+                    <Avatar alt={post.author.firstName} src={image} sx={{bgcolor: red[500]}} aria-label="recipe">
                         {avatarAbbr}
                     </Avatar>
                 }
                 title={`${post.title.substring(0, 40)}...`}
                 subheader={post.dateStr}
-                titleTypographyProps={{variant: 'subtitle1',
+                titleTypographyProps={{
+                    variant: 'subtitle1',
                     whiteSpace: 'normal'
-            }}
+                }}
             />
-
-            {/*{!!image*/}
-            {/*    ? <CardMedia*/}
-            {/*        component="img"*/}
-            {/*        height="100"*/}
-            {/*        image={image}*/}
-            {/*        alt={'img'}/>*/}
-            {/*    : <Box sx={{height: 100}}></Box>}*/}
 
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
@@ -83,7 +73,7 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
                          }}>
                 <Tooltip title='В избранное'>
                     <IconButton aria-label="add to favorites" onClick={onClickFavorite}>
-                        <FavoriteIcon color={isFavorite ? 'error' : 'primary'}/>
+                        <Grade color={isFavorite ? 'error' : 'primary'}/>
                     </IconButton>
                 </Tooltip>
 

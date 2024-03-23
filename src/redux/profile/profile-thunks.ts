@@ -13,23 +13,17 @@ export const getUserProfile = createAsyncThunk<IProfile, { userId: string }, { r
     }
 );
 
-// export const updateUserStatus = createAsyncThunk<void, { status: string }, { rejectValue: string }>(
-//     'profile/status', async (data, thunkAPI) => {
-//         const response = await profileAPI.updateStatus(data.status);
-//         if(response.resultCode === ResultCodeEnum.Error) {
-//             return thunkAPI.rejectWithValue(response.message)
-//         }
-//         return response.data;
-//     }
-// );
+export const saveProfilePhoto = createAsyncThunk<any, { profileId: string, file: FormData }, { rejectValue: string }>(
+    'profile/savePhoto', async (data, thunkAPI) => {
+        const response = await profileAPI.savePhoto(data.profileId, data.file);
 
-// export const saveProfilePhoto = (photos: UploadFile): ThunkType => async (dispatch) => {
-//     let response = await profileAPI.savePhoto(photos);
-//     if(response.resultCode === ResultCodeEnum.Success) {
-//         dispatch(actions.updatePhoto(response.data.photos))
-//     }
-// };
-//
+        if(response.resultCode === ResultCodeEnum.Error) {
+            return thunkAPI.rejectWithValue(response.message)
+        }
+        return response.data;
+    }
+);
+
 export const saveUserProfile = createAsyncThunk<void, { profile: IProfile }, { rejectValue: string }>(
     'profile/save', async (data, thunkAPI) => {
         const response = await profileAPI.saveProfile(data.profile);

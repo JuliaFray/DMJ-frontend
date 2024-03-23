@@ -22,7 +22,7 @@ export const AddCommentComponent: React.FC<ICommentCreate> = ({postId}) => {
         mode: 'onChange'
     });
 
-    const avatarUrl = useSelector(getProfileAvatar);
+    const avatar = useSelector(getProfileAvatar);
     const fullName = useSelector(getProfileFullName);
 
     const onSubmit = (formData: FieldValues) => {
@@ -39,7 +39,9 @@ export const AddCommentComponent: React.FC<ICommentCreate> = ({postId}) => {
     return (
         <>
             <div className={styles.root}>
-                <Avatar className={styles.avatar} src={avatarUrl || NO_AVATAR} alt={fullName}/>
+                <Avatar className={styles.avatar}
+                        src={avatar && `data:image/jpeg;base64,${avatar.data}` || NO_AVATAR}
+                        alt={fullName}/>
                 <form className={styles.form} onSubmit={handleSubmit((values) => onSubmit(values))}>
                     <TextField
                         label="Написать комментарий"

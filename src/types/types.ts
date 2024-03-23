@@ -11,7 +11,7 @@ export type IPost = {
     text: string,
     tags: string[],
     imageId?: string,
-    image?: IImage,
+    image?: IImage[],
     author: IUser
     viewsCount: number,
     likes: number,
@@ -22,8 +22,9 @@ export type IPost = {
 
 export type IImage = {
     _id: string,
-    files_id: string,
-    data: string
+    files_id?: string,
+    data?: any,
+    contentType?: string
 };
 
 export type IPostEdit = {
@@ -40,11 +41,6 @@ export type IContact = {
     phone: string
 }
 
-export type IPhoto = {
-    small: string,
-    large: string
-}
-
 export type IComment = {
     text: string,
     author?: {
@@ -55,12 +51,14 @@ export type IComment = {
 }
 
 export type IProfile = {
+    _id: string,
     userId: string,
     firstName: string,
     secondName: string,
     lastName?: string,
     contacts: IContact,
-    avatarUrl: string
+    avatarId: string,
+    avatar: IImage[]
 }
 
 export type IUser = {
@@ -68,7 +66,8 @@ export type IUser = {
     firstName: string,
     secondName: string,
     lastName?: string,
-    avatarUrl: string
+    avatarId: string,
+    avatar: IImage[]
 }
 
 export type SimpleNameObj = {

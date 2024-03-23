@@ -1,8 +1,7 @@
 import React from 'react';
-import {NavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
 import StyleSheet from './Users.module.css'
 import {IUser} from "../../types/types";
-import {NO_AVATAR} from '../../Utils/DictConstants';
 
 type UserPropsType = {
     user: IUser,
@@ -17,11 +16,11 @@ const User: React.FC<UserPropsType> = ({user, followingInProgress, unfollow, fol
         <div className={StyleSheet.card}>
                 <span className={StyleSheet.col}>
                     <div>
-                        <NavLink to={'/users/' + user._id}>
-                            <img alt='icon' src={user.avatarUrl || NO_AVATAR}
-                                 className={StyleSheet.photo}
-                            />
-                        </NavLink>
+                        <Link to={'/users/' + user._id}>
+                            {/*<img alt='icon' src={user.avatarUrl || NO_AVATAR}*/}
+                            {/*     className={StyleSheet.photo}*/}
+                            {/*/>*/}
+                        </Link>
                     </div>
                     <div>
                         {/*{user.followed*/}

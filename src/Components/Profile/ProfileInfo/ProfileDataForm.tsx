@@ -1,6 +1,6 @@
 import React from 'react';
 import {InjectedFormProps, reduxForm} from 'redux-form';
-import {createField, GenericFormDataKeys, Input, TextArea} from '../../Common/FormsControls/FormsControls';
+import {GenericFormDataKeys} from '../../Common/FormsControls/FormsControls';
 import s from './ProfileInfo.module.scss';
 import {IProfile} from '../../../types/types';
 import {requiredField} from '../../../Utils/Validators/validator';

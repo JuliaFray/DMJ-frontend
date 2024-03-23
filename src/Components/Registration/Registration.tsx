@@ -12,6 +12,7 @@ import {Link, Navigate} from "react-router-dom";
 import {getAuthErrors, getGlobalError, getIsAuth} from "../../redux/auth/auth-selectors";
 import {registerUser} from "../../redux/auth/auth-thunks";
 import {authActions} from '../../redux/auth/auth-slice';
+import {useAppSelector} from '../../hook/hooks';
 
 export type RegisterDataType = {
     firstName: string,

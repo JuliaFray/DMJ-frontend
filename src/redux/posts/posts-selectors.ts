@@ -5,7 +5,7 @@ export const getNewPostId = (state: RootState) => {
 };
 
 export const getPosts = (state: RootState) => {
-    return state.posts.posts
+    return state.posts.posts || []
 };
 
 export const getPost = (state: RootState) => {

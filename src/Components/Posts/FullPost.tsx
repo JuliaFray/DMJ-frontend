@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import {useAppDispatch} from '../../hook/hooks';
+import {useAppDispatch, useAppSelector} from '../../hook/hooks';
 import {getOnePost} from '../../redux/posts/posts-thunks';
 import {Post} from './Post/Post';
 import {CommentsBlock} from './Comments/CommentsBlock';

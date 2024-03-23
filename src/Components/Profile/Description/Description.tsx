@@ -1,9 +1,9 @@
 import React, {ChangeEvent} from 'react';
 import StyleSheet from './Description.module.css';
-import Preloader from '../../Common/Preloader/Preloader';
 import ProfileStatusWithHooks from '../ProfileInfo/ProfileStatusWithHooks';
 import {IProfile} from '../../../types/types';
 import {NO_AVATAR} from '../../../Utils/DictConstants';
+import {CircularProgress} from '@mui/material';
 
 type PropsType = {
     profile: IProfile | null,
@@ -16,7 +16,7 @@ type PropsType = {
 
 const Avatar: React.FC<PropsType> = (props) => {
     if(!props.profile) {
-        return <Preloader/>
+        return <CircularProgress/>
     }
     let contacts = Object.entries(props.profile.contacts);
 
@@ -36,7 +36,7 @@ const Avatar: React.FC<PropsType> = (props) => {
     return (
         <div className={StyleSheet.avatar}>
             <div className={StyleSheet.avatarImg}>
-                <img alt='icon' src={props.profile.avatarUrl || NO_AVATAR}/>
+                <img alt='icon' src={props.profile.avatarId || NO_AVATAR}/>
 
                 <div>
                     {props.isOwner && <div>

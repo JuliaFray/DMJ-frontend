@@ -3,9 +3,9 @@ import {IComment, IPost, IPostEdit} from "../types/types";
 import instance from "./api";
 
 export const postAPI = {
-    getAll() {
+    getAll(query: string) {
         return instance
-            .get<GenericResponseType<IPost[]>>(`posts`)
+            .get<GenericResponseType<IPost[]>>(`posts${query}`)
             .then(response => {
                 return response.data
             })

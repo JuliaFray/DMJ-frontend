@@ -7,10 +7,24 @@
   margin-bottom: 80px;
 
   .avatar {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     align-self: end;
-    bottom: -40px;
+    bottom: -50px;
+    svg {
+      width: 100px;
+      height: 100px;
+      bottom: 0;
+      align-self: initial;
+    }
+
+  }
+
+  .profileData {
+    margin: 0;
+    height: 40px;
+    align-self: end;
+    bottom: -50px;
   }
 }
 

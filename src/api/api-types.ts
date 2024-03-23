@@ -1,4 +1,4 @@
-import {IPhoto, IUser} from '../types/types';
+import {IUser} from '../types/types';
 
 export enum ResultCodeEnum {
     Success = 0,
@@ -22,10 +22,6 @@ export type LoginResponseType = {
 
 export type CaptchaResponseType = {
     url: string
-}
-
-export type PhotoResponseType = {
-    photos: IPhoto
 }
 
 export type UsersResponseType = {
