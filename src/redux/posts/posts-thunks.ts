@@ -1,12 +1,11 @@
 import {ResultCodeEnum} from '../../api/api-types';
-import {IComment, IPost, IPostEdit} from '../../types/types';
+import {IComment, IPost} from '../../types/types';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {postAPI} from '../../api/post-api';
-import {darken} from '@mui/material';
 
 const UNDEFINED_ERROR = "Неизвестная ошибка"
 
-export const getAllPosts = createAsyncThunk<IPost[], {query: string}, { rejectValue: string }>(
+export const getAllPosts = createAsyncThunk<IPost[], { query: string }, { rejectValue: string }>(
     'posts', async (data, thunkAPI) => {
         const response = await postAPI.getAll(data.query);
         try {
@@ -23,6 +22,20 @@ export const getAllPosts = createAsyncThunk<IPost[], {query: string}, { rejectVa
 export const markPostFavorite = createAsyncThunk<void, { postId: string }, { rejectValue: string }>(
     'posts/favorite', async (data, thunkAPI) => {
         const response = await postAPI.markPostFavorite(data.postId);
+        try {
+            if(response.resultCode === ResultCodeEnum.Error) {
+                return thunkAPI.rejectWithValue(response.message);
+            }
+            return response.data;
+        } catch(e) {
+            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+        }
+    }
+);
+
+export const togglePostRating = createAsyncThunk<void, { postId: string, rating: number }, { rejectValue: string }>(
+    'posts/rating', async (data, thunkAPI) => {
+        const response = await postAPI.toggleRating(data.postId, data.rating);
         try {
             if(response.resultCode === ResultCodeEnum.Error) {
                 return thunkAPI.rejectWithValue(response.message);
@@ -62,10 +75,10 @@ export const getOnePost = createAsyncThunk<IPost, { postId: string }, { rejectVa
     }
 );
 
-export const editPost = createAsyncThunk<void, { post: IPostEdit, id: string }, { rejectValue: string }>(
+export const editPost = createAsyncThunk<void, { file: FormData, id: string }, { rejectValue: string }>(
     'posts/edit', async (data, thunkAPI) => {
         try {
-            const response = await postAPI.updatePost(data.post, data.id);
+            const response = await postAPI.updatePost(data.file, data.id);
             if(response.resultCode === ResultCodeEnum.Error) {
                 return thunkAPI.rejectWithValue(response.message)
             }
@@ -77,10 +90,10 @@ export const editPost = createAsyncThunk<void, { post: IPostEdit, id: string }, 
     }
 );
 
-export const createPost = createAsyncThunk<IPost, { post: IPostEdit }, { rejectValue: string }>(
+export const createPost = createAsyncThunk<IPost, { file: FormData }, { rejectValue: string }>(
     'posts/create', async (data, thunkAPI) => {
         try {
-            const response = await postAPI.createPost(data.post);
+            const response = await postAPI.createPost(data.file);
             if(response.resultCode === ResultCodeEnum.Error) {
                 return thunkAPI.rejectWithValue(response.message)
             }

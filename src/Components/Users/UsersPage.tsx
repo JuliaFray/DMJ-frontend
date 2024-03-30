@@ -1,9 +1,5 @@
 import React, {useEffect} from 'react';
-import Paginator from '../Paginator/Paginator';
-import User from './User';
-import StyleSheet from './Users.module.css';
 import {IFilter, IUser} from "../../types/types";
-import SearchForm from './Search/Search';
 import {useSelector} from 'react-redux';
 import {
     getCurrentPage,
@@ -15,14 +11,14 @@ import {
     getUsersFilter
 } from '../../redux/users/users-selectors';
 import {followUser, getAllUsers, unfollowUser} from '../../redux/users/users-thunks';
-import {useParams} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../hook/hooks';
+import {useAppDispatch} from '../../hook/hooks';
 import {compose} from 'redux';
 import withAuthRedirect from '../HOC/withAuthRedirect';
-import {CircularProgress} from '@mui/material';
-// import {parse, stringify} from 'querystring';
+import {CircularProgress, Grid, Pagination} from '@mui/material';
+import {UserCard} from './UserCard/UserCard';
 
 type QueryParamsType = { term?: string, page?: string, friend?: string };
+
 const UsersPage: React.FC = React.memo(() => {
 
     const totalUsersCount = useSelector(getTotalUsersCount);
@@ -34,12 +30,8 @@ const UsersPage: React.FC = React.memo(() => {
     const isFetching = useSelector(getIsFetching);
 
     const dispatch = useAppDispatch();
-    const history: any = useParams();
-
-    console.log(users)
 
     useEffect(() => {
-        // const parsedSearch = parse(history.location.search.substring(1)) as QueryParamsType;
         const parsedSearch = {
             page: 0,
             term: '',
@@ -66,11 +58,6 @@ const UsersPage: React.FC = React.memo(() => {
         if(!!filter.term) query.term = filter.term;
         if(filter.friend !== null) query.friend = String(filter.friend);
         if(currentPage !== 1) query.page = currentPage.toString();
-
-        // history.push({
-        //     pathname: '/users',
-        //     search: query
-        // });
     }, [filter, currentPage]);
 
     const onPageChanged = (pageNumber: number) => {
@@ -100,23 +87,34 @@ const UsersPage: React.FC = React.memo(() => {
     }
 
     return (
-        <div>
-            {isFetching ? <CircularProgress/> : null}
-            <div className={StyleSheet.search}>
-                <SearchForm onSubmit={onFilterChanged} isFetching={isFetching}/>
-            </div>
-            <div className={StyleSheet.cards}>
-                {
-                    users && users.map((u: IUser) => <User user={u}
-                                                           key={u._id}
-                                                           followingInProgress={followingInProgress}
-                                                           unfollow={unfollow}
-                                                           follow={follow}/>)
-                }
-            </div>
-            <Paginator currentPage={currentPage} onPageChanged={onPageChanged}
-                       totalItemsCount={totalUsersCount} pageSize={pageSize}/>
-        </div>
+        <>
+            <Grid container spacing={3}>
+                <Grid item xs={3}>filter</Grid>
+
+                <Grid item xs={9}>
+                    {isFetching
+                        ? <CircularProgress/>
+                        : <Grid container rowSpacing={2} columnSpacing={{xs: 1, sm: 2, md: 3}}
+                                sx={{margin: 0}} style={{marginTop: "20px"}}>
+                            {
+                                users && users.map((u: IUser) => (
+                                    <Grid item xs={4} key={u._id}>
+                                        <UserCard user={u}
+                                                  key={u._id}
+                                                  unfollow={unfollow}
+                                                  follow={follow}/>
+                                    </Grid>
+                                ))
+                            }
+                        </Grid>}
+
+
+                </Grid>
+
+
+            </Grid>
+            <Pagination page={currentPage} count={totalUsersCount} variant="outlined"/>
+        </>
     )
 });
 

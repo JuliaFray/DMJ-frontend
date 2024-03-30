@@ -98,7 +98,6 @@ $blue: #4361ee;
 .postDetails {
   list-style: none;
   padding: 0;
-  margin: 20px 0 0 0;
 
   li {
     display: inline-flex;
@@ -106,6 +105,11 @@ $blue: #4361ee;
     font-size: 14px;
     margin-right: 20px;
     opacity: 0.5;
+    height: 20px;
+
+    .comment {
+      margin-top: 3px
+    }
 
     svg {
       font-size: 18px;

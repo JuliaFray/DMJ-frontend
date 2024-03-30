@@ -9,7 +9,7 @@ export type InitialStateType = {
     currentPage: number,
     isFetching: boolean,
     followingInProgress: Array<string>,
-    userId: number | null,
+    userId: string | null,
     filter: IFilter
 }
 

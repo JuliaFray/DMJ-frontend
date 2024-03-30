@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import app from '../../App';
 
 export type InitialStateType = {
     initialized: boolean,

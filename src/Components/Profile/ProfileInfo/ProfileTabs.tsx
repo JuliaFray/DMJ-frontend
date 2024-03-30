@@ -1,27 +1,49 @@
-import {Box, Container, Tab, Tabs, Typography} from '@mui/material';
-import React, {useState} from 'react';
+import {Box, Container, Grid, Tab, Tabs, Typography} from '@mui/material';
+import React, {useEffect, useState} from 'react';
+import {PostPage} from '../../Posts/PostPage';
 
-export const ProfileTabs = () => {
-    const [tabIndex, setTabIndex] = useState(0);
+
+export type IProfileTabs = {
+    isOwner: boolean,
+    userId: string,
+}
+
+export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
+
+    useEffect(() => {
+        setTabIndex(0)
+    }, [])
+    const [tabIndex, setTabIndex] = useState<number>(0);
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabIndex(newValue);
     };
 
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="lg">
             <Tabs value={tabIndex} onChange={handleTabChange} centered>
-                <Tab label="О себе"/>
-                <Tab label="Мои посты"/>
-                <Tab label="Избранное"/>
-                <Tab label="Друзья"/>
+                <Tab label={props.isOwner ? 'Мои посты' : 'Посты'} {...a11yProps(0)}/>
+                <Tab label="Избранное" {...a11yProps(1)}/>
+                <Tab label="Друзья" {...a11yProps(2)}/>
             </Tabs>
 
             <TabPanel value={tabIndex} index={0}>
-                profile
+                <Grid container
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="stretch">
+                    <PostPage isOwner={props.isOwner} isMainPage={false}
+                              userId={props.userId} isFavorite={false} text={'my'}></PostPage>
+                </Grid>
             </TabPanel>
             <TabPanel value={tabIndex} index={1}>
-                Item Two
+                <Grid container
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="stretch">
+                    <PostPage isOwner={props.isOwner} isMainPage={false}
+                              userId={props.userId} isFavorite={true} text={'fav'}></PostPage>
+                </Grid>
             </TabPanel>
             <TabPanel value={tabIndex} index={2}>
                 Item Three
@@ -30,21 +52,27 @@ export const ProfileTabs = () => {
     );
 }
 
-interface TabPanelProps {
+const a11yProps = (index: number) => {
+    return {
+        id: `full-width-tab-${index}`,
+        'aria-controls': `full-width-tabpanel-${index}`,
+    };
+}
+
+type ITabPanel = {
     children?: React.ReactNode;
     index: number;
     value: number;
 }
 
-const TabPanel = (props: TabPanelProps) => {
-    const {children, value, index, ...other} = props;
+const TabPanel: React.FC<ITabPanel> = ({children, value, index, ...other}) => {
 
     return (
         <div
             role="tabpanel"
             hidden={value !== index}
-            id={`tabpanel-${index}`}
-            aria-labelledby={`tab-${index}`}
+            id={`full-width-tabpanel-${index}`}
+            aria-labelledby={`full-width-tab-${index}`}
             {...other}
         >
             {value === index && (

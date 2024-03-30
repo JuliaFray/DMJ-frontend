@@ -2,13 +2,14 @@ import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../../redux/auth/auth-thunks'
 import {Link, Navigate} from 'react-router-dom';
-import {getIsAuth} from '../../redux/auth/auth-selectors';
+import {getGlobalError, getIsAuth} from '../../redux/auth/auth-selectors';
 import {Button, Container, Paper, Typography} from '@mui/material';
 import TextField from "@mui/material/TextField";
 import styles from "./Login.module.scss";
 import {useForm} from 'react-hook-form';
 import {ILoginData} from '../../types/types';
 import {useAppSelector} from '../../hook/hooks';
+import {authActions} from '../../redux/auth/auth-slice';
 
 export const Login: React.FC = () => {
 
@@ -20,12 +21,17 @@ export const Login: React.FC = () => {
         mode: 'onChange'
     });
     const isAuth = useSelector(getIsAuth);
+    const globalError = useSelector(getGlobalError);
 
     const dispatch = useDispatch();
 
     const onSubmit = (formData: ILoginData) => {
         dispatch(login({userData: formData}));
     };
+
+    const handleChange = () => {
+        dispatch(authActions.setGlobalError(''))
+    }
 
     if(isAuth) {
         return <Navigate to={`/posts`}/>
@@ -37,7 +43,7 @@ export const Login: React.FC = () => {
                 <Typography classes={{root: styles.title}} variant="h5">
                     Вход в аккаунт
                 </Typography>
-                <form onSubmit={handleSubmit((values: ILoginData) => onSubmit(values))}>
+                <form onChange={handleChange} onSubmit={handleSubmit((values: ILoginData) => onSubmit(values))}>
                     <TextField
                         className={styles.field}
                         label='E-mail'
@@ -55,6 +61,7 @@ export const Login: React.FC = () => {
                         helperText={errors.password?.message}
                         {...register('password', {required: 'Обязательно для заполнения'})}/>
 
+                    <span className={styles.error}>{globalError}</span>
 
                     <Button type={'submit'} size='large' disabled={!isValid}
                             variant='contained' fullWidth>

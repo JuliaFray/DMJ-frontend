@@ -63,7 +63,7 @@ const profileSlice = createSlice({
             .addCase(saveProfilePhoto.fulfilled, (state, action) => {
                 state.isFetching = false;
                 if(state.profile && action.payload) {
-                    state.profile.avatar = [action.payload];
+                    state.profile.avatar = action.payload;
                     state.profile.avatarId = action.payload._id;
                 }
             })

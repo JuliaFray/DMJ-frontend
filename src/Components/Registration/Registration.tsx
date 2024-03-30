@@ -12,7 +12,6 @@ import {Link, Navigate} from "react-router-dom";
 import {getAuthErrors, getGlobalError, getIsAuth} from "../../redux/auth/auth-selectors";
 import {registerUser} from "../../redux/auth/auth-thunks";
 import {authActions} from '../../redux/auth/auth-slice';
-import {useAppSelector} from '../../hook/hooks';
 
 export type RegisterDataType = {
     firstName: string,
@@ -27,14 +26,6 @@ export const Registration = () => {
     const authErrors = useSelector(getAuthErrors);
     const globalError = useSelector(getGlobalError);
 
-    useEffect(() => {
-        console.log(Object.keys(authErrors))
-        Object.keys(authErrors).forEach(err => {
-            console.log(err, authErrors[err])
-            setError(`root.${err}`, {type: 'focus', message: authErrors[err]}, {shouldFocus: true})
-        });
-    }, [authErrors])
-
     const {register, handleSubmit, setError, clearErrors, formState: {errors, isValid}} = useForm({
         defaultValues: {
             firstName: 'Testov',
@@ -45,9 +36,24 @@ export const Registration = () => {
         mode: 'onChange'
     });
 
+    useEffect(() => {
+        dispatch(authActions.setGlobalError(''));
+        clearErrors();
+        Object.keys(authErrors).forEach(err => {
+            setError(`root.${err}`,
+                {message: authErrors[err]},
+                {shouldFocus: true}
+            )
+        });
+
+        console.log(errors)
+
+    }, [authErrors])
+
     const handleOnChange = () => {
         clearErrors();
         dispatch(authActions.setErrors({}));
+        dispatch(authActions.setGlobalError(''));
     }
 
     const dispatch = useDispatch();
@@ -92,8 +98,8 @@ export const Registration = () => {
                     required
                     label="Электронная почта"
                     fullWidth
-                    error={Boolean(errors.email?.message)}
-                    helperText={errors.email?.message}
+                    error={Boolean(errors.email?.message) || !!authErrors['email']}
+                    helperText={errors.email?.message || authErrors['email']}
                     {...register('email', {required: 'Обязательно для заполнения'})}
                 />
                 <TextField

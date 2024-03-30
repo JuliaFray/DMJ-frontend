@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useParams} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../hook/hooks';
+import {useAppDispatch} from '../../hook/hooks';
 import {getOnePost} from '../../redux/posts/posts-thunks';
 import {Post} from './Post/Post';
 import {CommentsBlock} from './Comments/CommentsBlock';
@@ -27,10 +27,13 @@ const FullPost: React.FC = React.memo(() => {
 
     return (
         <>
-            {post && <Post post={post} isFullPost isLoading={isFetching} isEditable={post.author._id === userId}/>}
-            {post && <CommentsBlock items={post.comments} isLoading={isFetching}>
-                <AddCommentComponent postId={post._id}/>
-            </CommentsBlock>
+            {post && <Post post={post} isFullPost isLoading={isFetching}
+                           isEditable={post.author._id === userId}/>
+            }
+            {post &&
+                <CommentsBlock items={post.comments} isLoading={isFetching}>
+                    <AddCommentComponent postId={post._id}/>
+                </CommentsBlock>
             }
 
         </>

@@ -1,21 +1,21 @@
-import {IPost} from '../../types/types';
+import {IImage, IPost} from '../../types/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {createPost, createPostComment, deletePost, editPost, getAllPosts, getLastTags, getOnePost, getPopularPost, markPostFavorite} from './posts-thunks';
+import {createPost, createPostComment, deletePost, editPost, getAllPosts, getLastTags, getOnePost, getPopularPost} from './posts-thunks';
 
 type InitialStateType = {
     posts: IPost[],
-    newPostId: string,
-    isFetching: boolean,
     post: IPost | null,
-    tags: string[]
+    isFetching: boolean,
+    tags: string[],
+    img: IImage | null
 }
 
 const initialState: InitialStateType = {
     posts: [],
-    newPostId: '',
-    isFetching: false,
     post: null,
-    tags: []
+    isFetching: false,
+    tags: [],
+    img: null
 };
 
 const postsSlice = createSlice({
@@ -24,8 +24,18 @@ const postsSlice = createSlice({
     reducers: {
         clearState: (state) => {
             state.posts = [];
+            state.post = null;
             state.isFetching = false;
-            state.newPostId = '';
+            state.tags = [];
+            state.img = null;
+        },
+        clearPostState: (state) => {
+            state.post = null;
+            state.isFetching = false;
+            state.img = null;
+        },
+        clearImg: (state) => {
+            state.img = null;
         }
     },
     extraReducers: (builder) => {
@@ -101,7 +111,6 @@ const postsSlice = createSlice({
             })
             .addCase(createPost.rejected, (state) => {
                 state.isFetching = false;
-                state.newPostId = '';
             })
             //=====deletePost=====//
             .addCase(deletePost.pending, (state) => {
@@ -128,3 +137,4 @@ const postsSlice = createSlice({
 });
 
 export default postsSlice.reducer;
+export const postActions = postsSlice.actions;

@@ -1,5 +1,5 @@
 import {GenericResponseType} from "./api-types";
-import {IComment, IPost, IPostEdit} from "../types/types";
+import {IComment, IPost} from "../types/types";
 import instance from "./api";
 
 export const postAPI = {
@@ -27,6 +27,14 @@ export const postAPI = {
             })
     },
 
+    toggleRating(postId: string, rating: number) {
+        return instance
+            .put<GenericResponseType<void>>(`posts/${postId}/rating?rating=${rating}`)
+            .then(response => {
+                return response.data
+            })
+    },
+
     getPopular() {
         return instance
             .get<GenericResponseType<IPost>>(`posts/popular`)
@@ -43,17 +51,25 @@ export const postAPI = {
             })
     },
 
-    createPost(post: IPostEdit) {
+    createPost(data: FormData) {
         return instance
-            .post<GenericResponseType<IPost>>(`posts`, post)
+            .post<GenericResponseType<IPost>>(`posts`, data, {
+                headers: {'Content-Type': 'multipart/form-data'}
+            })
             .then(response => {
                 return response.data
             })
     },
 
-    updatePost(post: IPostEdit, id: string) {
+    updatePost(data: FormData, id: string) {
         return instance
-            .put<GenericResponseType<void>>(`posts/${id}`, {...post})
+            .put<GenericResponseType<void>>(
+                `posts/${id}`,
+                data,
+                {
+                    headers: {'Content-Type': 'multipart/form-data'}
+                }
+            )
             .then(response => {
                 return response.data
             })
@@ -73,5 +89,5 @@ export const postAPI = {
             .then(response => {
                 return response.data
             })
-    },
+    }
 };

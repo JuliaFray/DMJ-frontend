@@ -1,73 +1,71 @@
-import React, {ChangeEvent, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react';
+import {Link, useNavigate, useParams} from 'react-router-dom';
+import {compose} from 'redux';
+import {useSelector} from 'react-redux';
+import {useForm} from 'react-hook-form';
+import 'easymde/dist/easymde.min.css';
+import SimpleMDE from 'react-simplemde-editor';
+import {useAppDispatch} from '../../../hook/hooks';
+import {createPost, editPost, getOnePost} from '../../../redux/posts/posts-thunks';
+import withAuthRedirect from '../../HOC/withAuthRedirect';
+import {getPost} from '../../../redux/posts/posts-selectors';
+import {postActions} from '../../../redux/posts/posts-slice'
+import InputFileUpload from '../../Common/FileUploadButton/FileUploadButton';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Clear';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import SimpleMDE from 'react-simplemde-editor';
+import {Tooltip} from '@mui/material';
 import styles from './AddPost.module.scss';
-import 'easymde/dist/easymde.min.css';
-import {Link, useNavigate, useParams} from 'react-router-dom';
-import {useForm} from 'react-hook-form';
-import {useAppDispatch} from '../../../hook/hooks';
-import {createPost, editPost, getOnePost} from '../../../redux/posts/posts-thunks';
-import instance from '../../../api/api';
-import {IPost, IPostEdit} from '../../../types/types';
+import {convertBase64ToBlob} from '../../../Utils/helper';
+import clsx from 'clsx';
 
-export const AddPost: React.FC = () => {
+const AddPost: React.FC = () => {
+
+    const {id} = useParams();
+
+    const post = useSelector(getPost);
+
+    const [text, setText] = useState('');
+    const [title, setTitle] = useState('');
+    const [tags, setTags] = useState<string>('');
+    const [file, setFile] = useState<File | string | null>(null);
 
     const dispatch = useAppDispatch();
-    const inputRef = useRef<HTMLInputElement>(null);
+
     const navigate = useNavigate();
+
     const {handleSubmit} = useForm({
         defaultValues: {},
         mode: 'onChange'
     });
 
-    const {id} = useParams();
 
     useEffect(() => {
         if(id) {
-            dispatch(getOnePost({postId: id}))
-                .then(res => {
-                        const post = res.payload;
-                        if(post && typeof post !== 'string') {
-                            const p: IPost = post;
-                            setTitle(p.title);
-                            setText(p.text);
-                            setTags(p.tags?.toString() || '');
-                        }
-                    }
-                )
-        }
-    }, [])
+            dispatch(getOnePost({postId: id}));
+            if(post) {
+                setTitle(post.title);
+                setText(post.text);
+                setTags(post.tags?.toString() || '');
+                if(post.image) {
+                    setFile(post.image.data)
 
-    const [text, setText] = useState('');
-    const [title, setTitle] = useState('');
-    const [tags, setTags] = useState<string>('');
-    const [imageData, setImageData] = useState<Record<string, any>>({});
+                }
+            }
+        }
+    }, [id])
 
     const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
         const files = (event.target as HTMLInputElement).files;
-        if(files) {
-            try {
-                const formData = new FormData();
-                formData.append('image', files[0]);
-                const {data} = await instance.post(`/upload`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-                const image = await instance.get(`/image/${data.id}`);
-                const res = Object.assign(data, image.data.file[0])
-                setImageData(res);
-            } catch(err) {
-                console.warn(err);
-                alert('Ошибка при загрузке файла');
-            }
+        if(files?.length) {
+            setFile(files[0]);
         }
     };
 
     const onClickRemoveImage = () => {
-        setImageData({});
+        setFile(null);
     };
 
     const onChange = useCallback((value: React.SetStateAction<string>) => {
@@ -75,19 +73,28 @@ export const AddPost: React.FC = () => {
     }, []);
 
     const onSubmit = async () => {
-        const fields: IPostEdit = {
-            title,
-            text,
-            tags: tags.toString(),
-            imageId: imageData.id
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('text', text);
+        formData.append('tags', tags.toString());
+
+        if(file) {
+            if(file instanceof File) {
+                formData.append('image', file);
+            } else {
+                formData.append("image", convertBase64ToBlob(file));
+            }
         }
+
+        dispatch(postActions.clearPostState);
+
         if(id) {
-            dispatch(editPost({post: fields, id: id}))
-                .then(res => {
+            dispatch(editPost({file: formData, id: id}))
+                .then(() => {
                     navigate('/posts')
                 });
         } else {
-            dispatch(createPost({post: fields}))
+            dispatch(createPost({file: formData}))
                 .then(res => {
                     if(typeof res.payload !== 'string') {
                         navigate(`/posts/${res.payload?._id}`);
@@ -113,23 +120,29 @@ export const AddPost: React.FC = () => {
         [],
     );
 
-    const image = `data:image/jpeg;base64,${imageData?.data}`;
+    const image = file
+        ? typeof file === 'string'
+            ? `data:image/jpeg;base64,${file}`
+            : URL.createObjectURL(file)
+        : '';
 
     return (
-        <Paper style={{padding: 30}}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                {!imageData.id && (
-                    <Button variant='outlined' size='large' onClick={() => inputRef.current?.click()}>
-                        Загрузить превью
-                    </Button>
-                )}
-                <input ref={inputRef} type='file' onChange={handleChangeFile} hidden/>
-                {!!imageData.id && (
-                    <Button variant='contained' color='error' onClick={onClickRemoveImage}>
-                        Удалить
-                    </Button>
-                )}
-                {!!imageData.id && (<img className={styles.image} src={image}></img>)}
+        <Paper style={{padding: 30}} className={clsx(styles.root, {[styles.rootFull]: true})}>
+            <form onSubmit={handleSubmit(onSubmit)} >
+
+                {!file && <InputFileUpload  text={'Загрузить превью'} onClick={handleChangeFile}/>}
+
+                {!!file &&
+                    <div className={styles.editButtons}>
+                        <IconButton onClick={onClickRemoveImage} color="secondary">
+                            <Tooltip title='Удалить'>
+                                <DeleteIcon/>
+                            </Tooltip>
+                        </IconButton>
+                    </div>
+                }
+                {!!file && (<img className={styles.image} src={image}></img>)}
+
                 <br/>
                 <br/>
                 <TextField
@@ -158,3 +171,6 @@ export const AddPost: React.FC = () => {
         </Paper>
     );
 };
+
+
+export default compose<React.ComponentType>(withAuthRedirect)(AddPost);

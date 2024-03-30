@@ -5,7 +5,7 @@ export const getProfile = (state: RootState) => {
 };
 
 export const getProfileAvatar = (state: RootState) => {
-    return state.profile?.profile?.avatar?.length && state.profile?.profile?.avatar[0];
+    return state.profile?.profile?.avatar;
 };
 
 export const getProfileFullName = (state: RootState) => {

@@ -17,13 +17,12 @@ type HocProps = MapStateType & MapDispatchProps;
 
 function withAuthRedirect<T extends HocProps>(Component: React.ComponentType<T>) {
     const RedirectComponent: React.FC<MapStateType> = (props) => {
-        const location = useLocation();
 
         let {isAuth, ...restProps} = props;
-        if(!isAuth || !window.localStorage.getItem('token')) {
-            return <Navigate to={location.pathname}/>
+        if(!isAuth && !window.localStorage.getItem('token')) {
+            return <Navigate to={'/login'}/>
         }
-        return <Component {...restProps as T} />
+        return <Component {...restProps as T}/>
     };
 
     return connect<MapStateType, {}, T, RootState>(mapStateToPropsForRedirect)(RedirectComponent);

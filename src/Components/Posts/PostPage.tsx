@@ -1,13 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
-import {useDispatch, useSelector} from 'react-redux';
-import {Link, useLocation, useNavigate} from 'react-router-dom';
-import {Box, Chip, Fab, Grid, Tooltip, Typography, useTheme} from '@mui/material';
+import {connect, useDispatch, useSelector} from 'react-redux';
+import {Link, useNavigate} from 'react-router-dom';
+import {Box, Chip, Fab, Grid} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import IconButton from '@mui/material/IconButton';
-import {DoubleArrow} from '@mui/icons-material';
 import styles from './PostPage.module.scss';
 import {getIsFetching, getLastFetchedTags, getPost, getPosts} from '../../redux/posts/posts-selectors';
 import {getAllPosts, getLastTags, getPopularPost} from '../../redux/posts/posts-thunks';
@@ -17,31 +13,53 @@ import {PostSkeleton} from './PostSkeleton';
 import withAuthRedirect from '../HOC/withAuthRedirect';
 import {TagsBlock} from './TagsBlock';
 import Stack from '@mui/material/Stack';
+import {RootState} from '../../redux/redux-store';
+import {createQueryString, useQueryParams} from '../../hook/hooks';
+import {PopularPost} from './PopularPost';
 
-
-const PostPage: React.FC = React.memo(() => {
+export type IPostPage = {
+    isOwner: boolean,
+    isMainPage: boolean,
+    userId: string | '',
+    isFavorite: boolean,
+    text: string
+}
+const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
 
     const isFetching = useSelector(getIsFetching);
     const posts = useSelector(getPosts);
     const popularPost = useSelector(getPost);
     const tags = useSelector(getLastFetchedTags);
 
+    const {queryParams, setQueryParams} = useQueryParams({tags: ''});
+
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
     const dispatch = useDispatch();
-    const theme = useTheme();
-    const {search} = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const query = new URLSearchParams(decodeURIComponent(search)).get('tags');
-        setSelectedTag(query);
-        dispatch(getAllPosts({query: search}));
-        if(!query) {
+        if(!props.isOwner) {
+            dispatch(getLastTags({}))
+        }
+    }, [dispatch])
+
+    useEffect(() => {
+        const tag = queryParams.tags?.toString();
+        setSelectedTag(tag);
+
+        const query = {
+            userId: props.userId,
+            isFavorite: props.isFavorite ? 1 : 0,
+            tags: tag
+        }
+
+        dispatch(getAllPosts({query: createQueryString(query)}));
+
+        if(!props.userId && !tag) {
             dispatch(getPopularPost({}));
         }
-        dispatch(getLastTags({}))
-    }, [search])
+    }, [queryParams])
 
     const handleDelete = () => {
         setSelectedTag(null);
@@ -50,80 +68,22 @@ const PostPage: React.FC = React.memo(() => {
 
     return (
         <Grid container spacing={3} className={styles.posts}>
-            <Grid item md={1}></Grid>
 
-            <Grid item md={8}>
-                {popularPost && <Card sx={{
-                    height: 300,
-                    mx: 'auto',
-                    margin: 0,
-                    position: 'relative',
-                    overflow: 'hidden',
-                    borderRadius: '4px',
-                    boxShadow: `0 8px 24px ${theme.palette.grey[400]}`,
-                    transition: 'transform 0.15s ease-in-out',
-                    display: 'flex'
-                }}>
-                    <Box sx={{display: 'flex', flexDirection: 'column'}}>
-                        <CardContent sx={{flex: '1 0 auto'}}>
-                            <Typography variant="h4" component="div">
-                                {popularPost.title}
-                            </Typography>
-                            <Typography variant="body2">
-                                {popularPost.text?.substring(0, 100)}...
-                            </Typography>
-                        </CardContent>
+            {props.isMainPage && <Grid item xs={1}></Grid>}
 
-                        <Box sx={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            opacity: 0.1,
-                            transition: 'opacity 0.3s ease-in-out',
-                            '&:hover': {
-                                opacity: 0.2,
-                            }
-                        }}>
-                            {popularPost?.image?.length && popularPost?.image[0]?.data &&
-                                <img style={{
-                                    width: '100%',
-                                    height: 300,
-                                    backgroundPosition: 'center',
-                                    backgroundRepeat: 'no-repeat',
-                                    backgroundSize: 'cover'
-                                }}
-                                     src={`data:image/jpeg;base64,${popularPost.image[0].data}`}
-                                />}
-                        </Box>
+            <Grid item xs={props.isMainPage ? 8 : 12}>
+                {popularPost && <PopularPost post={popularPost}/>}
 
+                {selectedTag &&
+                    <Box>
+                        <Stack direction="row" spacing={1}>
+                            <Chip variant="outlined" label={selectedTag} onDelete={handleDelete}/>
+                        </Stack>
                     </Box>
+                }
 
-                    <Box sx={{width: '100%', display: 'flex', alignItems: 'end', pl: 1, pb: 1, justifyContent: 'end'}}>
-                        <Link to={`/posts/${popularPost._id}`}>
-                            <Tooltip title="Читать далее">
-                                <IconButton aria-label="forward">
-                                    <DoubleArrow/>
-                                </IconButton>
-                            </Tooltip>
-                        </Link>
-                    </Box>
-
-                </Card>}
-
-                {selectedTag && <Box>
-                    <Stack direction="row" spacing={1}>
-                        <Chip variant="outlined" label={selectedTag} onDelete={handleDelete}/>
-                    </Stack>
-                </Box>}
-
-                <Grid container rowSpacing={1} columnSpacing={{xs: 2, sm: 4, md: 6}}
-                      sx={{margin: 0}}
-                      style={{marginTop: "20px"}}>
-
+                <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}
+                      sx={{margin: 0}} style={{marginTop: "20px"}}>
 
                     {isFetching
                         ? [...Array(6)].map((value, index) =>
@@ -131,10 +91,11 @@ const PostPage: React.FC = React.memo(() => {
                                 <PostSkeleton key={index}/>
                             </Grid>)
                         : posts.map((el: IPost) =>
-                            <Grid item md={6} key={el._id}>
-                                <PostCard key={el._id} post={el} avatarAbbr={el.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}/>
+                            <Grid item xs={6} key={el._id}>
+                                {el.author && <PostCard key={el._id} post={el} avatarAbbr={el.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}/>}
                             </Grid>
                         )}
+
                     <Link to='/add-post'>
                         <Fab color="primary"
                              aria-label="edit"
@@ -146,12 +107,24 @@ const PostPage: React.FC = React.memo(() => {
                 </Grid>
             </Grid>
 
-            <Grid item md={3}>
-                <TagsBlock items={tags} isLoading={isFetching} query={selectedTag}/>
-            </Grid>
+            {props.isMainPage &&
+                <Grid item md={3}>
+                    <TagsBlock items={tags} isLoading={isFetching} query={selectedTag}/>
+                </Grid>
+            }
 
         </Grid>
     );
 });
 
-export default compose<React.ComponentType>(withAuthRedirect)(PostPage);
+const mapStateToProps = (state: RootState) => ({
+    isOwner: false,
+    isMainPage: true,
+    userId: '',
+    isFavorite: false,
+    text: 'postPage'
+});
+
+export {PostPage};
+
+export default compose<React.ComponentType & IPostPage>(connect(mapStateToProps), withAuthRedirect)(PostPage);

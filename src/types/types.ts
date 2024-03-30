@@ -11,13 +11,15 @@ export type IPost = {
     text: string,
     tags: string[],
     imageId?: string,
-    image?: IImage[],
+    image?: IImage,
     author: IUser
     viewsCount: number,
     likes: number,
     dateStr: string,
     createdAt: Date,
-    comments: IComment[]
+    comments: IComment[],
+    rating: number,
+    userRating: number
 }
 
 export type IImage = {
@@ -31,7 +33,7 @@ export type IPostEdit = {
     _id?: string,
     title: string,
     text: string,
-    imageId: string,
+    imageId?: string,
     tags: string
 }
 
@@ -58,7 +60,10 @@ export type IProfile = {
     lastName?: string,
     contacts: IContact,
     avatarId: string,
-    avatar: IImage[]
+    avatar: IImage,
+    city: string,
+    age: string,
+    description: string
 }
 
 export type IUser = {
@@ -67,7 +72,7 @@ export type IUser = {
     secondName: string,
     lastName?: string,
     avatarId: string,
-    avatar: IImage[]
+    avatar: IImage
 }
 
 export type SimpleNameObj = {

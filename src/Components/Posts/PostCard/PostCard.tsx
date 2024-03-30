@@ -8,15 +8,15 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import {red} from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import {IPost} from '../../../types/types';
-import {markPostFavorite} from '../../../redux/posts/posts-thunks';
+import {markPostFavorite, togglePostRating} from '../../../redux/posts/posts-thunks';
 import Badge from '@mui/material/Badge';
 import {Link} from 'react-router-dom';
-import {DoubleArrow, Grade, Visibility} from '@mui/icons-material';
+import {ArrowDropDown, ArrowDropUp, DoubleArrow, Grade, Visibility} from '@mui/icons-material';
 import {Tooltip} from '@mui/material';
 import {useAppDispatch} from '../../../hook/hooks';
 import {NO_AVATAR} from '../../../Utils/DictConstants';
+import CustomCardActions from '../CustomCardActions';
 
 export type PostCardProps = {
     post: IPost,
@@ -26,6 +26,9 @@ export type PostCardProps = {
 export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
 
     const [isFavorite, setIsFavorite] = useState(!!post.likes);
+    const [rating, setRating] = useState(post.rating || 0);
+    const [userRating, setUserRating] = useState( post.userRating || 0);
+
     const dispatch = useAppDispatch();
 
     const mappedTags = post.tags.map((el: string, index: number) =>
@@ -37,18 +40,24 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
         dispatch(markPostFavorite({postId: post._id}));
     }
 
-    const image = `data:image/jpeg;base64,${post.author.avatar[0].data.toString()}`;
+    const onClickRating = (val: number) => {
+        setRating(rating + val);
+        setUserRating(userRating + val);
+        dispatch(togglePostRating({postId: post._id, rating: userRating + val}));
+    }
+
+    const image = post.author.avatar && `data:image/jpeg;base64,${post.author.avatar?.data}` || NO_AVATAR;
     return (
         <Card sx={{height: 250}}>
             <CardHeader
-                sx={{height: 100}}
+                sx={{height: 70}}
                 avatar={
                     <Avatar alt={post.author.firstName} src={image} sx={{bgcolor: red[500]}} aria-label="recipe">
                         {avatarAbbr}
                     </Avatar>
                 }
                 title={`${post.title.substring(0, 40)}...`}
-                subheader={post.dateStr}
+                subheader={`${post.author.firstName} ${post.author.secondName}`}
                 titleTypographyProps={{
                     variant: 'subtitle1',
                     whiteSpace: 'normal'
@@ -57,7 +66,7 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
 
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    {post.text.substring(0, 50)}...
+                    {post.text.substring(0, 60)}...
                 </Typography>
 
                 {mappedTags}
@@ -71,34 +80,9 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
                              alignItems: 'flex-start',
                              p: 0,
                          }}>
-                <Tooltip title='В избранное'>
-                    <IconButton aria-label="add to favorites" onClick={onClickFavorite}>
-                        <Grade color={isFavorite ? 'error' : 'primary'}/>
-                    </IconButton>
-                </Tooltip>
 
-                <Tooltip title='Просмотры'>
-                    <IconButton aria-label="viewsCount">
-                        <Badge
-                            showZero={true}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'right',
-                            }}
-                            badgeContent={post.viewsCount}
-                            color="primary">
-                            <Visibility/>
-                        </Badge>
-                    </IconButton>
-                </Tooltip>
-
-                <Link to={`/posts/${post._id}`} style={{position: 'absolute', right: '0'}}>
-                    <Tooltip title='Читать далее'>
-                        <IconButton aria-label='forward'>
-                            <DoubleArrow/>
-                        </IconButton>
-                    </Tooltip>
-                </Link>
+                <CustomCardActions post={post} userRating={userRating} rating={rating} isFavorite={isFavorite}
+                                   onClickRating={onClickRating} onClickFavorite={onClickFavorite} isCard={true}/>
             </CardActions>
         </Card>
     );

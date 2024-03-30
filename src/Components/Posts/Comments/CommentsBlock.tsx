@@ -10,6 +10,9 @@ import List from '@mui/material/List';
 import Skeleton from '@mui/material/Skeleton';
 import {IComment} from '../../../types/types';
 import {NO_AVATAR} from '../../../Utils/DictConstants';
+import {Link} from 'react-router-dom';
+import {getFullName} from '../../../Utils/helper';
+import styles from './Comment.module.scss';
 
 export type IComments = {
     items: IComment[],
@@ -30,7 +33,7 @@ export const CommentsBlock: React.FC<IComments> = ({items, children, isLoading =
                                     <Skeleton variant='circular' width={40} height={40}/>
                                 ) : (
                                     <Avatar alt={obj.author.firstName}
-                                            src={obj.author.avatar.length && `data:image/jpeg;base64,${obj.author.avatar[0].data}` || NO_AVATAR}
+                                            src={obj.author.avatar && `data:image/jpeg;base64,${obj.author.avatar.data}` || NO_AVATAR}
                                     />
                                 )}
                             </ListItemAvatar>
@@ -40,10 +43,9 @@ export const CommentsBlock: React.FC<IComments> = ({items, children, isLoading =
                                     <Skeleton variant='text' height={18} width={230}/>
                                 </div>
                             ) : (
-                                <ListItemText
-                                    primary={`${obj.author.firstName} ${obj.author.secondName} ${obj.author.lastName ? obj.author.lastName : ''}`}
-                                    secondary={obj.text}
-                                />
+                                <ListItemText secondary={obj.text}>
+                                    <Link className={styles.name} to={`/users/${obj.author._id}`}>{getFullName(obj.author)}</Link>
+                                </ListItemText>
                             )}
                         </ListItem>
                         <Divider variant='inset' component='li'/>
