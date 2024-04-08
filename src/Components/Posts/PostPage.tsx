@@ -5,31 +5,31 @@ import {Link, useNavigate} from 'react-router-dom';
 import {Box, Chip, Fab, Grid} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import styles from './PostPage.module.scss';
-import {getIsFetching, getLastFetchedTags, getPost, getPosts} from '../../redux/posts/posts-selectors';
+import {getIsFetching, getTags, getPost, getPosts} from '../../redux/posts/posts-selectors';
 import {getAllPosts, getLastTags, getPopularPost} from '../../redux/posts/posts-thunks';
 import {IPost} from '../../types/types';
 import {PostCard} from './PostCard/PostCard';
-import {PostSkeleton} from './PostSkeleton';
+import {PostSkeleton} from './PostCard/PostSkeleton';
 import withAuthRedirect from '../HOC/withAuthRedirect';
 import {TagsBlock} from './TagsBlock';
 import Stack from '@mui/material/Stack';
 import {RootState} from '../../redux/redux-store';
 import {createQueryString, useQueryParams} from '../../hook/hooks';
-import {PopularPost} from './PopularPost';
+import {PopularPost} from './PostCard/PopularPost';
 
 export type IPostPage = {
     isOwner: boolean,
     isMainPage: boolean,
     userId: string | '',
     isFavorite: boolean,
-    text: string
+    isLoad: boolean
 }
 const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
 
     const isFetching = useSelector(getIsFetching);
     const posts = useSelector(getPosts);
     const popularPost = useSelector(getPost);
-    const tags = useSelector(getLastFetchedTags);
+    const tags = useSelector(getTags);
 
     const {queryParams, setQueryParams} = useQueryParams({tags: ''});
 
@@ -42,7 +42,7 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
         if(!props.isOwner) {
             dispatch(getLastTags({}))
         }
-    }, [dispatch])
+    }, [dispatch, props.isOwner, props.isFavorite, props.userId])
 
     useEffect(() => {
         const tag = queryParams.tags?.toString();
@@ -51,7 +51,7 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
         const query = {
             userId: props.userId,
             isFavorite: props.isFavorite ? 1 : 0,
-            tags: tag
+            tags: tags.find(it => it.value === tag)?._id || ''
         }
 
         dispatch(getAllPosts({query: createQueryString(query)}));
@@ -86,7 +86,7 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
                       sx={{margin: 0}} style={{marginTop: "20px"}}>
 
                     {isFetching
-                        ? [...Array(6)].map((value, index) =>
+                        ? [...Array(props.isMainPage ? 6 : 2)].map((value, index) =>
                             <Grid item xs={6} key={index}>
                                 <PostSkeleton key={index}/>
                             </Grid>)
@@ -121,8 +121,7 @@ const mapStateToProps = (state: RootState) => ({
     isOwner: false,
     isMainPage: true,
     userId: '',
-    isFavorite: false,
-    text: 'postPage'
+    isFavorite: false
 });
 
 export {PostPage};

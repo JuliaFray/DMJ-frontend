@@ -4,8 +4,6 @@ import {IFilter} from '../../../types/types';
 import s from './Search.module.css';
 import {useSelector} from 'react-redux';
 import {getUsersFilter} from '../../../redux/users/users-selectors';
-import {Button, Input, Select,} from 'antd';
-import {useAppSelector} from '../../../hook/hooks';
 
 type PropsType = {
     onSubmit: (values: IFilter) => void,
@@ -22,7 +20,6 @@ const searchFormValidate = (values: FormType) => {
     const errors: any = {};
     return errors;
 };
-const {Option} = Select;
 
 const SearchForm: React.FC<PropsType> = React.memo((props) => {
 

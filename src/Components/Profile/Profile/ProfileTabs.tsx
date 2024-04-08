@@ -1,6 +1,7 @@
-import {Box, Container, Grid, Tab, Tabs, Typography} from '@mui/material';
+import {Box, Container, Grid, Tab, Tabs} from '@mui/material';
 import React, {useEffect, useState} from 'react';
 import {PostPage} from '../../Posts/PostPage';
+import UsersPage from '../../Users/UsersPage';
 
 
 export type IProfileTabs = {
@@ -23,30 +24,35 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
         <Container maxWidth="lg">
             <Tabs value={tabIndex} onChange={handleTabChange} centered>
                 <Tab label={props.isOwner ? 'Мои посты' : 'Посты'} {...a11yProps(0)}/>
-                <Tab label="Избранное" {...a11yProps(1)}/>
-                <Tab label="Друзья" {...a11yProps(2)}/>
+                <Tab label='Избранное' {...a11yProps(1)}/>
+                <Tab label='Друзья' {...a11yProps(2)}/>
             </Tabs>
 
             <TabPanel value={tabIndex} index={0}>
                 <Grid container
-                      direction="row"
-                      justifyContent="space-between"
-                      alignItems="stretch">
+                      direction='column'
+                      justifyContent='space-between'
+                      alignItems='stretch'>
                     <PostPage isOwner={props.isOwner} isMainPage={false}
-                              userId={props.userId} isFavorite={false} text={'my'}></PostPage>
+                              userId={props.userId} isFavorite={false} isLoad={true}></PostPage>
                 </Grid>
             </TabPanel>
             <TabPanel value={tabIndex} index={1}>
                 <Grid container
-                      direction="row"
-                      justifyContent="space-between"
-                      alignItems="stretch">
+                      direction='column'
+                      justifyContent='space-between'
+                      alignItems='stretch'>
                     <PostPage isOwner={props.isOwner} isMainPage={false}
-                              userId={props.userId} isFavorite={true} text={'fav'}></PostPage>
+                              userId={props.userId} isFavorite={true} isLoad={true}></PostPage>
                 </Grid>
             </TabPanel>
             <TabPanel value={tabIndex} index={2}>
-                Item Three
+                <Grid container
+                      direction='column'
+                      justifyContent='space-between'
+                      alignItems='stretch'>
+                    <UsersPage/>
+                </Grid>
             </TabPanel>
         </Container>
     );
@@ -69,17 +75,13 @@ const TabPanel: React.FC<ITabPanel> = ({children, value, index, ...other}) => {
 
     return (
         <div
-            role="tabpanel"
+            role='tabpanel'
             hidden={value !== index}
             id={`full-width-tabpanel-${index}`}
             aria-labelledby={`full-width-tab-${index}`}
             {...other}
         >
-            {value === index && (
-                <Box sx={{p: 3}}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
+            {value === index && (<Box sx={{p: 3}}>{children}</Box>)}
         </div>
     );
 }

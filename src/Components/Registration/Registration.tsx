@@ -7,10 +7,10 @@ import Avatar from '@mui/material/Avatar';
 
 import styles from './Registration.module.scss';
 import {useDispatch, useSelector} from "react-redux";
-import {useForm} from "react-hook-form";
-import {Link, Navigate} from "react-router-dom";
-import {getAuthErrors, getGlobalError, getIsAuth} from "../../redux/auth/auth-selectors";
-import {registerUser} from "../../redux/auth/auth-thunks";
+import {useForm} from 'react-hook-form';
+import {Link, Navigate} from 'react-router-dom';
+import {getAuthErrors, getGlobalError, getIsAuth, getIsFetching} from '../../redux/auth/auth-selectors';
+import {registerUser} from '../../redux/auth/auth-thunks';
 import {authActions} from '../../redux/auth/auth-slice';
 
 export type RegisterDataType = {
@@ -23,6 +23,7 @@ export type RegisterDataType = {
 export const Registration = () => {
 
     const isAuth = useSelector(getIsAuth);
+    const isFetching = useSelector(getIsFetching);
     const authErrors = useSelector(getAuthErrors);
     const globalError = useSelector(getGlobalError);
 
@@ -36,6 +37,8 @@ export const Registration = () => {
         mode: 'onChange'
     });
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(authActions.setGlobalError(''));
         clearErrors();
@@ -45,18 +48,13 @@ export const Registration = () => {
                 {shouldFocus: true}
             )
         });
-
-        console.log(errors)
-
-    }, [authErrors])
+    }, [authErrors, dispatch])
 
     const handleOnChange = () => {
         clearErrors();
         dispatch(authActions.setErrors({}));
         dispatch(authActions.setGlobalError(''));
     }
-
-    const dispatch = useDispatch();
 
     const onSubmit = (formData: RegisterDataType) => {
         dispatch(registerUser({userData: formData}));
@@ -114,7 +112,7 @@ export const Registration = () => {
 
                 <span className={styles.error}>{globalError}</span>
 
-                <Button type={"submit"} size="large" disabled={!isValid}
+                <Button type={"submit"} size="large" disabled={!isValid || isFetching}
                         variant="contained" fullWidth>
                     Зарегистрироваться
                 </Button>

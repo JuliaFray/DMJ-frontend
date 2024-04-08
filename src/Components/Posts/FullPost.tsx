@@ -23,7 +23,7 @@ const FullPost: React.FC = React.memo(() => {
         if(id) {
             dispatch(getOnePost({postId: id}));
         }
-    }, [id])
+    }, [id, dispatch])
 
     return (
         <>

@@ -1,5 +1,5 @@
 import {GenericResponseType} from "./api-types";
-import {IComment, IPost} from "../types/types";
+import {IChipData, IComment, IPost} from "../types/types";
 import instance from "./api";
 
 export const postAPI = {
@@ -11,9 +11,17 @@ export const postAPI = {
             })
     },
 
+    getAllTags() {
+        return instance
+            .get<GenericResponseType<IChipData[]>>(`all-tags`)
+            .then(response => {
+                return response.data
+            })
+    },
+
     getLastTags() {
         return instance
-            .get<GenericResponseType<string[]>>(`tags`)
+            .get<GenericResponseType<IChipData[]>>(`tags`)
             .then(response => {
                 return response.data
             })

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from './Post/Post.module.scss';
 import IconButton from '@mui/material/IconButton';
 import {ArrowDropDown, ArrowDropUp, DoubleArrow, Grade} from '@mui/icons-material';
@@ -7,28 +7,43 @@ import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import {Tooltip} from '@mui/material';
 import {IPost} from '../../types/types';
 import {Link} from 'react-router-dom';
+import {markPostFavorite, togglePostRating} from '../../redux/posts/posts-thunks';
+import {useAppDispatch} from '../../hook/hooks';
 
 export type ICardActions = {
     post: IPost,
-    userRating: number,
-    isFavorite: boolean,
-    rating: number,
-    onClickRating: (val: number) => void,
-    onClickFavorite: () => void,
-    isCard: boolean
+    isCard: boolean,
 }
 
 const CustomCardActions: React.FC<ICardActions> = (props, context) => {
+
+    const [isFavorite, setIsFavorite] = useState(!!props.post.likes);
+    const [rating, setRating] = useState(props.post.rating || 0);
+    const [userRating, setUserRating] = useState(props.post.userRating || 0);
+
+    const dispatch = useAppDispatch();
+
+    const onClickFavorite = () => {
+        setIsFavorite(!isFavorite);
+        dispatch(markPostFavorite({postId: props.post._id}));
+    }
+
+    const onClickRating = (val: number) => {
+        setRating(rating + val);
+        setUserRating(userRating + val);
+        dispatch(togglePostRating({postId: props.post._id, rating: userRating + val}));
+    }
+
     return (
         <ul className={styles.postDetails}>
             <li key={'rating'}>
-                <IconButton disabled={props.userRating === -1} aria-label="up rating" onClick={() => props.onClickRating(-1)}>
+                <IconButton disabled={userRating === -1} aria-label="up rating" onClick={() => onClickRating(-1)}>
                     <ArrowDropDown/>
                 </IconButton>
 
-                <span>{props.rating}</span>
+                <span>{rating}</span>
 
-                <IconButton disabled={props.userRating === 1} aria-label="down rating" onClick={() => props.onClickRating(1)}>
+                <IconButton disabled={userRating === 1} aria-label="down rating" onClick={() => onClickRating(1)}>
                     <ArrowDropUp/>
                 </IconButton>
             </li>
@@ -43,8 +58,8 @@ const CustomCardActions: React.FC<ICardActions> = (props, context) => {
 
             <li key={'isFavorite'}>
                 <Tooltip title='В избранное'>
-                    <IconButton aria-label="add to favorites" onClick={props.onClickFavorite}>
-                        <Grade color={props.isFavorite ? 'error' : 'primary'}/>
+                    <IconButton aria-label="add to favorites" onClick={onClickFavorite}>
+                        <Grade color={isFavorite ? 'error' : 'primary'}/>
                     </IconButton>
                 </Tooltip>
             </li>

@@ -18,7 +18,7 @@ export const getFullName = (user: IUser) => {
 }
 
 export const convertBase64ToBlob = (image: string): Blob => {
-    const byteString = atob(image.split(',')[1]);
+    const byteString = atob(image.replace(/^data:image\/(png|jpeg|jpg);base64,/, ''));
     const ab = new ArrayBuffer(byteString.length);
     const ia = new Uint8Array(ab);
     for(let i = 0; i < byteString.length; i += 1) {

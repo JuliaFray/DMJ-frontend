@@ -33,7 +33,7 @@ export const CommentsBlock: React.FC<IComments> = ({items, children, isLoading =
                                     <Skeleton variant='circular' width={40} height={40}/>
                                 ) : (
                                     <Avatar alt={obj.author.firstName}
-                                            src={obj.author.avatar && `data:image/jpeg;base64,${obj.author.avatar.data}` || NO_AVATAR}
+                                            src={(obj.author.avatar && `data:image/jpeg;base64,${obj.author.avatar.data}`) || NO_AVATAR}
                                     />
                                 )}
                             </ListItemAvatar>

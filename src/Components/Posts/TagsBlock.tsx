@@ -8,10 +8,10 @@ import Skeleton from '@mui/material/Skeleton';
 
 import {SideBlock} from '../Common/SideBlock/SideBlockComponent'
 import {useQueryParams} from '../../hook/hooks';
-import {useLocation} from 'react-router-dom';
+import {IChipData} from '../../types/types';
 
 export type ITagBlock = {
-    items: string[];
+    items: IChipData[];
     isLoading: boolean,
     query: string | null
 }
@@ -19,22 +19,22 @@ export const TagsBlock: React.FC<ITagBlock> = ({items, isLoading = true, query})
 
     const {queryParams, setQueryParams} = useQueryParams({tags: query ? query : ''});
 
-    const handleTagChange = (name: string) => {
-        setQueryParams({tags: name});
+    const handleTagChange = (item: IChipData) => {
+        setQueryParams({tags: item.value});
     }
 
     return (
         <SideBlock title='Тэги'>
-            {(items || [...Array(5)]).map((name, i) =>
-                <ListItem key={i} disablePadding onClick={() => handleTagChange(name)}>
+            {(items || [...Array(5)]).map((item, i) =>
+                <ListItem key={i} disablePadding onClick={() => handleTagChange(item)}>
                     <ListItemButton>
                         <ListItemIcon>
                             <TagIcon/>
                         </ListItemIcon>
                         {isLoading ? (
-                            <Skeleton width={100}/>
+                            <Skeleton width={'100%'}/>
                         ) : (
-                            <ListItemText primary={name}/>
+                            <ListItemText primary={item.value}/>
                         )}
                     </ListItemButton>
                 </ListItem>

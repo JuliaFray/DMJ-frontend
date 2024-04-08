@@ -3,7 +3,6 @@ import {ChangeEvent, useRef} from 'react';
 import {styled} from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import styles from '../../Posts/AddPost/AddPost.module.scss';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',

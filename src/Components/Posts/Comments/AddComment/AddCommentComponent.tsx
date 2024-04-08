@@ -40,7 +40,7 @@ export const AddCommentComponent: React.FC<ICommentCreate> = ({postId}) => {
         <>
             <div className={styles.root}>
                 <Avatar className={styles.avatar}
-                        src={avatar && `data:image/jpeg;base64,${avatar.data}` || NO_AVATAR}
+                        src={(avatar && `data:image/jpeg;base64,${avatar.data}`) || NO_AVATAR}
                         alt={fullName}/>
                 <form className={styles.form} onSubmit={handleSubmit((values) => onSubmit(values))}>
                     <TextField

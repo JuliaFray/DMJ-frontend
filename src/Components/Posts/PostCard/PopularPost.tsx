@@ -5,14 +5,13 @@ import IconButton from '@mui/material/IconButton';
 import {DoubleArrow} from '@mui/icons-material';
 import Card from '@mui/material/Card';
 import React from 'react';
-import {IPost} from '../../types/types';
+import {IPost} from '../../../types/types';
+import {theme} from '../../../styles/theme';
 
 export type IPopularPost = {
     post: IPost
 }
 export const PopularPost: React.FC<IPopularPost> = ({post}, context) => {
-
-    const theme = useTheme();
 
     const cardSx = {
         height: 250,
@@ -63,6 +62,7 @@ export const PopularPost: React.FC<IPopularPost> = ({post}, context) => {
                             backgroundSize: 'cover'
                         }}
                              src={`data:image/jpeg;base64,${post.image.data}`}
+                             alt={'postImage'}
                         />}
                 </Box>
 

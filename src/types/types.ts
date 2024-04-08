@@ -9,7 +9,7 @@ export type IPost = {
     _id: string,
     title: string,
     text: string,
-    tags: string[],
+    tags: IChipData[],
     imageId?: string,
     image?: IImage,
     author: IUser
@@ -20,6 +20,11 @@ export type IPost = {
     comments: IComment[],
     rating: number,
     userRating: number
+}
+
+export type IChipData = {
+    _id: string,
+    value: string
 }
 
 export type IImage = {

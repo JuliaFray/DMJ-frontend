@@ -1,12 +1,13 @@
-import {IImage, IPost} from '../../types/types';
+import {IChipData, IImage, IPost} from '../../types/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {createPost, createPostComment, deletePost, editPost, getAllPosts, getLastTags, getOnePost, getPopularPost} from './posts-thunks';
+import {createPost, createPostComment, deletePost, editPost, getAllPosts, getAllTags, getLastTags, getOnePost, getPopularPost} from './posts-thunks';
 
 type InitialStateType = {
     posts: IPost[],
     post: IPost | null,
     isFetching: boolean,
-    tags: string[],
+    tags: IChipData[],
+    allTags: IChipData[],
     img: IImage | null
 }
 
@@ -15,6 +16,7 @@ const initialState: InitialStateType = {
     post: null,
     isFetching: false,
     tags: [],
+    allTags: [],
     img: null
 };
 
@@ -27,6 +29,7 @@ const postsSlice = createSlice({
             state.post = null;
             state.isFetching = false;
             state.tags = [];
+            state.allTags = [];
             state.img = null;
         },
         clearPostState: (state) => {
@@ -54,12 +57,25 @@ const postsSlice = createSlice({
                 state.isFetching = false;
                 state.posts = [];
             })
+            //=====getAllTags=====//
+            .addCase(getAllTags.pending, (state) => {
+                state.isFetching = true;
+                state.allTags = [];
+            })
+            .addCase(getAllTags.fulfilled, (state, action: PayloadAction<IChipData[]>) => {
+                state.isFetching = false;
+                state.allTags = action.payload;
+            })
+            .addCase(getAllTags.rejected, (state) => {
+                state.isFetching = false;
+                state.allTags = [];
+            })
             //=====getLastTags=====//
             .addCase(getLastTags.pending, (state) => {
                 state.isFetching = true;
                 state.tags = [];
             })
-            .addCase(getLastTags.fulfilled, (state, action: PayloadAction<string[]>) => {
+            .addCase(getLastTags.fulfilled, (state, action: PayloadAction<IChipData[]>) => {
                 state.isFetching = false;
                 state.tags = action.payload;
             })

@@ -2,6 +2,7 @@ $blue: #4361ee;
 
 .profile {
   height: 100%;
+  flex-wrap: nowrap;
 
   .mainBlock {
     height: 400px;
@@ -33,6 +34,7 @@ $blue: #4361ee;
     }
 
     .profileInfo {
+      height: 400px;
       padding: 20px;
       border-radius: 15px;
       background-color: #fff;
@@ -56,12 +58,12 @@ $blue: #4361ee;
         }
 
         .infoData {
-          height: 200px;
+          height: 160px;
 
 
           li {
             div {
-              width:400px
+              width: 400px
             }
 
           }
@@ -69,6 +71,35 @@ $blue: #4361ee;
 
         .divider {
           margin: 20px 0;
+        }
+
+        .stats {
+          height: 100%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+
+          li {
+            display: flex;
+            flex-direction: column;
+            height: 70px;
+            padding: 0;
+
+            &:not(:last-of-type) {
+              border-right: 1px solid #000000;
+            }
+
+            div {
+              margin: 0;
+            }
+
+            div:last-child {
+              span {
+                font-size: 36px;
+                font-weight: 600;
+              }
+            }
+          }
         }
       }
     }

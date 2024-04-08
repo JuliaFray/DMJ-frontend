@@ -8,8 +8,12 @@ export const getPost = (state: RootState) => {
     return state.posts.post
 };
 
-export const getLastFetchedTags = (state: RootState) => {
+export const getTags = (state: RootState) => {
     return state.posts.tags
+};
+
+export const getAllFetchedTags = (state: RootState) => {
+    return state.posts.allTags
 };
 
 export const getIsFetching = (state: RootState) => {

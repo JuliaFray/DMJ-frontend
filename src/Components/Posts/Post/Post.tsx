@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Clear';
@@ -6,12 +6,12 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import styles from './Post.module.scss';
 import {UserInfo} from '../UserInfo/UserInfo';
-import {PostSkeleton} from '../PostSkeleton';
+import {PostSkeleton} from '../PostCard/PostSkeleton';
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 
-import {IPost} from '../../../types/types';
-import {deletePost, markPostFavorite, togglePostRating} from '../../../redux/posts/posts-thunks';
+import {IChipData, IPost} from '../../../types/types';
+import {deletePost} from '../../../redux/posts/posts-thunks';
 import ReactMarkdown from 'react-markdown';
 import {Tooltip} from '@mui/material';
 import {getFullName, getImage, hasImage} from '../../../Utils/helper';
@@ -29,21 +29,6 @@ export const Post: React.FC<PostPropsType> = ({
 }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const [isFavorite, setIsFavorite] = useState(!!post.likes);
-    const [rating, setRating] = useState(post.rating || 0);
-    const [userRating, setUserRating] = useState(post.userRating || 0);
-
-    const onClickFavorite = () => {
-        setIsFavorite(!isFavorite);
-        dispatch(markPostFavorite({postId: post._id}));
-    }
-
-    const onClickRating = (val: number) => {
-        setRating(rating + val);
-        setUserRating(userRating + val);
-        dispatch(togglePostRating({postId: post._id, rating: userRating + val}));
-    }
 
     const onClickRemove = () => {
         if(window.confirm('Вы действительно хотите удалить статью?')) {
@@ -76,7 +61,9 @@ export const Post: React.FC<PostPropsType> = ({
                 </div>
             )}
 
-            {hasImage(post.image) && <img className={styles.image} src={getImage(post.image)}></img>}
+            {hasImage(post.image) && <img alt={'postImage'}
+                                          className={styles.image}
+                                          src={getImage(post.image)}/>}
 
             <div className={styles.wrapper}>
                 <UserInfo avatar={getImage(post.author.avatar, true)}
@@ -89,9 +76,9 @@ export const Post: React.FC<PostPropsType> = ({
 
                     {!!post.tags?.length &&
                         <ul className={styles.tags}>
-                            {post.tags?.map((name) => (
-                                <li key={name}>
-                                    <Link to={`/tag/${name}`}>#{name}</Link>
+                            {post.tags.length && post.tags.map((tag: IChipData) => (
+                                <li key={tag._id}>
+                                    <Link to={`/tag/${tag.value}`}>#{tag.value}</Link>
                                 </li>
                             ))}
                         </ul>
@@ -99,8 +86,7 @@ export const Post: React.FC<PostPropsType> = ({
 
                     <ReactMarkdown children={post.text}/>
 
-                    <CustomCardActions post={post} userRating={userRating} rating={rating} isFavorite={isFavorite}
-                                       onClickRating={onClickRating} onClickFavorite={onClickFavorite} isCard={false}/>
+                    <CustomCardActions post={post} isCard={false}/>
                 </div>
             </div>
         </div>

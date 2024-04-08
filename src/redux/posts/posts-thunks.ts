@@ -1,5 +1,5 @@
 import {ResultCodeEnum} from '../../api/api-types';
-import {IComment, IPost} from '../../types/types';
+import {IChipData, IComment, IPost} from '../../types/types';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {postAPI} from '../../api/post-api';
 
@@ -119,7 +119,21 @@ export const deletePost = createAsyncThunk<void, { payload: IPost }, { rejectVal
     }
 );
 
-export const getLastTags = createAsyncThunk<string[], {}, { rejectValue: string }>(
+export const getAllTags = createAsyncThunk<IChipData[], {}, { rejectValue: string }>(
+    'posts/allTags', async (__, thunkAPI) => {
+        const response = await postAPI.getAllTags();
+        try {
+            if(response.resultCode === ResultCodeEnum.Error) {
+                return thunkAPI.rejectWithValue(response.message);
+            }
+            return response.data;
+        } catch(e) {
+            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+        }
+    }
+);
+
+export const getLastTags = createAsyncThunk<IChipData[], {}, { rejectValue: string }>(
     'posts/tags', async (__, thunkAPI) => {
         const response = await postAPI.getLastTags();
         try {

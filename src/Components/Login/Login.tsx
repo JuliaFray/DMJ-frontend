@@ -2,13 +2,12 @@ import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {login} from '../../redux/auth/auth-thunks'
 import {Link, Navigate} from 'react-router-dom';
-import {getGlobalError, getIsAuth} from '../../redux/auth/auth-selectors';
+import {getGlobalError, getIsAuth, getIsFetching} from '../../redux/auth/auth-selectors';
 import {Button, Container, Paper, Typography} from '@mui/material';
 import TextField from "@mui/material/TextField";
 import styles from "./Login.module.scss";
 import {useForm} from 'react-hook-form';
 import {ILoginData} from '../../types/types';
-import {useAppSelector} from '../../hook/hooks';
 import {authActions} from '../../redux/auth/auth-slice';
 
 export const Login: React.FC = () => {
@@ -21,6 +20,7 @@ export const Login: React.FC = () => {
         mode: 'onChange'
     });
     const isAuth = useSelector(getIsAuth);
+    const isFetching = useSelector(getIsFetching);
     const globalError = useSelector(getGlobalError);
 
     const dispatch = useDispatch();
@@ -63,7 +63,7 @@ export const Login: React.FC = () => {
 
                     <span className={styles.error}>{globalError}</span>
 
-                    <Button type={'submit'} size='large' disabled={!isValid}
+                    <Button type={'submit'} size='large' disabled={!isValid || isFetching}
                             variant='contained' fullWidth>
                         Войти
                     </Button>

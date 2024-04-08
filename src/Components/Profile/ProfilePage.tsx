@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import ProfileInfo from './ProfileInfo/ProfileInfo';
+import ProfileInfo from './Profile/ProfileInfo';
 import {useDispatch, useSelector} from 'react-redux';
 import {getProfile} from '../../redux/profile/profile-selectors';
 import {getUserProfile} from '../../redux/profile/profile-thunks';
