@@ -1,15 +1,17 @@
-import {IProfile} from '../../types/types';
+import {IProfile, IProfileStats} from '../../types/types';
 import {createSlice} from '@reduxjs/toolkit';
-import {getUserProfile, saveProfilePhoto, saveUserProfile} from './profile-thunks';
+import {getUserProfile, getUserProfileStats, saveProfilePhoto, saveUserProfile} from './profile-thunks';
 
 type InitialStateType = {
     profile: IProfile | null,
     isFetching?: boolean,
+    stats: IProfileStats | null
 }
 
 const initialState: InitialStateType = {
     profile: null,
-    isFetching: false
+    isFetching: false,
+    stats: null
 };
 
 const profileSlice = createSlice({
@@ -17,7 +19,7 @@ const profileSlice = createSlice({
     initialState,
     reducers: {}, extraReducers: (builder) => {
         builder
-            //=====authUser=====//
+            //=====getUserProfile=====//
             .addCase(getUserProfile.pending, (state, action) => {
                 state.isFetching = true;
                 state.profile = null;
@@ -30,19 +32,19 @@ const profileSlice = createSlice({
                 state.isFetching = false;
                 state.profile = null;
             })
-            // //=====updateUserStatus=====//
-            // .addCase(updateUserStatus.pending, (state, action) => {
-            //     state.isFetching = true;
-            // })
-            // .addCase(updateUserStatus.fulfilled, (state, action) => {
-            //     state.isFetching = false;
-            //     if(state.profile) {
-            //         state.profile.status = action.meta.arg.status;
-            //     }
-            // })
-            // .addCase(updateUserStatus.rejected, (state, action) => {
-            //     state.isFetching = false;
-            // })
+            //=====getUserProfileStats=====//
+            .addCase(getUserProfileStats.pending, (state, action) => {
+                state.isFetching = true;
+                state.stats = null;
+            })
+            .addCase(getUserProfileStats.fulfilled, (state, action) => {
+                state.isFetching = false;
+                state.stats = action.payload;
+            })
+            .addCase(getUserProfileStats.rejected, (state, action) => {
+                state.isFetching = false;
+                state.stats = null;
+            })
             //=====saveUserProfile=====//
             .addCase(saveUserProfile.pending, (state, action) => {
                 state.isFetching = true;
@@ -56,7 +58,7 @@ const profileSlice = createSlice({
             .addCase(saveUserProfile.rejected, (state, action) => {
                 state.isFetching = false;
             })
-            //=====saveUserProfilePhoto=====//
+            //=====saveProfilePhoto=====//
             .addCase(saveProfilePhoto.pending, (state, action) => {
                 state.isFetching = true;
             })

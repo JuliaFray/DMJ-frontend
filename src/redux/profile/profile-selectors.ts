@@ -4,6 +4,10 @@ export const getProfile = (state: RootState) => {
     return state.profile.profile;
 };
 
+export const getStats = (state: RootState) => {
+    return state.profile.stats;
+};
+
 export const getProfileAvatar = (state: RootState) => {
     return state.profile?.profile?.avatar;
 };

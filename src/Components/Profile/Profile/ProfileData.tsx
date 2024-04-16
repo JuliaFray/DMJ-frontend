@@ -1,11 +1,12 @@
 import {IContact, IProfile} from '../../../types/types';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import styles from './ProfileInfo.module.scss';
 import {getFullName} from '../../../Utils/helper';
 import {Divider, ListItem, ListItemText} from '@mui/material';
 import List from '@mui/material/List';
 import EditProfileField from './EditProfileField';
-import {useAppDispatch} from '../../../hook/hooks';
+import {useSelector} from 'react-redux';
+import {getStats} from '../../../redux/profile/profile-selectors';
 
 
 type IProfileData = {
@@ -16,19 +17,12 @@ type IProfileData = {
 
 const ProfileData: React.FC<IProfileData> = React.memo((props) => {
 
-    const [stats, setStats] = useState<Record<string, string>>({});
-
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-
-    }, [dispatch]);
-
+    const stats = useSelector(getStats);
 
     return (
         <div className={styles.profileData}>
-            <div className={styles.statusData}>
-                <span className={styles.name}>
+            <div className={styles.profileHeader}>
+                <span className={styles.profileName}>
                      {getFullName(props.profile)}
                 </span>
 
@@ -39,7 +33,7 @@ const ProfileData: React.FC<IProfileData> = React.memo((props) => {
 
             <Divider key={'divider1'} className={styles.divider}/>
 
-            <List dense={true} className={styles.infoData}>
+            <List dense={true} className={styles.profileInfo}>
                 <ListItem key={'ageList'}>
                     <ListItemText key={'ageT'} primary='День рождения:'/>
                     <EditProfileField editMode={props.editMode} name={'age'}
@@ -48,7 +42,7 @@ const ProfileData: React.FC<IProfileData> = React.memo((props) => {
 
                 <ListItem key={'cityList'}>
                     <ListItemText key={'cityT'} primary='Город:'/>
-                    <EditProfileField editMode={props.editMode} name={'city'}
+                    <EditProfileField editMode={props.editMode} name={'city'} placeholder={'Город'}
                                       value={props.profile.city} type={'string'}/>
                 </ListItem>
 
@@ -64,7 +58,7 @@ const ProfileData: React.FC<IProfileData> = React.memo((props) => {
 
                 <ListItem key={'profileList'}>
                     <ListItemText key={'profile'} primary='О себе:'/>
-                    <EditProfileField editMode={props.editMode} name={'description'}
+                    <EditProfileField editMode={props.editMode} name={'description'} placeholder={'О себе'}
                                       value={props.profile.description} type={'string'}/>
                 </ListItem>
             </List>
@@ -74,22 +68,22 @@ const ProfileData: React.FC<IProfileData> = React.memo((props) => {
             <div className={styles.stats}>
                 <ListItem key={'postsList'}>
                     <ListItemText key={'posts'} primary='Посты'/>
-                    <ListItemText key={'postsT'} primary={stats.posts || 0}/>
+                    <ListItemText key={'postsT'} primary={stats?.posts || 0}/>
                 </ListItem>
 
                 <ListItem key={'favoriteList'}>
                     <ListItemText key={'favorite'} primary='Избранное'/>
-                    <ListItemText key={'favoriteT'} primary={stats.favorites || 0}/>
+                    <ListItemText key={'favoriteT'} primary={stats?.favorites || 0}/>
                 </ListItem>
 
-                <ListItem key={'likeList'}>
-                    <ListItemText key={'like'} primary='Нравится'/>
-                    <ListItemText key={'likeT'} primary={stats.likes || 0}/>
+                <ListItem key={'ratingList'}>
+                    <ListItemText key={'rating'} primary='Рейтинг'/>
+                    <ListItemText key={'ratingT'} primary={stats?.rating || 0}/>
                 </ListItem>
 
                 <ListItem key={'friendsList'}>
                     <ListItemText key={'friends'} primary='Друзья'/>
-                    <ListItemText key={'friendsT'} primary={stats.friends || 0}/>
+                    <ListItemText key={'friendsT'} primary={stats?.friends || 0}/>
                 </ListItem>
             </div>
         </div>

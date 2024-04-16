@@ -21,7 +21,7 @@ type QueryParamsType = { term?: string, page?: string, friend?: string };
 
 const UsersPage: React.FC = React.memo(() => {
 
-    const totalUsersCount = useSelector(getTotalUsersCount);
+    const totalCount = useSelector(getTotalUsersCount);
     const pageSize = useSelector(getPageSize);
     const currentPage = useSelector(getCurrentPage);
     const filter = useSelector(getUsersFilter);
@@ -80,7 +80,7 @@ const UsersPage: React.FC = React.memo(() => {
         dispatch(unfollowUser({userId}))
     };
 
-    let pagesCount = Math.ceil(totalUsersCount / pageSize);
+    let pagesCount = Math.ceil(totalCount / pageSize);
     let pages = [];
     for(let i = 1; i <= pagesCount; i++) {
         pages.push(i)
@@ -89,16 +89,16 @@ const UsersPage: React.FC = React.memo(() => {
     return (
         <>
             <Grid container spacing={3}>
-                <Grid item xs={3}>filter</Grid>
+                <Grid item xs={3}></Grid>
 
-                <Grid item xs={9}>
+                <Grid item xs={9} style={{position: 'relative', height: '95vh'}}>
                     {isFetching
                         ? <CircularProgress/>
                         : <Grid container rowSpacing={2} columnSpacing={{xs: 1, sm: 2, md: 3}}
                                 sx={{margin: 0}} style={{marginTop: "20px"}}>
                             {
                                 users && users.map((u: IUser) => (
-                                    <Grid item xs={4} key={u._id}>
+                                    <Grid item xs={12} key={u._id}>
                                         <UserCard user={u}
                                                   key={u._id}
                                                   unfollow={unfollow}
@@ -108,12 +108,9 @@ const UsersPage: React.FC = React.memo(() => {
                             }
                         </Grid>}
 
-
+                    {pages.length > 1 && <Pagination style={{position: 'absolute', marginTop: 20, bottom: 0}} page={currentPage} count={totalCount} variant="outlined"/>}
                 </Grid>
-
-
             </Grid>
-            <Pagination page={currentPage} count={totalUsersCount} variant="outlined"/>
         </>
     )
 });

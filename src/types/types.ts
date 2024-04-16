@@ -71,6 +71,13 @@ export type IProfile = {
     description: string
 }
 
+export type IProfileStats = {
+    posts: number,
+    favorites: number,
+    friends: number,
+    rating: number
+}
+
 export type IUser = {
     _id: string,
     firstName: string,

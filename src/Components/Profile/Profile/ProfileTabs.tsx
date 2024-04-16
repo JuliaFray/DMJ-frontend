@@ -1,7 +1,8 @@
-import {Box, Container, Grid, Tab, Tabs} from '@mui/material';
+import {Container, Grid, Tab, Tabs} from '@mui/material';
 import React, {useEffect, useState} from 'react';
 import {PostPage} from '../../Posts/PostPage';
 import UsersPage from '../../Users/UsersPage';
+import TabPanel from '../../Common/Tabs/TabPanel';
 
 
 export type IProfileTabs = {
@@ -22,9 +23,9 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
 
     return (
         <Container maxWidth="lg">
-            <Tabs value={tabIndex} onChange={handleTabChange} centered>
+            <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
                 <Tab label={props.isOwner ? 'Мои посты' : 'Посты'} {...a11yProps(0)}/>
-                <Tab label='Избранное' {...a11yProps(1)}/>
+                {props.isOwner && <Tab label='Избранное' {...a11yProps(1)}/>}
                 <Tab label='Друзья' {...a11yProps(2)}/>
             </Tabs>
 
@@ -37,7 +38,7 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
                               userId={props.userId} isFavorite={false} isLoad={true}></PostPage>
                 </Grid>
             </TabPanel>
-            <TabPanel value={tabIndex} index={1}>
+            {props.isOwner && <TabPanel value={tabIndex} index={1}>
                 <Grid container
                       direction='column'
                       justifyContent='space-between'
@@ -45,7 +46,7 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
                     <PostPage isOwner={props.isOwner} isMainPage={false}
                               userId={props.userId} isFavorite={true} isLoad={true}></PostPage>
                 </Grid>
-            </TabPanel>
+            </TabPanel>}
             <TabPanel value={tabIndex} index={2}>
                 <Grid container
                       direction='column'
@@ -63,25 +64,4 @@ const a11yProps = (index: number) => {
         id: `full-width-tab-${index}`,
         'aria-controls': `full-width-tabpanel-${index}`,
     };
-}
-
-type ITabPanel = {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
-}
-
-const TabPanel: React.FC<ITabPanel> = ({children, value, index, ...other}) => {
-
-    return (
-        <div
-            role='tabpanel'
-            hidden={value !== index}
-            id={`full-width-tabpanel-${index}`}
-            aria-labelledby={`full-width-tab-${index}`}
-            {...other}
-        >
-            {value === index && (<Box sx={{p: 3}}>{children}</Box>)}
-        </div>
-    );
 }

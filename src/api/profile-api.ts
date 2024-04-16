@@ -1,11 +1,19 @@
 import {GenericResponseType} from "./api-types";
-import {IProfile} from "../types/types";
+import {IProfile, IProfileStats} from "../types/types";
 import instance from "./api";
 
 export const profileAPI = {
     getProfile(userId: string) {
         return instance
             .get<GenericResponseType<IProfile>>(`profile/${userId}`)
+            .then(response => {
+                return response.data
+            })
+    },
+
+    getStats(userId: string) {
+        return instance
+            .get<GenericResponseType<IProfileStats>>(`profile/${userId}/stats`)
             .then(response => {
                 return response.data
             })

@@ -1,5 +1,13 @@
 .root {
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 0 10px;
+
+  .filter {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
 
 .title {

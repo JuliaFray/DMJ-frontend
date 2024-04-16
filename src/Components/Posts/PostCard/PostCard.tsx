@@ -9,6 +9,8 @@ import {red} from '@mui/material/colors';
 import {IChipData, IPost} from '../../../types/types';
 import {NO_AVATAR} from '../../../Utils/DictConstants';
 import CustomCardActions from '../CustomCardActions';
+import {getFullName} from '../../../Utils/helper';
+import styles from '../Post/Post.module.scss';
 
 export type PostCardProps = {
     post: IPost,
@@ -31,17 +33,17 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
                         {avatarAbbr}
                     </Avatar>
                 }
-                title={`${post.title.substring(0, 40)}...`}
-                subheader={`${post.author.firstName} ${post.author.secondName}`}
+                title={`${post.title.substring(0, 65)}${post.title.length > 65 ? '...' : ''}`}
+                subheader={getFullName(post.author)}
                 titleTypographyProps={{
                     variant: 'subtitle1',
                     whiteSpace: 'normal'
                 }}
             />
 
-            <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                    {post.text.substring(0, 60)}...
+            <CardContent className={styles.cardContent}>
+                <Typography variant="body2" color="text.secondary" >
+                    {post.text.substring(0, 120)}{post.text.length > 120 ? '...' : ''}
                 </Typography>
 
                 <div style={{height: 10}}>
@@ -56,7 +58,7 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
                              display: 'flex',
                              justifyContent: 'flex-start',
                              alignItems: 'flex-start',
-                             p: 0,
+                             p: 0, m: 0
                          }}>
 
                 <CustomCardActions post={post} isCard/>

@@ -14,7 +14,7 @@ type InitialStateType = {
 const initialState: InitialStateType = {
     posts: [],
     post: null,
-    isFetching: false,
+    isFetching: true,
     tags: [],
     allTags: [],
     img: null

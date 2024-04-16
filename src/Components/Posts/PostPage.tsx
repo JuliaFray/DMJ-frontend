@@ -5,7 +5,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import {Box, Chip, Fab, Grid} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import styles from './PostPage.module.scss';
-import {getIsFetching, getTags, getPost, getPosts} from '../../redux/posts/posts-selectors';
+import {getIsFetching, getPost, getPosts, getTags} from '../../redux/posts/posts-selectors';
 import {getAllPosts, getLastTags, getPopularPost} from '../../redux/posts/posts-thunks';
 import {IPost} from '../../types/types';
 import {PostCard} from './PostCard/PostCard';
@@ -16,6 +16,7 @@ import Stack from '@mui/material/Stack';
 import {RootState} from '../../redux/redux-store';
 import {createQueryString, useQueryParams} from '../../hook/hooks';
 import {PopularPost} from './PostCard/PopularPost';
+import PostFilter from './PostFilter';
 
 export type IPostPage = {
     isOwner: boolean,
@@ -34,6 +35,8 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
     const {queryParams, setQueryParams} = useQueryParams({tags: ''});
 
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
+    const [fetchNew, setFetchNew] = useState<boolean>(false);
+    const [filter, setFilter] = useState<string>('');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -50,8 +53,10 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
 
         const query = {
             userId: props.userId,
-            isFavorite: props.isFavorite ? 1 : 0,
-            tags: tags.find(it => it.value === tag)?._id || ''
+            isFavorite: JSON.stringify(props.isFavorite),
+            tags: tags.find(it => it.value === tag)?._id || '',
+            isBest: JSON.stringify(fetchNew),
+            filter: filter
         }
 
         dispatch(getAllPosts({query: createQueryString(query)}));
@@ -59,7 +64,7 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
         if(!props.userId && !tag) {
             dispatch(getPopularPost({}));
         }
-    }, [queryParams])
+    }, [queryParams, fetchNew, filter])
 
     const handleDelete = () => {
         setSelectedTag(null);
@@ -72,18 +77,20 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
             {props.isMainPage && <Grid item xs={1}></Grid>}
 
             <Grid item xs={props.isMainPage ? 8 : 12}>
+                {props.isMainPage && <PostFilter onFilterChange={setFilter} onTabChange={setFetchNew}/>}
+
                 {popularPost && <PopularPost post={popularPost}/>}
 
                 {selectedTag &&
                     <Box>
-                        <Stack direction="row" spacing={1}>
-                            <Chip variant="outlined" label={selectedTag} onDelete={handleDelete}/>
+                        <Stack direction='row' spacing={1}>
+                            <Chip variant='outlined' label={selectedTag} onDelete={handleDelete}/>
                         </Stack>
                     </Box>
                 }
 
                 <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}
-                      sx={{margin: 0}} style={{marginTop: "20px"}}>
+                      sx={{margin: 0}} style={{marginTop: '20px', marginBottom: '20px'}}>
 
                     {isFetching
                         ? [...Array(props.isMainPage ? 6 : 2)].map((value, index) =>
@@ -97,8 +104,8 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
                         )}
 
                     <Link to='/add-post'>
-                        <Fab color="primary"
-                             aria-label="edit"
+                        <Fab color='primary'
+                             aria-label='edit'
                              style={{position: 'fixed', bottom: '20px', right: '20px'}}>
                             <EditIcon/>
                         </Fab>

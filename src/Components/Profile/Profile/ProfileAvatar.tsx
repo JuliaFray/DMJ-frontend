@@ -22,7 +22,7 @@ const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        setFile(props.profile.avatar.data);
+        setFile(props.profile?.avatar?.data);
     }, [dispatch])
 
     const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {

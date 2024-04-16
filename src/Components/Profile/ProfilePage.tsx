@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import ProfileInfo from './Profile/ProfileInfo';
 import {useDispatch, useSelector} from 'react-redux';
 import {getProfile} from '../../redux/profile/profile-selectors';
-import {getUserProfile} from '../../redux/profile/profile-thunks';
+import {getUserProfile, getUserProfileStats} from '../../redux/profile/profile-thunks';
 import {useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import withAuthRedirect from '../HOC/withAuthRedirect';
@@ -21,6 +21,7 @@ const ProfilePage: React.FC = React.memo(() => {
 
     useEffect(() => {
         dispatch(getUserProfile({userId}));
+        dispatch(getUserProfileStats({userId}));
     }, [userId, dispatch]);
 
     return (

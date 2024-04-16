@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import {red} from '@mui/material/colors';
@@ -9,9 +7,10 @@ import {IUser} from '../../../types/types';
 import Badge from '@mui/material/Badge';
 import {Link} from 'react-router-dom';
 import {DoubleArrow, Grade, Visibility} from '@mui/icons-material';
-import {Tooltip} from '@mui/material';
-import {useAppDispatch} from '../../../hook/hooks';
+import {Box, Tooltip, Typography} from '@mui/material';
 import {NO_AVATAR} from '../../../Utils/DictConstants';
+import CardContent from '@mui/material/CardContent';
+import {getFullName} from '../../../Utils/helper';
 
 export type PostCardProps = {
     user: IUser,
@@ -21,30 +20,19 @@ export type PostCardProps = {
 
 export const UserCard: React.FC<PostCardProps> = ({user}) => {
 
-    const dispatch = useAppDispatch();
-
-    const image = `data:image/jpeg;base64,${user?.avatar?.data}` || NO_AVATAR;
+    const image = user?.avatar && `data:image/jpeg;base64,${user?.avatar?.data}` || NO_AVATAR;
     return (
-        <Card sx={{height: 250, width: 200}}>
-            <Avatar alt={user.firstName} src={image} sx={{bgcolor: red[500]}} aria-label="recipe"/>
-            <CardHeader
-                sx={{height: 70}}
+        <Card sx={{height: 150, width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Avatar alt={user.firstName} src={image} aria-label="avatar"
+                    sx={{bgcolor: red[500], width: 130, height: 130, ml: 1}}/>
 
-                subheader={`${user.firstName} ${user.secondName}`}
-                titleTypographyProps={{
-                    variant: 'subtitle1',
-                    whiteSpace: 'normal'
-                }}
-            />
+            <CardContent sx={{flex: '1 0 auto', mt: 1}}>
+                <Typography component="div" variant="h5">
+                    {getFullName(user)}
+                </Typography>
+            </CardContent>
 
-            <CardActions disableSpacing style={{position: 'relative'}}
-                         sx={{
-                             alignSelf: 'stretch',
-                             display: 'flex',
-                             justifyContent: 'flex-start',
-                             alignItems: 'flex-start',
-                             p: 0,
-                         }}>
+            <Box sx={{display: 'flex', alignItems: 'center', pl: 1, pb: 1}}>
                 <Tooltip title='В друзья'>
                     <IconButton aria-label="add to favorites">
                         <Grade color={'error'}/>
@@ -65,14 +53,14 @@ export const UserCard: React.FC<PostCardProps> = ({user}) => {
                     </IconButton>
                 </Tooltip>
 
-                <Link to={`/users/${user._id}`} style={{position: 'absolute', right: '0'}}>
+                <Link to={`/users/${user._id}`}>
                     <Tooltip title='Перейти'>
                         <IconButton aria-label='forward'>
                             <DoubleArrow/>
                         </IconButton>
                     </Tooltip>
                 </Link>
-            </CardActions>
+            </Box>
         </Card>
     );
 }

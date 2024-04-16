@@ -14,8 +14,8 @@ export const Login: React.FC = () => {
 
     const {register, handleSubmit, formState: {errors, isValid}} = useForm({
         defaultValues: {
-            email: 'test5@test.ru',
-            password: '12345'
+            email: '',
+            password: ''
         },
         mode: 'onChange'
     });
