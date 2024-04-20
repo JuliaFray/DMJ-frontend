@@ -1,16 +1,15 @@
 import React from 'react';
-import StyleSheet from './../Dialogs.module.css';
+import StyleSheet from '../DialogPage/Dialog.module.css';
 import {Link} from 'react-router-dom';
 import {SimpleNameObj} from "../../../types/types";
+import {Box} from '@mui/material';
 
 const DialogItem: React.FC<SimpleNameObj> = (props) => {
     return (
-        <div className={StyleSheet.dialogItem}>
-            <div>
-                <img alt='dialogUser' src='https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png'/>
-            </div>
+        <Box className={StyleSheet.dialogItem}>
+            <img alt='dialogUser' src='https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png'/>
             <Link to={'/dialogs/' + props.id}>{props.name}</Link>
-        </div>
+        </Box>
 
     )
 };

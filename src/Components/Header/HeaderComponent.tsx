@@ -14,7 +14,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import {AccountBox, Groups, LibraryBooks} from '@mui/icons-material';
+import {AccountBox, Groups, LibraryBooks, ChatBubble} from '@mui/icons-material';
 import styles from './Header.module.scss';
 
 
@@ -36,7 +36,7 @@ const HeaderComponent: React.FC = () => {
         {name: 'Блог', link: `/posts`, icon: <LibraryBooks/>},
         {name: 'Профиль', link: `/users/${userId}`, icon: <AccountBox/>},
         {name: 'Все пользователи', link: `/users`, icon: <Groups/>},
-        // {name: 'Сообщения', link: `/dialogs`, icon: <ChatBubble/>}
+        {name: 'Сообщения', link: `/dialogs`, icon: <ChatBubble/>}
     ];
 
     const onLogout = () => {
@@ -50,8 +50,8 @@ const HeaderComponent: React.FC = () => {
              onKeyDown={toggleDrawer(false)}>
             <List>
                 {items.map((item: IItem, index) => (
-                    <ListItem key={index} disablePadding>
-                        <ListItemButton>
+                    <ListItem key={index} disablePadding className={styles.linkItem}>
+                        <ListItemButton >
                             <ListItemIcon>
                                 {item.icon}
                             </ListItemIcon>
@@ -97,7 +97,7 @@ const HeaderComponent: React.FC = () => {
                         </Typography>
 
                         <Tooltip title='Выйти'>
-                            <IconButton onClick={onLogout} color="info" aria-label="logout">
+                            <IconButton onClick={onLogout} color="success" aria-label="logout">
                                 <Logout/>
                             </IconButton>
                         </Tooltip>

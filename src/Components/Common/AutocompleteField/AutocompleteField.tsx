@@ -58,7 +58,7 @@ const AutocompleteField: React.FC<IAutocompleteField> = (props, context) => {
     }
 
     return (
-        <Stack spacing={3} sx={{width: 500}}>
+        <Stack spacing={3} sx={{width: '100%'}}>
             <Autocomplete
                 id='autocomplete-standard'
                 multiple freeSolo

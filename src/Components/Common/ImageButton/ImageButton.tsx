@@ -4,8 +4,8 @@ import ButtonBase from '@mui/material/ButtonBase';
 
 export const ImageButton = styled(ButtonBase)(({theme}) => ({
     position: 'relative',
-    height: 250,
-    width: 200,
+    height: '100%',
+    width: '100%',
     [theme.breakpoints.down('sm')]: {
         width: '100% !important',
         height: 100,
@@ -29,15 +29,15 @@ export const ImageButton = styled(ButtonBase)(({theme}) => ({
     },
 }));
 
-export const ImageSrc = styled('span')({
+export const ImageSrc = styled('div')({
     position: 'absolute',
     backgroundSize: 'cover',
-    backgroundPosition: 'center 40%',
-    width: '200px',
-    height: '250px'
+    backgroundPosition: 'center 20%',
+    width: '100%',
+    height: '100%'
 });
 
-export const Image = styled('span')(({theme}) => ({
+export const Image = styled('div')(({theme}) => ({
     position: 'absolute',
     left: 0,
     right: 0,
@@ -49,7 +49,7 @@ export const Image = styled('span')(({theme}) => ({
     color: theme.palette.common.white,
 }));
 
-export const ImageBackdrop = styled('span')(({theme}) => ({
+export const ImageBackdrop = styled('div')(({theme}) => ({
     position: 'absolute',
     left: 0,
     right: 0,
@@ -60,7 +60,7 @@ export const ImageBackdrop = styled('span')(({theme}) => ({
     transition: theme.transitions.create('opacity'),
 }));
 
-export const ImageMarked = styled('span')(({theme}) => ({
+export const ImageMarked = styled('div')(({theme}) => ({
     height: 3,
     width: 18,
     backgroundColor: theme.palette.common.white,

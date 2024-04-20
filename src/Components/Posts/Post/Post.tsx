@@ -15,7 +15,8 @@ import {deletePost} from '../../../redux/posts/posts-thunks';
 import ReactMarkdown from 'react-markdown';
 import {Tooltip} from '@mui/material';
 import {getFullName, getImage, hasImage} from '../../../Utils/helper';
-import CustomCardActions from '../CustomCardActions';
+import CustomCardActions from '../PostCard/CustomCardActions';
+import {Delete} from '@mui/icons-material';
 
 export type PostPropsType = {
     post: IPost,
@@ -53,9 +54,9 @@ export const Post: React.FC<PostPropsType> = ({
                         </Tooltip>
 
                     </Link>
-                    <IconButton onClick={onClickRemove} color="secondary">
+                    <IconButton onClick={onClickRemove} color="error">
                         <Tooltip title='Удалить'>
-                            <DeleteIcon/>
+                            <Delete/>
                         </Tooltip>
                     </IconButton>
                 </div>
@@ -78,7 +79,7 @@ export const Post: React.FC<PostPropsType> = ({
                         <ul className={styles.tags}>
                             {post.tags.length && post.tags.map((tag: IChipData) => (
                                 <li key={tag._id}>
-                                    <Link to={`/tag/${tag.value}`}>#{tag.value}</Link>
+                                    #{tag.value}
                                 </li>
                             ))}
                         </ul>

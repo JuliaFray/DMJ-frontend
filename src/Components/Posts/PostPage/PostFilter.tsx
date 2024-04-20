@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import styles from '../Common/SideBlock/SideBlock.module.scss';
+import styles from '../../Common/SideBlock/SideBlock.module.scss';
 import Paper from '@mui/material/Paper';
 import {Container, FormControl, IconButton, Input, InputAdornment, InputLabel, Tab, Tabs} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';

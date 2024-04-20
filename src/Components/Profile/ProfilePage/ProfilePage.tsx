@@ -1,12 +1,13 @@
 import React, {useEffect} from 'react';
-import ProfileInfo from './Profile/ProfileInfo';
 import {useDispatch, useSelector} from 'react-redux';
-import {getProfile} from '../../redux/profile/profile-selectors';
-import {getUserProfile, getUserProfileStats} from '../../redux/profile/profile-thunks';
+import {getProfile} from '../../../redux/profile/profile-selectors';
+import {getUserProfile, getUserProfileStats} from '../../../redux/profile/profile-thunks';
 import {useParams} from 'react-router-dom';
 import {compose} from 'redux';
-import withAuthRedirect from '../HOC/withAuthRedirect';
-import {getAuthId} from '../../redux/auth/auth-selectors';
+import withAuthRedirect from '../../HOC/withAuthRedirect';
+import {getAuthId} from '../../../redux/auth/auth-selectors';
+import PageLayout from '../../Common/PageLayout';
+import ProfileMain from './ProfileMain';
 
 const ProfilePage: React.FC = React.memo(() => {
 
@@ -25,7 +26,7 @@ const ProfilePage: React.FC = React.memo(() => {
     }, [userId, dispatch]);
 
     return (
-        <ProfileInfo profile={profile} isOwner={isOwner}/>
+        <PageLayout isMainPage mainChildren={<ProfileMain isOwner={isOwner} profile={profile}/>}/>
     );
 });
 

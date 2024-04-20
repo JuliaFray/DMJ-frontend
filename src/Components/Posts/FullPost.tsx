@@ -10,6 +10,8 @@ import {compose} from 'redux';
 import {useSelector} from 'react-redux';
 import {getIsFetching, getPost} from '../../redux/posts/posts-selectors';
 import {getAuthId} from '../../redux/auth/auth-selectors';
+import {Container} from '@mui/material';
+import PageLayout from '../Common/PageLayout';
 
 const FullPost: React.FC = React.memo(() => {
 
@@ -26,17 +28,21 @@ const FullPost: React.FC = React.memo(() => {
     }, [id, dispatch])
 
     return (
-        <>
-            {post && <Post post={post} isFullPost isLoading={isFetching}
-                           isEditable={post.author._id === userId}/>
-            }
-            {post &&
-                <CommentsBlock items={post.comments} isLoading={isFetching}>
-                    <AddCommentComponent postId={post._id}/>
-                </CommentsBlock>
-            }
+        <PageLayout isMainPage
+                    mainChildren={<Container>
+                        {post && <Post post={post} isFullPost isLoading={isFetching}
+                                       isEditable={post.author._id === userId}/>
+                        }
+                        {post &&
+                            <CommentsBlock items={post.comments} isLoading={isFetching}>
+                                <AddCommentComponent postId={post._id}/>
+                            </CommentsBlock>
+                        }
 
-        </>
+                    </Container>}
+        />
+
+
     );
 });
 

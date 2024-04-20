@@ -1,0 +1,15 @@
+$primary: #026670;
+$secondary: rgba(159, 237, 215, 0.51);
+$info: #fef9c7;
+$warning: #fce181;
+$success: #edeae5;
+$error: #8d5676;
+
+:export {
+  primary: $primary;
+  secondary: $secondary;
+  info: $info;
+  warning: $warning;
+  success: $success;
+  error: $error
+}

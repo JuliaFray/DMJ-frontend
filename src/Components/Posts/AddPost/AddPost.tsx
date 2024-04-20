@@ -22,6 +22,7 @@ import {convertBase64ToBlob} from '../../../Utils/helper';
 import clsx from 'clsx';
 import {IChipData} from '../../../types/types';
 import AutocompleteField from '../../Common/AutocompleteField/AutocompleteField';
+import PageLayout from '../../Common/PageLayout';
 
 const AddPost: React.FC = () => {
 
@@ -129,45 +130,48 @@ const AddPost: React.FC = () => {
         : '';
 
     return (
-        <Paper style={{padding: 30}} className={clsx(styles.root, {[styles.rootFull]: true})}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+        <PageLayout isMainPage
+                    mainChildren={<Paper style={{padding: 30}} className={clsx(styles.root, {[styles.rootFull]: true})}>
+                        <form onSubmit={handleSubmit(onSubmit)}>
 
-                {!file && <InputFileUpload text={'Загрузить превью'} onClick={handleChangeFile}/>}
+                            {!file && <InputFileUpload text={'Загрузить изображение'} onClick={handleChangeFile}/>}
 
-                {!!file &&
-                    <div className={styles.editButtons}>
-                        <IconButton onClick={onClickRemoveImage} color='secondary'>
-                            <Tooltip title='Удалить'>
-                                <DeleteIcon/>
-                            </Tooltip>
-                        </IconButton>
-                    </div>
-                }
-                {!!file && (<img className={styles.image} src={image} alt={'postImage'}/>)}
+                            {!!file &&
+                                <div className={styles.editButtons}>
+                                    <IconButton onClick={onClickRemoveImage} color='secondary'>
+                                        <Tooltip title='Удалить изображение'>
+                                            <DeleteIcon/>
+                                        </Tooltip>
+                                    </IconButton>
+                                </div>
+                            }
+                            {!!file && (<img className={styles.image} src={image} alt={'postImage'}/>)}
 
-                <br/>
-                <br/>
-                <TextField
-                    classes={{root: styles.title}}
-                    variant='standard'
-                    placeholder='Заголовок статьи...'
-                    fullWidth
-                    value={title}
-                    onChange={e => setTitle(e.target.value)}
-                />
-                <AutocompleteField values={tags} onChange={(val) => setTags(val)}/>
-                <SimpleMDE className={styles.editor} value={text} onChange={onChange}
-                           options={options}/>
-                <div className={styles.buttons}>
-                    <Button type='submit' size='large' variant='contained'>
-                        {!!id ? 'Сохранить' : 'Опубликовать'}
-                    </Button>
-                    <Link to='/posts'>
-                        <Button size='large'>Отмена</Button>
-                    </Link>
-                </div>
-            </form>
-        </Paper>
+                            <br/>
+                            <br/>
+                            <TextField
+                                classes={{root: styles.title}}
+                                variant='standard'
+                                placeholder='Заголовок статьи...'
+                                fullWidth
+                                value={title}
+                                onChange={e => setTitle(e.target.value)}
+                            />
+                            <AutocompleteField values={tags} onChange={(val) => setTags(val)}/>
+                            <SimpleMDE className={styles.editor} value={text} onChange={onChange}
+                                       options={options}/>
+                            <div className={styles.buttons}>
+                                <Button type='submit' size='large' variant='contained'>
+                                    {!!id ? 'Сохранить' : 'Опубликовать'}
+                                </Button>
+                                <Link to={!!id ? `/posts/${id}` : '/posts'}>
+                                    <Button size='large'>Отмена</Button>
+                                </Link>
+                            </div>
+                        </form>
+                    </Paper>}/>
+
+
     );
 };
 

@@ -45,7 +45,7 @@ const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
                                         src={image}
                                         alt={props.profile.firstName}/>}
 
-            {props.editMode && <div>
+            {props.editMode && <div className={styles.avatar}>
                 <input ref={inputRef} type='file' onChange={handleChangeFile} hidden/>
                 <ImageButton focusRipple key={props.profile.firstName} onClick={() => inputRef.current?.click()}>
 

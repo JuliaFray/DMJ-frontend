@@ -12,11 +12,13 @@ import AddPost from './Components/Posts/AddPost/AddPost';
 import {useAppDispatch} from './hook/hooks';
 import {checkAuth} from './redux/auth/auth-thunks';
 import {Registration} from './Components/Registration/Registration';
+import DialogPage from './Components/Dialogs/DialogPage/DialogPage';
+import styles from './App.module.scss';
 
-const Profile = loadable(() => import('./Components/Profile/ProfilePage'));
-const PostsPage = loadable(() => import('./Components/Posts/PostPage'));
+const ProfilePage = loadable(() => import('./Components/Profile/ProfilePage/ProfilePage'));
+const PostsPage = loadable(() => import('./Components/Posts/PostPage/PostPage'));
 const FullPostPage = loadable(() => import('./Components/Posts/FullPost'));
-const Users = loadable(() => import('./Components/Users/UsersPage'));
+const UsersPage = loadable(() => import('./Components/Users/UsersPage/UsersPage'));
 
 
 const App: React.FC = () => {
@@ -39,9 +41,9 @@ const Main: React.FC = () => {
         dispatch(checkAuth({}));
     }
 
-    return <>
+    return <Container className={styles.app} maxWidth={false}>
         <HeaderComponent/>
-        <Container fixed style={{height: "93vh", marginTop: 20}} maxWidth={'lg'}>
+        <Container fixed className={styles.main} maxWidth={'lg'}>
             <Routes>
                 <Route path='/' element={<PostsPage/>}/>
                 <Route path='/posts' element={<PostsPage/>}/>
@@ -49,15 +51,17 @@ const Main: React.FC = () => {
                 <Route path='/posts/:id/edit' element={<AddPost/>}/>
                 <Route path='/add-post' element={<AddPost/>}/>
 
-                <Route path='/users/:id' element={<Profile/>}/>
-                <Route path='/users' element={<Users/>}/>
+                <Route path='/users/:id' element={<ProfilePage/>}/>
+                <Route path='/users' element={<UsersPage/>}/>
+
+                <Route path='/dialogs' element={<DialogPage/>}/>
 
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Registration/>}/>
 
             </Routes>
         </Container>
-    </>
+    </Container>
 }
 
 export default App;

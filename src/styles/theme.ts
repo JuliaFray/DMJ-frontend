@@ -1,25 +1,30 @@
 import {createTheme} from '@mui/material';
+import palette from './palette.module.scss';
 
 export const theme = createTheme({
     palette: {
         primary: {
-            main: '#373a3c'
+            main: palette.primary
         },
-        success: {
-            main: '#8cc476'
-        },
-        warning: {
-            main: '#fade90'
+        secondary: {
+            main: palette.secondary
         },
         error: {
-            main: '#f5a29d'
+            main: palette.error
+        },
+        warning: {
+            main: palette.warning
         },
         info: {
-            main: '#fff'
-        }
+            main: palette.info
+        },
+        success: {
+            main: palette.success,
+            dark: 'rgba(0, 0, 0, 0.54)'
+        },
     },
     typography: {
-        fontSize: 14,
+        fontSize: 12,
     },
     transitions: {
         duration: {

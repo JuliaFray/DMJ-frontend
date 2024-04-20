@@ -22,19 +22,21 @@ const ProfileInfo: React.FC<IProfileInfo> = React.memo(({profile, isOwner}) => {
     }
 
     return (
-        <Grid className={styles.profileRight} container>
-            <Grid container columnSpacing={2} className={styles.profileCards}>
-                <Grid item xs={3} className={styles.profileLeft}>
+        <Grid className={styles.profileInfo} container>
+            <Grid container columnSpacing={1} className={styles.profileCards}>
+                <Grid item xs={8} className={styles.profileLeft}>
+                    {!profile && <Loader/>}
+                    {!!profile && <ProfileData profile={profile} isOwner={isOwner} editMode={editMode}/>}
+                </Grid>
+
+                <Grid item xs={4} className={styles.profileRight}>
                     {!profile && <Loader/>}
                     {!!profile && <ProfileAvatar
                         profile={profile} isOwner={isOwner}
                         editMode={editMode} setEditMode={handleEdit}/>}
                 </Grid>
 
-                <Grid item xs={8} className={styles.profileRight}>
-                    {!profile && <Loader/>}
-                    {!!profile && <ProfileData profile={profile} isOwner={isOwner} editMode={editMode}/>}
-                </Grid>
+
 
             </Grid>
 

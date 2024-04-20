@@ -72,7 +72,7 @@ export type IProfile = {
 }
 
 export type IProfileStats = {
-    posts: number,
+    [posts: string]: number,
     favorites: number,
     friends: number,
     rating: number

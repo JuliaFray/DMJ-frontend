@@ -5,10 +5,9 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import {red} from '@mui/material/colors';
 import {IChipData, IPost} from '../../../types/types';
 import {NO_AVATAR} from '../../../Utils/DictConstants';
-import CustomCardActions from '../CustomCardActions';
+import CustomCardActions from './CustomCardActions';
 import {getFullName} from '../../../Utils/helper';
 import styles from '../Post/Post.module.scss';
 
@@ -29,7 +28,7 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
             <CardHeader
                 sx={{height: 70}}
                 avatar={
-                    <Avatar alt={post.author.firstName} src={image} sx={{bgcolor: red[500]}} aria-label="recipe">
+                    <Avatar alt={post.author.firstName} src={image} aria-label='post-avatar'>
                         {avatarAbbr}
                     </Avatar>
                 }
@@ -42,7 +41,7 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
             />
 
             <CardContent className={styles.cardContent}>
-                <Typography variant="body2" color="text.secondary" >
+                <Typography variant="body2" color="text.secondary">
                     {post.text.substring(0, 120)}{post.text.length > 120 ? '...' : ''}
                 </Typography>
 

@@ -1,14 +1,14 @@
 import React, {useState} from "react";
-import styles from './Post/Post.module.scss';
+import styles from '../Post/Post.module.scss';
 import IconButton from '@mui/material/IconButton';
 import {ArrowDropDown, ArrowDropUp, DoubleArrow, Grade} from '@mui/icons-material';
 import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import {Tooltip} from '@mui/material';
-import {IPost} from '../../types/types';
+import {IPost} from '../../../types/types';
 import {Link} from 'react-router-dom';
-import {markPostFavorite, togglePostRating} from '../../redux/posts/posts-thunks';
-import {useAppDispatch} from '../../hook/hooks';
+import {markPostFavorite, togglePostRating} from '../../../redux/posts/posts-thunks';
+import {useAppDispatch} from '../../../hook/hooks';
 
 export type ICardActions = {
     post: IPost,
@@ -59,7 +59,7 @@ const CustomCardActions: React.FC<ICardActions> = (props, context) => {
             <li key={'isFavorite'}>
                 <Tooltip title='В избранное'>
                     <IconButton aria-label="add to favorites" onClick={onClickFavorite}>
-                        <Grade color={isFavorite ? 'error' : 'primary'}/>
+                        <Grade color={isFavorite ? 'primary' : 'disabled'}/>
                     </IconButton>
                 </Tooltip>
             </li>

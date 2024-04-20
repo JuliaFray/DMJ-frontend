@@ -1,16 +1,16 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import {red} from '@mui/material/colors';
 import {IUser} from '../../../types/types';
-import Badge from '@mui/material/Badge';
 import {Link} from 'react-router-dom';
-import {DoubleArrow, Grade, Visibility} from '@mui/icons-material';
-import {Box, Tooltip, Typography} from '@mui/material';
+import {Article, Chat, Insights, People, PersonAddAlt1} from '@mui/icons-material';
+import {Box, Button, Typography} from '@mui/material';
 import {NO_AVATAR} from '../../../Utils/DictConstants';
 import CardContent from '@mui/material/CardContent';
 import {getFullName} from '../../../Utils/helper';
+import styles from './UserCard.module.scss';
+import useWebSocket from 'react-use-websocket';
+import {WS_URL} from '../../../config/wsConfig';
 
 export type PostCardProps = {
     user: IUser,
@@ -21,45 +21,49 @@ export type PostCardProps = {
 export const UserCard: React.FC<PostCardProps> = ({user}) => {
 
     const image = user?.avatar && `data:image/jpeg;base64,${user?.avatar?.data}` || NO_AVATAR;
+
+    const {sendJsonMessage, readyState} = useWebSocket(WS_URL, {
+        onOpen: () => {
+            console.log('Ws connected');
+        },
+        share: true,
+        filter: () => false,
+        retryOnError: true,
+        shouldReconnect: () => true
+    })
+
+    const handleClick = () => {
+        sendJsonMessage("msg");
+    }
+
     return (
-        <Card sx={{height: 150, width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Avatar alt={user.firstName} src={image} aria-label="avatar"
-                    sx={{bgcolor: red[500], width: 130, height: 130, ml: 1}}/>
+        <Card className={styles.userCard}>
+            <div className={styles.cardContent}>
+                <Avatar alt={user.firstName} src={image} aria-label="avatar" className={styles.userAvatar}/>
+                <div className={styles.userInfo}>
+                    <CardContent>
+                        <Typography component="div" variant="h5">
+                            <Link to={`/users/${user._id}`}>{getFullName(user)}</Link>
+                        </Typography>
+                    </CardContent>
 
-            <CardContent sx={{flex: '1 0 auto', mt: 1}}>
-                <Typography component="div" variant="h5">
-                    {getFullName(user)}
-                </Typography>
-            </CardContent>
+                    <div className={styles.stats}>
+                        <Article color={'disabled'}/><span>10</span>
+                        <Insights color={'disabled'}/><span>-1</span>
+                        <People color={'disabled'}/><span>0</span>
+                    </div>
+                </div>
+            </div>
 
-            <Box sx={{display: 'flex', alignItems: 'center', pl: 1, pb: 1}}>
-                <Tooltip title='В друзья'>
-                    <IconButton aria-label="add to favorites">
-                        <Grade color={'error'}/>
-                    </IconButton>
-                </Tooltip>
 
-                <Tooltip title='Написать'>
-                    <IconButton aria-label="viewsCount">
-                        <Badge
-                            showZero={true}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'right',
-                            }}
-                            color="primary">
-                            <Visibility/>
-                        </Badge>
-                    </IconButton>
-                </Tooltip>
+            <Box className={styles.cardActions}>
+                <Button size='large' variant='outlined' startIcon={<PersonAddAlt1/>}>
+                    В друзья
+                </Button>
 
-                <Link to={`/users/${user._id}`}>
-                    <Tooltip title='Перейти'>
-                        <IconButton aria-label='forward'>
-                            <DoubleArrow/>
-                        </IconButton>
-                    </Tooltip>
-                </Link>
+                <Button onClick={handleClick} size='large' variant='outlined' startIcon={<Chat/>}>
+                    Написать
+                </Button>
             </Box>
         </Card>
     );

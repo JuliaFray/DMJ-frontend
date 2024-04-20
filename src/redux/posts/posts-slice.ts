@@ -122,8 +122,9 @@ const postsSlice = createSlice({
             .addCase(createPost.pending, (state) => {
                 state.isFetching = true;
             })
-            .addCase(createPost.fulfilled, (state) => {
+            .addCase(createPost.fulfilled, (state, action) => {
                 state.isFetching = false;
+                state.post = action.payload
             })
             .addCase(createPost.rejected, (state) => {
                 state.isFetching = false;

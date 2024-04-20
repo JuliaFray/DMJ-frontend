@@ -1,7 +1,7 @@
 import {Container, Grid, Tab, Tabs} from '@mui/material';
 import React, {useEffect, useState} from 'react';
-import {PostPage} from '../../Posts/PostPage';
-import UsersPage from '../../Users/UsersPage';
+import {PostPage} from '../../Posts/PostPage/PostPage';
+import {UsersPage} from '../../Users/UsersPage/UsersPage';
 import TabPanel from '../../Common/Tabs/TabPanel';
 
 
@@ -52,7 +52,7 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
                       direction='column'
                       justifyContent='space-between'
                       alignItems='stretch'>
-                    <UsersPage/>
+                    <UsersPage isMainPage={false}/>
                 </Grid>
             </TabPanel>
         </Container>

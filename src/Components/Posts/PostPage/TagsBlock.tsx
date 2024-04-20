@@ -6,16 +6,16 @@ import TagIcon from '@mui/icons-material/Tag';
 import ListItemText from '@mui/material/ListItemText';
 import Skeleton from '@mui/material/Skeleton';
 
-import {SideBlock} from '../Common/SideBlock/SideBlockComponent'
-import {useQueryParams} from '../../hook/hooks';
-import {IChipData} from '../../types/types';
+import {SideBlock} from '../../Common/SideBlock/SideBlockComponent'
+import {useQueryParams} from '../../../hook/hooks';
+import {IChipData} from '../../../types/types';
 
 export type ITagBlock = {
     items: IChipData[];
     isLoading: boolean,
     query: string | null
 }
-export const TagsBlock: React.FC<ITagBlock> = ({items, isLoading = true, query}) => {
+const TagsBlock: React.FC<ITagBlock> = ({items, isLoading = true, query}) => {
 
     const {queryParams, setQueryParams} = useQueryParams({tags: query ? query : ''});
 
@@ -27,8 +27,8 @@ export const TagsBlock: React.FC<ITagBlock> = ({items, isLoading = true, query})
         <SideBlock title='Тэги'>
             {(items || [...Array(5)]).map((item, i) =>
                 <ListItem key={i} disablePadding onClick={() => handleTagChange(item)}>
-                    <ListItemButton>
-                        <ListItemIcon>
+                    <ListItemButton style={{padding: '5px 0'}}>
+                        <ListItemIcon style={{minWidth: '21px', marginRight: '5px'}}>
                             <TagIcon/>
                         </ListItemIcon>
                         {isLoading ? (
@@ -42,3 +42,5 @@ export const TagsBlock: React.FC<ITagBlock> = ({items, isLoading = true, query})
         </SideBlock>
     );
 };
+
+export default TagsBlock;

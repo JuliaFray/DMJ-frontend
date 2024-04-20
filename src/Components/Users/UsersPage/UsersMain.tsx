@@ -1,5 +1,9 @@
 import React, {useEffect} from 'react';
-import {IFilter, IUser} from "../../types/types";
+import {CircularProgress, Grid, Pagination} from '@mui/material';
+import {IFilter, IUser} from '../../../types/types';
+import {UserCard} from '../UserCard/UserCard';
+import {followUser, getAllUsers, unfollowUser} from '../../../redux/users/users-thunks';
+import {useAppDispatch} from '../../../hook/hooks';
 import {useSelector} from 'react-redux';
 import {
     getCurrentPage,
@@ -9,17 +13,12 @@ import {
     getTotalUsersCount,
     getUsers,
     getUsersFilter
-} from '../../redux/users/users-selectors';
-import {followUser, getAllUsers, unfollowUser} from '../../redux/users/users-thunks';
-import {useAppDispatch} from '../../hook/hooks';
-import {compose} from 'redux';
-import withAuthRedirect from '../HOC/withAuthRedirect';
-import {CircularProgress, Grid, Pagination} from '@mui/material';
-import {UserCard} from './UserCard/UserCard';
+} from '../../../redux/users/users-selectors';
 
 type QueryParamsType = { term?: string, page?: string, friend?: string };
 
-const UsersPage: React.FC = React.memo(() => {
+const UsersMain: React.FC = (props, context) => {
+
 
     const totalCount = useSelector(getTotalUsersCount);
     const pageSize = useSelector(getPageSize);
@@ -72,13 +71,6 @@ const UsersPage: React.FC = React.memo(() => {
         dispatch(getAllUsers({pageSize, currentPage: 1, filter}))
     };
 
-    const follow = (userId: string) => {
-        dispatch(followUser({userId}))
-    };
-
-    const unfollow = (userId: string) => {
-        dispatch(unfollowUser({userId}))
-    };
 
     let pagesCount = Math.ceil(totalCount / pageSize);
     let pages = [];
@@ -86,33 +78,37 @@ const UsersPage: React.FC = React.memo(() => {
         pages.push(i)
     }
 
-    return (
-        <>
-            <Grid container spacing={3}>
-                <Grid item xs={3}></Grid>
+    const follow = (userId: string) => {
+        dispatch(followUser({userId}));
 
-                <Grid item xs={9} style={{position: 'relative', height: '95vh'}}>
-                    {isFetching
-                        ? <CircularProgress/>
-                        : <Grid container rowSpacing={2} columnSpacing={{xs: 1, sm: 2, md: 3}}
-                                sx={{margin: 0}} style={{marginTop: "20px"}}>
-                            {
-                                users && users.map((u: IUser) => (
-                                    <Grid item xs={12} key={u._id}>
-                                        <UserCard user={u}
-                                                  key={u._id}
-                                                  unfollow={unfollow}
-                                                  follow={follow}/>
-                                    </Grid>
-                                ))
-                            }
-                        </Grid>}
+    };
 
-                    {pages.length > 1 && <Pagination style={{position: 'absolute', marginTop: 20, bottom: 0}} page={currentPage} count={totalCount} variant="outlined"/>}
-                </Grid>
-            </Grid>
+    const unfollow = (userId: string) => {
+        dispatch(unfollowUser({userId}))
+    };
+
+
+    return (<>
+            {isFetching
+                ? <CircularProgress/>
+                : <Grid container rowSpacing={2} columnSpacing={{xs: 1, sm: 2, md: 3}}
+                        sx={{margin: 0}} style={{marginTop: "20px"}}>
+                    {
+                        users && users.map((u: IUser) => (
+                            <Grid item xs={12} key={u._id}>
+                                <UserCard user={u}
+                                          key={u._id}
+                                          unfollow={unfollow}
+                                          follow={follow}/>
+                            </Grid>
+                        ))
+                    }
+                </Grid>}
+
+            {pages.length > 1 &&
+                <Pagination style={{position: 'absolute', marginTop: 20, bottom: 0}} page={currentPage} count={totalCount} variant="outlined"/>}
         </>
     )
-});
+}
 
-export default compose<React.ComponentType>(withAuthRedirect)(UsersPage);
+export default UsersMain;
