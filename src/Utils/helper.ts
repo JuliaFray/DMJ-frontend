@@ -1,4 +1,4 @@
-import {IImage, IUser} from '../types/types';
+import {IImage, IProfile, IUser} from '../types/types';
 import {NO_AVATAR} from './DictConstants';
 
 export const getImage = (img: IImage | undefined, isAvatar = false) => {
@@ -13,7 +13,7 @@ export const hasImage = (arr: IImage | undefined) => {
     return !!arr?.data;
 }
 
-export const getFullName = (user: IUser) => {
+export const getFullName = (user: IUser | IProfile) => {
     return `${user.firstName} ${user.secondName} ${user.lastName ? user.lastName : ''}`
 }
 

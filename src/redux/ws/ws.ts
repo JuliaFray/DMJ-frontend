@@ -1,0 +1,38 @@
+import {AppDispatch, RootState} from '../redux-store';
+import {WS_CONNECT_ERR, WS_CONNECT_START, WS_CONNECTED, WS_SHOW_RECONNECT} from '../../Utils/DictConstants';
+
+
+interface OnNewSocket {
+    (newSocket: WebSocket): void;
+}
+
+export const wsConnect = (onNewSocket: OnNewSocket) =>
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+        dispatch({type: WS_CONNECT_START});
+
+        try {
+            const ws = await new Promise<WebSocket>((resolve, reject) => {
+                const socket = new WebSocket(process.env.REACT_APP_WS_URL || 'ws://localhost:8080');
+
+                socket.onopen = () => resolve(socket);
+                socket.onerror = (e) => reject(e);
+            });
+
+            onNewSocket(ws);
+
+            dispatch({
+                type: WS_CONNECTED,
+            });
+        } catch(err) {
+            dispatch({
+                type: WS_CONNECT_ERR,
+                payload: err instanceof Object ? err.toString() : "Unknown error",
+            });
+        }
+    };
+
+export const wsShowReconnect = () => async (dispatch: AppDispatch) => {
+    dispatch({
+        type: WS_SHOW_RECONNECT,
+    });
+};

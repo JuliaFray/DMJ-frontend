@@ -23,9 +23,9 @@ export const getUserProfileStats = createAsyncThunk<IProfileStats, { userId: str
     }
 );
 
-export const saveProfilePhoto = createAsyncThunk<any, { profileId: string, file: FormData }, { rejectValue: string }>(
-    'profile/savePhoto', async (data, thunkAPI) => {
-        const response = await profileAPI.savePhoto(data.profileId, data.file);
+export const saveUserProfile = createAsyncThunk<void, { profileId: string, file: FormData }, { rejectValue: string }>(
+    'profile/save', async (data, thunkAPI) => {
+        const response = await profileAPI.saveProfile(data.profileId, data.file);
 
         if(response.resultCode === ResultCodeEnum.Error) {
             return thunkAPI.rejectWithValue(response.message)
@@ -34,9 +34,9 @@ export const saveProfilePhoto = createAsyncThunk<any, { profileId: string, file:
     }
 );
 
-export const saveUserProfile = createAsyncThunk<void, { profile: IProfile }, { rejectValue: string }>(
-    'profile/save', async (data, thunkAPI) => {
-        const response = await profileAPI.saveProfile(data.profile);
+export const followProfile = createAsyncThunk<void, { profileId: string, query: string }, { rejectValue: string }>(
+    'profile/follow', async (data, thunkAPI) => {
+        const response = await profileAPI.addToFriend(data.profileId, data.query);
 
         if(response.resultCode === ResultCodeEnum.Error) {
             return thunkAPI.rejectWithValue(response.message)

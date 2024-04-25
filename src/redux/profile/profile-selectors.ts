@@ -16,3 +16,7 @@ export const getProfileFullName = (state: RootState) => {
     const profile = state.profile?.profile || '';
     return profile ? (`${profile.secondName} ${profile.firstName} ${profile.lastName}`) : '';
 };
+
+export const getIsFetching = (state: RootState) => {
+    return state.profile.isFetching;
+};

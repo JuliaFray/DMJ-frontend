@@ -48,7 +48,7 @@ export const Registration = () => {
                 {shouldFocus: true}
             )
         });
-    }, [authErrors, dispatch])
+    }, [authErrors])
 
     const handleOnChange = () => {
         clearErrors();

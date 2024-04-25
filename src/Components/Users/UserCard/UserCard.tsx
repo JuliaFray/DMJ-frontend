@@ -3,14 +3,15 @@ import Card from '@mui/material/Card';
 import Avatar from '@mui/material/Avatar';
 import {IUser} from '../../../types/types';
 import {Link} from 'react-router-dom';
-import {Article, Chat, Insights, People, PersonAddAlt1} from '@mui/icons-material';
-import {Box, Button, Typography} from '@mui/material';
+import {Article, Chat, Grade, ImportExport, Insights, Loyalty, People, PersonAddAlt1} from '@mui/icons-material';
+import {Box, Button, Tooltip, Typography} from '@mui/material';
 import {NO_AVATAR} from '../../../Utils/DictConstants';
 import CardContent from '@mui/material/CardContent';
 import {getFullName} from '../../../Utils/helper';
 import styles from './UserCard.module.scss';
 import useWebSocket from 'react-use-websocket';
 import {WS_URL} from '../../../config/wsConfig';
+import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 
 export type PostCardProps = {
     user: IUser,
@@ -18,9 +19,9 @@ export type PostCardProps = {
     unfollow: (userId: string) => void
 }
 
-export const UserCard: React.FC<PostCardProps> = ({user}) => {
+export const UserCard: React.FC<PostCardProps> = ({user, follow}) => {
 
-    const image = user?.avatar && `data:image/jpeg;base64,${user?.avatar?.data}` || NO_AVATAR;
+    const image = user.avatar && `data:image/jpeg;base64,${user.avatar?.data}` || NO_AVATAR;
 
     const {sendJsonMessage, readyState} = useWebSocket(WS_URL, {
         onOpen: () => {
@@ -36,6 +37,11 @@ export const UserCard: React.FC<PostCardProps> = ({user}) => {
         sendJsonMessage("msg");
     }
 
+    const handleFollowClick = () => {
+        console.log(user)
+        follow(user._id);
+    }
+
     return (
         <Card className={styles.userCard}>
             <div className={styles.cardContent}>
@@ -46,24 +52,29 @@ export const UserCard: React.FC<PostCardProps> = ({user}) => {
                             <Link to={`/users/${user._id}`}>{getFullName(user)}</Link>
                         </Typography>
                     </CardContent>
-
-                    <div className={styles.stats}>
-                        <Article color={'disabled'}/><span>10</span>
-                        <Insights color={'disabled'}/><span>-1</span>
-                        <People color={'disabled'}/><span>0</span>
-                    </div>
                 </div>
             </div>
 
 
             <Box className={styles.cardActions}>
-                <Button size='large' variant='outlined' startIcon={<PersonAddAlt1/>}>
-                    В друзья
-                </Button>
+                <Tooltip title={'Подписаться'}>
+                    <Button className={styles.btn} onClick={handleFollowClick} size='small' variant='outlined' startIcon={<Loyalty/>}>
+                        <span className={styles.btnText}>{user.isFollowed ? 'Отписаться' : 'Подписаться'}</span>
+                    </Button>
+                </Tooltip>
 
-                <Button onClick={handleClick} size='large' variant='outlined' startIcon={<Chat/>}>
-                    Написать
-                </Button>
+                <Tooltip title={'В друзья'}>
+                    <Button className={styles.btn} size='small' variant='outlined' startIcon={<PersonAddAlt1/>}>
+                        <span className={styles.btnText}>В друзья</span>
+                    </Button>
+                </Tooltip>
+
+                <Tooltip title={'Написать'}>
+                    <Button className={styles.btn} onClick={handleClick} size='small' variant='outlined' startIcon={<Chat/>}>
+                        <span className={styles.btnText}>Написать</span>
+                    </Button>
+                </Tooltip>
+
             </Box>
         </Card>
     );

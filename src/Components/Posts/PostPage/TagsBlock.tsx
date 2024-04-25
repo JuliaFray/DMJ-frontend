@@ -9,6 +9,7 @@ import Skeleton from '@mui/material/Skeleton';
 import {SideBlock} from '../../Common/SideBlock/SideBlockComponent'
 import {useQueryParams} from '../../../hook/hooks';
 import {IChipData} from '../../../types/types';
+import styles from './PostPage.module.scss';
 
 export type ITagBlock = {
     items: IChipData[];
@@ -27,8 +28,8 @@ const TagsBlock: React.FC<ITagBlock> = ({items, isLoading = true, query}) => {
         <SideBlock title='Тэги'>
             {(items || [...Array(5)]).map((item, i) =>
                 <ListItem key={i} disablePadding onClick={() => handleTagChange(item)}>
-                    <ListItemButton style={{padding: '5px 0'}}>
-                        <ListItemIcon style={{minWidth: '21px', marginRight: '5px'}}>
+                    <ListItemButton className={styles.tag}>
+                        <ListItemIcon className={styles.icon}>
                             <TagIcon/>
                         </ListItemIcon>
                         {isLoading ? (

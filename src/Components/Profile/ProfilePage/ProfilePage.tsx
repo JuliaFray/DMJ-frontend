@@ -23,7 +23,7 @@ const ProfilePage: React.FC = React.memo(() => {
     useEffect(() => {
         dispatch(getUserProfile({userId}));
         dispatch(getUserProfileStats({userId}));
-    }, [userId, dispatch]);
+    }, [userId]);
 
     return (
         <PageLayout isMainPage mainChildren={<ProfileMain isOwner={isOwner} profile={profile}/>}/>

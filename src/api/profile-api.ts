@@ -27,19 +27,19 @@ export const profileAPI = {
             })
     },
 
-    savePhoto(userId: string, data: FormData) {
+    saveProfile(userId: string, data: FormData) {
         return instance
-            .post<GenericResponseType<any>>(`profile/${userId}/photo`, data, {
+            .post<GenericResponseType<void>>(`profile/${userId}`, data, {
                 headers: {'Content-Type': 'multipart/form-data'}
             })
             .then(response => {
                 return response.data
-            })
+            });
     },
 
-    saveProfile(profile: IProfile) {
+    addToFriend(userId: string, query: string) {
         return instance
-            .put<GenericResponseType<void>>(`profile`, profile)
+            .put<GenericResponseType<void>>(`profile/${userId}/follow${query}`)
             .then(response => {
                 return response.data
             });

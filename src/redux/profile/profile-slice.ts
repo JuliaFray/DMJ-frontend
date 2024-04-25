@@ -1,6 +1,6 @@
 import {IProfile, IProfileStats} from '../../types/types';
 import {createSlice} from '@reduxjs/toolkit';
-import {getUserProfile, getUserProfileStats, saveProfilePhoto, saveUserProfile} from './profile-thunks';
+import {followProfile, getUserProfile, getUserProfileStats, saveUserProfile} from './profile-thunks';
 
 type InitialStateType = {
     profile: IProfile | null,
@@ -51,25 +51,18 @@ const profileSlice = createSlice({
             })
             .addCase(saveUserProfile.fulfilled, (state, action) => {
                 state.isFetching = false;
-                if(state.profile) {
-                    state.profile = action.meta.arg.profile;
-                }
             })
             .addCase(saveUserProfile.rejected, (state, action) => {
                 state.isFetching = false;
             })
-            //=====saveProfilePhoto=====//
-            .addCase(saveProfilePhoto.pending, (state, action) => {
+            //=====addToFriendProfile=====//
+            .addCase(followProfile.pending, (state, action) => {
                 state.isFetching = true;
             })
-            .addCase(saveProfilePhoto.fulfilled, (state, action) => {
+            .addCase(followProfile.fulfilled, (state, action) => {
                 state.isFetching = false;
-                if(state.profile && action.payload) {
-                    state.profile.avatar = action.payload;
-                    state.profile.avatarId = action.payload._id;
-                }
             })
-            .addCase(saveProfilePhoto.rejected, (state, action) => {
+            .addCase(followProfile.rejected, (state, action) => {
                 state.isFetching = false;
             })
     }

@@ -26,9 +26,14 @@
       justify-content: space-between;
       border-radius: 0 10px 10px 0;
       background-color: #fff;
-      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
 
+      &.on {
+        box-shadow: 50px 0 50px $secondary;
+      }
 
+      &.off {
+        box-shadow: 50px 0 50px rgba(0, 0, 0, 0.3);
+      }
 
       .avatar {
         width: 100%;
@@ -48,18 +53,20 @@
       padding: 10px;
       border-radius: 10px 0 0 10px;
       background-color: #fff;
-      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-      border-right: 1px solid $secondary;
+      border-right: 1px solid rgba($secondary, 0.5);
+
+      &.on {
+        box-shadow: -50px 0 50px $secondary;
+      }
+
+      &.off {
+        box-shadow: -50px 0 50px rgba(0, 0, 0, 0.3);
+      }
 
       .profileHeader {
-        display: flex;
-        justify-content: space-between;
-
-        .profileName {
-          font-weight: 600;
-          font-size: 20px;
-          text-align: start;
-        }
+        font-weight: 600;
+        font-size: 20px;
+        text-align: start;
       }
 
       .profileList {
@@ -70,11 +77,14 @@
 
           .editFields {
             width: 50%;
+
             .input {
               width: 100% !important;
             }
+
             .datePicker {
               height: 30px !important;
+
               div {
                 height: 30px !important;
               }
@@ -87,7 +97,7 @@
 
       .divider {
         margin: 10px 0;
-        border-color: $secondary;
+        border-color: rgba($secondary, 0.5);
       }
 
       .stats {

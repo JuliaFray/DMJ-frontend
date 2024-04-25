@@ -34,14 +34,6 @@ export type IImage = {
     contentType?: string
 };
 
-export type IPostEdit = {
-    _id?: string,
-    title: string,
-    text: string,
-    imageId?: string,
-    tags: string
-}
-
 export type IContact = {
     github: string,
     website: string,
@@ -57,7 +49,7 @@ export type IComment = {
     } | null
 }
 
-export type IProfile = {
+export interface IProfile extends Record<string, any> {
     _id: string,
     userId: string,
     firstName: string,
@@ -75,7 +67,9 @@ export type IProfileStats = {
     [posts: string]: number,
     favorites: number,
     friends: number,
-    rating: number
+    rating: number,
+    comments: number,
+    marks: number
 }
 
 export type IUser = {
@@ -84,7 +78,10 @@ export type IUser = {
     secondName: string,
     lastName?: string,
     avatarId: string,
-    avatar: IImage
+    avatar: IImage,
+    friends: IProfile[],
+    followers: IProfile[],
+    isFollowed: boolean
 }
 
 export type SimpleNameObj = {

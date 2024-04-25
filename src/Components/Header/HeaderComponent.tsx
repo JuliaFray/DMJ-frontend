@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {authActions} from '../../redux/auth/auth-slice';
 import {getAuthId, getIsAuth} from '../../redux/auth/auth-selectors';
-import {useAppDispatch} from '../../hook/hooks';
+import useWebSocket, {useAppDispatch} from '../../hook/hooks';
 import Logout from '@mui/icons-material/Logout';
 import IconButton from '@mui/material/IconButton';
 import {AppBar, Box, Toolbar, Tooltip, Typography} from '@mui/material';
@@ -14,8 +14,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import {AccountBox, Groups, LibraryBooks, ChatBubble} from '@mui/icons-material';
+import {AccountBox, ChatBubble, Groups, LibraryBooks} from '@mui/icons-material';
 import styles from './Header.module.scss';
+import {Events} from '../../Utils/DictConstants';
 
 
 type IItem = {
@@ -25,6 +26,8 @@ type IItem = {
 }
 
 const HeaderComponent: React.FC = () => {
+
+    const ws = useWebSocket();
 
     const userId = useSelector(getAuthId);
     const isAuth = useSelector(getIsAuth);
@@ -40,7 +43,10 @@ const HeaderComponent: React.FC = () => {
     ];
 
     const onLogout = () => {
-        dispatch(authActions.logout())
+        if(userId) {
+            ws?.send(JSON.stringify({type: Events.LOGOUT_EVENT, id: userId}));
+        }
+        dispatch(authActions.logout());
     };
 
     const list = () => (
@@ -51,7 +57,7 @@ const HeaderComponent: React.FC = () => {
             <List>
                 {items.map((item: IItem, index) => (
                     <ListItem key={index} disablePadding className={styles.linkItem}>
-                        <ListItemButton >
+                        <ListItemButton>
                             <ListItemIcon>
                                 {item.icon}
                             </ListItemIcon>

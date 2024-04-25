@@ -1,41 +1,39 @@
+import React, {ChangeEvent, Dispatch, SetStateAction, useEffect, useRef} from 'react';
 import Avatar from '@mui/material/Avatar';
 import styles from './ProfileInfo.module.scss';
 import {Image, ImageBackdrop, ImageButton, ImageMarked, ImageSrc} from '../../Common/ImageButton/ImageButton';
 import {Typography} from '@mui/material';
 import Button from '@mui/material/Button';
-import React, {ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState} from 'react';
 import {IProfile} from '../../../types/types';
-import {useAppDispatch} from '../../../hook/hooks';
 
 type IProfileAvatar = {
     profile: IProfile,
     isOwner: boolean,
     editMode: boolean,
-    setEditMode: Dispatch<SetStateAction<boolean>>
+    setEditMode: Dispatch<SetStateAction<boolean>>,
+    file: File | string | null,
+    setFile: Dispatch<SetStateAction<File | string | null>>
 }
 
 const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
 
-    const [file, setFile] = useState<File | string | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const dispatch = useAppDispatch();
-
     useEffect(() => {
-        setFile(props.profile?.avatar?.data);
-    }, [dispatch])
+        props.setFile(props.profile?.avatar?.data);
+    }, [])
 
     const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
         const files = (event.target as HTMLInputElement).files;
         if(files?.length) {
-            setFile(files[0]);
+            props.setFile(files[0]);
         }
     };
 
-    const image = file
-        ? typeof file === 'string'
-            ? `data:image/jpeg;base64,${file}`
-            : URL.createObjectURL(file)
+    const image = props.file
+        ? typeof props.file === 'string'
+            ? `data:image/jpeg;base64,${props.file}`
+            : URL.createObjectURL(props.file)
         : '';
 
     return (
@@ -74,8 +72,18 @@ const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
                 <Button className={styles.button}
                         variant='outlined' onClick={() => props.setEditMode(!props.editMode)}>
                     {props.editMode ? 'Сохранить' : 'Редактировать'}
+
                 </Button>
             }
+
+            {props.editMode &&
+                <Button className={styles.button}
+                        variant='outlined' onClick={() => props.setEditMode(!props.editMode)}>
+                    Отмена
+                </Button>
+            }
+
+
         </>
     )
 }

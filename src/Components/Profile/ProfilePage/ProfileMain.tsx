@@ -12,7 +12,7 @@ const ProfileMain: React.FC<IProfileMain> = (props, context) => {
     return (
         <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}
               sx={{margin: 0}} style={{marginTop: '20px', marginBottom: '20px'}}>
-            <ProfileInfo profile={props.profile} isOwner={props.isOwner}/>
+            {props.profile && <ProfileInfo profile={props.profile} isOwner={props.isOwner}/>}
         </Grid>
     );
 }

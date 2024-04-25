@@ -34,7 +34,7 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
         if(!props.isOwner) {
             dispatch(getLastTags({}))
         }
-    }, [dispatch, props.isOwner, props.isFavorite, props.userId])
+    }, [props.isOwner, props.isFavorite, props.userId])
 
     useEffect(() => {
         const tag = queryParams.tags?.toString();

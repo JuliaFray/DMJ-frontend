@@ -6,6 +6,7 @@ import postsSlice from './posts/posts-slice';
 import appSlice from './app/app-slice';
 import {ThunkAction} from 'redux-thunk';
 import {configureStore, getDefaultMiddleware} from '@reduxjs/toolkit';
+import wsReducer from './wsReducer';
 
 const rootReducer = {
     app: appSlice,
@@ -13,6 +14,7 @@ const rootReducer = {
     profile: profileSlice,
     posts: postsSlice,
     user: userSlice,
+    ws: wsReducer
     // dialogPage: dialogReducer,
     // sidebar: sidebarReducer,
     // search: searchReducer,
