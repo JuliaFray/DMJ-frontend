@@ -37,11 +37,11 @@ export const profileAPI = {
             });
     },
 
-    addToFriend(userId: string, query: string) {
+    toggleFollowUser(userId: string, query: string) {
         return instance
-            .put<GenericResponseType<void>>(`profile/${userId}/follow${query}`)
+            .put<GenericResponseType<void>>(`profile/${userId}/toggle-follow${query}`)
             .then(response => {
                 return response.data
             });
-    }
+    },
 };

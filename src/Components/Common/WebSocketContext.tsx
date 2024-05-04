@@ -3,15 +3,20 @@ import {useAppDispatch} from '../../hook/hooks';
 import {useSelector} from 'react-redux';
 import {wsConnect, wsShowReconnect} from '../../redux/ws/ws';
 import {getAuthId} from '../../redux/auth/auth-selectors';
+import {useNavigate} from 'react-router-dom';
+import {Login} from '../Login/Login';
+import Loader from './Loader';
 
 export const WebSocketContext = createContext<WebSocket | null>(null);
 
 function WS(props: React.PropsWithChildren<{}>) {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     // @ts-ignore
     const ws = useSelector((state) => state.ws);
     const authId = useSelector(getAuthId);
+    const isAuth = !!authId || window.localStorage.getItem('token');
 
     const [conn, setConn] = useState<WebSocket | null>(null);
     const [tryingAgainIn, setTryingAgainIn] = useState(5);
@@ -24,12 +29,14 @@ function WS(props: React.PropsWithChildren<{}>) {
     };
 
     const retry = useCallback(() => {
-        dispatch(wsConnect(onNewSocket));
+        if(authId) {
+            dispatch(wsConnect(onNewSocket, authId));
+        }
         setTries((count) => count + 1);
         setTryingAgainIn(5);
         clearInterval(intervalID);
         setIntervalID(undefined);
-    }, [dispatch, intervalID]);
+    }, [dispatch, intervalID, authId]);
 
     const handleClose = useCallback(
         (e: { wasClean: any; }) => {
@@ -38,9 +45,11 @@ function WS(props: React.PropsWithChildren<{}>) {
             dispatch(wsShowReconnect());
             setTries(0);
             setSilentConnect(true);
-            dispatch(wsConnect(onNewSocket));
+            if(authId) {
+                dispatch(wsConnect(onNewSocket, authId));
+            }
         },
-        [dispatch]
+        [dispatch, authId]
     );
 
     const handleOpen = useCallback(() => {
@@ -71,8 +80,13 @@ function WS(props: React.PropsWithChildren<{}>) {
     }, [intervalID, retry, tryingAgainIn]);
 
     useEffect(() => {
-        dispatch(wsConnect(onNewSocket));
-    }, []);
+        if(isAuth) {
+            dispatch(wsConnect(onNewSocket, authId));
+        } else {
+            navigate('/login');
+        }
+    }, [authId]);
+
 
     useEffect(() => {
         if(!conn) return;
@@ -87,10 +101,10 @@ function WS(props: React.PropsWithChildren<{}>) {
     }, [conn, handleClose, handleOpen]);
 
     useEffect(() => {
-        if(!authId || !conn) return;
+        if(!isAuth || !conn) return;
         const payload = {type: 'AUTH_EVENT', id: authId};
         conn.send(JSON.stringify(payload));
-    }, [authId, conn]);
+    }, [isAuth, conn]);
 
     if(!silentConnect && (ws.connecting || ws.error)) {
         return (
@@ -101,11 +115,7 @@ function WS(props: React.PropsWithChildren<{}>) {
                         <button onClick={retry}>Попробовать снова ({tryingAgainIn})</button>
                     </div>
                 )}
-                {!ws.error && (
-                    <>
-                        <h2>Соединение с сервером</h2>
-                    </>
-                )}
+                {!ws.error && (<Loader/>)}
             </div>
         );
     }
@@ -118,7 +128,7 @@ function WS(props: React.PropsWithChildren<{}>) {
         );
     }
 
-    return (<div>Техническое обслуживание</div>);
+    return <div>{!isAuth ? <Login/> : 'Техническое обслуживание'}</div>;
 }
 
 export default WS;

@@ -1,21 +1,15 @@
-import React, {useEffect} from 'react';
-import {CircularProgress, Grid, Pagination} from '@mui/material';
-import {IFilter, IUser} from '../../../types/types';
+import React, {useCallback, useEffect} from 'react';
+import {CircularProgress, Grid} from '@mui/material';
+import {IUser} from '../../../types/types';
 import {UserCard} from '../UserCard/UserCard';
 import {getAllUsers} from '../../../redux/users/users-thunks';
-import {useAppDispatch} from '../../../hook/hooks';
+import useWebSocket, {useAppDispatch} from '../../../hook/hooks';
 import {useSelector} from 'react-redux';
-import {
-    getCurrentPage,
-    getFollowingInProgress,
-    getIsFetching,
-    getPageSize,
-    getTotalUsersCount,
-    getUsers,
-    getUsersFilter
-} from '../../../redux/users/users-selectors';
-import {followProfile} from '../../../redux/profile/profile-thunks';
+import {getCurrentPage, getIsFetching, getPageSize, getTotalUsersCount, getUsers, getUsersFilter} from '../../../redux/users/users-selectors';
+import {toggleFollowProfile} from '../../../redux/profile/profile-thunks';
 import {getAuthId} from '../../../redux/auth/auth-selectors';
+import {Events} from '../../../Utils/DictConstants';
+import {appActions} from '../../../redux/app/app-slice';
 
 type QueryParamsType = { term?: string, page?: string, friend?: string };
 
@@ -81,14 +75,10 @@ const UsersMain: React.FC = (props, context) => {
     //     pages.push(i)
     // }
 
-    const follow = (userId: string) => {
+    const toggleFollow = (userId: string, isFollow: boolean) => {
         if(profileId) {
-            dispatch(followProfile({profileId: profileId, query: `?friendId=${userId}`}));
+            dispatch(toggleFollowProfile({profileId: profileId, query: `?userId=${userId}&isFollow=${isFollow}`}));
         }
-    };
-
-    const unfollow = (userId: string) => {
-        // dispatch(unfollowUser({userId}))
     };
 
 
@@ -102,8 +92,7 @@ const UsersMain: React.FC = (props, context) => {
                             <Grid item xs={12} key={u._id}>
                                 <UserCard user={u}
                                           key={u._id}
-                                          unfollow={unfollow}
-                                          follow={follow}/>
+                                          toggleFollow={toggleFollow}/>
                             </Grid>
                         ))
                     }

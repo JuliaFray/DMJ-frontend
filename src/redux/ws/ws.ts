@@ -6,13 +6,13 @@ interface OnNewSocket {
     (newSocket: WebSocket): void;
 }
 
-export const wsConnect = (onNewSocket: OnNewSocket) =>
+export const wsConnect = (onNewSocket: OnNewSocket, authId: string | undefined) =>
     async (dispatch: AppDispatch, getState: () => RootState) => {
         dispatch({type: WS_CONNECT_START});
 
         try {
             const ws = await new Promise<WebSocket>((resolve, reject) => {
-                const socket = new WebSocket(process.env.REACT_APP_WS_URL || 'ws://localhost:8080');
+                const socket = new WebSocket(process.env.REACT_APP_WS_URL + `${authId ? `?authId=${authId}` : ''}` || 'ws://localhost:8080');
 
                 socket.onopen = () => resolve(socket);
                 socket.onerror = (e) => reject(e);

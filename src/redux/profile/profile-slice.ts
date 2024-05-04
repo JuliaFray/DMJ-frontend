@@ -1,6 +1,6 @@
 import {IProfile, IProfileStats} from '../../types/types';
 import {createSlice} from '@reduxjs/toolkit';
-import {followProfile, getUserProfile, getUserProfileStats, saveUserProfile} from './profile-thunks';
+import {toggleFollowProfile, getUserProfile, getUserProfileStats, saveUserProfile} from './profile-thunks';
 
 type InitialStateType = {
     profile: IProfile | null,
@@ -55,14 +55,14 @@ const profileSlice = createSlice({
             .addCase(saveUserProfile.rejected, (state, action) => {
                 state.isFetching = false;
             })
-            //=====addToFriendProfile=====//
-            .addCase(followProfile.pending, (state, action) => {
+            //=====toggleFollowProfile=====//
+            .addCase(toggleFollowProfile.pending, (state, action) => {
                 state.isFetching = true;
             })
-            .addCase(followProfile.fulfilled, (state, action) => {
+            .addCase(toggleFollowProfile.fulfilled, (state, action) => {
                 state.isFetching = false;
             })
-            .addCase(followProfile.rejected, (state, action) => {
+            .addCase(toggleFollowProfile.rejected, (state, action) => {
                 state.isFetching = false;
             })
     }

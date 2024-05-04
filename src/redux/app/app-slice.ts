@@ -1,14 +1,21 @@
 import {createSlice} from '@reduxjs/toolkit';
 
+type INotifications = {
+    from: string,
+    fromId: string,
+    msg: string
+}
 export type InitialStateType = {
     initialized: boolean,
     globalError?: string,
-    usersOnline: string[]
+    usersOnline: string[],
+    notifications: INotifications[]
 }
 
 let initialState: InitialStateType = {
     initialized: false,
-    usersOnline: []
+    usersOnline: [],
+    notifications: []
 };
 
 const appSlice = createSlice({
@@ -24,18 +31,23 @@ const appSlice = createSlice({
         addUserOnline: (state, payload) => {
             const data = state.usersOnline;
             if (typeof payload.payload.payload === 'string') {
-                console.log(payload.payload.payload);
                 data.push(payload.payload.payload);
             } else {
-                console.log(payload.payload.payload);
                 data.push(...payload.payload.payload);
             }
             state.usersOnline = data;
         },
         removeUserOnline: (state, payload) => {
-            console.log(payload.payload.payload);
             state.usersOnline = state.usersOnline.filter(id => id !== payload.payload.payload);
-        }
+        },
+        addNotification: (state, payload) => {
+            const data = state.notifications;
+            data.push(payload.payload.payload);
+            state.notifications = data;
+        },
+        removeNotification: (state) => {
+            state.notifications = [];
+        },
     }
 });
 

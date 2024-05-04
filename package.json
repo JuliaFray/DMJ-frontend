@@ -42,6 +42,7 @@
     "react-router-dom": "^6.6.2",
     "react-scripts": "^5.0.1",
     "react-simplemde-editor": "^5.2.0",
+    "react-string-replace": "^1.1.1",
     "react-use-error-boundary": "^3.0.0",
     "react-use-websocket": "^4.8.1",
     "redux": "^4.0.0",
@@ -78,6 +79,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/loadable__component": "^5.13.4",
     "@types/uuid": "^9.0.8",
     "babel-plugin-import": "^1.13.3",
