@@ -2,10 +2,11 @@ import {GenericResponseType} from "./api-types";
 import {IProfile, IProfileStats} from "../types/types";
 import instance from "./api";
 
+const baseUrl = 'profile';
 export const profileAPI = {
     getProfile(userId: string) {
         return instance
-            .get<GenericResponseType<IProfile>>(`profile/${userId}`)
+            .get<GenericResponseType<IProfile>>(`${baseUrl}/${userId}`)
             .then(response => {
                 return response.data
             })
@@ -13,7 +14,7 @@ export const profileAPI = {
 
     getStats(userId: string) {
         return instance
-            .get<GenericResponseType<IProfileStats>>(`profile/${userId}/stats`)
+            .get<GenericResponseType<IProfileStats>>(`${baseUrl}/${userId}/stats`)
             .then(response => {
                 return response.data
             })
@@ -21,7 +22,7 @@ export const profileAPI = {
 
     updateStatus(status: string) {
         return instance
-            .put<GenericResponseType<void>>(`profile/status`, {status: status})
+            .put<GenericResponseType<void>>(`${baseUrl}/status`, {status: status})
             .then(response => {
                 return response.data
             })
@@ -29,7 +30,7 @@ export const profileAPI = {
 
     saveProfile(userId: string, data: FormData) {
         return instance
-            .post<GenericResponseType<void>>(`profile/${userId}`, data, {
+            .post<GenericResponseType<void>>(`${baseUrl}/${userId}`, data, {
                 headers: {'Content-Type': 'multipart/form-data'}
             })
             .then(response => {
@@ -39,7 +40,7 @@ export const profileAPI = {
 
     toggleFollowUser(userId: string, query: string) {
         return instance
-            .put<GenericResponseType<void>>(`profile/${userId}/toggle-follow${query}`)
+            .put<GenericResponseType<void>>(`${baseUrl}/${userId}/toggle-follow${query}`)
             .then(response => {
                 return response.data
             });

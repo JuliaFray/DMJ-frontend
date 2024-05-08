@@ -31,7 +31,9 @@ const appSlice = createSlice({
         addUserOnline: (state, payload) => {
             const data = state.usersOnline;
             if (typeof payload.payload.payload === 'string') {
-                data.push(payload.payload.payload);
+                if (!data.includes(payload.payload.payload)) {
+                    data.push(payload.payload.payload);
+                }
             } else {
                 data.push(...payload.payload.payload);
             }

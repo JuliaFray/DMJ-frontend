@@ -19,10 +19,15 @@ export type PostCardProps = {
 export const UserCard: React.FC<PostCardProps> = ({user, toggleFollow}) => {
 
     const [isFollowed, setIsFollowed] = useState(user.isFollowed);
+    const [isFriend, setIsFriend] = useState(false);
 
     const image = user.avatar && `data:image/jpeg;base64,${user.avatar?.data}` || NO_AVATAR;
 
-    const handleClick = () => {
+    const handleMessageClick = () => {
+
+    }
+
+    const handleFriendClick = () => {
 
     }
 
@@ -46,20 +51,33 @@ export const UserCard: React.FC<PostCardProps> = ({user, toggleFollow}) => {
 
 
             <Box className={styles.cardActions}>
-                <Tooltip title={isFollowed ? 'Отписаться' : 'Подписаться'}>
-                    <Button className={styles.btn} onClick={handleFollowClick} size='small' variant='outlined' startIcon={<Loyalty/>}>
-                        <span className={styles.btnText}>{isFollowed ? 'Отписаться' : 'Подписаться'}</span>
-                    </Button>
-                </Tooltip>
+                {isFollowed
+                    ? <Tooltip title={'Отписаться'}>
+                        <Button className={styles.btn} onClick={handleFollowClick} size='small' variant='contained' startIcon={<Loyalty/>}>
+                            <span className={styles.btnText}>Отписаться</span>
+                        </Button>
+                    </Tooltip>
+                    : <Tooltip title={'Подписаться'}>
+                        <Button className={styles.btn} onClick={handleFollowClick} size='small' variant='outlined' startIcon={<Loyalty/>}>
+                            <span className={styles.btnText}>Подписаться</span>
+                        </Button>
+                    </Tooltip>}
 
-                <Tooltip title={'В друзья'}>
-                    <Button className={styles.btn} size='small' variant='outlined' startIcon={<PersonAddAlt1/>}>
-                        <span className={styles.btnText}>В друзья</span>
-                    </Button>
-                </Tooltip>
+                {isFriend
+                    ? <Tooltip title={'Удадить из друзей'}>
+                        <Button className={styles.btn} onClick={handleFriendClick} size='small' variant='contained' startIcon={<PersonAddAlt1/>}>
+                            <span className={styles.btnText}>Удадить из друзей</span>
+                        </Button>
+                    </Tooltip>
+                    : <Tooltip title={'В друзья'}>
+                        <Button className={styles.btn} onClick={handleFriendClick} size='small' variant='outlined' startIcon={<PersonAddAlt1/>}>
+                            <span className={styles.btnText}>В друзья</span>
+                        </Button>
+                    </Tooltip>}
+
 
                 <Tooltip title={'Написать'}>
-                    <Button className={styles.btn} onClick={handleClick} size='small' variant='outlined' startIcon={<Chat/>}>
+                    <Button className={styles.btn} onClick={handleMessageClick} size='small' variant='outlined' startIcon={<Chat/>}>
                         <span className={styles.btnText}>Написать</span>
                     </Button>
                 </Tooltip>

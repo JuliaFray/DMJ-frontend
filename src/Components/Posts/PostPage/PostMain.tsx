@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction} from 'react';
 import PostFilter from './PostFilter';
 import {PopularPost} from '../PostCard/PopularPost';
-import {Box, Chip, Fab, Grid} from '@mui/material';
+import {Box, Chip, Fab, Grid, Pagination} from '@mui/material';
 import Stack from '@mui/material/Stack';
 import {PostSkeleton} from '../PostCard/PostSkeleton';
 import {IPost} from '../../../types/types';
@@ -9,7 +9,8 @@ import {PostCard} from '../PostCard/PostCard';
 import {Link, useNavigate} from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import {useSelector} from 'react-redux';
-import {getPost, getPosts} from '../../../redux/posts/posts-selectors';
+import {getDataLength, getPost, getPosts} from '../../../redux/posts/posts-selectors';
+import CustomPagination from '../../Common/Pagination/CustomPagination';
 
 type IPostMain = {
     isFetching: boolean,
@@ -18,12 +19,15 @@ type IPostMain = {
     setFilter: Dispatch<SetStateAction<string>>,
     setFetchNew: Dispatch<SetStateAction<boolean>>,
     setSelectedTag: Dispatch<SetStateAction<string | null>>,
+    setCurrentPage: Dispatch<SetStateAction<number>>,
+    currentPage: number
 }
 
 const PostMain: React.FC<IPostMain> = (props, context) => {
 
     const posts = useSelector(getPosts);
     const popularPost = useSelector(getPost);
+    const dataLength = useSelector(getDataLength);
 
     const navigate = useNavigate();
 
@@ -71,6 +75,8 @@ const PostMain: React.FC<IPostMain> = (props, context) => {
                 </Link>}
 
             </Grid>
+
+           <CustomPagination page={props.currentPage} dataLength={dataLength} setCurrentPage={props.setCurrentPage}/>
         </>
     );
 }

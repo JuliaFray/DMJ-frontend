@@ -1,6 +1,6 @@
 import React from 'react';
 import {useAppDispatch} from '../../../hook/hooks';
-import PageLayout from '../../Common/PageLayout';
+import PageLayout from '../../Common/PageLayout/PageLayout';
 import DialogMain from './DialogMain';
 import DialogFriends from './DialogFriends';
 

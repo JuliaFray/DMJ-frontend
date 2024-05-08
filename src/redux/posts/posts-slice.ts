@@ -1,9 +1,11 @@
 import {IChipData, IImage, IPost} from '../../types/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {createPost, createPostComment, deletePost, editPost, getAllPosts, getAllTags, getLastTags, getOnePost, getPopularPost} from './posts-thunks';
+import {PostsResponseType} from '../../api/api-types';
 
 type InitialStateType = {
     posts: IPost[],
+    dataLength: number,
     post: IPost | null,
     isFetching: boolean,
     tags: IChipData[],
@@ -13,6 +15,7 @@ type InitialStateType = {
 
 const initialState: InitialStateType = {
     posts: [],
+    dataLength: 0,
     post: null,
     isFetching: true,
     tags: [],
@@ -48,14 +51,17 @@ const postsSlice = createSlice({
                 state.isFetching = true;
                 state.posts = [];
                 state.post = null;
+                state.dataLength = 0;
             })
-            .addCase(getAllPosts.fulfilled, (state, action: PayloadAction<IPost[]>) => {
+            .addCase(getAllPosts.fulfilled, (state, action: PayloadAction<PostsResponseType>) => {
                 state.isFetching = false;
-                state.posts = action.payload;
+                state.posts = action.payload.data;
+                state.dataLength = action.payload.totalCount;
             })
             .addCase(getAllPosts.rejected, (state) => {
                 state.isFetching = false;
                 state.posts = [];
+                state.dataLength = 0;
             })
             //=====getAllTags=====//
             .addCase(getAllTags.pending, (state) => {

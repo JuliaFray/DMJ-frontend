@@ -24,7 +24,7 @@ export const theme = createTheme({
         },
     },
     typography: {
-        fontSize: 12,
+        fontSize: 14,
     },
     transitions: {
         duration: {

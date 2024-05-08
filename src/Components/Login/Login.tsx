@@ -10,7 +10,7 @@ import {useForm} from 'react-hook-form';
 import {ILoginData} from '../../types/types';
 import {authActions} from '../../redux/auth/auth-slice';
 import useWebSocket from '../../hook/hooks';
-import {Events} from '../../Utils/DictConstants';
+import {SocketEvents} from '../../Utils/DictConstants';
 
 export const Login: React.FC = () => {
 
@@ -30,7 +30,7 @@ export const Login: React.FC = () => {
 
     useEffect(() => {
         if(authId) {
-            ws?.send(JSON.stringify({type: Events.AUTH_EVENT, id: authId}));
+            ws?.send(JSON.stringify({type: SocketEvents.AUTH_EVENT, id: authId}));
         }
     }, [authId])
 
@@ -53,7 +53,7 @@ export const Login: React.FC = () => {
 
 
     return (
-        <Container style={{height: "100vh"}}>
+        <Container style={{height: "100%"}}>
             <Paper classes={{root: styles.root}}>
                 <Typography classes={{root: styles.title}} variant="h5">
                     Вход в аккаунт

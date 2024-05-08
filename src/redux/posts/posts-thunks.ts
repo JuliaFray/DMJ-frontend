@@ -1,21 +1,17 @@
-import {ResultCodeEnum} from '../../api/api-types';
+import {PostsResponseType, ResultCodeEnum} from '../../api/api-types';
 import {IChipData, IComment, IPost} from '../../types/types';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {postAPI} from '../../api/post-api';
 
 const UNDEFINED_ERROR = "Неизвестная ошибка"
 
-export const getAllPosts = createAsyncThunk<IPost[], { query: string }, { rejectValue: string }>(
+export const getAllPosts = createAsyncThunk<PostsResponseType, { query: string }>(
     'posts', async (data, thunkAPI) => {
         const response = await postAPI.getAll(data.query);
-        try {
-            if(response.resultCode === ResultCodeEnum.Error) {
-                return thunkAPI.rejectWithValue(response.message);
-            }
-            return response.data;
-        } catch(e) {
+        if(response.resultCode === ResultCodeEnum.Error) {
             return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
         }
+        return response;
     }
 );
 

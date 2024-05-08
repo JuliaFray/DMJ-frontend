@@ -1,11 +1,12 @@
-import {GenericResponseType} from "./api-types";
+import {GenericResponseType, PostsResponseType} from "./api-types";
 import {IChipData, IComment, IPost} from "../types/types";
 import instance from "./api";
 
+const baseUrl = 'posts';
 export const postAPI = {
     getAll(query: string) {
         return instance
-            .get<GenericResponseType<IPost[]>>(`posts${query}`)
+            .get<PostsResponseType>(`${baseUrl}${query}`)
             .then(response => {
                 return response.data
             })
@@ -29,7 +30,7 @@ export const postAPI = {
 
     markPostFavorite(postId: string) {
         return instance
-            .put<GenericResponseType<void>>(`posts/${postId}/like`)
+            .put<GenericResponseType<void>>(`${baseUrl}/${postId}/like`)
             .then(response => {
                 return response.data
             })
@@ -37,7 +38,7 @@ export const postAPI = {
 
     toggleRating(postId: string, rating: number) {
         return instance
-            .put<GenericResponseType<void>>(`posts/${postId}/rating?rating=${rating}`)
+            .put<GenericResponseType<void>>(`${baseUrl}/${postId}/rating?rating=${rating}`)
             .then(response => {
                 return response.data
             })
@@ -45,7 +46,7 @@ export const postAPI = {
 
     getPopular() {
         return instance
-            .get<GenericResponseType<IPost>>(`posts/popular`)
+            .get<GenericResponseType<IPost>>(`${baseUrl}/popular`)
             .then(response => {
                 return response.data
             })
@@ -53,7 +54,7 @@ export const postAPI = {
 
     getOne(postId: string) {
         return instance
-            .get<GenericResponseType<IPost>>(`posts/${postId}`)
+            .get<GenericResponseType<IPost>>(`${baseUrl}/${postId}`)
             .then(response => {
                 return response.data
             })
@@ -61,7 +62,7 @@ export const postAPI = {
 
     createPost(data: FormData) {
         return instance
-            .post<GenericResponseType<IPost>>(`posts`, data, {
+            .post<GenericResponseType<IPost>>(`${baseUrl}`, data, {
                 headers: {'Content-Type': 'multipart/form-data'}
             })
             .then(response => {
@@ -72,7 +73,7 @@ export const postAPI = {
     updatePost(data: FormData, id: string) {
         return instance
             .put<GenericResponseType<void>>(
-                `posts/${id}`,
+                `${baseUrl}/${id}`,
                 data,
                 {
                     headers: {'Content-Type': 'multipart/form-data'}
@@ -85,7 +86,7 @@ export const postAPI = {
 
     deletePost(postId: string) {
         return instance
-            .delete<GenericResponseType<void>>(`posts/${postId}`,)
+            .delete<GenericResponseType<void>>(`${baseUrl}/${postId}`,)
             .then(response => {
                 return response.data
             });
@@ -93,7 +94,7 @@ export const postAPI = {
 
     createPostComment(comment: IComment, postId: string) {
         return instance
-            .post<GenericResponseType<IPost>>(`posts/${postId}/comment`, comment)
+            .post<GenericResponseType<IPost>>(`${baseUrl}/${postId}/comment`, comment)
             .then(response => {
                 return response.data
             })

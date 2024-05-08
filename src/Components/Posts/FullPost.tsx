@@ -11,7 +11,7 @@ import {useSelector} from 'react-redux';
 import {getIsFetching, getPost} from '../../redux/posts/posts-selectors';
 import {getAuthId} from '../../redux/auth/auth-selectors';
 import {Container} from '@mui/material';
-import PageLayout from '../Common/PageLayout';
+import PageLayout from '../Common/PageLayout/PageLayout';
 
 const FullPost: React.FC = React.memo(() => {
 

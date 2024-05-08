@@ -13,7 +13,7 @@ import {useSelector} from 'react-redux';
 import {getIsFetching} from '../../../redux/profile/profile-selectors';
 import {convertBase64ToBlob} from '../../../Utils/helper';
 import {getUserOnline} from '../../../redux/app/app-selectors';
-import {Events} from '../../../Utils/DictConstants';
+import {SocketEvents} from '../../../Utils/DictConstants';
 import {appActions} from '../../../redux/app/app-slice';
 
 type IProfileInfo = {
@@ -37,12 +37,7 @@ const ProfileInfo: React.FC<IProfileInfo> = React.memo(({profile, isOwner}) => {
     const handleWS = useCallback(
         (e: any) => {
             const {type, data} = JSON.parse(e.data);
-            if(type === Events.AUTH_EVENT && data.includes(profile._id)) {
-                setStatus(true);
-                dispatch(appActions.addUserOnline({type: 'app/addUserOnline', payload: data}))
-            }
-
-            if(type === Events.LOGOUT_EVENT && !data.includes(profile._id)) {
+            if(type === SocketEvents.LOGOUT_EVENT && !data.includes(profile._id)) {
                 setStatus(false);
                 dispatch(appActions.removeUserOnline({type: 'app/removeUserOnline', payload: profile._id}));
             }

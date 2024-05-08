@@ -4,6 +4,10 @@ export const getPosts = (state: RootState) => {
     return state.posts.posts || []
 };
 
+export const getDataLength = (state: RootState) => {
+    return state.posts.dataLength || 0
+};
+
 export const getPost = (state: RootState) => {
     return state.posts.post
 };

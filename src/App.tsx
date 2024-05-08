@@ -46,7 +46,7 @@ const Main: React.FC = () => {
         <WS>
             <Container className={styles.app} maxWidth={false}>
                 <HeaderComponent/>
-                <Container fixed className={styles.main} maxWidth={'lg'}>
+                <Container fixed className={styles.main} maxWidth={'xl'}>
                     <Routes>
                         <Route path='/' element={<PostsPage/>}/>
                         <Route path='/posts' element={<PostsPage/>}/>

@@ -6,7 +6,7 @@ import {useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import withAuthRedirect from '../../HOC/withAuthRedirect';
 import {getAuthId} from '../../../redux/auth/auth-selectors';
-import PageLayout from '../../Common/PageLayout';
+import PageLayout from '../../Common/PageLayout/PageLayout';
 import ProfileMain from './ProfileMain';
 
 const ProfilePage: React.FC = React.memo(() => {

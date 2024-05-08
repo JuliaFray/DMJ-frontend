@@ -4,20 +4,8 @@ export const getUsers = (state: RootState) => {
     return state.user.users
 };
 
-export const getPageSize = (state: RootState) => {
-    return state.user.pageSize
-};
-
-export const getFollowingInProgress = (state: RootState) => {
-    return state.user.followingInProgress
-};
-
-export const getTotalUsersCount = (state: RootState) => {
-    return state.user.totalUsersCount
-};
-
-export const getCurrentPage = (state: RootState) => {
-    return state.user.currentPage
+export const getDataLength = (state: RootState) => {
+    return state.user.dataLength
 };
 
 export const getUserId = (state: RootState) => {

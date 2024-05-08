@@ -6,7 +6,7 @@ import {getAllPosts, getLastTags, getPopularPost} from '../../../redux/posts/pos
 import withAuthRedirect from '../../HOC/withAuthRedirect';
 import {RootState} from '../../../redux/redux-store';
 import {createQueryString, useQueryParams} from '../../../hook/hooks';
-import PageLayout from '../../Common/PageLayout';
+import PageLayout from '../../Common/PageLayout/PageLayout';
 import PostMain from './PostMain';
 import TagsBlock from './TagsBlock';
 
@@ -27,6 +27,7 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
     const [fetchNew, setFetchNew] = useState<boolean>(false);
     const [filter, setFilter] = useState<string>('');
+    const [currentPage, setCurrentPage] = useState(1);
 
     const dispatch = useDispatch();
 
@@ -45,7 +46,8 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
             isFavorite: JSON.stringify(props.isFavorite),
             tags: tags.find(it => it.value === tag)?._id || '',
             isBest: JSON.stringify(fetchNew),
-            filter: filter
+            filter: filter,
+            currentPage
         }
 
         dispatch(getAllPosts({query: createQueryString(query)}));
@@ -53,13 +55,14 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
         if(!props.userId && !tag) {
             dispatch(getPopularPost({}));
         }
-    }, [queryParams, fetchNew, filter])
+    }, [queryParams, fetchNew, filter, currentPage])
 
     return (
         <PageLayout isMainPage={props.isMainPage}
                     mainChildren={<PostMain isMainPage={props.isMainPage} isFetching={isFetching}
                                             selectedTag={selectedTag} setFilter={setFilter}
-                                            setFetchNew={setFetchNew} setSelectedTag={setSelectedTag}/>}
+                                            setFetchNew={setFetchNew} setSelectedTag={setSelectedTag}
+                                            currentPage={currentPage} setCurrentPage={setCurrentPage}/>}
                     rightChildren={<TagsBlock items={tags} isLoading={isFetching} query={selectedTag}/>}/>
     );
 });

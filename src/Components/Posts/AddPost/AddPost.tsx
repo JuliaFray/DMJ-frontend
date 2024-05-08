@@ -22,7 +22,7 @@ import {convertBase64ToBlob} from '../../../Utils/helper';
 import clsx from 'clsx';
 import {IChipData} from '../../../types/types';
 import AutocompleteField from '../../Common/AutocompleteField/AutocompleteField';
-import PageLayout from '../../Common/PageLayout';
+import PageLayout from '../../Common/PageLayout/PageLayout';
 
 const AddPost: React.FC = () => {
 

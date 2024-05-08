@@ -5,6 +5,11 @@ export type ILoginData = {
     captcha?: string | null
 }
 
+export type IPostPage = {
+    posts: IPost[],
+    dataLength: number
+}
+
 export type IPost = {
     _id: string,
     title: string,

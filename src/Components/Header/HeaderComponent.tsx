@@ -16,7 +16,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import {AccountBox, ChatBubble, Groups, LibraryBooks} from '@mui/icons-material';
 import styles from './Header.module.scss';
-import {Events} from '../../Utils/DictConstants';
+import {SocketEvents} from '../../Utils/DictConstants';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import {getNotifications} from '../../redux/app/app-selectors';
@@ -41,8 +41,11 @@ const HeaderComponent: React.FC = () => {
     const handleWS = useCallback(
         (e: any) => {
             const {type, data} = JSON.parse(e.data);
-            if(type === Events.FOLLOW_EVENT) {
+            if(type === SocketEvents.FOLLOW_EVENT) {
                 dispatch(appActions.addNotification({type: 'app/addNotification', payload: data}))
+            }
+            if(type === SocketEvents.AUTH_EVENT) {
+                dispatch(appActions.addUserOnline({type: 'app/addUserOnline', payload: data}))
             }
         },
         []
@@ -69,7 +72,7 @@ const HeaderComponent: React.FC = () => {
 
     const onLogout = () => {
         if(userId) {
-            ws?.send(JSON.stringify({type: Events.LOGOUT_EVENT, id: userId}));
+            ws?.send(JSON.stringify({type: SocketEvents.LOGOUT_EVENT, id: userId}));
         }
         dispatch(authActions.logout());
     };

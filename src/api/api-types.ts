@@ -1,4 +1,4 @@
-import {IUser} from '../types/types';
+import {IPost, IUser} from '../types/types';
 
 export enum ResultCodeEnum {
     Success = 0,
@@ -28,4 +28,12 @@ export type UsersResponseType = {
     data: IUser[],
     totalCount: number,
     resultCode: ResultCodeEnum,
+    message: string,
+}
+
+export type PostsResponseType = {
+    data: IPost[],
+    totalCount: number,
+    resultCode: ResultCodeEnum,
+    message: string,
 }

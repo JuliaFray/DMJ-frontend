@@ -4,8 +4,8 @@ import {getAllUsers} from './users-thunks';
 
 export type InitialStateType = {
     users: Array<IUser>,
+    dataLength: number,
     pageSize: number,
-    totalUsersCount: number,
     currentPage: number,
     isFetching: boolean,
     followingInProgress: Array<string>,
@@ -16,7 +16,7 @@ export type InitialStateType = {
 let initialState: InitialStateType = {
     isFetching: false,
     users: [],
-    totalUsersCount: 0,
+    dataLength: 0,
 
     followingInProgress: [],
     userId: null,
@@ -47,15 +47,15 @@ const usersSlice = createSlice({
             })
             .addCase(getAllUsers.fulfilled, (state, action) => {
                 state.isFetching = false;
-                if (action.payload) {
+                if(action.payload) {
                     state.users = action.payload.data;
-                    state.totalUsersCount = action.payload.totalCount;
+                    state.dataLength = action.payload.totalCount;
                 }
             })
             .addCase(getAllUsers.rejected, (state, action) => {
                 state.isFetching = false;
                 state.users = [];
-                state.totalUsersCount = 0;
+                state.dataLength = 0;
             })
     }
 });
