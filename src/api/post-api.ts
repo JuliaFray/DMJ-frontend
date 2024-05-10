@@ -20,7 +20,7 @@ export const postAPI = {
             })
     },
 
-    getLastTags() {
+    getPopularTags() {
         return instance
             .get<GenericResponseType<IChipData[]>>(`tags`)
             .then(response => {
@@ -46,7 +46,15 @@ export const postAPI = {
 
     getPopular() {
         return instance
-            .get<GenericResponseType<IPost>>(`${baseUrl}/popular`)
+            .get<GenericResponseType<IPost[]>>(`${baseUrl}/popular`)
+            .then(response => {
+                return response.data
+            })
+    },
+
+    getRecommendationPost(originPostId: string) {
+        return instance
+            .get<GenericResponseType<IPost[]>>(`${baseUrl}/recommendations?postId=${originPostId}`)
             .then(response => {
                 return response.data
             })

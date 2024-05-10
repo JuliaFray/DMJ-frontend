@@ -5,15 +5,23 @@ export const getPosts = (state: RootState) => {
 };
 
 export const getDataLength = (state: RootState) => {
-    return state.posts.dataLength || 0
+    return state.posts.totalCount || 0
+};
+
+export const getPopularPosts = (state: RootState) => {
+    return state.posts.popularPosts
+};
+
+export const getRecommendations = (state: RootState) => {
+    return state.posts.recommendations
 };
 
 export const getPost = (state: RootState) => {
     return state.posts.post
 };
 
-export const getTags = (state: RootState) => {
-    return state.posts.tags
+export const getFetchedPopularTags = (state: RootState) => {
+    return state.posts.popularTags
 };
 
 export const getAllFetchedTags = (state: RootState) => {

@@ -1,4 +1,4 @@
-import {Box, Tooltip, Typography, useTheme} from '@mui/material';
+import {Box, Tooltip, Typography} from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import {Link} from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
@@ -43,12 +43,27 @@ export const PopularPost: React.FC<IPopularPost> = ({post}, context) => {
     return (
         <Card sx={cardSx}>
             <Box sx={{display: 'flex', flexDirection: 'column'}}>
-                <CardContent sx={{flex: '1 0 auto'}}>
-                    <Typography variant="h4" component="div">
+                <CardContent sx={{
+                    flex: '1 0 auto',
+                    height: 250,
+                    '& .MuiTypography-h4': {
+                        overflow: 'hidden',
+                        display: '-webkit-box',
+                        WebkitLineClamp: '2',
+                        WebkitBoxOrient: 'vertical'
+                    },
+                    '.MuiTypography-body2': {
+                        overflow: 'hidden',
+                        display: '-webkit-box',
+                        WebkitLineClamp: '6',
+                        WebkitBoxOrient: 'vertical'
+                    }
+                }}>
+                    <Typography variant="h4" component="p">
                         {post.title}
                     </Typography>
-                    <Typography variant="body2">
-                        {post.text?.substring(0, 200)}...
+                    <Typography variant="body2" component="p">
+                        {post.text}
                     </Typography>
                 </CardContent>
 
@@ -56,7 +71,7 @@ export const PopularPost: React.FC<IPopularPost> = ({post}, context) => {
                     {post?.image &&
                         <img style={{
                             width: '100%',
-                            height: 300,
+                            height: '100%',
                             backgroundPosition: 'center',
                             backgroundRepeat: 'no-repeat',
                             backgroundSize: 'cover'

@@ -24,12 +24,29 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
     return (
         <Container maxWidth="lg">
             <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
-                <Tab label={props.isOwner ? 'Мои посты' : 'Посты'} {...a11yProps(0)}/>
-                {props.isOwner && <Tab label='Избранное' {...a11yProps(1)}/>}
-                <Tab label='Друзья' {...a11yProps(2)}/>
+                <Tab label='Подписки' {...a11yProps(0)}/>
+                <Tab label='Друзья' {...a11yProps(1)}/>
+                <Tab label={props.isOwner ? 'Мои посты' : 'Посты'} {...a11yProps(2)}/>
+                {props.isOwner && <Tab label='Избранное' {...a11yProps(3)}/>}
             </Tabs>
 
             <TabPanel value={tabIndex} index={0}>
+                <Grid container
+                      direction='column'
+                      justifyContent='space-between'
+                      alignItems='stretch'>
+                    <UsersPage isMainPage={false} isFollowers={true} isFriends={false}/>
+                </Grid>
+            </TabPanel>
+            <TabPanel value={tabIndex} index={1}>
+                <Grid container
+                      direction='column'
+                      justifyContent='space-between'
+                      alignItems='stretch'>
+                    <UsersPage isMainPage={false} isFollowers={false} isFriends={true}/>
+                </Grid>
+            </TabPanel>
+            <TabPanel value={tabIndex} index={2}>
                 <Grid container
                       direction='column'
                       justifyContent='space-between'
@@ -38,7 +55,7 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
                               userId={props.userId} isFavorite={false} isLoad={true}></PostPage>
                 </Grid>
             </TabPanel>
-            {props.isOwner && <TabPanel value={tabIndex} index={1}>
+            {props.isOwner && <TabPanel value={tabIndex} index={3}>
                 <Grid container
                       direction='column'
                       justifyContent='space-between'
@@ -47,14 +64,6 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
                               userId={props.userId} isFavorite={true} isLoad={true}></PostPage>
                 </Grid>
             </TabPanel>}
-            <TabPanel value={tabIndex} index={2}>
-                <Grid container
-                      direction='column'
-                      justifyContent='space-between'
-                      alignItems='stretch'>
-                    <UsersPage isMainPage={false}/>
-                </Grid>
-            </TabPanel>
         </Container>
     );
 }

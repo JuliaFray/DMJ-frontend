@@ -47,8 +47,11 @@ const HeaderComponent: React.FC = () => {
             if(type === SocketEvents.AUTH_EVENT) {
                 dispatch(appActions.addUserOnline({type: 'app/addUserOnline', payload: data}))
             }
+            if(type === SocketEvents.FRIEND_EVENT) {
+                dispatch(appActions.addNotification({type: 'app/addNotification', payload: data}))
+            }
         },
-        []
+        [dispatch]
     );
 
     useEffect(() => {
@@ -138,8 +141,8 @@ const HeaderComponent: React.FC = () => {
                             <Link to={'/posts'}>BLOG</Link>
                         </Typography>
 
-                        <IconButton id={'ntf'} onClick={onShowNotification} color="success" aria-label="logout">
-                            {!!notifications.length ? <NotificationsActiveIcon/> : <NotificationsIcon/>}
+                        <IconButton id={'ntf'} onClick={onShowNotification} aria-label='notifications' sx={{marginRight: '20px'}}>
+                            {!!notifications.length ? <NotificationsActiveIcon color='warning'/> : <NotificationsIcon color='success'/>}
                         </IconButton>
                         <Popper id={'ntf'} open={showNotification} anchorEl={anchorEl} transition>
                             {({TransitionProps}) => (
@@ -156,7 +159,7 @@ const HeaderComponent: React.FC = () => {
                         </Popper>
 
                         <Tooltip title='Выйти'>
-                            <IconButton onClick={onLogout} color="success" aria-label="logout">
+                            <IconButton onClick={onLogout} color='success' aria-label='logout'>
                                 <Logout/>
                             </IconButton>
                         </Tooltip>

@@ -1,26 +1,41 @@
 import {IChipData, IImage, IPost} from '../../types/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {createPost, createPostComment, deletePost, editPost, getAllPosts, getAllTags, getLastTags, getOnePost, getPopularPost} from './posts-thunks';
+import {
+    createPost,
+    createPostComment,
+    deletePost,
+    editPost,
+    getAllPosts,
+    getAllTags,
+    getOnePost,
+    getPopularPost,
+    getPopularTags,
+    getRecommendationPost
+} from './posts-thunks';
 import {PostsResponseType} from '../../api/api-types';
 
 type InitialStateType = {
-    posts: IPost[],
-    dataLength: number,
-    post: IPost | null,
     isFetching: boolean,
-    tags: IChipData[],
+    totalCount: number,
+    posts: IPost[],
+    popularPosts: IPost[],
+    recommendations: IPost[],
+    post: IPost | null,
+    popularTags: IChipData[],
     allTags: IChipData[],
-    img: IImage | null
+    img: IImage | null,
 }
 
 const initialState: InitialStateType = {
     posts: [],
-    dataLength: 0,
+    totalCount: 0,
+    popularPosts: [],
     post: null,
     isFetching: true,
-    tags: [],
+    popularTags: [],
     allTags: [],
-    img: null
+    img: null,
+    recommendations: []
 };
 
 const postsSlice = createSlice({
@@ -29,9 +44,11 @@ const postsSlice = createSlice({
     reducers: {
         clearState: (state) => {
             state.posts = [];
+            state.totalCount = 0;
+            state.popularPosts = [];
             state.post = null;
             state.isFetching = false;
-            state.tags = [];
+            state.popularTags = [];
             state.allTags = [];
             state.img = null;
         },
@@ -50,18 +67,19 @@ const postsSlice = createSlice({
             .addCase(getAllPosts.pending, (state) => {
                 state.isFetching = true;
                 state.posts = [];
+                state.popularPosts = [];
                 state.post = null;
-                state.dataLength = 0;
+                state.totalCount = 0;
             })
             .addCase(getAllPosts.fulfilled, (state, action: PayloadAction<PostsResponseType>) => {
                 state.isFetching = false;
                 state.posts = action.payload.data;
-                state.dataLength = action.payload.totalCount;
+                state.totalCount = action.payload.totalCount;
             })
             .addCase(getAllPosts.rejected, (state) => {
                 state.isFetching = false;
                 state.posts = [];
-                state.dataLength = 0;
+                state.totalCount = 0;
             })
             //=====getAllTags=====//
             .addCase(getAllTags.pending, (state) => {
@@ -76,18 +94,18 @@ const postsSlice = createSlice({
                 state.isFetching = false;
                 state.allTags = [];
             })
-            //=====getLastTags=====//
-            .addCase(getLastTags.pending, (state) => {
+            //=====getPopularTags=====//
+            .addCase(getPopularTags.pending, (state) => {
                 state.isFetching = true;
-                state.tags = [];
+                state.popularTags = [];
             })
-            .addCase(getLastTags.fulfilled, (state, action: PayloadAction<IChipData[]>) => {
+            .addCase(getPopularTags.fulfilled, (state, action: PayloadAction<IChipData[]>) => {
                 state.isFetching = false;
-                state.tags = action.payload;
+                state.popularTags = action.payload;
             })
-            .addCase(getLastTags.rejected, (state) => {
+            .addCase(getPopularTags.rejected, (state) => {
                 state.isFetching = false;
-                state.tags = [];
+                state.popularTags = [];
             })
             //=====getPopularPost=====//
             .addCase(getPopularPost.pending, (state) => {
@@ -95,11 +113,23 @@ const postsSlice = createSlice({
             })
             .addCase(getPopularPost.fulfilled, (state, action) => {
                 state.isFetching = false;
-                state.post = action.payload;
+                state.popularPosts = action.payload;
             })
             .addCase(getPopularPost.rejected, (state) => {
                 state.isFetching = false;
-                state.post = null;
+                state.popularPosts = [];
+            })
+            //=====getRecommendationPost=====//
+            .addCase(getRecommendationPost.pending, (state) => {
+                state.isFetching = true;
+            })
+            .addCase(getRecommendationPost.fulfilled, (state, action) => {
+                state.isFetching = false;
+                state.recommendations = action.payload;
+            })
+            .addCase(getRecommendationPost.rejected, (state) => {
+                state.isFetching = false;
+                state.recommendations = [];
             })
             //=====getOnePost=====//
             .addCase(getOnePost.pending, (state) => {

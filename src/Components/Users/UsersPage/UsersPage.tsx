@@ -8,18 +8,25 @@ import {connect} from 'react-redux';
 
 export type IUsersPage = {
     isMainPage: boolean,
+    isFollowers: boolean,
+    isFriends: boolean
 }
 
 const UsersPage: React.FC<IUsersPage> = React.memo((props, context) => {
     const [currentPage, setCurrentPage] = useState(1);
     return (
         <PageLayout isMainPage={props.isMainPage}
-                    mainChildren={<UsersMain currentPage={currentPage} setCurrentPage={setCurrentPage}/>}/>
+                    mainChildren={<UsersMain
+                        isFollowers={props.isFollowers} isFriends={props.isFriends}
+                        currentPage={currentPage} setCurrentPage={setCurrentPage}
+                    />}/>
     )
 });
 
 const mapStateToProps = (state: RootState) => ({
     isMainPage: true,
+    isFollowers: false,
+    isFriends: false,
 });
 
 export {UsersPage};

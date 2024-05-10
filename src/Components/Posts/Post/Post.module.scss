@@ -101,7 +101,17 @@ $blue: #4361ee;
 }
 
 .cardContent {
-  height: 30%;
+  height: 35%;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.cardContentTags {
+  height: 20px;
+  padding: 8px 16px;
+  overflow: hidden;
 }
 
 .postDetails {
@@ -169,4 +179,17 @@ $blue: #4361ee;
   border-radius: 10px;
   opacity: 0;
   transition: all 0.15s ease-in-out;
+}
+
+.card {
+  a {
+    text-decoration: none;
+    color: #000;
+  }
+  .title {
+    color: #000;
+  }
+  .subtitle {
+    color: rgba(0, 0, 0, 0.6);
+  }
 }

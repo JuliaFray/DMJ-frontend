@@ -7,8 +7,7 @@ import {ILoginData, IUser} from '../../types/types';
 import {authActions} from './auth-slice';
 import {RegisterDataType} from '../../Components/Registration/Registration';
 import {AxiosError} from 'axios';
-
-const ACCESS_DENIED = 'Доступ запрещен'
+import {ACCESS_DENIED} from '../../Utils/DictConstants';
 
 export const checkAuth = createAsyncThunk<string, {}>(
     'auth/status', async (data, thunkAPI) => {
@@ -27,7 +26,7 @@ export const checkAuth = createAsyncThunk<string, {}>(
             thunkAPI.rejectWithValue(ACCESS_DENIED);
             thunkAPI.dispatch(authActions.logout());
             thunkAPI.dispatch(appActions.setUninitialized());
-            return '';
+            return ACCESS_DENIED;
         }
     }
 );

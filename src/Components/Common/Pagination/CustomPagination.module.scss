@@ -1,7 +1,13 @@
-.pagination {
+.paginationWrapper {
+  height: 50px;
+  position: absolute;
+  width: 100%;
+  .pagination {
+    display: flex;
     ul {
-        position: absolute;
-        left: 50%;
-        padding-bottom: 20px;
+      margin: 0 auto;
     }
+  }
 }
+
+

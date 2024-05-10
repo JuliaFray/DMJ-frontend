@@ -4,6 +4,7 @@ export enum ResultCodeEnum {
     Success = 0,
     Error = 1,
     ValidationError = 2,
+    AccessDenied = 3,
     CaptchaIsRequired = 10
 }
 

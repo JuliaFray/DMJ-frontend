@@ -10,58 +10,86 @@ import {NO_AVATAR} from '../../../Utils/DictConstants';
 import CustomCardActions from './CustomCardActions';
 import {getFullName} from '../../../Utils/helper';
 import styles from '../Post/Post.module.scss';
+import palette from './../../../styles/palette.module.scss';
+import {Link} from 'react-router-dom';
 
 export type PostCardProps = {
     post: IPost,
-    avatarAbbr: string
+    avatarAbbr: string,
+    isMain: boolean
 }
 
-export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post}) => {
+export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain}) => {
 
     const mappedTags = post.tags.map((el: IChipData, index: number) =>
         <span key={index} style={{marginRight: "5px"}}>{`#${el.value}`}</span>
     );
 
+    const height = isMain ? '350px' : '250px';
+    const titleRows = isMain ? 3 : 2;
+    const bodyRows = isMain ? 10 : 4;
+
     const image = (post.author.avatar && `data:image/jpeg;base64,${post.author.avatar?.data}`) || NO_AVATAR;
     return (
-        <Card sx={{height: 250}}>
+        <Card className={styles.card} sx={{height: height, display: 'flex', flexDirection: 'column', justifyContent: 'space-around'}}>
             <CardHeader
-                sx={{height: 70}}
+                sx={{
+                    height: '20%',
+                    '& .MuiTypography-subtitle1': {
+                        overflow: 'hidden',
+                        display: '-webkit-box',
+                        WebkitLineClamp: titleRows,
+                        WebkitBoxOrient: 'vertical',
+                    }
+                }}
                 avatar={
-                    <Avatar alt={post.author.firstName} src={image} aria-label='post-avatar'>
+                    !isMain && <Avatar sx={{bgcolor: palette.error}} alt={post.author.firstName} src={image} aria-label='post-avatar'>
                         {avatarAbbr}
                     </Avatar>
                 }
-                title={`${post.title.substring(0, 65)}${post.title.length > 65 ? '...' : ''}`}
-                subheader={getFullName(post.author)}
+                title={isMain
+                    ? <Link to={`/posts/${post._id}`}>{post.title}</Link>
+                    : post.title}
+                subheader={isMain
+                    ? <Link className={styles.subtitle} to={`/users/${post.author._id}`}>{getFullName(post.author)}</Link>
+                    : getFullName(post.author)}
                 titleTypographyProps={{
                     variant: 'subtitle1',
                     whiteSpace: 'normal'
                 }}
             />
 
-            <CardContent className={styles.cardContent}>
+            <CardContent className={styles.cardContent} sx={{
+                '.MuiTypography-body2': {
+                    overflow: 'hidden',
+                    display: '-webkit-box',
+                    WebkitLineClamp: bodyRows,
+                    WebkitBoxOrient: 'vertical'
+                }
+            }}>
                 <Typography variant="body2" color="text.secondary">
-                    {post.text.substring(0, 120)}{post.text.length > 120 ? '...' : ''}
+                    {post.text}
                 </Typography>
 
-                <div style={{height: 10}}>
-                    {mappedTags}
-                </div>
 
             </CardContent>
 
-            <CardActions disableSpacing style={{position: 'relative'}}
-                         sx={{
-                             alignSelf: 'stretch',
-                             display: 'flex',
-                             justifyContent: 'flex-start',
-                             alignItems: 'flex-start',
-                             p: 0, m: 0
-                         }}>
+            {!isMain && <div className={styles.cardContentTags}>
+                {mappedTags}
+            </div>}
+
+            {!isMain && <CardActions disableSpacing style={{position: 'relative'}}
+                                     sx={{
+                                          height: '10%',
+                                          alignSelf: 'stretch',
+                                          display: 'flex',
+                                          justifyContent: 'flex-start',
+                                          alignItems: 'flex-start',
+                                          p: 0, m: 0
+                                      }}>
 
                 <CustomCardActions post={post} isCard/>
-            </CardActions>
+            </CardActions>}
         </Card>
     );
 }

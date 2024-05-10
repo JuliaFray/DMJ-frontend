@@ -9,14 +9,14 @@ type ICustomPagination = {
 }
 
 const CustomPagination: React.FC<ICustomPagination> = (props, context) => {
-    const count: number = Math.round(props.dataLength / 20);
+    const count: number = Math.ceil(props.dataLength / 20);
 
     const handleOnPageChange = (event: React.ChangeEvent<unknown>, page: number) => {
         props.setCurrentPage(page);
     }
 
     return (
-        <div>
+        <div className={style.paginationWrapper}>
             {count > 1 &&
                 <Pagination className={style.pagination} siblingCount={1} page={props.page} onChange={handleOnPageChange}
                             boundaryCount={1} count={count} variant="outlined" color="primary"/>

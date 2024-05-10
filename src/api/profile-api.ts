@@ -45,4 +45,12 @@ export const profileAPI = {
                 return response.data
             });
     },
+
+    toggleFriendUser(userId: string, query: string) {
+        return instance
+            .put<GenericResponseType<void>>(`${baseUrl}/${userId}/toggle-friend${query}`)
+            .then(response => {
+                return response.data
+            });
+    },
 };

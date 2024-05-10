@@ -1,7 +1,6 @@
 import React, {Dispatch, SetStateAction} from 'react';
 import PostFilter from './PostFilter';
-import {PopularPost} from '../PostCard/PopularPost';
-import {Box, Chip, Fab, Grid, Pagination} from '@mui/material';
+import {Box, Chip, Fab, Grid} from '@mui/material';
 import Stack from '@mui/material/Stack';
 import {PostSkeleton} from '../PostCard/PostSkeleton';
 import {IPost} from '../../../types/types';
@@ -9,8 +8,10 @@ import {PostCard} from '../PostCard/PostCard';
 import {Link, useNavigate} from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import {useSelector} from 'react-redux';
-import {getDataLength, getPost, getPosts} from '../../../redux/posts/posts-selectors';
+import {getDataLength, getPopularPosts, getPosts} from '../../../redux/posts/posts-selectors';
 import CustomPagination from '../../Common/Pagination/CustomPagination';
+import PostCarousel from '../PostCarousel';
+import {PopularPost} from '../PostCard/PopularPost';
 
 type IPostMain = {
     isFetching: boolean,
@@ -26,7 +27,7 @@ type IPostMain = {
 const PostMain: React.FC<IPostMain> = (props, context) => {
 
     const posts = useSelector(getPosts);
-    const popularPost = useSelector(getPost);
+    const popularPosts = useSelector(getPopularPosts);
     const dataLength = useSelector(getDataLength);
 
     const navigate = useNavigate();
@@ -37,10 +38,12 @@ const PostMain: React.FC<IPostMain> = (props, context) => {
     }
 
     return (
-        <>
+        <div style={{position: 'relative'}}>
             {props.isMainPage && <PostFilter onFilterChange={props.setFilter} onTabChange={props.setFetchNew}/>}
 
-            {popularPost && <PopularPost post={popularPost}/>}
+            {!!popularPosts.length && <PostCarousel posts={popularPosts}>
+                {popularPosts.map(item => <PopularPost key={item._id} post={item}/>)}
+            </PostCarousel>}
 
             {props.selectedTag &&
                 <Box>
@@ -62,7 +65,7 @@ const PostMain: React.FC<IPostMain> = (props, context) => {
                         </Grid>)
                     : posts.map((el: IPost) =>
                         <Grid item xs={12} sm={12} md={props.isMainPage ? 6 : 12} key={el._id}>
-                            {el.author && <PostCard key={el._id} post={el} avatarAbbr={el.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}/>}
+                            {el.author && <PostCard key={el._id} isMain={false} post={el} avatarAbbr={el.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}/>}
                         </Grid>
                     )}
 
@@ -76,8 +79,8 @@ const PostMain: React.FC<IPostMain> = (props, context) => {
 
             </Grid>
 
-           <CustomPagination page={props.currentPage} dataLength={dataLength} setCurrentPage={props.setCurrentPage}/>
-        </>
+            <CustomPagination page={props.currentPage} dataLength={dataLength} setCurrentPage={props.setCurrentPage}/>
+        </div>
     );
 }
 

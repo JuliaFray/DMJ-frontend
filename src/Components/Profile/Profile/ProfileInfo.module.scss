@@ -16,16 +16,21 @@
     align-items: center;
     flex-direction: row;
 
-    .profileRight {
+    .profile {
       height: 100%;
-      width: 40%;
-      padding: 20px 0;
+      padding: 10px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      border-radius: 0 10px 10px 0;
+      //align-items: center;
+      justify-content: space-around;
+      //border-radius: 0 10px 10px 0;
       background-color: #fff;
+    }
+
+    .right {
+      width: 40%;
+      align-items: center;
+      border-radius: 0 10px 10px 0;
 
       &.on {
         box-shadow: 50px 0 50px $secondary;
@@ -37,23 +42,30 @@
 
       .avatar {
         width: 100%;
-        height: 90%;
+        height: 87%;
       }
 
-      .button {
-        border-radius: 10px;
-        height: 40px;
-        width: 80%;
+      .btnBlock {
+        border-top: 1px solid rgba($secondary, 0.5);
+        height: 10%;
+        width: 100%;
+        padding-top: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        .button {
+          border-radius: 10px;
+          height: 100%;
+          width: 80%;
+        }
       }
+
     }
 
-    .profileLeft {
-      height: 100%;
-      width: 100%;
-      padding: 10px;
+    .left {
+      width: 60%;
       border-radius: 10px 0 0 10px;
-      background-color: #fff;
-      border-right: 1px solid rgba($secondary, 0.5);
 
       &.on {
         box-shadow: -50px 0 50px $secondary;
@@ -67,10 +79,16 @@
         font-weight: 600;
         font-size: 20px;
         text-align: start;
+        height: 10%;
+        width: 100%;
+        overflow: hidden;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba($secondary, 0.5);
       }
 
       .profileList {
-        height: 50%;
+        height: 80%;
+        overflow: hidden;
 
         li {
           height: 30px;
@@ -95,13 +113,10 @@
         }
       }
 
-      .divider {
-        margin: 10px 0;
-        border-color: rgba($secondary, 0.5);
-      }
-
       .stats {
-        height: 20px;
+        padding-top: 10px;
+        border-top: 1px solid rgba($secondary, 0.5);
+        height: 10%;
         display: flex;
         flex-direction: row;
         justify-content: space-around;

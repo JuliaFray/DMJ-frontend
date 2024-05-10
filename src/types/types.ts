@@ -86,7 +86,8 @@ export type IUser = {
     avatar: IImage,
     friends: IProfile[],
     followers: IProfile[],
-    isFollowed: boolean
+    isFollowed: boolean,
+    isFriend: boolean
 }
 
 export type SimpleNameObj = {

@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import {connect, useDispatch, useSelector} from 'react-redux';
-import {getIsFetching, getTags} from '../../../redux/posts/posts-selectors';
-import {getAllPosts, getLastTags, getPopularPost} from '../../../redux/posts/posts-thunks';
+import {getIsFetching, getFetchedPopularTags} from '../../../redux/posts/posts-selectors';
+import {getAllPosts, getPopularTags, getPopularPost} from '../../../redux/posts/posts-thunks';
 import withAuthRedirect from '../../HOC/withAuthRedirect';
 import {RootState} from '../../../redux/redux-store';
 import {createQueryString, useQueryParams} from '../../../hook/hooks';
 import PageLayout from '../../Common/PageLayout/PageLayout';
 import PostMain from './PostMain';
 import TagsBlock from './TagsBlock';
+import {postActions} from '../../../redux/posts/posts-slice';
 
 export type IPostPage = {
     isOwner: boolean,
@@ -20,7 +21,7 @@ export type IPostPage = {
 const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
 
     const isFetching = useSelector(getIsFetching);
-    const tags = useSelector(getTags);
+    const popularTags = useSelector(getFetchedPopularTags);
 
     const {queryParams, setQueryParams} = useQueryParams({tags: ''});
 
@@ -33,9 +34,9 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
 
     useEffect(() => {
         if(!props.isOwner) {
-            dispatch(getLastTags({}))
+            dispatch(getPopularTags({}))
         }
-    }, [props.isOwner, props.isFavorite, props.userId])
+    }, [dispatch, props.isOwner, props.isFavorite, props.userId])
 
     useEffect(() => {
         const tag = queryParams.tags?.toString();
@@ -44,7 +45,7 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
         const query = {
             userId: props.userId,
             isFavorite: JSON.stringify(props.isFavorite),
-            tags: tags.find(it => it.value === tag)?._id || '',
+            tags: popularTags.find(it => it.value === tag)?._id || '',
             isBest: JSON.stringify(fetchNew),
             filter: filter,
             currentPage
@@ -63,7 +64,7 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
                                             selectedTag={selectedTag} setFilter={setFilter}
                                             setFetchNew={setFetchNew} setSelectedTag={setSelectedTag}
                                             currentPage={currentPage} setCurrentPage={setCurrentPage}/>}
-                    rightChildren={<TagsBlock items={tags} isLoading={isFetching} query={selectedTag}/>}/>
+                    rightChildren={<TagsBlock items={popularTags} isLoading={isFetching} query={selectedTag}/>}/>
     );
 });
 

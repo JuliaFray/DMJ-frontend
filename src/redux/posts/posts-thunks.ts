@@ -2,16 +2,25 @@ import {PostsResponseType, ResultCodeEnum} from '../../api/api-types';
 import {IChipData, IComment, IPost} from '../../types/types';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {postAPI} from '../../api/post-api';
+import {authActions} from '../auth/auth-slice';
+import {appActions} from '../app/app-slice';
+import {ACCESS_DENIED} from '../../Utils/DictConstants';
 
 const UNDEFINED_ERROR = "Неизвестная ошибка"
 
 export const getAllPosts = createAsyncThunk<PostsResponseType, { query: string }>(
     'posts', async (data, thunkAPI) => {
-        const response = await postAPI.getAll(data.query);
-        if(response.resultCode === ResultCodeEnum.Error) {
-            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+        try {
+            const response = await postAPI.getAll(data.query);
+            if(response.resultCode === ResultCodeEnum.Error) {
+                return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+            }
+            return response;
+        } catch(e) {
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
         }
-        return response;
     }
 );
 
@@ -24,7 +33,9 @@ export const markPostFavorite = createAsyncThunk<void, { postId: string }, { rej
             }
             return response.data;
         } catch(e) {
-            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
         }
     }
 );
@@ -38,12 +49,14 @@ export const togglePostRating = createAsyncThunk<void, { postId: string, rating:
             }
             return response.data;
         } catch(e) {
-            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
         }
     }
 );
 
-export const getPopularPost = createAsyncThunk<IPost, {}, { rejectValue: string }>(
+export const getPopularPost = createAsyncThunk<IPost[], {}, { rejectValue: string }>(
     'posts/popular', async (__, thunkAPI) => {
         const response = await postAPI.getPopular();
         try {
@@ -52,7 +65,9 @@ export const getPopularPost = createAsyncThunk<IPost, {}, { rejectValue: string 
             }
             return response.data;
         } catch(e) {
-            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
         }
     }
 );
@@ -66,7 +81,9 @@ export const getOnePost = createAsyncThunk<IPost, { postId: string }, { rejectVa
             }
             return response.data;
         } catch(e) {
-            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
         }
     }
 );
@@ -81,7 +98,9 @@ export const editPost = createAsyncThunk<void, { file: FormData, id: string }, {
             thunkAPI.dispatch(getAllPosts({query: ''}));
             return response.data;
         } catch(e) {
-            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
         }
     }
 );
@@ -95,7 +114,9 @@ export const createPost = createAsyncThunk<IPost, { file: FormData }, { rejectVa
             }
             return response.data;
         } catch(e) {
-            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
         }
 
     }
@@ -110,7 +131,9 @@ export const deletePost = createAsyncThunk<void, { payload: IPost }, { rejectVal
             }
             return response.data;
         } catch(e) {
-            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
         }
     }
 );
@@ -124,21 +147,25 @@ export const getAllTags = createAsyncThunk<IChipData[], {}, { rejectValue: strin
             }
             return response.data;
         } catch(e) {
-            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
         }
     }
 );
 
-export const getLastTags = createAsyncThunk<IChipData[], {}, { rejectValue: string }>(
+export const getPopularTags = createAsyncThunk<IChipData[], {}, { rejectValue: string }>(
     'posts/tags', async (__, thunkAPI) => {
-        const response = await postAPI.getLastTags();
+        const response = await postAPI.getPopularTags();
         try {
             if(response.resultCode === ResultCodeEnum.Error) {
                 return thunkAPI.rejectWithValue(response.message);
             }
             return response.data;
         } catch(e) {
-            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
         }
     }
 );
@@ -153,8 +180,26 @@ export const createPostComment = createAsyncThunk<IPost, { comment: IComment, po
             thunkAPI.dispatch(getOnePost({postId: data.postId}));
             return response.data;
         } catch(e) {
-            return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
         }
 
+    }
+);
+
+export const getRecommendationPost = createAsyncThunk<IPost[], {originPostId: string}, { rejectValue: string }>(
+    'posts/recommendations', async (data, thunkAPI) => {
+        const response = await postAPI.getRecommendationPost(data.originPostId);
+        try {
+            if(response.resultCode === ResultCodeEnum.Error) {
+                return thunkAPI.rejectWithValue(response.message);
+            }
+            return response.data;
+        } catch(e) {
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
+        }
     }
 );

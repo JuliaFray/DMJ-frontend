@@ -1,7 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
 
 import styles from './Post.module.scss';
@@ -17,6 +16,7 @@ import {Tooltip} from '@mui/material';
 import {getFullName, getImage, hasImage} from '../../../Utils/helper';
 import CustomCardActions from '../PostCard/CustomCardActions';
 import {Delete} from '@mui/icons-material';
+import {v4 as uuidv4} from 'uuid';
 
 export type PostPropsType = {
     post: IPost,
@@ -69,16 +69,17 @@ export const Post: React.FC<PostPropsType> = ({
             <div className={styles.wrapper}>
                 <UserInfo avatar={getImage(post.author.avatar, true)}
                           fullName={getFullName(post.author)}
-                          additionalText={post.createdAt}/>
+                          additionalText={post.createdAt}
+                          userId={post.author._id}/>
                 <div className={styles.indention}>
                     <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
-                        {isFullPost ? post.title : <Link to={`/posts/${post._id}`}>{post.title}</Link>}
+                        {isFullPost ? post.title : <Link key={post._id} to={`/posts/${post._id}`}>{post.title}</Link>}
                     </h2>
 
                     {!!post.tags?.length &&
                         <ul className={styles.tags}>
                             {post.tags.length && post.tags.map((tag: IChipData) => (
-                                <li key={tag._id}>
+                                <li key={uuidv4()}>
                                     #{tag.value}
                                 </li>
                             ))}

@@ -42,7 +42,7 @@ const ProfileInfo: React.FC<IProfileInfo> = React.memo(({profile, isOwner}) => {
                 dispatch(appActions.removeUserOnline({type: 'app/removeUserOnline', payload: profile._id}));
             }
         },
-        []
+        [dispatch, profile._id]
     );
 
     useEffect(() => {
@@ -55,7 +55,8 @@ const ProfileInfo: React.FC<IProfileInfo> = React.memo(({profile, isOwner}) => {
     const getKeyValue = <T, K extends keyof T>(obj: T, key: K): T[K] => obj[key];
 
     const handleEdit = () => {
-        setEditMode(!editMode);
+        setEditMode(prevState => !prevState);
+        console.log(editMode)
         if(state && editMode) {
             const formData = new FormData();
             for(let key in state) {
@@ -80,13 +81,13 @@ const ProfileInfo: React.FC<IProfileInfo> = React.memo(({profile, isOwner}) => {
     return (
         <Grid className={styles.profileInfo} container>
             <Grid container columnSpacing={1} className={styles.profileCards}>
-                <Grid item xs={8} className={isOnline ? `${styles.profileLeft} ${styles.on}` : `${styles.profileLeft} ${styles.off}`}>
+                <Grid item xs={8} className={isOnline ? `${styles.profile} ${styles.left} ${styles.on}` : `${styles.profile} ${styles.left} ${styles.off}`}>
                     {isFetching && <Loader/>}
                     {!isFetching && <ProfileData profile={state} isOwner={isOwner}
                                                  editMode={editMode} state={state} setState={setState}/>}
                 </Grid>
 
-                <Grid item xs={4} className={isOnline ? `${styles.profileRight} ${styles.on}` : `${styles.profileRight} ${styles.off}`}>
+                <Grid item xs={4} className={isOnline ? `${styles.profile} ${styles.right} ${styles.on}` : `${styles.profile} ${styles.right} ${styles.off}`}>
                     {isFetching && <Loader/>}
                     {!isFetching && <ProfileAvatar
                         profile={state} isOwner={isOwner} file={file} setFile={setFile}

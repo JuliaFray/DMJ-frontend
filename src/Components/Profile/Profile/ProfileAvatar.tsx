@@ -68,20 +68,20 @@ const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
                 </ImageButton>
             </div>}
 
-            {props.isOwner &&
-                <Button className={styles.button}
-                        variant='outlined' onClick={() => props.setEditMode(!props.editMode)}>
-                    {props.editMode ? 'Сохранить' : 'Редактировать'}
-
-                </Button>
-            }
-
-            {props.editMode &&
-                <Button className={styles.button}
-                        variant='outlined' onClick={() => props.setEditMode(!props.editMode)}>
-                    Отмена
-                </Button>
-            }
+            <div className={styles.btnBlock}>
+                {props.isOwner &&
+                    <Button className={styles.button}
+                            variant='outlined' onClick={() => props.setEditMode(!props.editMode)}>
+                        {props.editMode ? 'Сохранить' : 'Редактировать'}
+                    </Button>
+                }
+                {props.editMode &&
+                    <Button className={styles.button}
+                            variant='outlined' onClick={() => props.setEditMode(!props.editMode)}>
+                        Отмена
+                    </Button>
+                }
+            </div>
 
 
         </>

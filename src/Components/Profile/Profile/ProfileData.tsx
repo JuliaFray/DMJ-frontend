@@ -2,7 +2,7 @@ import {IContact, IProfile, IProfileStats} from '../../../types/types';
 import React, {Dispatch, SetStateAction} from 'react';
 import styles from './ProfileInfo.module.scss';
 import {getFullName} from '../../../Utils/helper';
-import {Divider, ListItem, ListItemText, Tooltip} from '@mui/material';
+import {ListItem, ListItemText, Tooltip} from '@mui/material';
 import List from '@mui/material/List';
 import EditProfileField from './EditProfileField';
 import {useSelector} from 'react-redux';
@@ -27,8 +27,6 @@ const ProfileData: React.FC<IProfileData> = React.memo((props) => {
     return (
         <>
             <div className={styles.profileHeader}>{getFullName(props.profile)}</div>
-
-            <Divider key={'divider1'} className={styles.divider}/>
 
             <List dense={true} className={styles.profileList}>
                 <ListItem key={'ageList'}>
@@ -59,8 +57,6 @@ const ProfileData: React.FC<IProfileData> = React.memo((props) => {
                                       value={props.profile.description} type={'string'} state={props.state} setState={props.setState}/>
                 </ListItem>
             </List>
-
-            <Divider key={'divider2'} className={styles.divider}/>
 
             <ListItems stats={stats}/>
         </>

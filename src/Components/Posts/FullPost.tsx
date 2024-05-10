@@ -1,17 +1,18 @@
 import React, {useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import {useAppDispatch} from '../../hook/hooks';
-import {getOnePost} from '../../redux/posts/posts-thunks';
+import {getOnePost, getRecommendationPost} from '../../redux/posts/posts-thunks';
 import {Post} from './Post/Post';
 import {CommentsBlock} from './Comments/CommentsBlock';
 import {AddCommentComponent} from './Comments/AddComment/AddCommentComponent';
 import withAuthRedirect from '../HOC/withAuthRedirect';
 import {compose} from 'redux';
 import {useSelector} from 'react-redux';
-import {getIsFetching, getPost} from '../../redux/posts/posts-selectors';
+import {getIsFetching, getPost, getRecommendations} from '../../redux/posts/posts-selectors';
 import {getAuthId} from '../../redux/auth/auth-selectors';
 import {Container} from '@mui/material';
 import PageLayout from '../Common/PageLayout/PageLayout';
+import Recommendations from './Recommendations/Recommendations';
 
 const FullPost: React.FC = React.memo(() => {
 
@@ -20,10 +21,12 @@ const FullPost: React.FC = React.memo(() => {
     const isFetching = useSelector(getIsFetching)
     const post = useSelector(getPost);
     const userId = useSelector(getAuthId)
+    const recommendations = useSelector(getRecommendations);
 
     useEffect(() => {
         if(id) {
             dispatch(getOnePost({postId: id}));
+            dispatch(getRecommendationPost({originPostId: id}));
         }
     }, [id])
 
@@ -40,6 +43,7 @@ const FullPost: React.FC = React.memo(() => {
                         }
 
                     </Container>}
+                    rightChildren={<Recommendations posts={recommendations}/>}
         />
 
 

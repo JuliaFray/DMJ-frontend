@@ -14,12 +14,13 @@ import styles from './UserCard.module.scss';
 export type PostCardProps = {
     user: IUser,
     toggleFollow: (userId: string, isFollow: boolean) => void,
+    toggleFriend: (userId: string, isAddFriend: boolean) => void,
 }
 
-export const UserCard: React.FC<PostCardProps> = ({user, toggleFollow}) => {
+export const UserCard: React.FC<PostCardProps> = ({user, toggleFollow, toggleFriend}) => {
 
     const [isFollowed, setIsFollowed] = useState(user.isFollowed);
-    const [isFriend, setIsFriend] = useState(false);
+    const [isFriend, setIsFriend] = useState(user.isFriend);
 
     const image = user.avatar && `data:image/jpeg;base64,${user.avatar?.data}` || NO_AVATAR;
 
@@ -28,11 +29,12 @@ export const UserCard: React.FC<PostCardProps> = ({user, toggleFollow}) => {
     }
 
     const handleFriendClick = () => {
-
+        setIsFriend((prevState) => !prevState);
+        toggleFriend(user._id, !isFriend);
     }
 
     const handleFollowClick = () => {
-        setIsFollowed(!isFollowed)
+        setIsFollowed((prevState) => !prevState)
         toggleFollow(user._id, !isFollowed);
     }
 
@@ -64,9 +66,9 @@ export const UserCard: React.FC<PostCardProps> = ({user, toggleFollow}) => {
                     </Tooltip>}
 
                 {isFriend
-                    ? <Tooltip title={'Удадить из друзей'}>
+                    ? <Tooltip title={'Удалить из друзей'}>
                         <Button className={styles.btn} onClick={handleFriendClick} size='small' variant='contained' startIcon={<PersonAddAlt1/>}>
-                            <span className={styles.btnText}>Удадить из друзей</span>
+                            <span className={styles.btnText}>Удалить из друзей</span>
                         </Button>
                     </Tooltip>
                     : <Tooltip title={'В друзья'}>
@@ -86,3 +88,4 @@ export const UserCard: React.FC<PostCardProps> = ({user, toggleFollow}) => {
         </Card>
     );
 }
+

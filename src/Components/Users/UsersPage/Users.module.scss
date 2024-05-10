@@ -1,0 +1,10 @@
+.mainUser {
+  display: flex;
+  justify-content: center;
+  height: 100px;
+
+  .pending {
+    height: 100px!important;
+    width: 100px!important;
+  }
+}

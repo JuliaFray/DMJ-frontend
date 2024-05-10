@@ -1,4 +1,5 @@
 export const NO_AVATAR = '/broken-image.jpg';
+export const ACCESS_DENIED = 'Доступ запрещен'
 
 /** WS ACTIONS*/
 export const WS_CONNECT_START = "WS_CONNECT_START";
@@ -10,5 +11,6 @@ export const SocketEvents = {
     USER_EVENT: 'USER_EVENT',
     LOGOUT_EVENT: 'LOGOUT_EVENT',
     AUTH_EVENT: 'AUTH_EVENT',
-    FOLLOW_EVENT: 'FOLLOW_EVENT'
+    FOLLOW_EVENT: 'FOLLOW_EVENT',
+    FRIEND_EVENT: 'FRIEND_EVENT'
 };

@@ -11,12 +11,12 @@ type IPageLayout = {
 }
 const PageLayout: React.FC<IPageLayout> = (props, context) => {
     return (
-        <div>
-            <Grid container spacing={2}>
+        <div className={styles.main}>
 
+            <Grid container spacing={2} sx={{height: '100%'}}>
                 {props.isMainPage && <Grid item md={2} className={styles.left}>{props.leftChildren}</Grid>}
 
-                <Grid item xs={12} sm={12} md={props.isMainPage ? 8 : 12}>
+                <Grid item xs={12} sm={12} md={props.isMainPage ? 8 : 12} sx={{height: '100%'}}>
                     {props.mainChildren}
                 </Grid>
 
