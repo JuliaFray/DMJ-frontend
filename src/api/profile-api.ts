@@ -46,9 +46,25 @@ export const profileAPI = {
             });
     },
 
+    createFriendUser(userId: string, query: string) {
+        return instance
+            .put<GenericResponseType<void>>(`${baseUrl}/${userId}/create-friend${query}`)
+            .then(response => {
+                return response.data
+            });
+    },
+
     toggleFriendUser(userId: string, query: string) {
         return instance
             .put<GenericResponseType<void>>(`${baseUrl}/${userId}/toggle-friend${query}`)
+            .then(response => {
+                return response.data
+            });
+    },
+
+    getNotifications(userId: string) {
+        return instance
+            .put<GenericResponseType<void>>(`${baseUrl}/${userId}/friend-ntf`)
             .then(response => {
                 return response.data
             });

@@ -41,4 +41,21 @@ export const theme = createTheme({
             leavingScreen: 195,
         },
     },
+    components: {
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: 'rgba(159, 237, 215, 0.1)',
+                    borderRadius: '5vmin'
+                }
+            }
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '5vmin',
+                }
+            }
+        },
+    }
 });

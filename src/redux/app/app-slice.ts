@@ -1,9 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-type INotifications = {
+export type INotifications = {
     from: string,
     fromId: string,
-    msg: string
+    msg: string,
+    type: string
 }
 export type InitialStateType = {
     initialized: boolean,

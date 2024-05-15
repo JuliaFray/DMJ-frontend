@@ -5,17 +5,16 @@ import Avatar from '@mui/material/Avatar';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import {useSelector} from 'react-redux';
-import {getDialogs, getUsers} from '../../../redux/dialog/dialogs-selectors';
+import {getDialogs} from '../../../redux/dialog/dialogs-selectors';
 
-const DialogFriends: React.FC = (props, context) => {
+const DialogItems: React.FC = (props, context) => {
     const items = useSelector(getDialogs);
-    const users = useSelector(getUsers);
 
     return (
         <List sx={{width: '100%', maxWidth: 360}}>
-            Участники
+            Диалоги
             {
-                users.map(item => {
+                items.map(item => {
                     return (
                         <>
                             <ListItem alignItems="flex-start">
@@ -37,8 +36,7 @@ const DialogFriends: React.FC = (props, context) => {
                                 />
                             </ListItem>
                             <Divider variant="inset" component="li"/>
-                        </>
-                    )
+                        </>)
                 })
             }
             <ListItem alignItems="flex-start">
@@ -59,7 +57,7 @@ const DialogFriends: React.FC = (props, context) => {
                     }
                 />
             </ListItem>
-            <Divider variant="inset" component="li"/>
+
             <ListItem alignItems="flex-start">
                 <ListItemAvatar>
                     <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg"/>
@@ -107,4 +105,4 @@ const DialogFriends: React.FC = (props, context) => {
     )
 }
 
-export default DialogFriends;
+export default DialogItems;

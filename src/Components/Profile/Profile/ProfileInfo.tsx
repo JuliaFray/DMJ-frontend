@@ -56,7 +56,6 @@ const ProfileInfo: React.FC<IProfileInfo> = React.memo(({profile, isOwner}) => {
 
     const handleEdit = () => {
         setEditMode(prevState => !prevState);
-        console.log(editMode)
         if(state && editMode) {
             const formData = new FormData();
             for(let key in state) {

@@ -1,25 +1,27 @@
-import React from 'react';
-import {useAppDispatch} from '../../../hook/hooks';
+import React, {useEffect} from 'react';
 import PageLayout from '../../Common/PageLayout/PageLayout';
 import DialogMain from './DialogMain';
 import DialogFriends from './DialogFriends';
+import {compose} from 'redux';
+import withAuthRedirect from '../../HOC/withAuthRedirect';
+import {useAppDispatch} from '../../../hook/hooks';
+import {getAllDialogs} from '../../../redux/dialog/dialog-thunks';
+import DialogItems from './DialogItems';
 
 
 const DialogPage: React.FC = () => {
-
-    // const dialogs = useSelector(getDialogs);
-    // const messages = useSelector(getMessages);
-
     const dispatch = useAppDispatch();
 
-    // const onSendMsg = (values: FormDataType) => {
-    //     dispatch(actions.sendMsg(values.message))
-    // };
+    useEffect(() => {
+        dispatch(getAllDialogs({query: ''}))
+    }, []);
 
     return (
-        <PageLayout isMainPage mainChildren={<DialogMain/>} leftChildren={<DialogFriends/>}/>
-
+        <PageLayout isMainPage
+                    leftChildren={<DialogItems/>}
+                    mainChildren={<DialogMain/>}
+                    rightChildren={<DialogFriends/>}/>
     )
 };
 
-export default DialogPage;
+export default compose<React.ComponentType>(withAuthRedirect)(DialogPage);

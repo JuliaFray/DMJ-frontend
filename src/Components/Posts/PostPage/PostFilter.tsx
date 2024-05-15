@@ -12,8 +12,8 @@ const a11yProps = (index: number) => {
     };
 }
 type IPostFilter = {
-    onTabChange: (val: boolean) => void,
-    onFilterChange: (val: string) => void,
+    setTabIndex: (val: number) => void,
+    setSearchValue: (val: string) => void,
 }
 
 const PostFilter: React.FC<IPostFilter> = (props, context) => {
@@ -32,25 +32,25 @@ const PostFilter: React.FC<IPostFilter> = (props, context) => {
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabIndex(newValue);
-        props.onTabChange(!!newValue)
+        props.setTabIndex(newValue)
     };
 
     const handleFilterChange = () => {
-        props.onFilterChange(filter);
+        props.setSearchValue(filter);
     }
 
     return (
         <Paper classes={{root: styles.root}}>
 
-            <FormControl className={styles.filter} variant="filled">
+            <FormControl className={styles.filter} variant='filled'>
                 <form onSubmit={handleSubmit(handleFilterChange)}>
                 </form>
-                <InputLabel htmlFor="standard-adornment-password">Поиск...</InputLabel>
-                <Input id='standard-adornment-password' type={'text'} value={filter}
+                <InputLabel htmlFor='standard-search'>Поиск...</InputLabel>
+                <Input id='standard-search' type={'text'} value={filter}
                        onChange={e => setFilter(e.target.value)}
                        endAdornment={
-                           <InputAdornment position="end">
-                               <IconButton aria-label="toggle password visibility" onClick={handleFilterChange}>
+                           <InputAdornment position='end'>
+                               <IconButton aria-label='start search' onClick={handleFilterChange}>
                                    <SearchIcon/>
                                </IconButton>
                            </InputAdornment>
@@ -59,10 +59,11 @@ const PostFilter: React.FC<IPostFilter> = (props, context) => {
             </FormControl>
 
 
-            <Container maxWidth="lg">
+            <Container maxWidth='lg'>
                 <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
-                    <Tab label='Новые' {...a11yProps(0)}/>
-                    <Tab label='Лучшие' {...a11yProps(1)}/>
+                    <Tab label='Мои подписки' {...a11yProps(0)}/>
+                    <Tab label='Новые' {...a11yProps(1)}/>
+                    <Tab label='Лучшие' {...a11yProps(2)}/>
                 </Tabs>
             </Container>
         </Paper>

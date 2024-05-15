@@ -9,6 +9,8 @@ import {getProfileAvatar, getProfileFullName} from "../../../../redux/profile/pr
 import {FieldValues, useForm} from "react-hook-form";
 import {createPostComment} from '../../../../redux/posts/posts-thunks';
 import {NO_AVATAR} from '../../../../Utils/DictConstants';
+import IconButton from '@mui/material/IconButton';
+import SendIcon from '@mui/icons-material/Send';
 
 export type ICommentCreate = {
     postId: string
@@ -51,7 +53,10 @@ export const AddCommentComponent: React.FC<ICommentCreate> = ({postId}) => {
                         fullWidth
                         {...register('text')}
                     />
-                    <Button type={'submit'} variant="contained">Отправить</Button>
+                    <IconButton  className={styles.btn} type={'submit'} color='primary'>
+                        <SendIcon/>
+                    </IconButton>
+                    {/*<Button type={'submit'} variant="contained">Отправить</Button>*/}
                 </form>
             </div>
         </>

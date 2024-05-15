@@ -12,7 +12,6 @@ import AddPost from './Components/Posts/AddPost/AddPost';
 import {useAppDispatch} from './hook/hooks';
 import {checkAuth} from './redux/auth/auth-thunks';
 import {Registration} from './Components/Registration/Registration';
-import DialogPage from './Components/Dialogs/DialogPage/DialogPage';
 import styles from './App.module.scss';
 import WS from './Components/Common/WebSocketContext';
 
@@ -20,6 +19,7 @@ const ProfilePage = loadable(() => import('./Components/Profile/ProfilePage/Prof
 const PostsPage = loadable(() => import('./Components/Posts/PostPage/PostPage'));
 const FullPostPage = loadable(() => import('./Components/Posts/FullPost'));
 const UsersPage = loadable(() => import('./Components/Users/UsersPage/UsersPage'));
+const DialogPage = loadable(() => import('./Components/Dialogs/DialogPage/DialogPage'));
 
 
 const App: React.FC = () => {

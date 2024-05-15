@@ -25,7 +25,7 @@ const TagsBlock: React.FC<ITagBlock> = ({items, isLoading = true, query}) => {
     }
 
     return (
-        <SideBlock title='Тэги'>
+        <SideBlock title='Теги'>
             {(items || [...Array(5)]).map((item, i) =>
                 <ListItem key={i} disablePadding onClick={() => handleTagChange(item)}>
                     <ListItemButton className={styles.tag}>

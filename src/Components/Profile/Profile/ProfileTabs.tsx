@@ -25,9 +25,8 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
         <Container maxWidth="lg">
             <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
                 <Tab label='Подписки' {...a11yProps(0)}/>
-                <Tab label='Друзья' {...a11yProps(1)}/>
-                <Tab label={props.isOwner ? 'Мои посты' : 'Посты'} {...a11yProps(2)}/>
-                {props.isOwner && <Tab label='Избранное' {...a11yProps(3)}/>}
+                <Tab label={props.isOwner ? 'Мои посты' : 'Посты'} {...a11yProps(1)}/>
+                {props.isOwner && <Tab label='Избранное' {...a11yProps(2)}/>}
             </Tabs>
 
             <TabPanel value={tabIndex} index={0}>
@@ -35,7 +34,7 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
                       direction='column'
                       justifyContent='space-between'
                       alignItems='stretch'>
-                    <UsersPage isMainPage={false} isFollowers={true} isFriends={false}/>
+                    <UsersPage isMainPage={false} isFollowers={true}/>
                 </Grid>
             </TabPanel>
             <TabPanel value={tabIndex} index={1}>
@@ -43,19 +42,11 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
                       direction='column'
                       justifyContent='space-between'
                       alignItems='stretch'>
-                    <UsersPage isMainPage={false} isFollowers={false} isFriends={true}/>
-                </Grid>
-            </TabPanel>
-            <TabPanel value={tabIndex} index={2}>
-                <Grid container
-                      direction='column'
-                      justifyContent='space-between'
-                      alignItems='stretch'>
-                    <PostPage isOwner={props.isOwner} isMainPage={false}
+                    <PostPage isOwner={true} isMainPage={false}
                               userId={props.userId} isFavorite={false} isLoad={true}></PostPage>
                 </Grid>
             </TabPanel>
-            {props.isOwner && <TabPanel value={tabIndex} index={3}>
+            {props.isOwner && <TabPanel value={tabIndex} index={2}>
                 <Grid container
                       direction='column'
                       justifyContent='space-between'

@@ -8,8 +8,7 @@ import {connect} from 'react-redux';
 
 export type IUsersPage = {
     isMainPage: boolean,
-    isFollowers: boolean,
-    isFriends: boolean
+    isFollowers: boolean
 }
 
 const UsersPage: React.FC<IUsersPage> = React.memo((props, context) => {
@@ -17,7 +16,7 @@ const UsersPage: React.FC<IUsersPage> = React.memo((props, context) => {
     return (
         <PageLayout isMainPage={props.isMainPage}
                     mainChildren={<UsersMain
-                        isFollowers={props.isFollowers} isFriends={props.isFriends}
+                        isFollowers={props.isFollowers}
                         currentPage={currentPage} setCurrentPage={setCurrentPage}
                     />}/>
     )
@@ -25,8 +24,7 @@ const UsersPage: React.FC<IUsersPage> = React.memo((props, context) => {
 
 const mapStateToProps = (state: RootState) => ({
     isMainPage: true,
-    isFollowers: false,
-    isFriends: false,
+    isFollowers: false
 });
 
 export {UsersPage};

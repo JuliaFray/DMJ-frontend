@@ -97,11 +97,24 @@ export type SimpleNameObj = {
 
 export type IMessage = {
     id: number,
-    message: string
+    message: string,
+    author: string,
+    avatar: string
+}
+
+export type IDialog = {
+    name: string,
+    avatar: string
 }
 
 export type IFilter = {
     term: string,
     friend: boolean | null
+}
+
+export type IDialogFriends = {
+    name: string,
+    avatar: string,
+    status: string
 }
 

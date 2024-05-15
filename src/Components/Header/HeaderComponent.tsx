@@ -6,7 +6,7 @@ import {getAuthId, getIsAuth} from '../../redux/auth/auth-selectors';
 import useWebSocket, {useAppDispatch} from '../../hook/hooks';
 import Logout from '@mui/icons-material/Logout';
 import IconButton from '@mui/material/IconButton';
-import {AppBar, Box, Fade, Popper, Toolbar, Tooltip, Typography} from '@mui/material';
+import {AppBar, Box, Button, Fade, Popper, Toolbar, Tooltip, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
@@ -20,8 +20,11 @@ import {SocketEvents} from '../../Utils/DictConstants';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import {getNotifications} from '../../redux/app/app-selectors';
-import {appActions} from '../../redux/app/app-slice';
+import {appActions, INotifications} from '../../redux/app/app-slice';
 import reactStringReplace from 'react-string-replace';
+import {v4 as uuidv4} from 'uuid';
+import Divider from '@mui/material/Divider';
+import {toggleFriendProfile} from '../../redux/profile/profile-thunks';
 
 
 type IItem = {
@@ -83,9 +86,10 @@ const HeaderComponent: React.FC = () => {
     const onShowNotification = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
         setShowNotification((prev) => !prev);
-        if(showNotification) {
-            dispatch(appActions.removeNotification())
-        }
+    }
+
+    const handleReadAll = () => {
+        dispatch(appActions.removeNotification())
     }
 
     const list = () => (
@@ -144,15 +148,22 @@ const HeaderComponent: React.FC = () => {
                         <IconButton id={'ntf'} onClick={onShowNotification} aria-label='notifications' sx={{marginRight: '20px'}}>
                             {!!notifications.length ? <NotificationsActiveIcon color='warning'/> : <NotificationsIcon color='success'/>}
                         </IconButton>
-                        <Popper id={'ntf'} open={showNotification} anchorEl={anchorEl} transition>
+                        <Popper id={'ntf'} open={showNotification} anchorEl={anchorEl} transition className={styles.notifications}>
                             {({TransitionProps}) => (
                                 <Fade {...TransitionProps} timeout={350}>
                                     <Box sx={{border: 1, p: 1, bgcolor: 'background.paper'}}>
-                                        {!!notifications.length
-                                            ? notifications.map(it => <span>
-                                            {reactStringReplace(it.msg, '%s', (match, i) => <Link to={`/users/${it.fromId}`}>{it.from}</Link>)}
-                                        </span>)
-                                            : 'Уведомлений нет'}
+                                        <List dense={true}>
+                                            {!!notifications.length
+                                                ? notifications.map(it => <NotificationItem item={it}/>)
+                                                : 'Уведомлений нет'}
+
+                                            <ListItem key={uuidv4()} className={styles.item}>
+                                                <ListItemButton onClick={handleReadAll}>
+                                                    <ListItemText primary={'Отметить все прочитанными'}/>
+                                                </ListItemButton>
+                                            </ListItem>
+                                        </List>
+
                                     </Box>
                                 </Fade>
                             )}
@@ -169,5 +180,57 @@ const HeaderComponent: React.FC = () => {
         </Box>
     );
 };
+
+const NotificationTypes = {
+    FOLLOW: 'FOLLOW',
+    FRIEND: 'FRIEND'
+}
+
+const NotificationItem: React.FC<{ item: INotifications }> = (props, context) => {
+    const dispatch = useAppDispatch();
+    const userId = useSelector(getAuthId);
+
+    const toggleAgree = (isAgree: boolean) => {
+        dispatch(toggleFriendProfile(
+            {userId: userId, query: `?fromId=${props.item.fromId}&isAgree=${isAgree}`}
+        ))
+    }
+
+    if(props.item.type === NotificationTypes.FOLLOW) {
+        return (
+            <>
+                <ListItem key={uuidv4()} className={styles.item}>
+                    <ListItemText primary={reactStringReplace(props.item.msg, '%s',
+                        (match, i) => <Link to={`/users/${props.item.fromId}`}>{props.item.from}</Link>
+                    )}/>
+                </ListItem>
+                <Divider/>
+            </>
+        )
+    }
+
+    if(props.item.type === NotificationTypes.FRIEND) {
+        return (
+            <>
+                <ListItem key={uuidv4()} className={styles.item}>
+                    <ListItemText primary={reactStringReplace(props.item.msg, '%s',
+                        (match, i) => <Link to={`/users/${props.item.fromId}`}>{props.item.from}</Link>
+                    )}/>
+                    <ListItem className={styles.subItem}>
+                        <Button size='small' variant='outlined' color={'error'} onClick={() => toggleAgree(false)}>
+                            Отклонить
+                        </Button>
+
+                        <Button size='small' variant='outlined' color={'primary'} onClick={() => toggleAgree(true)}>
+                            Принять
+                        </Button>
+                    </ListItem>
+                </ListItem>
+                <Divider/>
+            </>
+        )
+    }
+    return <ListItem key={uuidv4()} className={styles.item}>Уведомлений нет</ListItem>
+}
 
 export default HeaderComponent;

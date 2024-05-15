@@ -7,6 +7,7 @@ import Card from '@mui/material/Card';
 import React from 'react';
 import {IPost} from '../../../types/types';
 import {theme} from '../../../styles/theme';
+import palette from './../../../styles/palette.module.scss';
 
 export type IPopularPost = {
     post: IPost
@@ -31,6 +32,7 @@ export const PopularPost: React.FC<IPopularPost> = ({post}, context) => {
         left: 0,
         right: 0,
         bottom: 0,
+        backgroundColor: palette.warning,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         opacity: 0.1,

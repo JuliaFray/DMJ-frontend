@@ -4,8 +4,8 @@ import {login} from '../../redux/auth/auth-thunks'
 import {Link, Navigate} from 'react-router-dom';
 import {getAuthId, getGlobalError, getIsAuth, getIsFetching} from '../../redux/auth/auth-selectors';
 import {Button, Container, Paper, Typography} from '@mui/material';
-import TextField from "@mui/material/TextField";
-import styles from "./Login.module.scss";
+import TextField from '@mui/material/TextField';
+import styles from './Login.module.scss';
 import {useForm} from 'react-hook-form';
 import {ILoginData} from '../../types/types';
 import {authActions} from '../../redux/auth/auth-slice';
@@ -15,10 +15,7 @@ import {SocketEvents} from '../../Utils/DictConstants';
 export const Login: React.FC = () => {
 
     const {register, handleSubmit, formState: {errors, isValid}} = useForm({
-        defaultValues: {
-            email: '',
-            password: ''
-        },
+        defaultValues: {email: '', password: ''},
         mode: 'onChange'
     });
     const isAuth = useSelector(getIsAuth);
@@ -48,14 +45,10 @@ export const Login: React.FC = () => {
         return <Navigate to={`/posts`}/>
     }
 
-
-
-
-
     return (
-        <Container style={{height: "100%"}}>
+        <Container style={{height: '100%'}}>
             <Paper classes={{root: styles.root}}>
-                <Typography classes={{root: styles.title}} variant="h5">
+                <Typography classes={{root: styles.title}} variant='h5'>
                     Вход в аккаунт
                 </Typography>
                 <form onChange={handleChange} onSubmit={handleSubmit((values: ILoginData) => onSubmit(values))}>

@@ -26,8 +26,8 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain}) =>
     );
 
     const height = isMain ? '350px' : '250px';
-    const titleRows = isMain ? 3 : 2;
-    const bodyRows = isMain ? 10 : 4;
+    const titleRows = isMain ? 2 : 1;
+    const bodyRows = isMain ? 12 : 4;
 
     const image = (post.author.avatar && `data:image/jpeg;base64,${post.author.avatar?.data}`) || NO_AVATAR;
     return (

@@ -71,7 +71,7 @@ const ListItems: React.FC<{ stats: IProfileStats | null }> = ({stats}) => {
         {name: 'favorites', value: 'Избранное', icon: <Grade color={'disabled'}/>},
         {name: 'rating', value: 'Рейтинг', icon: <Insights color={'disabled'}/>},
         {name: 'marks', value: 'Оценки', icon: <ImportExport color={'disabled'}/>},
-        {name: 'friends', value: 'Друзья', icon: <People color={'disabled'}/>},
+        {name: 'followers', value: 'Подписки', icon: <People color={'disabled'}/>},
     ];
 
     return (

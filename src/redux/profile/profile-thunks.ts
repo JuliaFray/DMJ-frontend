@@ -72,10 +72,44 @@ export const toggleFollowProfile = createAsyncThunk<void, { profileId: string, q
     }
 );
 
-export const toggleFriendProfile = createAsyncThunk<void, { profileId: string, query: string }, { rejectValue: string }>(
+export const createFriendProfile = createAsyncThunk<void, { profileId: string, query: string }, { rejectValue: string }>(
     'profile/friend', async (data, thunkAPI) => {
         try {
-            const response = await profileAPI.toggleFriendUser(data.profileId, data.query);
+            const response = await profileAPI.createFriendUser(data.profileId, data.query);
+
+            if(response.resultCode === ResultCodeEnum.Error) {
+                return thunkAPI.rejectWithValue(response.message)
+            }
+            return response.data;
+        } catch(e) {
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
+        }
+    }
+);
+
+export const toggleFriendProfile = createAsyncThunk<void, { userId: string, query: string }, { rejectValue: string }>(
+    'profile/toggle-friend', async (data, thunkAPI) => {
+        try {
+            const response = await profileAPI.toggleFriendUser(data.userId, data.query);
+
+            if(response.resultCode === ResultCodeEnum.Error) {
+                return thunkAPI.rejectWithValue(response.message)
+            }
+            return response.data;
+        } catch(e) {
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
+        }
+    }
+);
+
+export const getNotifications = createAsyncThunk<void, { userId: string }, { rejectValue: string }>(
+    'profile/toggle-friend', async (data, thunkAPI) => {
+        try {
+            const response = await profileAPI.getNotifications(data.userId);
 
             if(response.resultCode === ResultCodeEnum.Error) {
                 return thunkAPI.rejectWithValue(response.message)

@@ -17,8 +17,8 @@ type IPostMain = {
     isFetching: boolean,
     isMainPage: boolean,
     selectedTag: string | null,
-    setFilter: Dispatch<SetStateAction<string>>,
-    setFetchNew: Dispatch<SetStateAction<boolean>>,
+    setSearchValue: Dispatch<SetStateAction<string>>,
+    setTabIndex: Dispatch<SetStateAction<number>>,
     setSelectedTag: Dispatch<SetStateAction<string | null>>,
     setCurrentPage: Dispatch<SetStateAction<number>>,
     currentPage: number
@@ -39,7 +39,7 @@ const PostMain: React.FC<IPostMain> = (props, context) => {
 
     return (
         <div style={{position: 'relative'}}>
-            {props.isMainPage && <PostFilter onFilterChange={props.setFilter} onTabChange={props.setFetchNew}/>}
+            {props.isMainPage && <PostFilter setSearchValue={props.setSearchValue} setTabIndex={props.setTabIndex}/>}
 
             {!!popularPosts.length && <PostCarousel posts={popularPosts}>
                 {popularPosts.map(item => <PopularPost key={item._id} post={item}/>)}

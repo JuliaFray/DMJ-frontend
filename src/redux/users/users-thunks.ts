@@ -8,10 +8,10 @@ import {ACCESS_DENIED} from '../../Utils/DictConstants';
 const ERROR = 'error'
 
 export const getAllUsers = createAsyncThunk<UsersResponseType,
-    { currentPage: number, isFollowers: boolean, isFriends: boolean, userId?: string }>(
+    { currentPage: number, isFollowers: boolean, userId?: string }>(
     'users', async (data, thunkAPI) => {
         try {
-            const response = await usersAPI.getUsers(data.currentPage, data.isFollowers, data.isFriends, null, data.userId);
+            const response = await usersAPI.getUsers(data.currentPage, data.isFollowers, null, data.userId);
             if(response.resultCode === ResultCodeEnum.Error) {
                 return thunkAPI.rejectWithValue(ERROR)
             }

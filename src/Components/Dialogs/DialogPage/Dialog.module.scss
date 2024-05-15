@@ -1,0 +1,66 @@
+@import "src/styles/palette.module";
+
+
+.dialogItem {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 1px solid #333;
+}
+
+.dialogItem:last-child {
+  border-bottom: none;
+}
+
+.dialogItem a {
+  text-decoration: none;
+  color: #333;
+}
+
+.dialogItem a {
+  text-decoration: none;
+}
+
+.dialogItem a.active {
+  text-decoration: none;
+  color: white;
+}
+
+.dialogItem img {
+  width: 30px;
+  height: auto;
+
+}
+
+.dialogMain {
+  height: 100%;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: inset 0 0 15px 5px rgba($secondary, 0.08);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+
+  .dialogHeader {
+    height: 75px;
+    .dialogHeaderInfo {
+      height: 70px;
+    }
+  }
+  .dialogBox {
+    position: relative;
+    height: 80%;
+  }
+
+  .msgItem {
+    width: 100%;
+    background-color: rgba($secondary, 0.1);
+
+    .author {
+      font-weight: 600;
+      font-size: 18px;
+    }
+  }
+}

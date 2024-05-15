@@ -6,7 +6,7 @@ import {getAllUsers} from '../../../redux/users/users-thunks';
 import {useAppDispatch} from '../../../hook/hooks';
 import {useSelector} from 'react-redux';
 import {getDataLength, getIsFetching, getUsers} from '../../../redux/users/users-selectors';
-import {toggleFollowProfile, toggleFriendProfile} from '../../../redux/profile/profile-thunks';
+import {toggleFollowProfile, createFriendProfile} from '../../../redux/profile/profile-thunks';
 import {getAuthId} from '../../../redux/auth/auth-selectors';
 import CustomPagination from '../../Common/Pagination/CustomPagination';
 import style from './Users.module.scss';
@@ -15,8 +15,7 @@ import {useParams} from 'react-router-dom';
 type IUsersMain = {
     setCurrentPage: Dispatch<SetStateAction<number>>,
     currentPage: number,
-    isFollowers: boolean,
-    isFriends: boolean
+    isFollowers: boolean
 }
 
 const UsersMain: React.FC<IUsersMain> = (props, context) => {
@@ -34,10 +33,9 @@ const UsersMain: React.FC<IUsersMain> = (props, context) => {
         dispatch(getAllUsers({
             currentPage: props.currentPage,
             isFollowers: props.isFollowers,
-            isFriends: props.isFriends,
             userId: params.id || profileId
         }));
-    }, [dispatch, props.currentPage, props.isFollowers, props.isFriends]);
+    }, [dispatch, props.currentPage, props.isFollowers]);
 
     const toggleFollow = (userId: string, isFollow: boolean) => {
         if(profileId) {
@@ -51,10 +49,10 @@ const UsersMain: React.FC<IUsersMain> = (props, context) => {
         }
     };
 
-    const toggleFriend = (userId: string, isAddFriend: boolean) => {
+    const createFriend = (userId: string, isAddFriend: boolean) => {
         if(profileId) {
             dispatch(
-                toggleFriendProfile({
+                createFriendProfile({
                         profileId: profileId,
                         query: `?userId=${userId}&isAddFriend=${isAddFriend}`
                     }
@@ -77,7 +75,7 @@ const UsersMain: React.FC<IUsersMain> = (props, context) => {
                                     <UserCard user={u}
                                               key={u._id}
                                               toggleFollow={toggleFollow}
-                                              toggleFriend={toggleFriend}/>
+                                              createFriend={createFriend}/>
                                 </Grid>
                             ))
                         }
