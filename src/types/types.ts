@@ -118,3 +118,11 @@ export type IDialogFriends = {
     status: string
 }
 
+export type INotifications = {
+    from: string,
+    fromId: string,
+    msg: string,
+    type: string
+}
+
+

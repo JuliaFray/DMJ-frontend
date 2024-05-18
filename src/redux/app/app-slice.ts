@@ -1,12 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {INotifications} from '../../types/types';
 
-export type INotifications = {
-    from: string,
-    fromId: string,
-    msg: string,
-    type: string
-}
-export type InitialStateType = {
+type InitialStateType = {
     initialized: boolean,
     globalError?: string,
     usersOnline: string[],
@@ -35,8 +30,10 @@ const appSlice = createSlice({
                 if (!data.includes(payload.payload.payload)) {
                     data.push(payload.payload.payload);
                 }
-            } else {
+            } else if (Array.isArray(payload.payload.payload)) {
                 data.push(...payload.payload.payload);
+            } else {
+                data.push(payload.payload.payload._id);
             }
             state.usersOnline = data;
         },

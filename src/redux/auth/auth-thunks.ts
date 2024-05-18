@@ -8,25 +8,25 @@ import {authActions} from './auth-slice';
 import {RegisterDataType} from '../../Components/Registration/Registration';
 import {AxiosError} from 'axios';
 import {ACCESS_DENIED} from '../../Utils/DictConstants';
+import {profileActions} from '../profile/profile-slice';
 
-export const checkAuth = createAsyncThunk<string, {}>(
+export const checkAuth = createAsyncThunk<IUser | undefined, {}, {}>(
     'auth/status', async (data, thunkAPI) => {
         try {
             const response = await authAPI.checkStatus();
             if(response.resultCode === ResultCodeEnum.Success) {
                 thunkAPI.dispatch(appActions.setInitialized());
-                thunkAPI.dispatch(appActions.addUserOnline({type: "app/addUserOnline", payload: response.data}));
+                thunkAPI.dispatch(appActions.addUserOnline({type: 'app/addUserOnline', payload: response.data}));
+                thunkAPI.dispatch(profileActions.setProfile(response.data));
                 return response.data;
             } else {
                 thunkAPI.dispatch(authActions.logout());
                 thunkAPI.dispatch(appActions.setUninitialized());
-                return '';
             }
         } catch(e) {
             thunkAPI.rejectWithValue(ACCESS_DENIED);
             thunkAPI.dispatch(authActions.logout());
             thunkAPI.dispatch(appActions.setUninitialized());
-            return ACCESS_DENIED;
         }
     }
 );
@@ -42,9 +42,9 @@ export const login = createAsyncThunk<IUser | undefined,
                 if('token' in response) {
                     window?.localStorage?.setItem('token', response.token)
                 }
+                thunkAPI.dispatch(profileActions.setProfile(response.data));
                 return response.data;
             } else {
-
                 thunkAPI.dispatch(authActions.setGlobalError(response.message));
                 thunkAPI.dispatch(authActions.logout());
                 thunkAPI.dispatch(appActions.setUninitialized());

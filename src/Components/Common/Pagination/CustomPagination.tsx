@@ -16,7 +16,7 @@ const CustomPagination: React.FC<ICustomPagination> = (props, context) => {
     }
 
     return (
-        <div className={style.paginationWrapper}>
+        <div className={style.paginationWrapper} style={{display: count > 1 ? 'block' : 'none'}}>
             {count > 1 &&
                 <Pagination className={style.pagination} siblingCount={1} page={props.page} onChange={handleOnPageChange}
                             boundaryCount={1} count={count} variant="outlined" color="primary"/>

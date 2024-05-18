@@ -1,44 +1,25 @@
-import {IFilter, IUser} from '../../types/types';
+import {IUser} from '../../types/types';
 import {createSlice} from '@reduxjs/toolkit';
 import {getAllUsers} from './users-thunks';
 
 export type InitialStateType = {
-    users: Array<IUser>,
-    dataLength: number,
-    pageSize: number,
-    currentPage: number,
+    users: IUser[],
+    totalCount: number,
     isFetching: boolean,
-    followingInProgress: Array<string>,
-    userId: string | null,
-    filter: IFilter
+    userId: string | null
 }
 
 let initialState: InitialStateType = {
     isFetching: false,
     users: [],
-    dataLength: 0,
-
-    followingInProgress: [],
-    userId: null,
-
-    pageSize: 10,
-    currentPage: 1,
-    filter: {
-        term: '',
-        friend: null
-    }
+    totalCount: 0,
+    userId: null
 };
 
 const usersSlice = createSlice({
     name: 'users',
     initialState,
-    reducers: {
-        setFetchSettings: (state, action) => {
-            state.pageSize = action.payload.pageSize;
-            state.currentPage = action.payload.currentPage;
-            state.filter = action.payload.filter;
-        }
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             //=====getAllUsers=====//
@@ -49,13 +30,13 @@ const usersSlice = createSlice({
                 state.isFetching = false;
                 if(action.payload) {
                     state.users = action.payload.data;
-                    state.dataLength = action.payload.totalCount;
+                    state.totalCount = action.payload.totalCount;
                 }
             })
             .addCase(getAllUsers.rejected, (state, action) => {
                 state.isFetching = false;
                 state.users = [];
-                state.dataLength = 0;
+                state.totalCount = 0;
             })
     }
 });

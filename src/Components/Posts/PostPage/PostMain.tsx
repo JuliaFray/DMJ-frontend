@@ -56,7 +56,7 @@ const PostMain: React.FC<IPostMain> = (props, context) => {
             <Grid container sx={{margin: 0}}
                   rowSpacing={{xs: 1, sm: 2, md: 3}}
                   columnSpacing={{xs: 1, sm: 2, md: 3}}
-                  style={{marginTop: '20px', marginBottom: '20px'}}>
+                  style={{marginTop: '20px', marginBottom: '100px'}}>
 
                 {props.isFetching
                     ? [...Array(props.isMainPage ? 6 : 2)].map((value, index) =>

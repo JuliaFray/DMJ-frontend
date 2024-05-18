@@ -42,11 +42,37 @@ export const theme = createTheme({
         },
     },
     components: {
+        MuiFormLabel: {
+            styleOverrides: {
+                root: {
+                    lineHeight: '1em',
+                    top: '-3px!important',
+                }
+            }
+        },
+        MuiInput: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: 'rgba(159, 237, 215, 0.1)',
+                    borderRadiusTopLeft: '5vmin',
+                    height: '40px'
+                },
+                input: {
+                    height: '40px',
+                    padding: '0 15px'
+                }
+            }
+        },
         MuiOutlinedInput: {
             styleOverrides: {
                 root: {
                     backgroundColor: 'rgba(159, 237, 215, 0.1)',
-                    borderRadius: '5vmin'
+                    borderRadius: '5vmin',
+                    height: '40px'
+                },
+                input: {
+                    height: '40px',
+                    padding: '0 15px'
                 }
             }
         },
@@ -54,6 +80,7 @@ export const theme = createTheme({
             styleOverrides: {
                 root: {
                     borderRadius: '5vmin',
+                    height: '40px'
                 }
             }
         },

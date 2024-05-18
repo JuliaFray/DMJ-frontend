@@ -18,9 +18,9 @@ const DialogPage: React.FC = () => {
 
     return (
         <PageLayout isMainPage
-                    leftChildren={<DialogItems/>}
+                    leftChildren={<DialogFriends/>}
                     mainChildren={<DialogMain/>}
-                    rightChildren={<DialogFriends/>}/>
+                    rightChildren={<DialogItems/>}/>
     )
 };
 

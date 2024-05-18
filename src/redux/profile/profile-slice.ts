@@ -1,23 +1,30 @@
 import {IProfile, IProfileStats} from '../../types/types';
 import {createSlice} from '@reduxjs/toolkit';
-import {getUserProfile, getUserProfileStats, saveUserProfile, toggleFollowProfile, createFriendProfile, toggleFriendProfile} from './profile-thunks';
+import {createFriendProfile, getUserProfile, getUserProfileStats, saveUserProfile, toggleFollowProfile, toggleFriendProfile} from './profile-thunks';
 
 type InitialStateType = {
     profile: IProfile | null,
     isFetching?: boolean,
-    stats: IProfileStats | null
+    stats: IProfileStats | null,
+    my: IProfile | null,
 }
 
 const initialState: InitialStateType = {
     profile: null,
     isFetching: false,
-    stats: null
+    stats: null,
+    my: null
 };
 
 const profileSlice = createSlice({
     name: 'profile',
     initialState,
-    reducers: {}, extraReducers: (builder) => {
+    reducers: {
+        setProfile: (state, action) => {
+            state.my = action.payload;
+        },
+    },
+    extraReducers: (builder) => {
         builder
             //=====getUserProfile=====//
             .addCase(getUserProfile.pending, (state, action) => {
@@ -89,3 +96,4 @@ const profileSlice = createSlice({
 });
 
 export default profileSlice.reducer;
+export const profileActions = profileSlice.actions;

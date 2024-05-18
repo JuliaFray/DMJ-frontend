@@ -10,7 +10,6 @@ import {compose} from 'redux';
 import {useSelector} from 'react-redux';
 import {getIsFetching, getPost, getRecommendations} from '../../redux/posts/posts-selectors';
 import {getAuthId} from '../../redux/auth/auth-selectors';
-import {Container} from '@mui/material';
 import PageLayout from '../Common/PageLayout/PageLayout';
 import Recommendations from './Recommendations/Recommendations';
 
@@ -32,7 +31,7 @@ const FullPost: React.FC = React.memo(() => {
 
     return (
         <PageLayout isMainPage
-                    mainChildren={<Container>
+                    mainChildren={<>
                         {post && <Post post={post} isFullPost isLoading={isFetching}
                                        isEditable={post.author._id === userId}/>
                         }
@@ -42,7 +41,7 @@ const FullPost: React.FC = React.memo(() => {
                             </CommentsBlock>
                         }
 
-                    </Container>}
+                    </>}
                     rightChildren={<Recommendations posts={recommendations}/>}
         />
 

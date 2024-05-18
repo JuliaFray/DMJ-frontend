@@ -1,4 +1,4 @@
-import {IDialog, IDialogFriends, IMessage, SimpleNameObj} from '../../types/types';
+import {IDialog, IDialogFriends, IMessage} from '../../types/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {getAllDialogs, getMessagesByDialog, getUsersWithStatus} from './dialog-thunks';
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import ProfileInfo from '../Profile/ProfileInfo';
-import {Grid} from '@mui/material';
 import {IProfile} from '../../../types/types';
+import {CircularProgress} from '@mui/material';
+import style from '../../Users/UsersPage/Users.module.scss';
 
 type IProfileMain = {
     isOwner: boolean,
@@ -9,11 +10,11 @@ type IProfileMain = {
 }
 
 const ProfileMain: React.FC<IProfileMain> = (props, context) => {
+    if(!props.profile) {
+        return <CircularProgress className={style.pending}/>
+    }
     return (
-        <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}
-              sx={{margin: 0}} style={{marginTop: '20px', marginBottom: '20px'}}>
-            {props.profile && <ProfileInfo profile={props.profile} isOwner={props.isOwner}/>}
-        </Grid>
+        <ProfileInfo profile={props.profile} isOwner={props.isOwner}/>
     );
 }
 

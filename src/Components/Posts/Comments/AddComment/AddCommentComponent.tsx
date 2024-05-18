@@ -4,8 +4,7 @@ import styles from "../Comment.module.scss";
 
 import TextField from "@mui/material/TextField";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import {getProfileAvatar, getProfileFullName} from "../../../../redux/profile/profile-selectors";
+import {getMyProfileAvatar, getMyProfileFullName} from "../../../../redux/profile/profile-selectors";
 import {FieldValues, useForm} from "react-hook-form";
 import {createPostComment} from '../../../../redux/posts/posts-thunks';
 import {NO_AVATAR} from '../../../../Utils/DictConstants';
@@ -24,8 +23,8 @@ export const AddCommentComponent: React.FC<ICommentCreate> = ({postId}) => {
         mode: 'onChange'
     });
 
-    const avatar = useSelector(getProfileAvatar);
-    const fullName = useSelector(getProfileFullName);
+    const avatar = useSelector(getMyProfileAvatar);
+    const fullName = useSelector(getMyProfileFullName);
 
     const onSubmit = (formData: FieldValues) => {
         dispatch(createPostComment(
@@ -53,10 +52,9 @@ export const AddCommentComponent: React.FC<ICommentCreate> = ({postId}) => {
                         fullWidth
                         {...register('text')}
                     />
-                    <IconButton  className={styles.btn} type={'submit'} color='primary'>
+                    <IconButton className={styles.btn} type={'submit'} color='primary'>
                         <SendIcon/>
                     </IconButton>
-                    {/*<Button type={'submit'} variant="contained">Отправить</Button>*/}
                 </form>
             </div>
         </>

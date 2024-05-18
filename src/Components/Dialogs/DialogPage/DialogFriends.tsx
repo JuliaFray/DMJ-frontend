@@ -5,10 +5,9 @@ import Avatar from '@mui/material/Avatar';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import {useSelector} from 'react-redux';
-import {getDialogs, getUsers} from '../../../redux/dialog/dialogs-selectors';
+import {getUsers} from '../../../redux/dialog/dialog-selectors';
 
 const DialogFriends: React.FC = (props, context) => {
-    const items = useSelector(getDialogs);
     const users = useSelector(getUsers);
 
     return (

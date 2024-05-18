@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import styles from '../../Common/SideBlock/SideBlock.module.scss';
 import Paper from '@mui/material/Paper';
-import {Container, FormControl, IconButton, Input, InputAdornment, InputLabel, Tab, Tabs} from '@mui/material';
+import {Container, IconButton, Tab, Tabs} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import {useForm} from 'react-hook-form';
+import TextField from '@mui/material/TextField';
 
 const a11yProps = (index: number) => {
     return {
@@ -18,12 +19,10 @@ type IPostFilter = {
 
 const PostFilter: React.FC<IPostFilter> = (props, context) => {
 
-    const {handleSubmit} = useForm({
-        defaultValues: {},
+    const {register, handleSubmit} = useForm({
+        defaultValues: {search: ''},
         mode: 'onChange'
     });
-
-    const [filter, setFilter] = useState('');
 
     useEffect(() => {
         setTabIndex(0)
@@ -35,29 +34,22 @@ const PostFilter: React.FC<IPostFilter> = (props, context) => {
         props.setTabIndex(newValue)
     };
 
-    const handleFilterChange = () => {
-        props.setSearchValue(filter);
+    const handleFilterSubmit = (formData: any) => {
+        props.setSearchValue(formData.search);
     }
 
     return (
         <Paper classes={{root: styles.root}}>
-
-            <FormControl className={styles.filter} variant='filled'>
-                <form onSubmit={handleSubmit(handleFilterChange)}>
-                </form>
-                <InputLabel htmlFor='standard-search'>Поиск...</InputLabel>
-                <Input id='standard-search' type={'text'} value={filter}
-                       onChange={e => setFilter(e.target.value)}
-                       endAdornment={
-                           <InputAdornment position='end'>
-                               <IconButton aria-label='start search' onClick={handleFilterChange}>
-                                   <SearchIcon/>
-                               </IconButton>
-                           </InputAdornment>
-                       }
+            <form className={styles.filter} onSubmit={handleSubmit((values: any) => handleFilterSubmit(values))}>
+                <TextField
+                    variant={'outlined'}
+                    label='Поиск...'
+                    {...register('search')}
                 />
-            </FormControl>
-
+                <IconButton aria-label='start search' type={'submit'}>
+                    <SearchIcon/>
+                </IconButton>
+            </form>
 
             <Container maxWidth='lg'>
                 <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>

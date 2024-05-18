@@ -10,7 +10,7 @@ type IProfileAvatar = {
     profile: IProfile,
     isOwner: boolean,
     editMode: boolean,
-    setEditMode: Dispatch<SetStateAction<boolean>>,
+    setEditMode: (isChanged: boolean) => void,
     file: File | string | null,
     setFile: Dispatch<SetStateAction<File | string | null>>
 }
@@ -69,16 +69,16 @@ const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
             </div>}
 
             <div className={styles.btnBlock}>
-                {props.isOwner &&
-                    <Button className={styles.button}
-                            variant='outlined' onClick={() => props.setEditMode(!props.editMode)}>
-                        {props.editMode ? 'Сохранить' : 'Редактировать'}
-                    </Button>
-                }
                 {props.editMode &&
                     <Button className={styles.button}
-                            variant='outlined' onClick={() => props.setEditMode(!props.editMode)}>
+                            variant='outlined' onClick={() => props.setEditMode(false)}>
                         Отмена
+                    </Button>
+                }
+                {props.isOwner &&
+                    <Button className={styles.button}
+                            variant='outlined' onClick={() => props.setEditMode(true)}>
+                        {props.editMode ? 'Сохранить' : 'Редактировать'}
                     </Button>
                 }
             </div>

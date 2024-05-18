@@ -54,24 +54,26 @@ const ProfileInfo: React.FC<IProfileInfo> = React.memo(({profile, isOwner}) => {
 
     const getKeyValue = <T, K extends keyof T>(obj: T, key: K): T[K] => obj[key];
 
-    const handleEdit = () => {
+    const handleEdit = (isChanged: boolean) => {
         setEditMode(prevState => !prevState);
-        if(state && editMode) {
-            const formData = new FormData();
-            for(let key in state) {
-                const val = getKeyValue<IProfile, keyof IProfile>(state, key);
-                formData.append(key, typeof val === 'string' ? val : JSON.stringify(val));
-            }
-
-            if(file) {
-                if(file instanceof File) {
-                    formData.append('image', file);
-                } else {
-                    formData.append('image', convertBase64ToBlob(file));
+        if (isChanged) {
+            if(state && editMode) {
+                const formData = new FormData();
+                for(let key in state) {
+                    const val = getKeyValue<IProfile, keyof IProfile>(state, key);
+                    formData.append(key, typeof val === 'string' ? val : JSON.stringify(val));
                 }
-            }
 
-            dispatch(saveUserProfile({profileId: state._id, file: formData}))
+                if(file) {
+                    if(file instanceof File) {
+                        formData.append('image', file);
+                    } else {
+                        formData.append('image', convertBase64ToBlob(file));
+                    }
+                }
+
+                dispatch(saveUserProfile({profileId: state._id, file: formData}))
+            }
         }
     }
 

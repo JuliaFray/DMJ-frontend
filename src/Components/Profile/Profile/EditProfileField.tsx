@@ -3,9 +3,11 @@ import React, {ChangeEvent, Dispatch, SetStateAction, useState} from 'react';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-import 'dayjs/locale/de';
+
 import styles from './ProfileInfo.module.scss'
 import {IProfile} from '../../../types/types';
+import TextField from '@mui/material/TextField';
+import dayjs, { Dayjs } from 'dayjs';
 
 type IEditProfileField = {
     editMode: boolean,
@@ -20,8 +22,9 @@ type IEditProfileField = {
 const EditProfileField: React.FC<IEditProfileField> = (props, context) => {
 
     const [value, setValue] = useState(props.value);
+    const [dateValue, setDateValue] = useState<Dayjs | null>(dayjs(props.value));
 
-    const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const handleChangeTextValue = async (event: ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
 
         if(props.state) {
@@ -32,15 +35,33 @@ const EditProfileField: React.FC<IEditProfileField> = (props, context) => {
         }
     };
 
+    const handleChangeDateValue = async (event: Dayjs | null) => {
+        setDateValue(event);
+        if(props.state) {
+            props.setState({
+                ...props.state,
+                [props.name]: event ? event.format('DD.MM.YYYY') : null
+            });
+        }
+    };
+
     return (
         <div className={styles.editFields}>
             {props.editMode && props.type === 'string' &&
-                <Input defaultValue={value} inputProps={{'aria-label': props.name}}
-                       onChange={handleChangeFile}
-                       placeholder={props.placeholder} className={styles.input}/>}
+                <TextField
+                    className={styles.input}
+                    fullWidth
+                    value={value}
+                    onChange={handleChangeTextValue}
+                    placeholder={props.placeholder}
+                />
+               }
+
             {props.editMode && props.type === 'date' &&
-                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
-                    <DatePicker className={styles.datePicker}/>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker className={styles.datePicker}
+                                onChange={handleChangeDateValue}
+                                value={dateValue}/>
                 </LocalizationProvider>
             }
 
