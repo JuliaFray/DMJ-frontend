@@ -26,6 +26,9 @@ const dialogSlice = createSlice({
         addSelectedDialog:  (state, payload) => {
             state.selectedDialog = payload.payload;
         },
+        clearState: (state) => {
+            state.messages = [];
+        },
     },
     extraReducers: (builder) => {
         builder

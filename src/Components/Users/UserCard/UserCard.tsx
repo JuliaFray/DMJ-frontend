@@ -102,7 +102,7 @@ export const UserCard: React.FC<PostCardProps> = ({user, toggleFollow}) => {
                 >
                     <DialogTitle>Отправить сообщение</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>{getFullName(user)}</DialogContentText>
+                        <DialogContentText>Кому: {getFullName(user)}</DialogContentText>
                         <TextField autoFocus required
                                    margin="dense" id="name" name="text"
                                    placeholder="Введите сообщение..." type="text"
@@ -111,7 +111,7 @@ export const UserCard: React.FC<PostCardProps> = ({user, toggleFollow}) => {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Отмена</Button>
-                        <Button type="submit">Отправить</Button>
+                        <Button variant='contained' type="submit">Отправить</Button>
                     </DialogActions>
                 </Dialog>
 

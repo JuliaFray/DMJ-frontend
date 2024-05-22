@@ -36,15 +36,18 @@ const HeaderComponent: React.FC = () => {
     const ws = useWebSocket();
     const handleWS = useCallback(
         (e: any) => {
-            const {type, data} = JSON.parse(e.data);
+            const {type, data, msg} = JSON.parse(e.data);
             if(type === SocketEvents.FOLLOW_EVENT) {
-                dispatch(appActions.addNotification({type: 'app/addNotification', payload: data}))
+                dispatch(appActions.addNotification({type: 'app/addNotification', payload: msg}))
             }
             if(type === SocketEvents.AUTH_EVENT) {
                 dispatch(appActions.addUserOnline({type: 'app/addUserOnline', payload: data}))
             }
             if(type === SocketEvents.FRIEND_EVENT) {
-                dispatch(appActions.addNotification({type: 'app/addNotification', payload: data}))
+                dispatch(appActions.addNotification({type: 'app/addNotification', payload: msg}))
+            }
+            if(type === SocketEvents.MSG_EVENT && data.from._id !== userId) {
+                dispatch(appActions.addNotification({type: 'app/addNotification', payload: msg}))
             }
         },
         [dispatch]
@@ -63,7 +66,8 @@ const HeaderComponent: React.FC = () => {
     }
 
     const handleReadAll = () => {
-        dispatch(appActions.removeNotification())
+        dispatch(appActions.removeNotification());
+        setShowNotification((prev) => !prev);
     }
 
 
@@ -86,8 +90,8 @@ const HeaderComponent: React.FC = () => {
                                     <Box sx={{border: 1, p: 1, bgcolor: 'background.paper', borderColor: '#026670'}}>
                                         <List dense={true}>
                                             {!!notifications.length
-                                                ? notifications.map(it => <NotificationItem item={it}/>)
-                                                : <NotificationItem text='Уведомлений нет'/>}
+                                                ? notifications.map(it => <NotificationItem key={uuidv4()} item={it}/>)
+                                                : <NotificationItem key={uuidv4()} text='Уведомлений нет'/>}
 
                                             <ListItem key={uuidv4()} className={styles.item}>
                                                 <ListItemButton className={styles.btn} onClick={handleReadAll}>
@@ -111,7 +115,8 @@ const HeaderComponent: React.FC = () => {
 
 const NotificationTypes = {
     FOLLOW: 'FOLLOW',
-    FRIEND: 'FRIEND'
+    FRIEND: 'FRIEND',
+    MSG: 'MSG'
 }
 
 const NotificationItem: React.FC<{ item?: INotifications, text?: string }> = ({item, text}, context) => {
@@ -135,7 +140,7 @@ const NotificationItem: React.FC<{ item?: INotifications, text?: string }> = ({i
         ))
     }
 
-    if(item.type === NotificationTypes.FOLLOW) {
+    if(item.type === NotificationTypes.FOLLOW || item.type === NotificationTypes.MSG) {
         return (
             <>
                 <ListItem key={uuidv4()} className={styles.item}>

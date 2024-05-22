@@ -9,6 +9,7 @@ type IPageLayout = {
     mainChildren: ReactNode,
     leftChildren?: ReactNode,
     rightChildren?: ReactNode,
+    mainSx?: Record<string, any>
 }
 const PageLayout: React.FC<IPageLayout> = (props, context) => {
     const isMore1200px = useMediaQuery(theme.breakpoints.up('lg'));
@@ -29,7 +30,7 @@ const PageLayout: React.FC<IPageLayout> = (props, context) => {
             <Grid container spacing={2} sx={{height: '100%'}}>
                 {isMore1200px && props.isMainPage && <Grid item md={2.5} className={styles.left}>{props.leftChildren}</Grid>}
 
-                <Grid item xs={12} sm={12} md={mdMain} sx={{height: 'auto'}}>
+                <Grid item xs={12} sm={12} md={mdMain} sx={props.mainSx ? props.mainSx : {height: 'auto'}}>
                     {props.mainChildren}
                 </Grid>
 

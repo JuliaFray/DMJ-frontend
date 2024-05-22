@@ -54,7 +54,6 @@ export const theme = createTheme({
             styleOverrides: {
                 root: {
                     backgroundColor: 'rgba(159, 237, 215, 0.05)',
-                    borderRadiusTopLeft: '5vmin',
                     height: '40px'
                 },
                 input: {
@@ -67,7 +66,6 @@ export const theme = createTheme({
             styleOverrides: {
                 root: {
                     backgroundColor: 'rgba(159, 237, 215, 0.05)',
-                    borderRadius: '5vmin',
                     height: '40px'
                 },
                 input: {
@@ -76,10 +74,23 @@ export const theme = createTheme({
                 }
             }
         },
+        MuiAutocomplete: {
+            styleOverrides: {
+                root: {
+                    padding: 0,
+                },
+                inputRoot:{
+                    height: 'max-content',
+                },
+                input: {
+                    height: '40px',
+                    padding: '0 !important'
+                }
+            }
+        },
         MuiButton: {
             styleOverrides: {
                 root: {
-                    borderRadius: '5vmin',
                     height: '40px'
                 }
             }

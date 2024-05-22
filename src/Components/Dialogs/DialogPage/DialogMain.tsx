@@ -25,6 +25,7 @@ const DialogMain = () => {
 
     useEffect(() => {
         if (id) {
+            dispatch(dialogActions.clearState());
             dispatch(getMessagesByDialogId({dialogId: id}));
         }
     }, [id])
@@ -64,7 +65,7 @@ const DialogMain = () => {
               sx={{margin: 0}} style={{marginBottom: '20px'}}>
             {selectedDialog && <DialogHeader selectedDialog={selectedDialog}/>}
 
-            <Box sx={{flexGrow: 1, overflow: 'hidden', px: 3}} className={styles.dialogBox}>
+            <Box sx={{overflow: 'hidden', px: 3}} className={styles.dialogBox}>
                 {messages.map(
                     (el: IMessage) => <MessageItem id={el?.id} key={uuidv4()}
                                                    text={el?.text} from={el?.from}/>)}

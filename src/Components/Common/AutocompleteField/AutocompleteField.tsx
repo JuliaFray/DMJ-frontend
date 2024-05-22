@@ -75,7 +75,7 @@ const AutocompleteField: React.FC<IAutocompleteField> = (props, context) => {
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        variant='standard' label='Тэги'
+                        variant='outlined' label='Тэги'
                         onKeyDown={handleKeyPress}
                         value={currentTag} onChange={e => setCurrentTag(e.target.value)}
                         InputProps={{

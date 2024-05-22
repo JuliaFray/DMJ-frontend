@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {IProfile} from '../../../types/types';
 import {Grid} from '@mui/material';
-import styles from './/ProfileInfo.module.scss';
+import styles from './ProfileInfo.module.scss';
 import Divider from '@mui/material/Divider';
 import {ProfileTabs} from './ProfileTabs';
 import ProfileAvatar from './ProfileAvatar';
