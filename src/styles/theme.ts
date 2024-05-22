@@ -53,7 +53,7 @@ export const theme = createTheme({
         MuiInput: {
             styleOverrides: {
                 root: {
-                    backgroundColor: 'rgba(159, 237, 215, 0.1)',
+                    backgroundColor: 'rgba(159, 237, 215, 0.05)',
                     borderRadiusTopLeft: '5vmin',
                     height: '40px'
                 },
@@ -66,7 +66,7 @@ export const theme = createTheme({
         MuiOutlinedInput: {
             styleOverrides: {
                 root: {
-                    backgroundColor: 'rgba(159, 237, 215, 0.1)',
+                    backgroundColor: 'rgba(159, 237, 215, 0.05)',
                     borderRadius: '5vmin',
                     height: '40px'
                 },

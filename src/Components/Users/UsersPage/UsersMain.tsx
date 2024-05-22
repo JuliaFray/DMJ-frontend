@@ -5,8 +5,8 @@ import {UserCard} from '../UserCard/UserCard';
 import {getAllUsers} from '../../../redux/users/users-thunks';
 import {useAppDispatch} from '../../../hook/hooks';
 import {useSelector} from 'react-redux';
-import {getTotalCount, getIsFetching, getUsers} from '../../../redux/users/users-selectors';
-import {createFriendProfile, toggleFollowProfile} from '../../../redux/profile/profile-thunks';
+import {getIsFetching, getTotalCount, getUsers} from '../../../redux/users/users-selectors';
+import {toggleFollowProfile} from '../../../redux/profile/profile-thunks';
 import {getAuthId} from '../../../redux/auth/auth-selectors';
 import CustomPagination from '../../Common/Pagination/CustomPagination';
 import {useParams} from 'react-router-dom';
@@ -50,18 +50,6 @@ const UsersMain: React.FC<IUsersMain> = (props, context) => {
         }
     };
 
-    const createFriend = (userId: string, isAddFriend: boolean) => {
-        if(profileId) {
-            dispatch(
-                createFriendProfile({
-                        profileId: profileId,
-                        query: `?userId=${userId}&isAddFriend=${isAddFriend}`
-                    }
-                )
-            );
-        }
-    };
-
     return (
         <div style={{position: 'relative'}}>
             <Grid container sx={{margin: 0}}
@@ -73,8 +61,7 @@ const UsersMain: React.FC<IUsersMain> = (props, context) => {
                         <Grid item xs={12} key={u._id}>
                             <UserCard user={u}
                                       key={u._id}
-                                      toggleFollow={toggleFollow}
-                                      createFriend={createFriend}/>
+                                      toggleFollow={toggleFollow}/>
                         </Grid>
                     ))
                 }

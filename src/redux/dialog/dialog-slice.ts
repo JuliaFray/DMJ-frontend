@@ -1,23 +1,32 @@
 import {IDialog, IDialogFriends, IMessage} from '../../types/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {getAllDialogs, getMessagesByDialog, getUsersWithStatus} from './dialog-thunks';
+import {getAllDialogs, getMessagesByDialogId, getUsersWithStatus} from './dialog-thunks';
 
 type InitialStateType = {
     messages: Array<IMessage>,
     dialogs: Array<IDialog>,
-    users: IDialogFriends[]
+    users: IDialogFriends[],
+    selectedDialog: IDialog | null
 };
 
 let initialState: InitialStateType = {
     messages: [],
     dialogs: [],
-    users: []
+    users: [],
+    selectedDialog: null
 };
 
 const dialogSlice = createSlice({
     name: 'dialog',
     initialState,
-    reducers: {},
+    reducers: {
+        addMsg: (state, payload) => {
+            state.messages.push(payload.payload);
+        },
+        addSelectedDialog:  (state, payload) => {
+            state.selectedDialog = payload.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             //=====getAllDialogs=====//
@@ -31,13 +40,13 @@ const dialogSlice = createSlice({
 
             })
             //=====getMessagesByDialog=====//
-            .addCase(getMessagesByDialog.pending, (state) => {
+            .addCase(getMessagesByDialogId.pending, (state) => {
 
             })
-            .addCase(getMessagesByDialog.fulfilled, (state, action: PayloadAction<any>) => {
+            .addCase(getMessagesByDialogId.fulfilled, (state, action: PayloadAction<any>) => {
                 state.messages = action.payload.data;
             })
-            .addCase(getMessagesByDialog.rejected, (state) => {
+            .addCase(getMessagesByDialogId.rejected, (state) => {
 
             })
             //=====getUsersWithStatus=====//

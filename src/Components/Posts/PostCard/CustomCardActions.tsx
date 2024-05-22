@@ -59,7 +59,7 @@ const CustomCardActions: React.FC<ICardActions> = (props, context) => {
             <li key={'isFavorite'}>
                 <Tooltip title='В избранное'>
                     <IconButton aria-label="add to favorites" onClick={onClickFavorite}>
-                        <Grade color={isFavorite ? 'primary' : 'disabled'}/>
+                        <Grade color={isFavorite ? 'error' : 'disabled'}/>
                     </IconButton>
                 </Tooltip>
             </li>

@@ -67,7 +67,7 @@ const ProfileData: React.FC<IProfileData> = React.memo((props) => {
 const ListItems: React.FC<{ stats: IProfileStats | null }> = ({stats}) => {
     const items = [
         {name: 'comments', value: 'Комментарии', icon: <CommentIcon color={'disabled'}/>},
-        {name: 'posts', value: 'Посты', icon: <Article color={'disabled'}/>},
+        {name: 'posts', value: 'Публикации', icon: <Article color={'disabled'}/>},
         {name: 'favorites', value: 'Избранное', icon: <Grade color={'disabled'}/>},
         {name: 'rating', value: 'Рейтинг', icon: <Insights color={'disabled'}/>},
         {name: 'marks', value: 'Оценки', icon: <ImportExport color={'disabled'}/>},

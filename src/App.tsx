@@ -58,6 +58,7 @@ const Main: React.FC = () => {
                         <Route path='/users' element={<UsersPage/>}/>
 
                         <Route path='/dialogs' element={<DialogPage/>}/>
+                        <Route path='/dialogs/:id' element={<DialogPage/>}/>
 
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/register" element={<Registration/>}/>

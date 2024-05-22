@@ -25,7 +25,7 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
         <Container maxWidth="lg">
             <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
                 <Tab label='Подписки' {...a11yProps(0)}/>
-                <Tab label={props.isOwner ? 'Мои посты' : 'Посты'} {...a11yProps(1)}/>
+                <Tab label={props.isOwner ? 'Мои публикации' : 'Публикации'} {...a11yProps(1)}/>
                 {props.isOwner && <Tab label='Избранное' {...a11yProps(2)}/>}
             </Tabs>
 

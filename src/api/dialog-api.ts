@@ -9,9 +9,9 @@ export const dialogAPI = {
                 return response.data
             })
     },
-    getMessagesByDialog(query: string) {
+    getMessagesByDialog(dialogId: string) {
         return instance
-            .get<any>(`${baseUrl}/messages`)
+            .get<any>(`${baseUrl}/messages/${dialogId}`)
             .then(response => {
                 return response.data
             })

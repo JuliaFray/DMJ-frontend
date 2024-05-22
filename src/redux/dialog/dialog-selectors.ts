@@ -11,3 +11,7 @@ export const getMessages = (state: RootState) => {
 export const getUsers = (state: RootState) => {
     return state.dialog.users
 };
+
+export const getSelectedDialog = (state: RootState) => {
+    return state.dialog.selectedDialog
+};

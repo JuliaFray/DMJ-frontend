@@ -1,105 +1,49 @@
 import React from 'react';
 import List from '@mui/material/List';
-import {Divider, ListItem, Typography} from '@mui/material';
+import {AvatarGroup, ListItem, Typography} from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
 import {useSelector} from 'react-redux';
 import {getDialogs} from '../../../redux/dialog/dialog-selectors';
+import {getFullName, getImage} from '../../../Utils/helper';
+import ListItemButton from '@mui/material/ListItemButton';
+import {useAppDispatch} from '../../../hook/hooks';
+import {dialogActions} from '../../../redux/dialog/dialog-slice';
+import {IDialog} from '../../../types/types';
+import {getAuthId} from '../../../redux/auth/auth-selectors';
+import {v4 as uuidv4} from 'uuid';
+import {useNavigate} from 'react-router-dom';
+import Stack from '@mui/material/Stack';
 
 const DialogItems: React.FC = (props, context) => {
+
     const items = useSelector(getDialogs);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const authId = useSelector(getAuthId);
+
+    const onDialogSelect = (item: IDialog) => {
+        dispatch(dialogActions.addSelectedDialog(item));
+        navigate(`/dialogs/${item._id}`)
+    }
 
     return (
-        <List sx={{width: '100%', maxWidth: 360}}>
-            Диалоги
+        <List key={uuidv4()} sx={{width: '100%', maxWidth: 360}}>
             {
                 items.map(item => {
+                    const users = item.isPrivate ? item.users.filter(u => u._id !== authId) : item.users
                     return (
-                        <>
-                            <ListItem alignItems="flex-start">
-                                <ListItemAvatar>
-                                    <Avatar alt={item.name} src={item.avatar}/>
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={item.name}
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                sx={{display: 'inline'}}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary">
-                                            </Typography>
-                                        </React.Fragment>
-                                    }
-                                />
-                            </ListItem>
-                            <Divider variant="inset" component="li"/>
-                        </>)
+                        <ListItem key={uuidv4()} alignItems="flex-start">
+                            <ListItemButton key={uuidv4()} onClick={() => onDialogSelect(item)}>
+                                <AvatarGroup key={uuidv4()} max={5}>
+                                    {users.map(user => <Stack key={uuidv4()} spacing={2} direction='row' alignItems='center'>
+                                        <Avatar key={uuidv4()} alt={getFullName(user)} src={getImage(user.avatar, true)}/>
+                                        <Typography key={uuidv4()} noWrap>{getFullName(user)}</Typography>
+                                    </Stack>)}
+                                </AvatarGroup>
+                            </ListItemButton>
+                        </ListItem>)
                 })
             }
-            <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>
-                </ListItemAvatar>
-                <ListItemText
-                    primary="friend1"
-                    secondary={
-                        <React.Fragment>
-                            <Typography
-                                sx={{display: 'inline'}}
-                                component="span"
-                                variant="body2"
-                                color="text.primary">
-                            </Typography>
-                        </React.Fragment>
-                    }
-                />
-            </ListItem>
-
-            <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                    <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg"/>
-                </ListItemAvatar>
-                <ListItemText
-                    primary="friend2"
-                    secondary={
-                        <React.Fragment>
-                            <Typography
-                                sx={{display: 'inline'}}
-                                component="span"
-                                variant="body2"
-                                color="text.primary"
-                            >
-                                preview...
-                            </Typography>
-                        </React.Fragment>
-                    }
-                />
-            </ListItem>
-            <Divider variant="inset" component="li"/>
-            <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                    <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg"/>
-                </ListItemAvatar>
-                <ListItemText
-                    primary="friend3"
-                    secondary={
-                        <React.Fragment>
-                            <Typography
-                                sx={{display: 'inline'}}
-                                component="span"
-                                variant="body2"
-                                color="text.primary"
-                            >
-                                preview...
-                            </Typography>
-
-                        </React.Fragment>
-                    }
-                />
-            </ListItem>
 
         </List>
     )

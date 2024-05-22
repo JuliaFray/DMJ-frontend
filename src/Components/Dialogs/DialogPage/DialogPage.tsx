@@ -18,10 +18,10 @@ const DialogPage: React.FC = () => {
 
     return (
         <PageLayout isMainPage
-                    leftChildren={<DialogFriends/>}
+                    leftChildren={<DialogItems/>}
                     mainChildren={<DialogMain/>}
-                    rightChildren={<DialogItems/>}/>
+                   />
     )
 };
-
+// rightChildren={<DialogFriends/>}
 export default compose<React.ComponentType>(withAuthRedirect)(DialogPage);

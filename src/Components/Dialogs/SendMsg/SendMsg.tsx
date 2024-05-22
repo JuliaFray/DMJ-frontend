@@ -6,16 +6,44 @@ import SendIcon from '@mui/icons-material/Send';
 import {Box} from '@mui/material';
 import styles from './SendMsg.module.scss'
 import Divider from '@mui/material/Divider';
+import useWebSocket from '../../../hook/hooks';
+import {SocketEvents} from '../../../Utils/DictConstants';
+import {IDialog} from '../../../types/types';
+import {useSelector} from 'react-redux';
+import {getAuthId} from '../../../redux/auth/auth-selectors';
 
-const SendMsgForm: React.FC = () => {
 
-    const {register, handleSubmit, formState: {errors}} = useForm({
+type ISendMsg = {
+    selectedDialog: IDialog
+}
+
+const SendMsg: React.FC<ISendMsg> = (props, context) => {
+
+    const authId = useSelector(getAuthId);
+
+    const ws = useWebSocket();
+
+
+    const {register, handleSubmit, resetField, formState: {errors}} = useForm({
         defaultValues: {text: ''},
         mode: 'onChange'
     });
 
     const onSubmit = (formData: any) => {
-        console.log(formData);
+        props.selectedDialog.users
+            .filter(u => u._id !== authId)
+            .forEach(u => {
+                const msg = {
+                    type: SocketEvents.MSG_EVENT,
+                    from: authId,
+                    to: u._id,
+                    text: formData.text,
+                    dialogId: props.selectedDialog._id
+                };
+                ws?.send(JSON.stringify({type: SocketEvents.MSG_EVENT, msg: msg}));
+            })
+
+        resetField('text');
     };
 
     return (
@@ -34,7 +62,7 @@ const SendMsgForm: React.FC = () => {
                 />
 
 
-                <IconButton  className={styles.btn} type={'submit'} color='primary'>
+                <IconButton className={styles.btn} type={'submit'} color='primary'>
                     <SendIcon/>
                 </IconButton>
             </form>
@@ -43,4 +71,4 @@ const SendMsgForm: React.FC = () => {
     )
 };
 
-export default SendMsgForm;
+export default SendMsg;

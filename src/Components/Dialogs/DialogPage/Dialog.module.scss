@@ -42,21 +42,27 @@
   background-color: white;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
 
   .dialogHeader {
-    height: 75px;
+    height: 60px;
     .dialogHeaderInfo {
-      height: 70px;
+      height: 55px;
+      display: flex;
+      align-items: center;
     }
   }
   .dialogBox {
     position: relative;
-    height: 80%;
+    height: 70%;
+    overflow-y: scroll;
   }
 
   .msgItem {
-    width: 100%;
-    background-color: rgba($secondary, 0.1);
+    overflow: hidden;
+    height: 50px;
+    width: 45%;
+    //background-color: rgba($secondary, 0.1);
 
     .author {
       font-weight: 600;

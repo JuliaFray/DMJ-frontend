@@ -24,10 +24,10 @@ export const getAllDialogs = createAsyncThunk<PostsResponseType, { query: string
     }
 );
 
-export const getMessagesByDialog = createAsyncThunk<PostsResponseType, { query: string }>(
+export const getMessagesByDialogId = createAsyncThunk<PostsResponseType, { dialogId: string }>(
     'messages', async (data, thunkAPI) => {
         try {
-            const response = await dialogAPI.getMessagesByDialog(data.query);
+            const response = await dialogAPI.getMessagesByDialog(data.dialogId);
             if(response.resultCode === ResultCodeEnum.Error) {
                 return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
             }
