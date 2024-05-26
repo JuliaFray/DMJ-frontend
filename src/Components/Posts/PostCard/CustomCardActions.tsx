@@ -36,7 +36,7 @@ const CustomCardActions: React.FC<ICardActions> = (props, context) => {
 
     return (
         <ul className={styles.postDetails}>
-            <li key={'rating'}>
+            <li key={'rating'} className={styles.comment}>
                 <IconButton disabled={userRating === -1} aria-label="up rating" onClick={() => onClickRating(-1)}>
                     <ArrowDropDown/>
                 </IconButton>
@@ -48,7 +48,7 @@ const CustomCardActions: React.FC<ICardActions> = (props, context) => {
                 </IconButton>
             </li>
             <li key={'viewsCount'}>
-                <EyeIcon/>
+                <EyeIcon className={styles.comment}/>
                 <span>{props.post.viewsCount}</span>
             </li>
             <li key={'comments'}>
@@ -56,13 +56,13 @@ const CustomCardActions: React.FC<ICardActions> = (props, context) => {
                 <span>{props.post.comments?.length}</span>
             </li>
 
-            <li key={'isFavorite'}>
+            {!props.isCard && <li key={'isFavorite'}>
                 <Tooltip title='В избранное'>
                     <IconButton aria-label="add to favorites" onClick={onClickFavorite}>
                         <Grade color={isFavorite ? 'error' : 'disabled'}/>
                     </IconButton>
                 </Tooltip>
-            </li>
+            </li>}
 
             {props.isCard && <li key={'link'}>
                 <Link to={`/posts/${props.post._id}`} style={{position: 'absolute', right: '0'}}>

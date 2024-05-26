@@ -43,7 +43,8 @@ const UsersMain: React.FC<IUsersMain> = (props, context) => {
             dispatch(
                 toggleFollowProfile({
                         profileId: profileId,
-                        query: `?userId=${userId}&isFollow=${isFollow}`
+                        query: `?userId=${userId}&isFollow=${isFollow}`,
+                        userId: userId
                     }
                 )
             );

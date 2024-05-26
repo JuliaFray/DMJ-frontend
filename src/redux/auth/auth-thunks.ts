@@ -15,6 +15,9 @@ export const checkAuth = createAsyncThunk<IUser | undefined, {}, {}>(
         try {
             const response = await authAPI.checkStatus();
             if(response.resultCode === ResultCodeEnum.Success) {
+                if(response.token) {
+                    window?.localStorage?.setItem('token', response.token)
+                }
                 thunkAPI.dispatch(appActions.setInitialized());
                 thunkAPI.dispatch(appActions.addUserOnline({type: 'app/addUserOnline', payload: response.data}));
                 thunkAPI.dispatch(profileActions.setProfile(response.data));

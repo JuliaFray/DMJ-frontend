@@ -17,7 +17,7 @@ export const UserInfo: React.FC<IUserInfo> = ({avatar, fullName, additionalText,
             <Avatar className={styles.avatar} src={avatar} alt={fullName}/>
             <div className={styles.userDetails}>
                 <Link to={`/users/${userId}`}><span className={styles.userName}>{fullName}</span></Link>
-                <span className={styles.additional}>{moment(additionalText).format('LL')}</span>
+                <span className={styles.additional}>{moment(additionalText).fromNow()}</span>
             </div>
         </div>
     );

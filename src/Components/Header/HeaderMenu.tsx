@@ -63,10 +63,10 @@ const HeaderMenu: React.FC<{ userId: string }> = (props, context) => {
         };
 
     const items: IItem[] = [
-        {name: 'Публикации', link: `/posts`, icon: <LibraryBooks/>},
         {name: 'Профиль', link: `/users/${props.userId}`, icon: <AccountBox/>},
-        {name: 'Все пользователи', link: `/users`, icon: <Groups/>},
-        {name: 'Сообщения', link: `/dialogs`, icon: <ChatBubble/>}
+        {name: 'Сообщения', link: `/dialogs`, icon: <ChatBubble/>},
+        {name: 'Публикации', link: `/posts`, icon: <LibraryBooks/>},
+        {name: 'Все пользователи', link: `/users`, icon: <Groups/>}
     ];
 
     const list = () => (

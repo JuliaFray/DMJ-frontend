@@ -55,7 +55,7 @@ export const saveUserProfile = createAsyncThunk<void, { profileId: string, file:
     }
 );
 
-export const toggleFollowProfile = createAsyncThunk<void, { profileId: string, query: string }, { rejectValue: string }>(
+export const toggleFollowProfile = createAsyncThunk<void, { profileId: string, query: string , userId: string}, { rejectValue: string }>(
     'profile/follow', async (data, thunkAPI) => {
         try {
             const response = await profileAPI.toggleFollowUser(data.profileId, data.query);
@@ -63,6 +63,7 @@ export const toggleFollowProfile = createAsyncThunk<void, { profileId: string, q
             if(response.resultCode === ResultCodeEnum.Error) {
                 return thunkAPI.rejectWithValue(response.message)
             }
+            thunkAPI.dispatch(getUserProfile({userId: data.userId}))
             return response.data;
         } catch(e) {
             thunkAPI.dispatch(authActions.logout());

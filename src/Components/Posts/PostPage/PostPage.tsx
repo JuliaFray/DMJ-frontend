@@ -66,6 +66,10 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
         }
     }, [queryParams, tabIndex, searchValue, currentPage])
 
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [tabIndex])
+
     return (
         <PageLayout isMainPage={props.isMainPage}
                     mainChildren={<PostMain isMainPage={props.isMainPage} isFetching={isFetching}

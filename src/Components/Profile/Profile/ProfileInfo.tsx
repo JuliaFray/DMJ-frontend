@@ -56,7 +56,7 @@ const ProfileInfo: React.FC<IProfileInfo> = React.memo(({profile, isOwner}) => {
 
     const handleEdit = (isChanged: boolean) => {
         setEditMode(prevState => !prevState);
-        if (isChanged) {
+        if(isChanged) {
             if(state && editMode) {
                 const formData = new FormData();
                 for(let key in state) {
@@ -74,6 +74,8 @@ const ProfileInfo: React.FC<IProfileInfo> = React.memo(({profile, isOwner}) => {
 
                 dispatch(saveUserProfile({profileId: state._id, file: formData}))
             }
+        } else {
+            setState(profile);
         }
     }
 

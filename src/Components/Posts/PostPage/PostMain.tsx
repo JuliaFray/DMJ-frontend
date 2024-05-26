@@ -63,11 +63,17 @@ const PostMain: React.FC<IPostMain> = (props, context) => {
                         <Grid item xs={12} sm={12} md={props.isMainPage ? 6 : 12} key={index}>
                             <PostSkeleton key={index}/>
                         </Grid>)
-                    : posts.map((el: IPost) =>
-                        <Grid item xs={12} sm={12} md={props.isMainPage ? 6 : 12} key={el._id}>
-                            {el.author && <PostCard key={el._id} isMain={false} post={el} avatarAbbr={el.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}/>}
-                        </Grid>
-                    )}
+                    : !!posts.length
+                        ? posts.map((el: IPost) =>
+                            <Grid item xs={12} sm={12} md={props.isMainPage ? 6 : 12} key={el._id}>
+                                {el.author &&
+                                    <PostCard key={el._id} isMain={false} post={el} avatarAbbr={el.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}/>}
+                            </Grid>
+                        )
+                        : <div style={{margin: '0 auto'}}>
+                            К сожалению, список публикаций пуст :(
+                        </div>
+                }
 
                 {props.isMainPage && <Link to='/add-post'>
                     <Fab color='primary'

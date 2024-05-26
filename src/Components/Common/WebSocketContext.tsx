@@ -98,7 +98,7 @@ function WS(props: React.PropsWithChildren<{}>) {
 
     if(!silentConnect && (ws.connecting || ws.error)) {
         return (
-            <div>
+            <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 {ws.error && (
                     <div>
                         {tries > 0 && <p>Упс... Кажется, что-то сломалось :(</p>}

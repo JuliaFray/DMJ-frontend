@@ -29,7 +29,8 @@ export type IPost = {
 
 export type IChipData = {
     _id: string,
-    value: string
+    value: string,
+    useCount?: number
 }
 
 export type IImage = {
@@ -39,19 +40,13 @@ export type IImage = {
     contentType?: string
 };
 
-export type IContact = {
-    github: string,
-    website: string,
-    phone: string
-}
-
 export type IComment = {
+    _id?: string,
     text: string,
-    author?: {
-        firstName: string,
-        secondName: string,
-        lastName?: string,
-    } | null
+    author?: IUser | null,
+    rating?: number,
+    userRating?: number,
+    createdAt?: Date
 }
 
 export interface IProfile extends Record<string, any> {
@@ -60,12 +55,13 @@ export interface IProfile extends Record<string, any> {
     firstName: string,
     secondName: string,
     lastName?: string,
-    contacts: IContact,
     avatarId: string,
     avatar: IImage,
     city: string,
     age: string,
-    description: string
+    description: string,
+    isFollowed: boolean,
+    createdAt?: Date
 }
 
 export type IProfileStats = {
@@ -98,7 +94,8 @@ export type SimpleNameObj = {
 export type IMessage = {
     id: number,
     text: string,
-    from: IProfile
+    from: IProfile,
+    createdAt: Date
 }
 
 export type IDialog = {

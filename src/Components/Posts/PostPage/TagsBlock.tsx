@@ -25,7 +25,7 @@ const TagsBlock: React.FC<ITagBlock> = ({items, isLoading = true, query}) => {
     }
 
     return (
-        <SideBlock title='Теги'>
+        <SideBlock title='Популярные теги'>
             {(items || [...Array(5)]).map((item, i) =>
                 <ListItem key={i} disablePadding onClick={() => handleTagChange(item)}>
                     <ListItemButton className={styles.tag}>
@@ -35,7 +35,7 @@ const TagsBlock: React.FC<ITagBlock> = ({items, isLoading = true, query}) => {
                         {isLoading ? (
                             <Skeleton width={'100%'}/>
                         ) : (
-                            <ListItemText primary={item.value}/>
+                            <ListItemText primary={`${item.value} (${item.useCount})`}/>
                         )}
                     </ListItemButton>
                 </ListItem>

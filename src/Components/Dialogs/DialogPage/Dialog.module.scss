@@ -26,10 +26,15 @@
 
   .msgItem {
     overflow: hidden;
-    height: 50px;
+    height: auto;
     width: 45%;
 
-    .author {
+    .msgItemInfo {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .text {
       font-weight: 600;
       font-size: 18px;
     }

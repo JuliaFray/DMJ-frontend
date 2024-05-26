@@ -28,7 +28,7 @@ const dialogSlice = createSlice({
         },
         clearState: (state) => {
             state.messages = [];
-        },
+        }
     },
     extraReducers: (builder) => {
         builder

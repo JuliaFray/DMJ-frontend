@@ -7,6 +7,7 @@ import styles from './../DialogPage/Dialog.module.scss'
 import {v4 as uuidv4} from 'uuid';
 import {useSelector} from 'react-redux';
 import {getAuthId} from '../../../redux/auth/auth-selectors';
+import moment from 'moment';
 
 const Item = styled(Paper)(({theme}) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -26,10 +27,13 @@ const MessageItem: React.FC<IMessage> = (props) => {
 
     return (
         <Item sx={sx} className={styles.msgItem}>
-            <Stack spacing={2} direction='row' alignItems='center'>
-                <Stack direction='column' alignItems='center'>
-                    <Typography key={uuidv4()} noWrap>{props.text}</Typography>
+            <Stack direction='column' alignItems='start'>
+                <Stack direction='row' className={styles.msgItemInfo}>
+                    <Typography  key={uuidv4()} paragraph noWrap>{props.from.secondName}</Typography>
+                    <Typography key={uuidv4()} paragraph noWrap>{moment(props.createdAt).format('LLL')}</Typography>
                 </Stack>
+
+                <Typography className={styles.text} key={uuidv4()} noWrap>{props.text}</Typography>
             </Stack>
         </Item>
     )

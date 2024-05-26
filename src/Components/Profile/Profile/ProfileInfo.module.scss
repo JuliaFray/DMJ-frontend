@@ -9,7 +9,7 @@
   align-items: stretch;
 
   .profileCards {
-    height: 250px;
+    height: 400px;
     margin: 20px 0;
     width: 100%;
     justify-content: center;
@@ -53,9 +53,14 @@
         justify-content: center;
 
         .button {
-          border-radius: 10px;
           height: 100%;
           width: 80%;
+        }
+
+        .buttons {
+          height: 100%;
+          width: 45%;
+          overflow: hidden;
         }
       }
 
@@ -82,6 +87,8 @@
         overflow: hidden;
         padding-bottom: 10px;
         border-bottom: 1px solid rgba($secondary, 0.5);
+        display: flex;
+        justify-content: space-between;
       }
 
       .profileList {
@@ -89,7 +96,12 @@
         overflow: hidden;
 
         li {
-          height: 40px;
+          height: 60px;
+
+          &:last-child {
+            height: 120px;
+          }
+
 
           .editFields {
             width: 50%;

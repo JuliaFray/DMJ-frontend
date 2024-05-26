@@ -11,7 +11,8 @@ export enum ResultCodeEnum {
 export type GenericResponseType<D = {}> = {
     data: D,
     message: string,
-    resultCode: ResultCodeEnum
+    resultCode: ResultCodeEnum,
+    token?: string
 }
 
 export type LoginResponseType = {

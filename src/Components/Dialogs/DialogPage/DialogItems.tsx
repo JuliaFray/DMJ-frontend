@@ -13,6 +13,7 @@ import {getAuthId} from '../../../redux/auth/auth-selectors';
 import {v4 as uuidv4} from 'uuid';
 import {useNavigate} from 'react-router-dom';
 import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
 
 const DialogItems: React.FC = (props, context) => {
 
@@ -27,11 +28,11 @@ const DialogItems: React.FC = (props, context) => {
     }
 
     return (
-        <List key={uuidv4()} sx={{width: '100%', maxWidth: 360}}>
+        <List key={uuidv4()} sx={{width: '100%'}}>
             {
                 items.map(item => {
                     const users = item.isPrivate ? item.users.filter(u => u._id !== authId) : item.users
-                    return (
+                    return (<>
                         <ListItem key={uuidv4()} alignItems="flex-start">
                             <ListItemButton key={uuidv4()} onClick={() => onDialogSelect(item)}>
                                 <AvatarGroup key={uuidv4()} max={5}>
@@ -41,7 +42,9 @@ const DialogItems: React.FC = (props, context) => {
                                     </Stack>)}
                                 </AvatarGroup>
                             </ListItemButton>
-                        </ListItem>)
+                        </ListItem>
+                        <Divider/>
+                    </>)
                 })
             }
 

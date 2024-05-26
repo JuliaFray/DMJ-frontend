@@ -62,18 +62,18 @@ export const theme = createTheme({
                 }
             }
         },
-        MuiOutlinedInput: {
-            styleOverrides: {
-                root: {
-                    backgroundColor: 'rgba(159, 237, 215, 0.05)',
-                    height: '40px'
-                },
-                input: {
-                    height: '40px',
-                    padding: '0 15px'
-                }
-            }
-        },
+        // MuiOutlinedInput: {
+        //     styleOverrides: {
+        //         root: {
+        //             backgroundColor: 'rgba(159, 237, 215, 0.05)',
+        //             height: '40px'
+        //         },
+        //         input: {
+        //             height: '40px',
+        //             padding: '0 15px'
+        //         }
+        //     }
+        // },
         MuiAutocomplete: {
             styleOverrides: {
                 root: {

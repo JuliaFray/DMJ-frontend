@@ -17,11 +17,7 @@ const DialogPage: React.FC = () => {
     }, []);
 
     return (
-        <PageLayout isMainPage
-                    leftChildren={<DialogItems/>}
-                    mainChildren={<DialogMain/>}
-                    mainSx={{height: '100%'}}
-                   />
+        <PageLayout isMainPage mainChildren={<DialogMain/>} mainSx={{height: '100%'}}/>
     )
 };
 export default compose<React.ComponentType>(withAuthRedirect)(DialogPage);

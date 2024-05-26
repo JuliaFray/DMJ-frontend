@@ -1,5 +1,5 @@
-import {Input, ListItemText} from '@mui/material';
-import React, {ChangeEvent, Dispatch, SetStateAction, useState} from 'react';
+import {ListItemText} from '@mui/material';
+import React, {ChangeEvent, Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,13 +7,13 @@ import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import styles from './ProfileInfo.module.scss'
 import {IProfile} from '../../../types/types';
 import TextField from '@mui/material/TextField';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, {Dayjs} from 'dayjs';
 
 type IEditProfileField = {
     editMode: boolean,
     name: string,
     value: string,
-    type: 'string' | 'date',
+    type: 'string' | 'date' | 'textarea',
     placeholder?: string,
     state: IProfile | null,
     setState: Dispatch<SetStateAction<IProfile>>
@@ -22,7 +22,7 @@ type IEditProfileField = {
 const EditProfileField: React.FC<IEditProfileField> = (props, context) => {
 
     const [value, setValue] = useState(props.value);
-    const [dateValue, setDateValue] = useState<Dayjs | null>(dayjs(props.value));
+    const [dateValue, setDateValue] = useState<Dayjs | null>(props.value ? dayjs(props.value) : null);
 
     const handleChangeTextValue = async (event: ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
@@ -55,7 +55,20 @@ const EditProfileField: React.FC<IEditProfileField> = (props, context) => {
                     onChange={handleChangeTextValue}
                     placeholder={props.placeholder}
                 />
-               }
+            }
+
+            {props.editMode && props.type === 'textarea' &&
+                <TextField
+                    sx={{height: '80px'}}
+                    className={styles.multiline}
+                    fullWidth
+                    multiline
+                    rows={2}
+                    value={value}
+                    onChange={handleChangeTextValue}
+                    placeholder={props.placeholder}
+                />
+            }
 
             {props.editMode && props.type === 'date' &&
                 <LocalizationProvider dateAdapter={AdapterDayjs}>

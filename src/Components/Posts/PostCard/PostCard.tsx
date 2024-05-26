@@ -47,12 +47,8 @@ export const PostCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain}) =>
                         {avatarAbbr}
                     </Avatar>
                 }
-                title={isMain
-                    ? <Link to={`/posts/${post._id}`}>{post.title}</Link>
-                    : post.title}
-                subheader={isMain
-                    ? <Link className={styles.subtitle} to={`/users/${post.author._id}`}>{getFullName(post.author)}</Link>
-                    : getFullName(post.author)}
+                title={<Link to={`/posts/${post._id}`}>{post.title}</Link>}
+                subheader={<Link className={styles.subtitle} to={`/users/${post.author._id}`}>{getFullName(post.author)}</Link>}
                 titleTypographyProps={{
                     variant: 'subtitle1',
                     whiteSpace: 'normal'

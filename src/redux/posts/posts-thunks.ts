@@ -203,3 +203,19 @@ export const getRecommendationPost = createAsyncThunk<IPost[], {originPostId: st
         }
     }
 );
+
+export const toggleCommentRating = createAsyncThunk<void, { commentId: string, rating: number }, { rejectValue: string }>(
+    'posts/commentRating', async (data, thunkAPI) => {
+        const response = await postAPI.toggleCommentRating(data.commentId, data.rating);
+        try {
+            if(response.resultCode === ResultCodeEnum.Error) {
+                return thunkAPI.rejectWithValue(response.message);
+            }
+            return response.data;
+        } catch(e) {
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
+        }
+    }
+);

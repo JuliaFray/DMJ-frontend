@@ -106,5 +106,13 @@ export const postAPI = {
             .then(response => {
                 return response.data
             })
-    }
+    },
+
+    toggleCommentRating(commentId: string, rating: number) {
+        return instance
+            .put<GenericResponseType<void>>(`${baseUrl}/${commentId}/comment-rating?rating=${rating}`)
+            .then(response => {
+                return response.data
+            })
+    },
 };

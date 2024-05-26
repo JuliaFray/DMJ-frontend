@@ -75,18 +75,18 @@ export const UserCard: React.FC<PostCardProps> = ({user, toggleFollow}) => {
             <Box className={styles.cardActions}>
                 {isFollowed
                     ? <Tooltip title={'Отписаться'}>
-                        <Button className={styles.btn} onClick={handleFollowClick} size='small' variant='contained' startIcon={<Loyalty/>}>
+                        <Button className={styles.btn} onClick={handleFollowClick} size='medium' variant='contained' startIcon={<Loyalty/>}>
                             <span className={styles.btnText}>Отписаться</span>
                         </Button>
                     </Tooltip>
                     : <Tooltip title={'Подписаться'}>
-                        <Button className={styles.btn} onClick={handleFollowClick} size='small' variant='outlined' startIcon={<Loyalty/>}>
+                        <Button className={styles.btn} onClick={handleFollowClick} size='medium' variant='outlined' startIcon={<Loyalty/>}>
                             <span className={styles.btnText}>Подписаться</span>
                         </Button>
                     </Tooltip>}
 
                 <Tooltip title={'Написать'}>
-                    <Button className={styles.btn} onClick={handleMessageClick} size='small' variant='outlined' startIcon={<Chat/>}>
+                    <Button className={styles.btn} onClick={handleMessageClick} size='medium' variant='outlined' startIcon={<Chat/>}>
                         <span className={styles.btnText}>Написать</span>
                     </Button>
                 </Tooltip>

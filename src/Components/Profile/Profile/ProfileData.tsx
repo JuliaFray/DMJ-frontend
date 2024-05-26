@@ -1,4 +1,4 @@
-import {IContact, IProfile, IProfileStats} from '../../../types/types';
+import {IProfile, IProfileStats} from '../../../types/types';
 import React, {Dispatch, SetStateAction} from 'react';
 import styles from './ProfileInfo.module.scss';
 import {getFullName} from '../../../Utils/helper';
@@ -10,6 +10,7 @@ import {getStats} from '../../../redux/profile/profile-selectors';
 import {Article, Grade, ImportExport, Insights, People} from '@mui/icons-material';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import moment from 'moment';
 
 
 type IProfileData = {
@@ -29,6 +30,14 @@ const ProfileData: React.FC<IProfileData> = React.memo((props) => {
             <div className={styles.profileHeader}>{getFullName(props.profile)}</div>
 
             <List dense={true} className={styles.profileList}>
+                <ListItem key={'regList'}>
+                    <ListItemText key={'regT'} primary='Дата регистрации:'/>
+                    <div className={styles.editFields}>
+                        <ListItemText key={'reg'} primary={moment(props.profile.createdAt).format('DD.MM.yyyy')}/>
+                    </div>
+
+                </ListItem>
+
                 <ListItem key={'ageList'}>
                     <ListItemText key={'ageT'} primary='День рождения:'/>
                     <EditProfileField editMode={props.editMode} name={'age'} state={props.state}
@@ -41,20 +50,10 @@ const ProfileData: React.FC<IProfileData> = React.memo((props) => {
                                       value={props.profile.city} type={'string'} state={props.state} setState={props.setState}/>
                 </ListItem>
 
-                {props?.profile?.contacts && Object.keys(props?.profile?.contacts).map(key => {
-                    return (
-                        <ListItem key={key + 'List'}>
-                            <ListItemText key={key} primary={key}/>
-                            <EditProfileField editMode={props.editMode} name={key} type={'string'} state={props.state} setState={props.setState}
-                                              value={props?.profile?.contacts[key as keyof IContact]}/>
-                        </ListItem>)
-
-                })}
-
                 <ListItem key={'profileList'}>
                     <ListItemText key={'profile'} primary='О себе:'/>
                     <EditProfileField editMode={props.editMode} name={'description'} placeholder={'О себе'}
-                                      value={props.profile.description} type={'string'} state={props.state} setState={props.setState}/>
+                                      value={props.profile.description} type={'textarea'} state={props.state} setState={props.setState}/>
                 </ListItem>
             </List>
 
@@ -76,7 +75,7 @@ const ListItems: React.FC<{ stats: IProfileStats | null }> = ({stats}) => {
 
     return (
         <div className={styles.stats}>
-            {items.map(key => <Tooltip key={key.name + '_tooltip'} title={key.value}>
+            {items.filter(key => stats && +stats[key.name] >= 0).map(key => <Tooltip key={key.name + '_tooltip'} title={key.value}>
                 <ListItem key={key.name + '_item'}>
                     <ListItemIcon key={key.name + '_icon'}>{key.icon}</ListItemIcon>
                     <ListItemText key={key.name} primary={stats ? stats[key.name] : 0}/>
