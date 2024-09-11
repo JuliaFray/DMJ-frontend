@@ -1,28 +1,36 @@
 import React, {ChangeEvent, useCallback, useEffect, useMemo, useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {useSelector} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import {compose} from 'redux';
-import {useSelector} from 'react-redux';
-import {useForm} from 'react-hook-form';
 import 'easymde/dist/easymde.min.css';
+// eslint-disable-next-line import/order
 import SimpleMDE from 'react-simplemde-editor';
 import {useAppDispatch} from '../../../hook/hooks';
-import {createPost, editPost, getOnePost} from '../../../redux/posts/posts-thunks';
-import withAuthRedirect from '../../HOC/withAuthRedirect';
 import {getPost} from '../../../redux/posts/posts-selectors';
 import {postActions} from '../../../redux/posts/posts-slice'
+import {createPost, editPost, getOnePost} from '../../../redux/posts/posts-thunks';
+import {IChipData} from '../../../types/types';
+import {convertBase64ToBlob} from '../../../Utils/helper';
+import AutocompleteField from '../../Common/AutocompleteField/AutocompleteField';
 import InputFileUpload from '../../Common/FileUploadButton/FileUploadButton';
+import PageLayout from '../../Common/PageLayout/PageLayout';
+import withAuthRedirect from '../../HOC/withAuthRedirect';
+// eslint-disable-next-line import/order
 import IconButton from '@mui/material/IconButton';
+// eslint-disable-next-line import/order
 import DeleteIcon from '@mui/icons-material/Clear';
+// eslint-disable-next-line import/order
 import TextField from '@mui/material/TextField';
+// eslint-disable-next-line import/order
 import Paper from '@mui/material/Paper';
+// eslint-disable-next-line import/order
 import Button from '@mui/material/Button';
+// eslint-disable-next-line import/order
 import {Tooltip} from '@mui/material';
 import styles from './AddPost.module.scss';
-import {convertBase64ToBlob} from '../../../Utils/helper';
+// eslint-disable-next-line import/order
 import clsx from 'clsx';
-import {IChipData} from '../../../types/types';
-import AutocompleteField from '../../Common/AutocompleteField/AutocompleteField';
-import PageLayout from '../../Common/PageLayout/PageLayout';
 
 const AddPost: React.FC = () => {
 

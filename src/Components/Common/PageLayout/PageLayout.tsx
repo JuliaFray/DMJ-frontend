@@ -1,8 +1,8 @@
 import React, {ReactNode} from 'react';
 import {Grid, useMediaQuery} from '@mui/material';
-import styles from './PageLayout.module.scss';
-import ScrollToTop from '../ScrollToTop';
 import {theme} from '../../../styles/theme';
+import ScrollToTop from '../ScrollToTop';
+import styles from './PageLayout.module.scss';
 
 type IPageLayout = {
     isMainPage: boolean,

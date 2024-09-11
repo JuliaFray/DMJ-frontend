@@ -1,0 +1,184 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": [
+    "@feature-sliced",
+    "@feature-sliced/eslint-config/rules/import-order",
+    "@feature-sliced/eslint-config/rules/public-api",
+    "@feature-sliced/eslint-config/rules/layers-slices"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module"
+  },
+  "rules": {
+    "import/no-internal-modules": "warn",
+    "import/order": [
+      "warn",
+      {
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "builtin"
+          },
+          {
+            "pattern": "~shared/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "~entities/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "~features/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "~widgets/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "~pages/**",
+            "group": "internal",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [
+          "builtin"
+        ],
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "newlines-between": "never",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "~shared/*/*/**",
+              "~entities/*/**",
+              "~features/*/**",
+              "~widgets/*/**",
+              "~pages/*/**",
+              "~app/**"
+            ],
+            "message": "Direct access to the internal parts of the module is prohibited"
+          },
+          {
+            "group": [
+              "../**/shared",
+              "../**/entities",
+              "../**/features",
+              "../**/widgets",
+              "../**/pages",
+              "../**/app"
+            ],
+            "message": "Prefer absolute imports instead of relatives"
+          }
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        ".*.ts",
+        "./**/*.ts",
+        "./**/.*.ts",
+        "*.tsx",
+        ".*.tsx",
+        "./**/*.tsx",
+        "./**/.*.tsx"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "project": true
+      },
+      "plugins": [
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint"
+      ],
+      "extends": [
+        "plugin:eslint-plugin-import/typescript"
+      ],
+      "rules": {
+        "react/require-default-props": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/no-throw-literal": "off",
+        "@typescript-eslint/naming-convention": [
+          "warn",
+          {
+            "selector": "variable",
+            "format": [
+              "camelCase",
+              "PascalCase",
+              "UPPER_CASE"
+            ],
+            "leadingUnderscore": "allow",
+            "trailingUnderscore": "allow"
+          },
+          {
+            "selector": "variable",
+            "modifiers": [
+              "destructured"
+            ],
+            "format": [
+              "camelCase",
+              "PascalCase",
+              "snake_case",
+              "UPPER_CASE"
+            ],
+            "leadingUnderscore": "allow"
+          }
+        ],
+        "import/extensions": [
+          "error",
+          "ignorePackages",
+          {
+            "": "never",
+            "tsx": "never",
+            "ts": "never"
+          }
+        ],
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": [
+              "**/__tests__/**",
+              "**/__mocks__/**",
+              "**/*.test.ts",
+              "**/*.test.tsx",
+              "**/*.spec.ts",
+              "src/shared/lib/test/setup.ts",
+              "src/shared/lib/test/test.lib.tsx"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

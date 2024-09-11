@@ -1,6 +1,6 @@
-import {GenericResponseType, PostsResponseType} from "./api-types";
 import {IChipData, IComment, IPost} from "../types/types";
 import instance from "./api";
+import {GenericResponseType, PostsResponseType} from "./api-types";
 
 const baseUrl = 'posts';
 export const postAPI = {
@@ -111,6 +111,14 @@ export const postAPI = {
     toggleCommentRating(commentId: string, rating: number) {
         return instance
             .put<GenericResponseType<void>>(`${baseUrl}/${commentId}/comment-rating?rating=${rating}`)
+            .then(response => {
+                return response.data
+            })
+    },
+
+    getUserPostComments(userId: string) {
+        return instance
+            .get<GenericResponseType<IPost[]>>(`${baseUrl}/post-comments?userId=${userId}`)
             .then(response => {
                 return response.data
             })

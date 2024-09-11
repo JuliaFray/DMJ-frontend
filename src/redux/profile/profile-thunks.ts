@@ -1,10 +1,11 @@
-import {profileAPI} from '../../api/profile-api';
-import {ResultCodeEnum} from '../../api/api-types';
-import {IProfile, IProfileStats} from '../../types/types';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {authActions} from '../auth/auth-slice';
-import {appActions} from '../app/app-slice';
+import {ResultCodeEnum} from '../../api/api-types';
+import {profileAPI} from '../../api/profile-api';
+import {IProfile, IProfileStats} from '../../types/types';
 import {ACCESS_DENIED} from '../../Utils/DictConstants';
+// eslint-disable-next-line no-restricted-imports
+import {appActions} from '../app/app-slice';
+import {authActions} from '../auth/auth-slice';
 
 export const getUserProfile = createAsyncThunk<IProfile, { userId: string }, { rejectValue: string }>(
     'profile', async (data, thunkAPI) => {

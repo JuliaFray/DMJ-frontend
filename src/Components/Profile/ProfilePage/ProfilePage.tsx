@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {getProfile} from '../../../redux/profile/profile-selectors';
-import {getUserProfile, getUserProfileStats} from '../../../redux/profile/profile-thunks';
 import {useParams} from 'react-router-dom';
 import {compose} from 'redux';
-import withAuthRedirect from '../../HOC/withAuthRedirect';
 import {getAuthId} from '../../../redux/auth/auth-selectors';
+import {getProfile} from '../../../redux/profile/profile-selectors';
+import {getUserProfile, getUserProfileStats} from '../../../redux/profile/profile-thunks';
 import PageLayout from '../../Common/PageLayout/PageLayout';
+import withAuthRedirect from '../../HOC/withAuthRedirect';
 import ProfileMain from './ProfileMain';
 
 const ProfilePage: React.FC = React.memo(() => {

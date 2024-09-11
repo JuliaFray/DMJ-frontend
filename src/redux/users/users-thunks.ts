@@ -1,9 +1,10 @@
-import {usersAPI} from '../../api/users-api';
-import {ResultCodeEnum, UsersResponseType} from '../../api/api-types';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {authActions} from '../auth/auth-slice';
-import {appActions} from '../app/app-slice';
+import {ResultCodeEnum, UsersResponseType} from '../../api/api-types';
+import {usersAPI} from '../../api/users-api';
 import {ACCESS_DENIED} from '../../Utils/DictConstants';
+// eslint-disable-next-line no-restricted-imports
+import {appActions} from '../app/app-slice';
+import {authActions} from '../auth/auth-slice';
 
 const ERROR = 'error'
 

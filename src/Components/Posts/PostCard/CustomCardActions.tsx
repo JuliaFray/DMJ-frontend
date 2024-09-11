@@ -1,14 +1,14 @@
 import React, {useState} from "react";
-import styles from '../Post/Post.module.scss';
-import IconButton from '@mui/material/IconButton';
 import {ArrowDropDown, ArrowDropUp, DoubleArrow, Grade} from '@mui/icons-material';
-import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import {Tooltip} from '@mui/material';
-import {IPost} from '../../../types/types';
+import IconButton from '@mui/material/IconButton';
 import {Link} from 'react-router-dom';
-import {markPostFavorite, togglePostRating} from '../../../redux/posts/posts-thunks';
 import {useAppDispatch} from '../../../hook/hooks';
+import {markPostFavorite, togglePostRating} from '../../../redux/posts/posts-thunks';
+import {IPost} from '../../../types/types';
+import styles from '../Post/Post.module.scss';
 
 export type ICardActions = {
     post: IPost,
@@ -65,7 +65,7 @@ const CustomCardActions: React.FC<ICardActions> = (props, context) => {
             </li>}
 
             {props.isCard && <li key={'link'}>
-                <Link to={`/posts/${props.post._id}`} style={{position: 'absolute', right: '0'}}>
+                <Link to={`/${props.post._id}`} style={{position: 'absolute', right: '0'}}>
                     <Tooltip title='Читать далее'>
                         <IconButton aria-label='forward'>
                             <DoubleArrow/>

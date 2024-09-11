@@ -1,6 +1,6 @@
-import {GenericResponseType} from "./api-types";
 import {IProfile, IProfileStats} from "../types/types";
 import instance from "./api";
+import {GenericResponseType} from "./api-types";
 
 const baseUrl = 'profile';
 export const profileAPI = {

@@ -1,5 +1,5 @@
-import {IUser} from '../../types/types';
 import {createSlice} from '@reduxjs/toolkit';
+import {IUser} from '../../types/types';
 import {getAllUsers} from './users-thunks';
 
 export type InitialStateType = {

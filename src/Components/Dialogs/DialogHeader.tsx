@@ -1,16 +1,16 @@
 import React from 'react';
-import styles from './DialogPage/Dialog.module.scss';
-import {IDialog} from '../../types/types';
-import {AvatarGroup, Box, Typography} from '@mui/material';
-import Divider from '@mui/material/Divider';
-import Avatar from '@mui/material/Avatar';
-import {getFullName, getImage} from '../../Utils/helper';
-import {v4 as uuidv4} from 'uuid';
-import {useSelector} from 'react-redux';
-import {getAuthId} from '../../redux/auth/auth-selectors';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import {AvatarGroup, Box, Typography} from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
+import {v4 as uuidv4} from 'uuid';
+import {getAuthId} from '../../redux/auth/auth-selectors';
+import {IDialog} from '../../types/types';
+import {getFullName, getImage} from '../../Utils/helper';
+import styles from './DialogPage/Dialog.module.scss';
 
 type IDialogHeader = {
     selectedDialog: IDialog

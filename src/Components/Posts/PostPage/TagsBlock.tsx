@@ -1,14 +1,13 @@
 import React from 'react';
+import TagIcon from '@mui/icons-material/Tag';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import TagIcon from '@mui/icons-material/Tag';
 import ListItemText from '@mui/material/ListItemText';
 import Skeleton from '@mui/material/Skeleton';
-
-import {SideBlock} from '../../Common/SideBlock/SideBlockComponent'
 import {useQueryParams} from '../../../hook/hooks';
 import {IChipData} from '../../../types/types';
+import {SideBlock} from '../../Common/SideBlock/SideBlockComponent'
 import styles from './PostPage.module.scss';
 
 export type ITagBlock = {

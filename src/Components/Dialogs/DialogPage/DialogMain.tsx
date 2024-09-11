@@ -1,18 +1,18 @@
 import React, {useCallback, useEffect, useRef} from 'react';
-import styles from './Dialog.module.scss';
 import {Box, Grid} from '@mui/material';
-import {IMessage} from '../../../types/types';
-import MessageItem from '../MessageItem/MessageItem';
-import SendMsg from '../SendMsg/SendMsg';
-import DialogHeader from '../DialogHeader';
-import useWebSocket, {useAppDispatch} from '../../../hook/hooks';
-import {SocketEvents} from '../../../Utils/DictConstants';
 import {useSelector} from 'react-redux';
+import {useParams} from 'react-router-dom';
+import {v4 as uuidv4} from 'uuid';
+import useWebSocket, {useAppDispatch} from '../../../hook/hooks';
 import {getDialogs, getMessages, getSelectedDialog} from '../../../redux/dialog/dialog-selectors';
 import {dialogActions} from '../../../redux/dialog/dialog-slice';
-import {v4 as uuidv4} from 'uuid';
 import {getMessagesByDialogId} from '../../../redux/dialog/dialog-thunks';
-import {useParams} from 'react-router-dom';
+import {IMessage} from '../../../types/types';
+import {SocketEvents} from '../../../Utils/DictConstants';
+import DialogHeader from '../DialogHeader';
+import MessageItem from '../MessageItem/MessageItem';
+import SendMsg from '../SendMsg/SendMsg';
+import styles from './Dialog.module.scss';
 import DialogItems from './DialogItems';
 
 const DialogMain = () => {

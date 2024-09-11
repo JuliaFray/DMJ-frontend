@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {styled} from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
+import {styled} from '@mui/material/styles';
 
 export const ImageButton = styled(ButtonBase)(({theme}) => ({
     position: 'relative',

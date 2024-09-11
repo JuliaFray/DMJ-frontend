@@ -1,5 +1,5 @@
-import {AppDispatch, RootState} from '../redux-store';
 import {WS_CONNECT_ERR, WS_CONNECT_START, WS_CONNECTED, WS_SHOW_RECONNECT} from '../../Utils/DictConstants';
+import {AppDispatch, RootState} from '../redux-store';
 
 
 interface OnNewSocket {

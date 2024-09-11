@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import {IChipData} from '../../../types/types';
 import {CircularProgress} from '@mui/material';
-import {useAppDispatch} from '../../../hook/hooks';
-import {getAllTags} from '../../../redux/posts/posts-thunks';
+import Autocomplete from '@mui/material/Autocomplete';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import {useSelector} from 'react-redux';
 import {v4 as uuidv4} from 'uuid';
+import {useAppDispatch} from '../../../hook/hooks';
 import {getAllFetchedTags} from '../../../redux/posts/posts-selectors';
+import {getAllTags} from '../../../redux/posts/posts-thunks';
+import {IChipData} from '../../../types/types';
 
 type IAutocompleteField = {
     values: (string | IChipData)[],

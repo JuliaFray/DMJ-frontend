@@ -1,16 +1,16 @@
-import {IProfile, IProfileStats} from '../../../types/types';
 import React, {Dispatch, SetStateAction} from 'react';
-import styles from './ProfileInfo.module.scss';
-import {getFullName} from '../../../Utils/helper';
+import {Article, Grade, ImportExport, Insights, People} from '@mui/icons-material';
+import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import {ListItem, ListItemText, Tooltip} from '@mui/material';
 import List from '@mui/material/List';
-import EditProfileField from './EditProfileField';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import moment from 'moment';
 import {useSelector} from 'react-redux';
 import {getStats} from '../../../redux/profile/profile-selectors';
-import {Article, Grade, ImportExport, Insights, People} from '@mui/icons-material';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import moment from 'moment';
+import {IProfile, IProfileStats} from '../../../types/types';
+import {getFullName} from '../../../Utils/helper';
+import EditProfileField from './EditProfileField';
+import styles from './ProfileInfo.module.scss';
 
 
 type IProfileData = {

@@ -1,14 +1,15 @@
-import {authAPI} from '../../api/auth-api';
-import {ResultCodeEnum} from '../../api/api-types';
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {loginAPI} from '../../api/login-api';
-import {appActions} from '../app/app-slice';
-import {ILoginData, IUser} from '../../types/types';
-import {authActions} from './auth-slice';
-import {RegisterDataType} from '../../Components/Registration/Registration';
 import {AxiosError} from 'axios';
+import {ResultCodeEnum} from '../../api/api-types';
+import {authAPI} from '../../api/auth-api';
+import {loginAPI} from '../../api/login-api';
+import {RegisterDataType} from '../../Components/Registration/Registration';
+import {ILoginData, IUser} from '../../types/types';
 import {ACCESS_DENIED} from '../../Utils/DictConstants';
+// eslint-disable-next-line no-restricted-imports
+import {appActions} from '../app/app-slice';
 import {profileActions} from '../profile/profile-slice';
+import {authActions} from './auth-slice';
 
 export const checkAuth = createAsyncThunk<IUser | undefined, {}, {}>(
     'auth/status', async (data, thunkAPI) => {

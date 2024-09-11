@@ -1,13 +1,14 @@
-import {Action} from 'redux';
-import profileSlice from './profile/profile-slice';
-import authSlice from './auth/auth-slice';
-import userSlice from './users/users-slice';
-import postsSlice from './posts/posts-slice';
-import appSlice from './app/app-slice';
-import {ThunkAction} from 'redux-thunk';
 import {configureStore, getDefaultMiddleware} from '@reduxjs/toolkit';
-import wsReducer from './wsReducer';
+import {Action} from 'redux';
+import {ThunkAction} from 'redux-thunk';
+import spinnerSlice from './../shared/ui/spinner/spinner.model';
+import appSlice from './app/app-slice';
+import authSlice from './auth/auth-slice';
 import dialogSlice from './dialog/dialog-slice';
+import postsSlice from './posts/posts-slice';
+import profileSlice from './profile/profile-slice';
+import userSlice from './users/users-slice';
+import wsReducer from './wsReducer';
 
 const rootReducer = {
     app: appSlice,
@@ -16,6 +17,7 @@ const rootReducer = {
     posts: postsSlice,
     user: userSlice,
     dialog: dialogSlice,
+    spinner: spinnerSlice,
     ws: wsReducer
 };
 const store = configureStore({

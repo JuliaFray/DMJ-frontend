@@ -1,5 +1,5 @@
-import {IDialog, IDialogFriends, IMessage} from '../../types/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {IDialog, IDialogFriends, IMessage} from '../../types/types';
 import {getAllDialogs, getMessagesByDialogId, getUsersWithStatus} from './dialog-thunks';
 
 type InitialStateType = {

@@ -1,12 +1,12 @@
-import {Box, Tooltip, Typography} from '@mui/material';
-import CardContent from '@mui/material/CardContent';
-import {Link} from 'react-router-dom';
-import IconButton from '@mui/material/IconButton';
-import {DoubleArrow} from '@mui/icons-material';
-import Card from '@mui/material/Card';
 import React from 'react';
-import {IPost} from '../../../types/types';
+import {DoubleArrow} from '@mui/icons-material';
+import {Box, Tooltip, Typography} from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import IconButton from '@mui/material/IconButton';
+import {Link} from 'react-router-dom';
 import {theme} from '../../../styles/theme';
+import {IPost} from '../../../types/types';
 import palette from './../../../styles/palette.module.scss';
 
 export type IPopularPost = {
@@ -86,7 +86,7 @@ export const PopularPost: React.FC<IPopularPost> = ({post}, context) => {
             </Box>
 
             <Box sx={{width: '100%', display: 'flex', alignItems: 'end', pl: 1, pb: 1, justifyContent: 'end'}}>
-                <Link to={`/posts/${post._id}`}>
+                <Link to={`/${post._id}`}>
                     <Tooltip title="Читать далее">
                         <IconButton aria-label="forward">
                             <DoubleArrow/>

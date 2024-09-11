@@ -1,13 +1,12 @@
+import React, {ChangeEvent, Dispatch, SetStateAction, useState} from 'react';
 import {ListItemText} from '@mui/material';
-import React, {ChangeEvent, Dispatch, SetStateAction, useEffect, useState} from 'react';
-import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import TextField from '@mui/material/TextField';
 import {LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-
-import styles from './ProfileInfo.module.scss'
-import {IProfile} from '../../../types/types';
-import TextField from '@mui/material/TextField';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import dayjs, {Dayjs} from 'dayjs';
+import {IProfile} from '../../../types/types';
+import styles from './ProfileInfo.module.scss'
 
 type IEditProfileField = {
     editMode: boolean,

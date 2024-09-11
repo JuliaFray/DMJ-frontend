@@ -1,5 +1,5 @@
-import {Pagination} from '@mui/material';
 import React, {Dispatch, SetStateAction} from 'react';
+import {Pagination} from '@mui/material';
 import style from './CustomPagination.module.scss';
 
 type ICustomPagination = {

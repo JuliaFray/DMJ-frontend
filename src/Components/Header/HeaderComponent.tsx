@@ -1,26 +1,28 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {Link} from 'react-router-dom';
-import {getAuthId, getIsAuth} from '../../redux/auth/auth-selectors';
-import useWebSocket, {useAppDispatch} from '../../hook/hooks';
-import IconButton from '@mui/material/IconButton';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import {AppBar, Box, Button, Fade, Popper, Toolbar, Typography} from '@mui/material';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import styles from './Header.module.scss';
-import {SocketEvents} from '../../Utils/DictConstants';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import {getNotifications} from '../../redux/app/app-selectors';
-import {appActions} from '../../redux/app/app-slice';
+import {useSelector} from 'react-redux';
+import {Link} from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 import {v4 as uuidv4} from 'uuid';
-import Divider from '@mui/material/Divider';
+import useWebSocket, {useAppDispatch} from '../../hook/hooks';
+// eslint-disable-next-line no-restricted-imports
+import {getNotifications} from '../../redux/app/app-selectors';
+// eslint-disable-next-line no-restricted-imports
+import {appActions} from '../../redux/app/app-slice';
+import {getAuthId, getIsAuth} from '../../redux/auth/auth-selectors';
 import {toggleFriendProfile} from '../../redux/profile/profile-thunks';
-import HeaderMenu from './HeaderMenu';
 import {INotifications} from '../../types/types';
+import {SocketEvents} from '../../Utils/DictConstants';
+import styles from './Header.module.scss';
+import HeaderMenu from './HeaderMenu';
 
 
 const HeaderComponent: React.FC = () => {
@@ -176,5 +178,3 @@ const NotificationItem: React.FC<{ item?: INotifications, text?: string }> = ({i
     }
     return <ListItem key={uuidv4()} className={styles.item}>Уведомлений нет</ListItem>
 }
-
-export default HeaderComponent;

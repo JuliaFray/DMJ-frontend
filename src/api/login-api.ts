@@ -1,6 +1,6 @@
-import {GenericResponseType, LoginResponseType} from './api-types';
-import instance from './api';
 import {ILoginData} from '../types/types';
+import instance from './api';
+import {GenericResponseType, LoginResponseType} from './api-types';
 
 export const loginAPI = {
     register(data: ILoginData) {

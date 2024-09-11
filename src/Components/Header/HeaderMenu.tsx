@@ -1,21 +1,21 @@
 import React, {useState} from 'react';
+import {AccountBox, ChatBubble, Groups, LibraryBooks} from '@mui/icons-material';
+import Logout from '@mui/icons-material/Logout';
 import {Avatar, Box, Menu, SwipeableDrawer} from '@mui/material';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import styles from './Header.module.scss';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import {Link} from 'react-router-dom';
 import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
-import Logout from '@mui/icons-material/Logout';
-import {AccountBox, ChatBubble, Groups, LibraryBooks} from '@mui/icons-material';
-import List from '@mui/material/List';
-import useWebSocket, {useAppDispatch} from '../../hook/hooks';
-import {NO_AVATAR, SocketEvents} from '../../Utils/DictConstants';
-import {authActions} from '../../redux/auth/auth-slice';
 import {useSelector} from 'react-redux';
+import {Link} from 'react-router-dom';
+import useWebSocket, {useAppDispatch} from '../../hook/hooks';
+import {authActions} from '../../redux/auth/auth-slice';
 import {getMyProfileAvatar, getMyProfileFullName} from '../../redux/profile/profile-selectors';
+import {NO_AVATAR, SocketEvents} from '../../Utils/DictConstants';
+import styles from './Header.module.scss';
 
 
 type IItem = {

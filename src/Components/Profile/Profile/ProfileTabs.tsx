@@ -1,8 +1,9 @@
-import {Container, Grid, Tab, Tabs} from '@mui/material';
 import React, {useEffect, useState} from 'react';
+import {Container, Grid, Tab, Tabs} from '@mui/material';
+import TabPanel from '../../Common/Tabs/TabPanel';
+import PostCommentPage from '../../Posts/Comments/PostCommentPage';
 import {PostPage} from '../../Posts/PostPage/PostPage';
 import {UsersPage} from '../../Users/UsersPage/UsersPage';
-import TabPanel from '../../Common/Tabs/TabPanel';
 
 
 export type IProfileTabs = {
@@ -26,7 +27,8 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
             <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
                 <Tab label='Подписки' {...a11yProps(0)}/>
                 <Tab label={props.isOwner ? 'Мои публикации' : 'Публикации'} {...a11yProps(1)}/>
-                {props.isOwner && <Tab label='Избранное' {...a11yProps(2)}/>}
+                <Tab label={'Комментарии'} {...a11yProps(2)}/>
+                {props.isOwner && <Tab label='Избранное' {...a11yProps(3)}/>}
             </Tabs>
 
             <TabPanel value={tabIndex} index={0}>
@@ -46,7 +48,15 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
                               userId={props.userId} isFavorite={false} isLoad={true}></PostPage>
                 </Grid>
             </TabPanel>
-            {props.isOwner && <TabPanel value={tabIndex} index={2}>
+            <TabPanel value={tabIndex} index={2}>
+                <Grid container
+                      direction='column'
+                      justifyContent='space-between'
+                      alignItems='stretch'>
+                    <PostCommentPage userId={props.userId}/>
+                </Grid>
+            </TabPanel>
+            {props.isOwner && <TabPanel value={tabIndex} index={3}>
                 <Grid container
                       direction='column'
                       justifyContent='space-between'

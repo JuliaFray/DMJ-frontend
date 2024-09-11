@@ -1,13 +1,13 @@
 import React from 'react';
-import {IMessage} from "../../../types/types";
 import {Paper, Typography} from '@mui/material';
 import Stack from '@mui/material/Stack';
 import {styled} from '@mui/material/styles';
-import styles from './../DialogPage/Dialog.module.scss'
-import {v4 as uuidv4} from 'uuid';
-import {useSelector} from 'react-redux';
-import {getAuthId} from '../../../redux/auth/auth-selectors';
 import moment from 'moment';
+import {useSelector} from 'react-redux';
+import {v4 as uuidv4} from 'uuid';
+import {getAuthId} from '../../../redux/auth/auth-selectors';
+import {IMessage} from "../../../types/types";
+import styles from './../DialogPage/Dialog.module.scss'
 
 const Item = styled(Paper)(({theme}) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

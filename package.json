@@ -1,5 +1,5 @@
 {
-  "name": "my-project-react",
+  "name": "dmj-blog",
   "version": "0.1.0",
   "private": true,
   "homepage": "https://juliafray.github.io/",
@@ -57,7 +57,7 @@
     "uuid": "^9.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --max_old_space_size=8192 start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -86,6 +86,13 @@
     "babel-plugin-import": "^1.13.3",
     "css-loader": "^6.6.0",
     "style-loader": "^3.3.1",
-    "typescript-loadable-components-plugin": "^1.0.3"
+    "typescript-loadable-components-plugin": "^1.0.3",
+    "@feature-sliced/eslint-config": "^0.1.1",
+    "@typescript-eslint/eslint-plugin": "5.5.0",
+    "@typescript-eslint/parser": "5.5.0",
+    "eslint": "^7.32.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-boundaries": "^4.2.2",
+    "eslint-plugin-import": "^2.22.0"
   }
 }

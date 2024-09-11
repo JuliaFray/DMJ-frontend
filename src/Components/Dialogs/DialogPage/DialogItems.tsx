@@ -1,19 +1,19 @@
 import React from 'react';
-import List from '@mui/material/List';
 import {AvatarGroup, ListItem, Typography} from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import {useSelector} from 'react-redux';
-import {getDialogs} from '../../../redux/dialog/dialog-selectors';
-import {getFullName, getImage} from '../../../Utils/helper';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
+import Stack from '@mui/material/Stack';
+import {useSelector} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
+import {v4 as uuidv4} from 'uuid';
 import {useAppDispatch} from '../../../hook/hooks';
+import {getAuthId} from '../../../redux/auth/auth-selectors';
+import {getDialogs} from '../../../redux/dialog/dialog-selectors';
 import {dialogActions} from '../../../redux/dialog/dialog-slice';
 import {IDialog} from '../../../types/types';
-import {getAuthId} from '../../../redux/auth/auth-selectors';
-import {v4 as uuidv4} from 'uuid';
-import {useNavigate} from 'react-router-dom';
-import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
+import {getFullName, getImage} from '../../../Utils/helper';
 
 const DialogItems: React.FC = (props, context) => {
 

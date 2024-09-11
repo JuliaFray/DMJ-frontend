@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import styles from '../../Common/SideBlock/SideBlock.module.scss';
-import Paper from '@mui/material/Paper';
-import {Container, IconButton, Tab, Tabs} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import {useForm} from 'react-hook-form';
+import {Container, IconButton, Tab, Tabs} from '@mui/material';
+import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
+import {useForm} from 'react-hook-form';
+import {useSelector} from "react-redux";
+import {getIsAuth} from "../../../redux/auth/auth-selectors";
+import styles from '../../Common/SideBlock/SideBlock.module.scss';
 
 const a11yProps = (index: number) => {
     return {
@@ -19,6 +21,9 @@ type IPostFilter = {
 
 const PostFilter: React.FC<IPostFilter> = (props, context) => {
 
+    const isAuth = useSelector(getIsAuth);
+    const [tabIndex, setTabIndex] = useState<number>(0);
+
     const {register, handleSubmit} = useForm({
         defaultValues: {search: ''},
         mode: 'onChange'
@@ -27,7 +32,6 @@ const PostFilter: React.FC<IPostFilter> = (props, context) => {
     useEffect(() => {
         setTabIndex(0)
     }, [])
-    const [tabIndex, setTabIndex] = useState<number>(0);
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabIndex(newValue);
@@ -52,11 +56,15 @@ const PostFilter: React.FC<IPostFilter> = (props, context) => {
             </form>
 
             <Container maxWidth='lg'>
-                <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
+                {isAuth && <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
                     <Tab label='Мои подписки' {...a11yProps(0)}/>
                     <Tab label='Новые' {...a11yProps(1)}/>
                     <Tab label='Лучшие' {...a11yProps(2)}/>
-                </Tabs>
+                </Tabs>}
+                {!isAuth && <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
+                    <Tab label='Новые' {...a11yProps(0)}/>
+                    <Tab label='Лучшие' {...a11yProps(1)}/>
+                </Tabs>}
             </Container>
         </Paper>
     );

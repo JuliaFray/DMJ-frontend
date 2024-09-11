@@ -1,5 +1,5 @@
-import {IProfile, IProfileStats} from '../../types/types';
 import {createSlice} from '@reduxjs/toolkit';
+import {IProfile, IProfileStats} from '../../types/types';
 import {createFriendProfile, getUserProfile, getUserProfileStats, saveUserProfile, toggleFollowProfile, toggleFriendProfile} from './profile-thunks';
 
 type InitialStateType = {

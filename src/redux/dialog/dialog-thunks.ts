@@ -1,9 +1,10 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {PostsResponseType, ResultCodeEnum} from '../../api/api-types';
 import {dialogAPI} from '../../api/dialog-api';
-import {authActions} from '../auth/auth-slice';
-import {appActions} from '../app/app-slice';
 import {ACCESS_DENIED} from '../../Utils/DictConstants';
+// eslint-disable-next-line no-restricted-imports
+import {appActions} from '../app/app-slice';
+import {authActions} from '../auth/auth-slice';
 
 
 const UNDEFINED_ERROR = "Неизвестная ошибка"

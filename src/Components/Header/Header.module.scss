@@ -1,6 +1,7 @@
 @import "src/styles/palette.module";
 
 .header {
+  justify-content: space-between;
   a {
     color: $success;
     text-decoration: none;

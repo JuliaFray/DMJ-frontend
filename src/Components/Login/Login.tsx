@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {login} from '../../redux/auth/auth-thunks'
-import {Link, Navigate} from 'react-router-dom';
-import {getAuthId, getGlobalError, getIsAuth, getIsFetching} from '../../redux/auth/auth-selectors';
 import {Button, Paper, Typography} from '@mui/material';
 import TextField from '@mui/material/TextField';
-import styles from './Login.module.scss';
 import {useForm} from 'react-hook-form';
-import {ILoginData} from '../../types/types';
-import {authActions} from '../../redux/auth/auth-slice';
+import {useDispatch, useSelector} from 'react-redux';
+import {Link, Navigate} from 'react-router-dom';
 import useWebSocket from '../../hook/hooks';
+import {getAuthId, getGlobalError, getIsAuth, getIsFetching} from '../../redux/auth/auth-selectors';
+import {authActions} from '../../redux/auth/auth-slice';
+import {login} from '../../redux/auth/auth-thunks'
+import {ILoginData} from '../../types/types';
 import {SocketEvents} from '../../Utils/DictConstants';
+import styles from './Login.module.scss';
 
 export const Login: React.FC = () => {
 

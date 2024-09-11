@@ -1,8 +1,8 @@
 import React from 'react';
-import ProfileInfo from '../Profile/ProfileInfo';
-import {IProfile} from '../../../types/types';
-import Stack from '@mui/material/Stack';
 import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+import {IProfile} from '../../../types/types';
+import ProfileInfo from '../Profile/ProfileInfo';
 
 type IProfileMain = {
     isOwner: boolean,

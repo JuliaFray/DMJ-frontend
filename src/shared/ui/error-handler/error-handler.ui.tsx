@@ -1,0 +1,33 @@
+import React from 'react';
+import Button from '@mui/material/Button';
+
+type ErrorHandlerProps = {
+    error: Error
+    resetErrorBoundary?: (...args: any[]) => void
+}
+
+const isDevelopment = process.env.MODE === 'dev'
+
+export const ErrorHandler = (props: ErrorHandlerProps) => {
+    const { error, resetErrorBoundary } = props
+
+    return (
+        <div>
+            <h3>Something went wrong.</h3>
+            {isDevelopment && (
+                <>
+                    <ul className="error-messages">
+                        <li key={error.message}>{error.message}</li>
+                    </ul>
+                    <pre>{error.stack}</pre>
+                </>
+            )}
+            <Button
+                type="button"
+                onClick={resetErrorBoundary}
+            >
+                Try again
+            </Button>
+        </div>
+    )
+}

@@ -1,16 +1,16 @@
 import React from 'react';
-import {useForm} from 'react-hook-form';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
 import {Box} from '@mui/material';
-import styles from './SendMsg.module.scss'
 import Divider from '@mui/material/Divider';
-import useWebSocket from '../../../hook/hooks';
-import {SocketEvents} from '../../../Utils/DictConstants';
-import {IDialog} from '../../../types/types';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import {useForm} from 'react-hook-form';
 import {useSelector} from 'react-redux';
+import useWebSocket from '../../../hook/hooks';
 import {getAuthId} from '../../../redux/auth/auth-selectors';
+import {IDialog} from '../../../types/types';
+import {SocketEvents} from '../../../Utils/DictConstants';
+import styles from './SendMsg.module.scss'
 
 
 type ISendMsg = {

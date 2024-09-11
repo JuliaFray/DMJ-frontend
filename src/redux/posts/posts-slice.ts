@@ -1,5 +1,6 @@
-import {IChipData, IImage, IPost} from '../../types/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {PostsResponseType} from '../../api/api-types';
+import {IChipData, IImage, IPost} from '../../types/types';
 import {
     createPost,
     createPostComment,
@@ -10,9 +11,9 @@ import {
     getOnePost,
     getPopularPost,
     getPopularTags,
-    getRecommendationPost
+    getRecommendationPost,
+    getUserPostComments
 } from './posts-thunks';
-import {PostsResponseType} from '../../api/api-types';
 
 type InitialStateType = {
     isFetching: boolean,
@@ -24,6 +25,7 @@ type InitialStateType = {
     popularTags: IChipData[],
     allTags: IChipData[],
     img: IImage | null,
+    postComments: IPost[],
 }
 
 const initialState: InitialStateType = {
@@ -35,7 +37,8 @@ const initialState: InitialStateType = {
     popularTags: [],
     allTags: [],
     img: null,
-    recommendations: []
+    recommendations: [],
+    postComments: []
 };
 
 const postsSlice = createSlice({
@@ -185,6 +188,18 @@ const postsSlice = createSlice({
             })
             .addCase(createPostComment.rejected, (state) => {
                 state.isFetching = false;
+            })
+            //=====getUserPostComments=====//
+            .addCase(getUserPostComments.pending, (state) => {
+                state.isFetching = true;
+            })
+            .addCase(getUserPostComments.fulfilled, (state, action) => {
+                state.isFetching = false;
+                state.postComments = action.payload;
+            })
+            .addCase(getUserPostComments.rejected, (state) => {
+                state.isFetching = false;
+                state.postComments = [];
             })
     }
 });

@@ -1,26 +1,25 @@
 import React, {useState} from 'react';
-
-import {SideBlock} from '../../Common/SideBlock/SideBlockComponent';
+import {ArrowDropDown, ArrowDropUp} from '@mui/icons-material';
+import {Box} from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
 import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
+import moment from 'moment/moment';
+import {Link} from 'react-router-dom';
+import {v4 as uuidv4} from 'uuid';
+import {useAppDispatch} from '../../../hook/hooks';
+import {toggleCommentRating} from '../../../redux/posts/posts-thunks';
 import {IComment} from '../../../types/types';
 import {NO_AVATAR} from '../../../Utils/DictConstants';
-import {Link} from 'react-router-dom';
 import {getFullName} from '../../../Utils/helper';
+import {SideBlock} from '../../Common/SideBlock/SideBlockComponent';
 import styles from './Comment.module.scss';
-import IconButton from '@mui/material/IconButton';
-import {ArrowDropDown, ArrowDropUp} from '@mui/icons-material';
-import {useAppDispatch} from '../../../hook/hooks';
-import {v4 as uuidv4} from 'uuid';
-import {toggleCommentRating} from '../../../redux/posts/posts-thunks';
-import {Box} from '@mui/material';
-import moment from 'moment/moment';
-import Stack from '@mui/material/Stack';
 
 export type ICommentsBlock = {
     items: IComment[],
@@ -47,7 +46,7 @@ type ICommentType = {
     isLoading: boolean
 }
 
-const CommentItem: React.FC<ICommentType> = ({item, isLoading}, context) => {
+export const CommentItem: React.FC<ICommentType> = ({item, isLoading}, context) => {
 
     const dispatch = useAppDispatch();
 

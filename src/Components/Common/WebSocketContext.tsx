@@ -1,10 +1,10 @@
 import React, {createContext, useCallback, useEffect, useState} from 'react';
-import {useAppDispatch} from '../../hook/hooks';
 import {useSelector} from 'react-redux';
-import {wsConnect, wsShowReconnect} from '../../redux/ws/ws';
+import {useAppDispatch} from '../../hook/hooks';
 import {getAuthId} from '../../redux/auth/auth-selectors';
-import Loader from './Loader';
+import {wsConnect, wsShowReconnect} from '../../redux/ws/ws';
 import {SocketEvents} from '../../Utils/DictConstants';
+import Loader from './Loader';
 
 export const WebSocketContext = createContext<WebSocket | null>(null);
 

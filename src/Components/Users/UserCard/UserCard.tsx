@@ -1,18 +1,18 @@
 import * as React from 'react';
 import {useState} from 'react';
-import Card from '@mui/material/Card';
-import Avatar from '@mui/material/Avatar';
-import {IUser} from '../../../types/types';
-import {Link} from 'react-router-dom';
 import {Chat, Loyalty} from '@mui/icons-material';
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Tooltip, Typography} from '@mui/material';
-import {NO_AVATAR, SocketEvents} from '../../../Utils/DictConstants';
+import Avatar from '@mui/material/Avatar';
+import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import {useSelector} from 'react-redux';
+import {Link} from 'react-router-dom';
+import useWebSocket from '../../../hook/hooks';
+import {getAuthId} from '../../../redux/auth/auth-selectors';
+import {IUser} from '../../../types/types';
+import {NO_AVATAR, SocketEvents} from '../../../Utils/DictConstants';
 import {getFullName} from '../../../Utils/helper';
 import styles from './UserCard.module.scss';
-import useWebSocket from '../../../hook/hooks';
-import {useSelector} from 'react-redux';
-import {getAuthId} from '../../../redux/auth/auth-selectors';
 
 export type PostCardProps = {
     user: IUser,

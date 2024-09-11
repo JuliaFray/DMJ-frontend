@@ -1,6 +1,6 @@
-import {GenericResponseType} from './api-types';
-import instance from './api';
 import {IUser} from '../types/types';
+import instance from './api';
+import {GenericResponseType} from './api-types';
 
 export const authAPI = {
     checkStatus() {

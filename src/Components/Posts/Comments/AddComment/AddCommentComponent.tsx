@@ -1,15 +1,14 @@
 import React from "react";
-import {useDispatch, useSelector} from 'react-redux';
-import styles from "../Comment.module.scss";
-
-import TextField from "@mui/material/TextField";
-import Avatar from "@mui/material/Avatar";
-import {getMyProfileAvatar, getMyProfileFullName} from "../../../../redux/profile/profile-selectors";
-import {FieldValues, useForm} from "react-hook-form";
-import {createPostComment} from '../../../../redux/posts/posts-thunks';
-import {NO_AVATAR} from '../../../../Utils/DictConstants';
-import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
+import Avatar from "@mui/material/Avatar";
+import IconButton from '@mui/material/IconButton';
+import TextField from "@mui/material/TextField";
+import {FieldValues, useForm} from "react-hook-form";
+import {useDispatch, useSelector} from 'react-redux';
+import {createPostComment} from '../../../../redux/posts/posts-thunks';
+import {getMyProfileAvatar, getMyProfileFullName} from "../../../../redux/profile/profile-selectors";
+import {NO_AVATAR} from '../../../../Utils/DictConstants';
+import styles from "../Comment.module.scss";
 
 export type ICommentCreate = {
     postId: string

@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {compose} from 'redux';
 import {connect, useDispatch, useSelector} from 'react-redux';
-import {getFetchedPopularTags, getIsFetching} from '../../../redux/posts/posts-selectors';
-import {getAllPosts, getPopularPost, getPopularTags} from '../../../redux/posts/posts-thunks';
-import withAuthRedirect from '../../HOC/withAuthRedirect';
-import {RootState} from '../../../redux/redux-store';
+import {compose} from 'redux';
 import {createQueryString, useQueryParams} from '../../../hook/hooks';
+import {getAuthId} from '../../../redux/auth/auth-selectors';
+import {getAllFetchedTags, getFetchedPopularTags, getIsFetching} from '../../../redux/posts/posts-selectors';
+import {getAllPosts, getPopularPost, getPopularTags} from '../../../redux/posts/posts-thunks';
+import {RootState} from '../../../redux/redux-store';
 import PageLayout from '../../Common/PageLayout/PageLayout';
+import withAuthRedirect from '../../HOC/withAuthRedirect';
 import PostMain from './PostMain';
 import TagsBlock from './TagsBlock';
-import {getAuthId} from '../../../redux/auth/auth-selectors';
 
 export type IPostPage = {
     isOwner: boolean,
@@ -22,6 +22,7 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
 
     const isFetching = useSelector(getIsFetching);
     const popularTags = useSelector(getFetchedPopularTags);
+    const allTags = useSelector(getAllFetchedTags);
     const authId = useSelector(getAuthId);
 
     const {queryParams, setQueryParams} = useQueryParams({tags: ''});
@@ -48,7 +49,7 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
             searchValue: searchValue,
             currentPage: currentPage,
             isFavoritePosts: JSON.stringify(props.isFavorite),
-            tags: popularTags.find(it => it.value === tag)?._id || '',
+            tags: allTags.find(it => it.value === tag)?._id || '',
             isMinePosts: JSON.stringify(props.isOwner)
         };
 
@@ -87,6 +88,6 @@ const mapStateToProps = (state: RootState) => ({
     isFavorite: false
 });
 
-export {PostPage};
 
-export default compose<React.ComponentType & IPostPage>(connect(mapStateToProps), withAuthRedirect)(PostPage);
+const GenericLayout = compose<React.ComponentType & IPostPage>(connect(mapStateToProps), withAuthRedirect)(PostPage);
+export {PostPage, GenericLayout};

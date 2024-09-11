@@ -1,16 +1,16 @@
 import React, {ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState} from 'react';
-import Avatar from '@mui/material/Avatar';
-import styles from './ProfileInfo.module.scss';
-import {Image, ImageBackdrop, ImageButton, ImageMarked, ImageSrc} from '../../Common/ImageButton/ImageButton';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Tooltip, Typography} from '@mui/material';
+import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import {useSelector} from 'react-redux';
+import useWebSocket, {useAppDispatch} from '../../../hook/hooks';
+import {getAuthId} from '../../../redux/auth/auth-selectors';
+import {toggleFollowProfile} from '../../../redux/profile/profile-thunks';
 import {IProfile} from '../../../types/types';
 import {SocketEvents} from '../../../Utils/DictConstants';
 import {getFullName} from '../../../Utils/helper';
-import {toggleFollowProfile} from '../../../redux/profile/profile-thunks';
-import useWebSocket, {useAppDispatch} from '../../../hook/hooks';
-import {useSelector} from 'react-redux';
-import {getAuthId} from '../../../redux/auth/auth-selectors';
+import {Image, ImageBackdrop, ImageButton, ImageMarked, ImageSrc} from '../../Common/ImageButton/ImageButton';
+import styles from './ProfileInfo.module.scss';
 
 type IProfileAvatar = {
     profile: IProfile,

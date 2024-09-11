@@ -35,3 +35,8 @@ export const getIsFetching = (state: RootState) => {
 export const getImg = (state: RootState) => {
     return state.posts.img;
 }
+
+
+export const getPostComments = (state: RootState) => {
+    return state.posts.postComments;
+}

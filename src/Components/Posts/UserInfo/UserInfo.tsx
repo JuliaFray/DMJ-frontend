@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from './UserInfo.module.scss';
 import Avatar from '@mui/material/Avatar';
 import moment from 'moment';
 import {Link} from 'react-router-dom';
+import styles from './UserInfo.module.scss';
 
 export type IUserInfo = {
     avatar: string,

@@ -1,17 +1,17 @@
 import React, {Dispatch, SetStateAction, useEffect} from 'react';
 import {Grid} from '@mui/material';
-import {IUser} from '../../../types/types';
-import {UserCard} from '../UserCard/UserCard';
-import {getAllUsers} from '../../../redux/users/users-thunks';
-import {useAppDispatch} from '../../../hook/hooks';
 import {useSelector} from 'react-redux';
-import {getIsFetching, getTotalCount, getUsers} from '../../../redux/users/users-selectors';
-import {toggleFollowProfile} from '../../../redux/profile/profile-thunks';
-import {getAuthId} from '../../../redux/auth/auth-selectors';
-import CustomPagination from '../../Common/Pagination/CustomPagination';
 import {useParams} from 'react-router-dom';
-import {UserSkeleton} from '../UserCard/UserSkeleton';
 import {v4 as uuidv4} from 'uuid';
+import {useAppDispatch} from '../../../hook/hooks';
+import {getAuthId} from '../../../redux/auth/auth-selectors';
+import {toggleFollowProfile} from '../../../redux/profile/profile-thunks';
+import {getIsFetching, getTotalCount, getUsers} from '../../../redux/users/users-selectors';
+import {getAllUsers} from '../../../redux/users/users-thunks';
+import {IUser} from '../../../types/types';
+import CustomPagination from '../../Common/Pagination/CustomPagination';
+import {UserCard} from '../UserCard/UserCard';
+import {UserSkeleton} from '../UserCard/UserSkeleton';
 
 type IUsersMain = {
     setCurrentPage: Dispatch<SetStateAction<number>>,

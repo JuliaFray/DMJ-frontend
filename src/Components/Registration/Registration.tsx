@@ -1,17 +1,16 @@
 import React, {useEffect} from 'react';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
-
-import styles from './Registration.module.scss';
-import {useDispatch, useSelector} from "react-redux";
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import {useForm} from 'react-hook-form';
+import {useDispatch, useSelector} from "react-redux";
 import {Link, Navigate} from 'react-router-dom';
 import {getAuthErrors, getGlobalError, getIsAuth, getIsFetching} from '../../redux/auth/auth-selectors';
-import {registerUser} from '../../redux/auth/auth-thunks';
 import {authActions} from '../../redux/auth/auth-slice';
+import {registerUser} from '../../redux/auth/auth-thunks';
+import styles from './Registration.module.scss';
 
 export type RegisterDataType = {
     firstName: string,

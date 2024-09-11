@@ -1,6 +1,6 @@
-import {UsersResponseType} from './api-types';
-import instance from './api';
 import {IFilter} from '../types/types';
+import instance from './api';
+import {UsersResponseType} from './api-types';
 
 const baseUrl = 'users';
 export const usersAPI = {

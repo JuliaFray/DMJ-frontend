@@ -1,10 +1,11 @@
-import {PostsResponseType, ResultCodeEnum} from '../../api/api-types';
-import {IChipData, IComment, IPost} from '../../types/types';
 import {createAsyncThunk} from '@reduxjs/toolkit';
+import {PostsResponseType, ResultCodeEnum} from '../../api/api-types';
 import {postAPI} from '../../api/post-api';
-import {authActions} from '../auth/auth-slice';
-import {appActions} from '../app/app-slice';
+import {IChipData, IComment, IPost} from '../../types/types';
 import {ACCESS_DENIED} from '../../Utils/DictConstants';
+// eslint-disable-next-line no-restricted-imports
+import {appActions} from '../app/app-slice';
+import {authActions} from '../auth/auth-slice';
 
 const UNDEFINED_ERROR = "Неизвестная ошибка"
 
@@ -188,7 +189,7 @@ export const createPostComment = createAsyncThunk<IPost, { comment: IComment, po
     }
 );
 
-export const getRecommendationPost = createAsyncThunk<IPost[], {originPostId: string}, { rejectValue: string }>(
+export const getRecommendationPost = createAsyncThunk<IPost[], { originPostId: string }, { rejectValue: string }>(
     'posts/recommendations', async (data, thunkAPI) => {
         const response = await postAPI.getRecommendationPost(data.originPostId);
         try {
@@ -207,6 +208,23 @@ export const getRecommendationPost = createAsyncThunk<IPost[], {originPostId: st
 export const toggleCommentRating = createAsyncThunk<void, { commentId: string, rating: number }, { rejectValue: string }>(
     'posts/commentRating', async (data, thunkAPI) => {
         const response = await postAPI.toggleCommentRating(data.commentId, data.rating);
+        try {
+            if(response.resultCode === ResultCodeEnum.Error) {
+                return thunkAPI.rejectWithValue(response.message);
+            }
+            return response.data;
+        } catch(e) {
+            thunkAPI.dispatch(authActions.logout());
+            thunkAPI.dispatch(appActions.setUninitialized());
+            return thunkAPI.rejectWithValue(ACCESS_DENIED);
+        }
+    }
+);
+
+
+export const getUserPostComments = createAsyncThunk<IPost[], { userId: string }, { rejectValue: string }>(
+    'posts/comments', async (data, thunkAPI) => {
+        const response = await postAPI.getUserPostComments(data.userId);
         try {
             if(response.resultCode === ResultCodeEnum.Error) {
                 return thunkAPI.rejectWithValue(response.message);
