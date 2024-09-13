@@ -5,8 +5,8 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import {useForm} from 'react-hook-form';
 import {useSelector} from "react-redux";
-import {getIsAuth} from "../../../redux/auth/auth-selectors";
-import styles from '../../Common/SideBlock/SideBlock.module.scss';
+import {getIsAuth} from "../../../shared/model/auth/auth-selectors";
+import styles from '../../../shared/ui/SideBlock/SideBlock.module.scss';
 
 const a11yProps = (index: number) => {
     return {

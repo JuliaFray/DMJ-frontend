@@ -4,13 +4,13 @@ import TextField from "@mui/material/TextField";
 import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
 import {Link, Navigate} from "react-router-dom";
-import styles from "../../Components/Login/Login.module.scss";
-import useWebSocket from "../../hook/hooks";
-import {getAuthId, getGlobalError, getIsAuth, getIsFetching} from "../../redux/auth/auth-selectors";
-import {authActions} from "../../redux/auth/auth-slice";
-import {login} from "../../redux/auth/auth-thunks";
+import useWebSocket from "shared/hook/hooks";
+import {SocketEvents} from "shared/lib/DictConstants";
+import {pathKeys} from "shared/lib/react-router";
+import {authSelector, authSlice} from "shared/model/auth";
+import {login} from "shared/model/auth/auth-thunks";
 import {ILoginData} from "../../types/types";
-import {SocketEvents} from "../../Utils/DictConstants";
+import styles from "./login-page.module.scss";
 
 export const LoginPage: React.FC = () => {
 
@@ -18,10 +18,10 @@ export const LoginPage: React.FC = () => {
         defaultValues: {email: '', password: ''},
         mode: 'onChange'
     });
-    const isAuth = useSelector(getIsAuth);
-    const isFetching = useSelector(getIsFetching);
-    const globalError = useSelector(getGlobalError);
-    const authId = useSelector(getAuthId);
+    const isAuth = useSelector(authSelector.getIsAuth);
+    const isFetching = useSelector(authSelector.getIsFetching);
+    const globalError = useSelector(authSelector.getGlobalError);
+    const authId = useSelector(authSelector.getAuthId);
 
     const ws = useWebSocket();
 
@@ -38,7 +38,7 @@ export const LoginPage: React.FC = () => {
     };
 
     const handleChange = () => {
-        dispatch(authActions.setGlobalError(''))
+        dispatch(authSlice.authActions.setGlobalError(''))
     }
 
     if(isAuth) {
@@ -75,7 +75,7 @@ export const LoginPage: React.FC = () => {
                     Войти
                 </Button>
             </form>
-            <Link className={styles.link} to={'/register'}>Создать аккаунт</Link>
+            <Link className={styles.link} to={pathKeys.register()}>Создать аккаунт</Link>
         </Paper>
     )
 };

@@ -1,17 +1,17 @@
 import React, {useEffect} from 'react';
+import {Article} from 'entities/article/article.ui';
+import {CreateComment} from 'features';
 import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import {compose} from 'redux';
-import {useAppDispatch} from '../../hook/hooks';
-import {getAuthId} from '../../redux/auth/auth-selectors';
-import {getIsFetching, getPost, getRecommendations} from '../../redux/posts/posts-selectors';
-import {getOnePost, getRecommendationPost} from '../../redux/posts/posts-thunks';
-import PageLayout from '../Common/PageLayout/PageLayout';
-import withAuthRedirect from '../HOC/withAuthRedirect';
-import {AddCommentComponent} from './Comments/AddComment/AddCommentComponent';
-import {CommentsBlock} from './Comments/CommentsBlock';
-import {Post} from './Post/Post';
-import Recommendations from './Recommendations/Recommendations';
+import {useAppDispatch} from 'shared/hook/hooks';
+import {withAuthRedirect} from 'shared/lib/react/react.hoc';
+import {getAuthId} from 'shared/model/auth/auth-selectors';
+import {getIsFetching, getPost, getRecommendations} from 'shared/model/posts/posts-selectors';
+import {getOnePost, getRecommendationPost} from 'shared/model/posts/posts-thunks';
+import CommonLayoutUi from 'shared/ui/layouts/common-layout.ui';
+import {CommentsBlock} from 'widgets/comment-block/comment-block.ui';
+import Recommendations from 'widgets/recommendations/Recommendations';
 
 const FullPost: React.FC = React.memo(() => {
 
@@ -30,19 +30,19 @@ const FullPost: React.FC = React.memo(() => {
     }, [id])
 
     return (
-        <PageLayout isMainPage
-                    mainChildren={<>
-                        {post && <Post post={post} isFullPost isLoading={isFetching}
-                                       isEditable={post.author._id === userId}/>
-                        }
-                        {post &&
-                            <CommentsBlock items={post.comments} isLoading={isFetching}>
-                                <AddCommentComponent postId={post._id}/>
-                            </CommentsBlock>
-                        }
+        <CommonLayoutUi isMainPage
+                        mainChildren={<>
+                            {post && <Article post={post} isFullPost isLoading={isFetching}
+                                              isEditable={post.author._id === userId}/>
+                            }
+                            {post &&
+                                <CommentsBlock items={post.comments} isLoading={isFetching}>
+                                    <CreateComment postId={post._id}/>
+                                </CommentsBlock>
+                            }
 
-                    </>}
-                    rightChildren={<Recommendations posts={recommendations}/>}
+                        </>}
+                        rightChildren={<Recommendations posts={recommendations}/>}
         />
 
 

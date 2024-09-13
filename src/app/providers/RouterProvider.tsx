@@ -1,31 +1,35 @@
 import React, {createElement, lazy} from "react";
 import {Stack} from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
+import {TProfile} from "entities/profile";
+import {articlePageRoute} from "pages/article";
 import {homePageRoute} from "pages/home";
-import {loginPageRoute} from "pages/login/login-page.route";
+import {loginPageRoute} from "pages/login";
 import {page404Router} from 'pages/page-404';
+import {registerPageRoute} from "pages/register";
+import {useSelector} from "react-redux";
 import {createBrowserRouter, NavLink, Outlet, redirect, RouterProvider, useRouteError} from "react-router-dom";
 import {compose} from "redux";
 import {withSuspense} from "shared/lib/react/react.hoc";
 import {pathKeys} from "shared/lib/react-router";
+import {getIsAuth} from "shared/model/auth/auth-selectors";
+import {getMyProfile} from "shared/model/profile/profile-selectors";
 import {Spinner} from "shared/ui/spinner";
-import {useAppDispatch} from "../../hook/hooks";
-import {checkAuth} from "../../redux/auth/auth-thunks";
 
 const GenericLayout = lazy(() =>
-        import('pages/layouts').then((module) => ({
-            default: module.GenericLayout,
-        })),
+    import('shared/ui/layouts').then((module) => ({
+        default: module.GenericLayout,
+    })),
 )
 
 const GuestLayout = lazy(() =>
-    import('pages/layouts').then((module) => ({
+    import('shared/ui/layouts').then((module) => ({
         default: module.GuestLayout,
     })),
 )
 
 const UserLayout = lazy(() =>
-    import('pages/layouts').then((module) => ({
+    import('shared/ui/layouts').then((module) => ({
         default: module.UserLayout,
     })),
 )
@@ -34,15 +38,19 @@ const UserLayout = lazy(() =>
 const enhance = compose((component: React.ComponentType<object>) =>
     withSuspense(component, {FallbackComponent: LayoutSkeleton}),
 )
+type TProfileContext = {
+    isAuth: boolean,
+    me: null | TProfile
+}
+export const ProfileContext = React.createContext<TProfileContext>({isAuth: false, me: null});
 
 export const BrowserRouting = () => {
-    const dispatch = useAppDispatch();
+    const isAuth = useSelector(getIsAuth);
+    const me = useSelector(getMyProfile);
 
-    if(window.localStorage.getItem("token")) {
-        dispatch(checkAuth({}));
-    }
-
-    return <RouterProvider router={browserRouter}/>
+    return <ProfileContext.Provider value={{isAuth: isAuth, me: me}}>
+        <RouterProvider router={browserRouter}/>
+    </ProfileContext.Provider>
 }
 
 const browserRouter = createBrowserRouter([
@@ -51,26 +59,24 @@ const browserRouter = createBrowserRouter([
         children: [
             {
                 element: createElement(enhance(GenericLayout)),
-                // children: [homePageRoute, articlePageRoute, profilePageRoute],
-                children: [homePageRoute],
+                children: [homePageRoute, articlePageRoute],
             },
             {
                 element: createElement(enhance(UserLayout)),
-                // children: [editorPageRoute, settingsPageRoute],
+                // children: [editorPageRoute, settingsPageRoute, profilePageRoute],
             },
             {
                 element: createElement(enhance(GuestLayout)),
-                // children: [loginPageRoute, registerPageRoute],
-                children: [loginPageRoute],
+                children: [loginPageRoute, registerPageRoute],
             },
             {
                 element: createElement(Outlet),
                 children: [page404Router],
             },
-            // {
-            //     loader: async () => redirect(pathKeys.page404()),
-            //     path: '*',
-            // },
+            {
+                loader: async () => redirect(pathKeys.page404()),
+                path: '*',
+            },
         ],
     },
 ])

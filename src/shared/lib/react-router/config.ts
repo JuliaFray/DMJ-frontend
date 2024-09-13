@@ -15,12 +15,23 @@ export const pathKeys = {
     page404() {
         return pathKeys.root.concat('404/')
     },
-    article: {
+    dialogs() {
+        return pathKeys.root.concat('dialogs')
+    },
+    users: {
         root() {
-            return pathKeys.root.concat('posts/')
+            return pathKeys.root.concat('users/')
         },
         byId({id}: any) {
-            return pathKeys.article.root().concat(id, '/')
+            return pathKeys.article.root().concat(id)
+        },
+    },
+    article: {
+        root() {
+            return pathKeys.root.concat('article/')
+        },
+        byId({id}: any) {
+            return pathKeys.article.root().concat(id)
         },
     },
     profile: {

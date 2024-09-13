@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
+import {TChipData} from "entities/tag";
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {compose} from 'redux';
-import PageLayout from '../../Components/Common/PageLayout/PageLayout';
-import withAuthRedirect from '../../Components/HOC/withAuthRedirect';
-import {getAuthId} from '../../redux/auth/auth-selectors';
-import {getAllFetchedTags, getFetchedPopularTags, getIsFetching} from '../../redux/posts/posts-selectors';
-import {getAllPosts, getPopularPost, getPopularTags} from '../../redux/posts/posts-thunks';
-import {RootState} from '../../redux/redux-store';
+import {createQueryString, useQueryParams} from 'shared/hook/hooks';
+import {getAuthId} from 'shared/model/auth/auth-selectors';
+import {getAllFetchedTags, getFetchedPopularTags, getIsFetching} from 'shared/model/posts/posts-selectors';
+import {getAllPosts, getPopularPost, getPopularTags} from 'shared/model/posts/posts-thunks';
+import {RootState} from 'shared/model/redux-store';
+import CommonLayoutUi from 'shared/ui/layouts/common-layout.ui';
 import PostMain from './../../Components/Posts/PostPage/PostMain';
 import TagsBlock from './../../Components/Posts/PostPage/TagsBlock';
-import {createQueryString, useQueryParams} from './../../hook/hooks';
 
 export type IPostPage = {
     isOwner: boolean,
@@ -49,7 +49,7 @@ const HomePage: React.FC<IPostPage> = React.memo((props, context) => {
             searchValue: searchValue,
             currentPage: currentPage,
             isFavoritePosts: JSON.stringify(props.isFavorite),
-            tags: allTags.find(it => it.value === tag)?._id || '',
+            tags: allTags.find((it: TChipData) => it.value === tag)?._id || '',
             isMinePosts: JSON.stringify(props.isOwner),
         };
 
@@ -59,7 +59,7 @@ const HomePage: React.FC<IPostPage> = React.memo((props, context) => {
                 tabIndex: JSON.stringify(tabIndex)
             }
         }
-        console.log(query)
+
         dispatch(getAllPosts({query: createQueryString(query)}));
 
         if(!props.userId && !tag) {
@@ -72,12 +72,12 @@ const HomePage: React.FC<IPostPage> = React.memo((props, context) => {
     }, [tabIndex])
 
     return (
-        <PageLayout isMainPage={props.isMainPage}
-                    mainChildren={<PostMain isMainPage={props.isMainPage} isFetching={isFetching}
+        <CommonLayoutUi isMainPage={props.isMainPage}
+                        mainChildren={<PostMain isMainPage={props.isMainPage} isFetching={isFetching}
                                             selectedTag={selectedTag} setSearchValue={setSearchValue}
                                             setTabIndex={setTabIndex} setSelectedTag={setSelectedTag}
                                             currentPage={currentPage} setCurrentPage={setCurrentPage}/>}
-                    rightChildren={<TagsBlock items={popularTags} isLoading={isFetching} query={selectedTag}/>}/>
+                        rightChildren={<TagsBlock items={popularTags} isLoading={isFetching} query={selectedTag}/>}/>
     );
 });
 

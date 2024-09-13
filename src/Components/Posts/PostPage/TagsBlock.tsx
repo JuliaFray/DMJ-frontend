@@ -5,13 +5,13 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Skeleton from '@mui/material/Skeleton';
-import {useQueryParams} from '../../../hook/hooks';
-import {IChipData} from '../../../types/types';
-import {SideBlock} from '../../Common/SideBlock/SideBlockComponent'
+import {TChipData} from 'entities/tag';
+import {useQueryParams} from 'shared/hook/hooks';
+import {SideBlock} from 'shared/ui/SideBlock/SideBlockComponent'
 import styles from './PostPage.module.scss';
 
 export type ITagBlock = {
-    items: IChipData[];
+    items: TChipData[];
     isLoading: boolean,
     query: string | null
 }
@@ -19,7 +19,7 @@ const TagsBlock: React.FC<ITagBlock> = ({items, isLoading = true, query}) => {
 
     const {queryParams, setQueryParams} = useQueryParams({tags: query ? query : ''});
 
-    const handleTagChange = (item: IChipData) => {
+    const handleTagChange = (item: TChipData) => {
         setQueryParams({tags: item.value});
     }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Navigate} from 'react-router-dom';
-import {RootState} from '../../redux/redux-store';
+import {RootState} from '~shared/model/redux-store';
 
 type MapStateType = {
     isAuth: boolean

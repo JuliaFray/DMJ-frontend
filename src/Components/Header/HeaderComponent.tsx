@@ -11,16 +11,13 @@ import ListItemText from '@mui/material/ListItemText';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
+import useWebSocket, {useAppDispatch} from 'shared/hook/hooks';
+import {SocketEvents} from 'shared/lib/DictConstants';
+import {appSelector, appSlice} from 'shared/model/app';
+import {authSelector} from 'shared/model/auth';
+import {profileThunk} from 'shared/model/profile';
 import {v4 as uuidv4} from 'uuid';
-import useWebSocket, {useAppDispatch} from '../../hook/hooks';
-// eslint-disable-next-line no-restricted-imports
-import {getNotifications} from '../../redux/app/app-selectors';
-// eslint-disable-next-line no-restricted-imports
-import {appActions} from '../../redux/app/app-slice';
-import {getAuthId, getIsAuth} from '../../redux/auth/auth-selectors';
-import {toggleFriendProfile} from '../../redux/profile/profile-thunks';
 import {INotifications} from '../../types/types';
-import {SocketEvents} from '../../Utils/DictConstants';
 import styles from './Header.module.scss';
 import HeaderMenu from './HeaderMenu';
 
@@ -30,9 +27,9 @@ const HeaderComponent: React.FC = () => {
     const [showNotification, setShowNotification] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-    const userId = useSelector(getAuthId);
-    const isAuth = useSelector(getIsAuth);
-    const notifications = useSelector(getNotifications);
+    const userId = useSelector(authSelector.getAuthId);
+    const isAuth = useSelector(authSelector.getIsAuth);
+    const notifications = useSelector(appSelector.getNotifications);
     const dispatch = useAppDispatch();
 
     const ws = useWebSocket();
@@ -40,16 +37,16 @@ const HeaderComponent: React.FC = () => {
         (e: any) => {
             const {type, data, msg} = JSON.parse(e.data);
             if(type === SocketEvents.FOLLOW_EVENT) {
-                dispatch(appActions.addNotification({type: 'app/addNotification', payload: msg}))
+                dispatch(appSlice.appActions.addNotification({type: 'app/addNotification', payload: msg}))
             }
             if(type === SocketEvents.AUTH_EVENT) {
-                dispatch(appActions.addUserOnline({type: 'app/addUserOnline', payload: data}))
+                dispatch(appSlice.appActions.addUserOnline({type: 'app/addUserOnline', payload: data}))
             }
             if(type === SocketEvents.FRIEND_EVENT) {
-                dispatch(appActions.addNotification({type: 'app/addNotification', payload: msg}))
+                dispatch(appSlice.appActions.addNotification({type: 'app/addNotification', payload: msg}))
             }
             if(type === SocketEvents.MSG_EVENT && data.from._id !== userId) {
-                dispatch(appActions.addNotification({type: 'app/addNotification', payload: msg}))
+                dispatch(appSlice.appActions.addNotification({type: 'app/addNotification', payload: msg}))
             }
         },
         [dispatch]
@@ -68,7 +65,7 @@ const HeaderComponent: React.FC = () => {
     }
 
     const handleReadAll = () => {
-        dispatch(appActions.removeNotification());
+        dispatch(appSlice.appActions.removeNotification());
         setShowNotification((prev) => !prev);
     }
 
@@ -92,7 +89,7 @@ const HeaderComponent: React.FC = () => {
                                     <Box sx={{border: 1, p: 1, bgcolor: 'background.paper', borderColor: '#026670'}}>
                                         <List dense={true}>
                                             {!!notifications.length
-                                                ? notifications.map(it => <NotificationItem key={uuidv4()} item={it}/>)
+                                                ? notifications.map((it: INotifications) => <NotificationItem key={uuidv4()} item={it}/>)
                                                 : <NotificationItem key={uuidv4()} text='Уведомлений нет'/>}
 
                                             <ListItem key={uuidv4()} className={styles.item}>
@@ -123,7 +120,7 @@ const NotificationTypes = {
 
 const NotificationItem: React.FC<{ item?: INotifications, text?: string }> = ({item, text}, context) => {
     const dispatch = useAppDispatch();
-    const userId = useSelector(getAuthId);
+    const userId = useSelector(authSelector.getAuthId);
 
     if(!item) {
         return (
@@ -137,7 +134,7 @@ const NotificationItem: React.FC<{ item?: INotifications, text?: string }> = ({i
     }
 
     const toggleAgree = (isAgree: boolean) => {
-        dispatch(toggleFriendProfile(
+        dispatch(profileThunk.toggleFriendProfile(
             {userId: userId, query: `?fromId=${item.fromId}&isAgree=${isAgree}`}
         ))
     }

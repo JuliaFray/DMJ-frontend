@@ -1,15 +1,24 @@
-.outer-wrapper {
+.outer {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-}
 
-.inner-wrapper {
-  width: 100%;
-  padding: 2rem;
-  color: #fff;
-  text-align: center;
-  background: #333;
+  .inner {
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+
+    .home {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      color: #373a3c;
+
+      &:hover {
+        color: #373a3c;
+      }
+    }
+  }
 }

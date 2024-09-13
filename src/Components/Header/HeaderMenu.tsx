@@ -11,10 +11,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
-import useWebSocket, {useAppDispatch} from '../../hook/hooks';
-import {authActions} from '../../redux/auth/auth-slice';
-import {getMyProfileAvatar, getMyProfileFullName} from '../../redux/profile/profile-selectors';
-import {NO_AVATAR, SocketEvents} from '../../Utils/DictConstants';
+import useWebSocket, {useAppDispatch} from 'shared/hook/hooks';
+import {NO_AVATAR, SocketEvents} from 'shared/lib/DictConstants';
+import {pathKeys} from "shared/lib/react-router";
+import {authActions} from 'shared/model/auth/auth-slice';
+import {getMyProfileAvatar, getMyProfileFullName} from 'shared/model/profile/profile-selectors';
 import styles from './Header.module.scss';
 
 
@@ -63,10 +64,10 @@ const HeaderMenu: React.FC<{ userId: string }> = (props, context) => {
         };
 
     const items: IItem[] = [
-        {name: 'Профиль', link: `/users/${props.userId}`, icon: <AccountBox/>},
-        {name: 'Сообщения', link: `/dialogs`, icon: <ChatBubble/>},
-        {name: 'Публикации', link: `/posts`, icon: <LibraryBooks/>},
-        {name: 'Все пользователи', link: `/users`, icon: <Groups/>}
+        {name: 'Профиль', link: pathKeys.users.byId(props.userId), icon: <AccountBox/>},
+        {name: 'Сообщения', link: pathKeys.dialogs(), icon: <ChatBubble/>},
+        {name: 'Публикации', link: pathKeys.root, icon: <LibraryBooks/>},
+        {name: 'Все пользователи', link: pathKeys.users.root(), icon: <Groups/>}
     ];
 
     const list = () => (

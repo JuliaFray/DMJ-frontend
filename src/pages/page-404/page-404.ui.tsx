@@ -1,20 +1,18 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { pathKeys } from './../../shared/lib/react-router'
+import {Link} from 'react-router-dom'
+import {pathKeys} from 'shared/lib/react-router'
 import styles from './page-404.module.scss'
 
-export function Page404() {
+export const Page404 = () => {
     return (
-        <div className={styles['outer-wrapper']}>
-            <div className={styles['inner-wrapper']}>
-                <div className="container">
-                    <h1 className="logo-font">Page not found</h1>
-                    <p>Sorry, we couldn&apos;t find the page you&apos;re looking for.</p>
-                    <Link
-                        to={pathKeys.home()}
-                        className="btn btn-sm btn-outline-primary"
-                    >
-                        Go back home
+        <div className={styles.outer}>
+            <div className={styles.inner}>
+                <div>
+                    <h1 className="logo-font">Страница не найдена</h1>
+                    <p>Кажется, что-то пошло нет так! <br/>Страница, которую вы запрашиваете, не существует.
+                        Возможно она устарела, была удалена или был введен неверный адрес в адресной строке.</p>
+                    <Link to={pathKeys.home()} className={styles.home}>
+                        Перейти на главную
                     </Link>
                 </div>
             </div>

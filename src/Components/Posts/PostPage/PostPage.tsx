@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
+import {TChipData} from "entities/tag";
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {compose} from 'redux';
-import {createQueryString, useQueryParams} from '../../../hook/hooks';
-import {getAuthId} from '../../../redux/auth/auth-selectors';
-import {getAllFetchedTags, getFetchedPopularTags, getIsFetching} from '../../../redux/posts/posts-selectors';
-import {getAllPosts, getPopularPost, getPopularTags} from '../../../redux/posts/posts-thunks';
-import {RootState} from '../../../redux/redux-store';
-import PageLayout from '../../Common/PageLayout/PageLayout';
-import withAuthRedirect from '../../HOC/withAuthRedirect';
+import {createQueryString, useQueryParams} from 'shared/hook/hooks';
+import {withAuthRedirect} from 'shared/lib/react/react.hoc';
+import {getAuthId} from 'shared/model/auth/auth-selectors';
+import {getAllFetchedTags, getFetchedPopularTags, getIsFetching} from 'shared/model/posts/posts-selectors';
+import {getAllPosts, getPopularPost, getPopularTags} from 'shared/model/posts/posts-thunks';
+import {RootState} from 'shared/model/redux-store';
+import CommonLayoutUi from 'shared/ui/layouts/common-layout.ui';
 import PostMain from './PostMain';
 import TagsBlock from './TagsBlock';
 
@@ -49,7 +50,7 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
             searchValue: searchValue,
             currentPage: currentPage,
             isFavoritePosts: JSON.stringify(props.isFavorite),
-            tags: allTags.find(it => it.value === tag)?._id || '',
+            tags: allTags.find((it: TChipData) => it.value === tag)?._id || '',
             isMinePosts: JSON.stringify(props.isOwner)
         };
 
@@ -72,12 +73,12 @@ const PostPage: React.FC<IPostPage> = React.memo((props, context) => {
     }, [tabIndex])
 
     return (
-        <PageLayout isMainPage={props.isMainPage}
-                    mainChildren={<PostMain isMainPage={props.isMainPage} isFetching={isFetching}
+        <CommonLayoutUi isMainPage={props.isMainPage}
+                        mainChildren={<PostMain isMainPage={props.isMainPage} isFetching={isFetching}
                                             selectedTag={selectedTag} setSearchValue={setSearchValue}
                                             setTabIndex={setTabIndex} setSelectedTag={setSelectedTag}
                                             currentPage={currentPage} setCurrentPage={setCurrentPage}/>}
-                    rightChildren={<TagsBlock items={popularTags} isLoading={isFetching} query={selectedTag}/>}/>
+                        rightChildren={<TagsBlock items={popularTags} isLoading={isFetching} query={selectedTag}/>}/>
     );
 });
 

@@ -1,0 +1,15 @@
+.msgItem {
+  overflow: hidden;
+  height: auto;
+  width: 45%;
+
+  .msgItemInfo {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .text {
+    font-weight: 600;
+    font-size: 18px;
+  }
+}

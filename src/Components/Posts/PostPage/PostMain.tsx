@@ -2,16 +2,16 @@ import React, {Dispatch, SetStateAction} from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import {Box, Chip, Fab, Grid} from '@mui/material';
 import Stack from '@mui/material/Stack';
+import {TArticle} from 'entities/article';
 import {useSelector} from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom';
-import {getIsAuth} from "../../../redux/auth/auth-selectors";
-import {getDataLength, getPopularPosts, getPosts} from '../../../redux/posts/posts-selectors';
-import {IPost} from '../../../types/types';
-import CustomPagination from '../../Common/Pagination/CustomPagination';
-import {PopularPost} from '../PostCard/PopularPost';
-import {PostCard} from '../PostCard/PostCard';
-import {PostSkeleton} from '../PostCard/PostSkeleton';
-import PostCarousel from '../PostCarousel';
+import {getIsAuth} from "shared/model/auth/auth-selectors";
+import {getDataLength, getPopularPosts, getPosts} from 'shared/model/posts/posts-selectors';
+import CustomPagination from 'shared/ui/Pagination/CustomPagination';
+import {PopularPost} from 'widgets/article-card/PopularPost';
+import {PostCard} from 'widgets/article-card/PostCard';
+import {PostSkeleton} from 'widgets/article-card/PostSkeleton';
+import {PostCarousel} from 'widgets/PostCarousel';
 import PostFilter from './PostFilter';
 
 type IPostMain = {
@@ -45,7 +45,7 @@ const PostMain: React.FC<IPostMain> = (props, context) => {
 
 
             {!!popularPosts.length && <PostCarousel posts={popularPosts}>
-                {popularPosts.map(item => <PopularPost key={item._id} post={item}/>)}
+                {popularPosts.map((item: TArticle) => <PopularPost key={item._id} post={item}/>)}
             </PostCarousel>}
 
             {props.selectedTag &&
@@ -67,7 +67,7 @@ const PostMain: React.FC<IPostMain> = (props, context) => {
                             <PostSkeleton key={index}/>
                         </Grid>)
                     : !!posts.length
-                        ? posts.map((el: IPost) =>
+                        ? posts.map((el: TArticle) =>
                             <Grid item xs={12} sm={12} md={props.isMainPage ? 6 : 12} key={el._id}>
                                 {el.author &&
                                     <PostCard key={el._id} isMain={false} post={el}
