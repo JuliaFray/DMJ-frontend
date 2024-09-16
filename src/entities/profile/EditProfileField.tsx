@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import {LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import dayjs, {Dayjs} from 'dayjs';
 import {TProfile} from 'entities/profile';
 import styles from './ProfileInfo.module.scss'

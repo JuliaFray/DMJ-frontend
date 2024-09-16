@@ -1,0 +1,17 @@
+.root {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 0 10px;
+
+  .filter {
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+    div {
+      width: 100%;
+      margin-right: 10px;
+    }
+  }
+}

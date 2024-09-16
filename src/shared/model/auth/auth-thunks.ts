@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AxiosError} from 'axios';
 import {TUser} from 'entities/profile';
-import {ILoginData} from '../../../types/types';
+import {ILoginData} from 'entities/profile';
 import {ACCESS_DENIED} from '../../lib/DictConstants';
 // eslint-disable-next-line no-restricted-imports
 import {appActions} from '../app/app-slice';

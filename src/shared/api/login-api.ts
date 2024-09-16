@@ -1,4 +1,4 @@
-import {ILoginData} from '../../types/types';
+import {ILoginData} from 'entities/profile';
 import instance from './api';
 import {GenericResponseType, LoginResponseType} from './api-types';
 

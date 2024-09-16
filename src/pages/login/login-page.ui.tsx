@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import {Button, Paper, Typography} from "@mui/material";
 import TextField from "@mui/material/TextField";
+import {ILoginData} from "entities/profile";
 import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
 import {Link, Navigate} from "react-router-dom";
@@ -9,7 +10,6 @@ import {SocketEvents} from "shared/lib/DictConstants";
 import {pathKeys} from "shared/lib/react-router";
 import {authSelector, authSlice} from "shared/model/auth";
 import {login} from "shared/model/auth/auth-thunks";
-import {ILoginData} from "../../types/types";
 import styles from "./login-page.module.scss";
 
 export const LoginPage: React.FC = () => {

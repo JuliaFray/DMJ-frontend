@@ -22,7 +22,7 @@ import {getPost} from "shared/model/posts/posts-selectors";
 import {createPost, editPost, getOnePost,} from "shared/model/posts/posts-thunks";
 import AutocompleteField from "shared/ui/AutocompleteField/AutocompleteField";
 import InputFileUpload from "shared/ui/FileUploadButton/FileUploadButton";
-import CommonLayoutUi from "shared/ui/layouts/common-layout.ui";
+import CommonLayoutUi from "pages/layouts/common-layout.ui";
 import styles from "./create-article.module.scss";
 
 const CreateArticle: React.FC = () => {

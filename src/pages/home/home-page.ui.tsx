@@ -1,29 +1,41 @@
 import React, {useEffect, useState} from 'react';
+import {Grid} from "@mui/material";
+import {TArticle} from "entities/article";
 import {TChipData} from "entities/tag";
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {compose} from 'redux';
 import {createQueryString, useQueryParams} from 'shared/hook/hooks';
 import {getAuthId} from 'shared/model/auth/auth-selectors';
-import {getAllFetchedTags, getFetchedPopularTags, getIsFetching} from 'shared/model/posts/posts-selectors';
+import {getAllFetchedTags, getDataLength, getFetchedPopularTags, getIsFetching, getPopularPosts} from 'shared/model/posts/posts-selectors';
 import {getAllPosts, getPopularPost, getPopularTags} from 'shared/model/posts/posts-thunks';
 import {RootState} from 'shared/model/redux-store';
-import CommonLayoutUi from 'shared/ui/layouts/common-layout.ui';
-import PostMain from './../../Components/Posts/PostPage/PostMain';
-import TagsBlock from './../../Components/Posts/PostPage/TagsBlock';
+import {CustomPagination} from "shared/ui/pagination";
+import {PopularPost} from "widgets/article-card/PopularPost";
+import {ArticleCarousel} from "widgets/article-carousel/article-carousel.ui";
+import {ArticlesFeed} from 'widgets/articles-feed/articles-feed.ui';
+import {HomeTabs} from "widgets/home-tabs";
+import {TagWidget} from 'widgets/tag-widget/tag-widget.ui';
+import styles from './home-page.module.scss';
 
-export type IPostPage = {
+type TPostPage = {
     isOwner: boolean,
     isMainPage: boolean,
     userId: string | '',
     isFavorite: boolean,
     isLoad: boolean
 }
-const HomePage: React.FC<IPostPage> = React.memo((props, context) => {
+const HomePage: React.FC<TPostPage> = React.memo((props, context) => {
+
+    // const isMore1200px = useMediaQuery(theme.breakpoints.up('lg'));
+    const mdMain = props.isMainPage ? 9 : 12
+    const mdSide = 3;
 
     const isFetching = useSelector(getIsFetching);
     const popularTags = useSelector(getFetchedPopularTags);
     const allTags = useSelector(getAllFetchedTags);
     const authId = useSelector(getAuthId);
+    const popularPosts = useSelector(getPopularPosts);
+    const dataLength = useSelector(getDataLength);
 
     const {queryParams, setQueryParams} = useQueryParams({tags: ''});
 
@@ -72,12 +84,25 @@ const HomePage: React.FC<IPostPage> = React.memo((props, context) => {
     }, [tabIndex])
 
     return (
-        <CommonLayoutUi isMainPage={props.isMainPage}
-                        mainChildren={<PostMain isMainPage={props.isMainPage} isFetching={isFetching}
-                                            selectedTag={selectedTag} setSearchValue={setSearchValue}
-                                            setTabIndex={setTabIndex} setSelectedTag={setSelectedTag}
-                                            currentPage={currentPage} setCurrentPage={setCurrentPage}/>}
-                        rightChildren={<TagsBlock items={popularTags} isLoading={isFetching} query={selectedTag}/>}/>
+        <Grid container spacing={2}>
+            <Grid item md={mdMain}>
+                {props.isMainPage && <HomeTabs setSearchValue={setSearchValue} setTabIndex={setTabIndex}/>}
+
+                {!!popularPosts.length && <ArticleCarousel posts={popularPosts}>
+                    {popularPosts.map((item: TArticle) => <PopularPost key={item._id} post={item}/>)}
+                </ArticleCarousel>}
+
+                <ArticlesFeed isMainPage={props.isMainPage} isFetching={isFetching}
+                              selectedTag={selectedTag} setSearchValue={setSearchValue}
+                              setTabIndex={setTabIndex} setSelectedTag={setSelectedTag}
+                              currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+
+                <CustomPagination page={currentPage} dataLength={dataLength} setCurrentPage={setCurrentPage}/>
+            </Grid>
+            <Grid item md={mdSide} className={styles.right}>
+                <TagWidget items={popularTags} isLoading={isFetching} query={selectedTag}/>
+            </Grid>
+        </Grid>
     );
 });
 
@@ -89,5 +114,5 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 
-const GenericHomePage = compose<React.ComponentType & IPostPage>(connect(mapStateToProps))(HomePage);
+const GenericHomePage = compose<React.ComponentType & TPostPage>(connect(mapStateToProps))(HomePage);
 export {HomePage, GenericHomePage};

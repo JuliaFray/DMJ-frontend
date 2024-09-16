@@ -1,0 +1,82 @@
+@import "shared/themes/palette.module";
+
+.header {
+  a {
+    color: $success;
+    text-decoration: none;
+
+    &:hover {
+      color: $success
+    }
+
+    &:active {
+      color: $success;
+    }
+  }
+  .toolbar {
+    justify-content: space-between;
+  }
+}
+
+.linkItem {
+
+  &:hover {
+    background-color: $secondary
+  }
+
+  .link {
+    text-decoration: none;
+    color: #333
+  }
+}
+
+.notifications {
+  z-index: 1000;
+
+  ul {
+    padding: 0;
+  }
+
+  a {
+    text-decoration: none;
+    color: #000;
+    font-weight: 600;
+  }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px 0;
+
+    .subItem {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+
+      button {
+        width: 100px;
+      }
+    }
+  }
+
+  .item:last-child {
+    background-color: $secondary;
+  }
+
+  .btn:hover {
+    background-color: $secondary;
+  }
+}
+
+.main {
+  padding-top: 20px;
+  height: 100%;
+}
+
+@media (width <= 900px) {
+  .right, .left {
+    display: none;
+  }
+}
+

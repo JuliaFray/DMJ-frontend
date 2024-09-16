@@ -1,4 +1,4 @@
-import {IFilter} from '../../types/types';
+import {IFilter} from 'entities/profile';
 import instance from './api';
 import {UsersResponseType} from './api-types';
 

@@ -1,26 +1,8 @@
-// import React from 'react';
-// import IntrinsicAttributes = React.JSX.IntrinsicAttributes;
-//
-// export function reactHoc<T extends IntrinsicAttributes>(Component: React.ComponentType<T>) {
-//     return (props: T) => {
-//         return <React.Suspense fallback={<div>loading...</div>}>
-//             <Component {...props} />
-//         </React.Suspense>
-//     }
-// }
-
-
-import React, {
-    SuspenseProps,
-    Suspense,
-    forwardRef,
-    ComponentType,
-    ForwardedRef,
-    createElement,
-} from 'react'
-import {RootState} from "~shared/model/redux-store";
+import React, {ComponentType, createElement, ForwardedRef, forwardRef, Suspense, SuspenseProps,} from 'react'
+import {connect, useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
-import {connect} from "react-redux";
+import {getIsAuth} from "shared/model/auth/auth-selectors";
+import {RootState} from "shared/model/redux-store";
 
 export function withSuspense<Props extends object>(
     component: ComponentType<Props>,
@@ -38,7 +20,7 @@ export function withSuspense<Props extends object>(
                         (suspenseProps.FallbackComponent &&
                             createElement(suspenseProps.FallbackComponent)),
                 },
-                createElement(component, { ...props, ref }),
+                createElement(component, {...props, ref}),
             ),
     )
 
@@ -48,27 +30,15 @@ export function withSuspense<Props extends object>(
     return Wrapped
 }
 
-type MapStateType = {
-    isAuth: boolean
-}
-
-type MapDispatchProps = {}
-
-let mapStateToPropsForRedirect = (state: RootState) => ({
-    isAuth: state.auth.isAuth
-});
-
-type HocProps = MapStateType & MapDispatchProps;
-
-export function withAuthRedirect<T extends HocProps>(Component: React.ComponentType<T>) {
-    const RedirectComponent: React.FC<MapStateType> = (props) => {
-
-        let {isAuth, ...restProps} = props;
+export function withAuthRedirect<T extends {}>(Component: React.ComponentType<T>) {
+    const RedirectComponent: React.FC = (props) => {
+        const isAuth = useSelector(getIsAuth);
+        let {...restProps} = props;
         if(!isAuth && !window.localStorage.getItem('token')) {
             return <Navigate to={'/login'}/>
         }
         return <Component {...restProps as T}/>
     };
 
-    return connect<MapStateType, {}, T, RootState>(mapStateToPropsForRedirect)(RedirectComponent);
+    return connect<{}, {}, T, RootState>((state: RootState) => ({}))(RedirectComponent);
 }

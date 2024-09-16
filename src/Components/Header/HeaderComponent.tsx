@@ -8,6 +8,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import {INotifications} from 'entities/notification';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
@@ -17,7 +18,6 @@ import {appSelector, appSlice} from 'shared/model/app';
 import {authSelector} from 'shared/model/auth';
 import {profileThunk} from 'shared/model/profile';
 import {v4 as uuidv4} from 'uuid';
-import {INotifications} from '../../types/types';
 import styles from './Header.module.scss';
 import HeaderMenu from './HeaderMenu';
 
@@ -144,7 +144,7 @@ const NotificationItem: React.FC<{ item?: INotifications, text?: string }> = ({i
             <>
                 <ListItem key={uuidv4()} className={styles.item}>
                     <ListItemText primary={reactStringReplace(item.msg, '%s',
-                        (match, i) => <Link to={`/users/${item.fromId}`}>{item.from}</Link>
+                        (match, i) => <Link to={`/user/${item.fromId}`}>{item.from}</Link>
                     )}/>
                 </ListItem>
                 <Divider/>
@@ -157,7 +157,7 @@ const NotificationItem: React.FC<{ item?: INotifications, text?: string }> = ({i
             <>
                 <ListItem key={uuidv4()} className={styles.item}>
                     <ListItemText primary={reactStringReplace(item.msg, '%s',
-                        (match, i) => <Link to={`/users/${item.fromId}`}>{item.from}</Link>
+                        (match, i) => <Link to={`/user/${item.fromId}`}>{item.from}</Link>
                     )}/>
                     <ListItem className={styles.subItem}>
                         <Button size='small' variant='outlined' color={'error'} onClick={() => toggleAgree(false)}>

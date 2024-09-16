@@ -36,7 +36,7 @@ export const pathKeys = {
     },
     profile: {
         root() {
-            return pathKeys.root.concat('profile/')
+            return pathKeys.root.concat('user/')
         },
         byUsername({username}: any) {
             return pathKeys.profile.root().concat(username, '/')

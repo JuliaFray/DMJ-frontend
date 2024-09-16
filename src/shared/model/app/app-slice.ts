@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {INotifications} from '../../../types/types';
+import {INotifications} from 'entities/notification';
 
 type InitialStateType = {
     initialized: boolean,

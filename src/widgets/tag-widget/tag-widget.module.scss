@@ -1,0 +1,16 @@
+@import "shared/themes/palette.module";
+
+.tag {
+  padding: 5px 0;
+
+  &:hover {
+    background-color: $secondary;
+  }
+
+  .icon {
+    min-width: 21px !important;
+
+
+    margin-right: 5px;
+  }
+}

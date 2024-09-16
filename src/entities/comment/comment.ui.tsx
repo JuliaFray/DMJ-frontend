@@ -57,7 +57,7 @@ export const Comment: React.FC<TCommentType> = ({item, isLoading}, context) => {
                     </div>
                 ) : (
                     <ListItemText key={uuidv4()} secondary={item.text}>
-                        <Link key={uuidv4()} className={styles.name} to={`/users/${item.author._id}`}>{getFullName(item.author)}</Link>
+                        <Link key={uuidv4()} className={styles.name} to={`/user/${item.author._id}`}>{getFullName(item.author)}</Link>
                     </ListItemText>
 
                 )}

@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {compose} from 'redux';
-import {useAppDispatch} from '~shared/hook/hooks';
-import {getAllDialogs} from '~shared/model/dialog/dialog-thunks';
-import CommonLayoutUi from '~shared/ui/layouts/common-layout.ui';
-import withAuthRedirect from '../../../Components/HOC/withAuthRedirect';
+import {useAppDispatch} from 'shared/hook/hooks';
+import {withAuthRedirect} from 'shared/lib/react';
+import {getAllDialogs} from 'shared/model/dialog/dialog-thunks';
+import CommonLayoutUi from 'pages/layouts/common-layout.ui';
 import DialogMain from './DialogMain';
 
 

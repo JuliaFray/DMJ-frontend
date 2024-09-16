@@ -1,0 +1,19 @@
+import React from "react";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import styles from "./side-block.module.scss";
+
+type ISideBlock = {
+    title: string,
+    children: React.JSX.Element[]
+}
+export const SideBlock: React.FC<ISideBlock> = ({title, children}) => {
+    return (
+        <Paper classes={{root: styles.root}}>
+            <Typography variant="h6" classes={{root: styles.title}}>
+                {title}
+            </Typography>
+            {children}
+        </Paper>
+    );
+};

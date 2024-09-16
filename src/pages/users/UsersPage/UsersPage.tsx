@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {withAuthRedirect} from 'shared/lib/react/react.hoc';
 import {RootState} from 'shared/model/redux-store';
-import CommonLayoutUi from 'shared/ui/layouts/common-layout.ui';
+import CommonLayoutUi from 'pages/layouts/common-layout.ui';
 import UsersMain from './UsersMain';
 
 export type IUsersPage = {

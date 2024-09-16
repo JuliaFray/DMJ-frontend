@@ -1,6 +1,7 @@
-import {configureStore, getDefaultMiddleware} from '@reduxjs/toolkit';
+import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {Action} from 'redux';
 import {ThunkAction} from 'redux-thunk';
+import {usdaApi} from "shared/api/usda-api";
 import {appSlice} from './app';
 import {authSlice} from './auth';
 import {dialogSlice} from './dialog';
@@ -10,7 +11,7 @@ import {spinnerSlice} from './spinner';
 import {usersSlice} from './users';
 import {wsReducer} from './ws';
 
-const rootReducer = {
+const rootReducer = combineReducers({
     app: appSlice.appReducer,
     auth: authSlice.authReducer,
     profile: profileSlice.profileReducer,
@@ -18,17 +19,19 @@ const rootReducer = {
     user: usersSlice.usersReducer,
     dialog: dialogSlice.dialogReducer,
     spinner: spinnerSlice.spinnerReducer,
-    ws: wsReducer.wsReducer
-};
+    ws: wsReducer.wsReducer,
+    [usdaApi.reducerPath]: usdaApi.reducer,
+});
+
 const store = configureStore({
         reducer: rootReducer,
-        middleware: [
-            ...getDefaultMiddleware({
+        middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware({
                 thunk: {
                     extraArgument: {}
                 }
             })
-        ]
+                .concat(usdaApi.middleware),
     }
 );
 

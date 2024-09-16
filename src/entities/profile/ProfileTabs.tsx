@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Container, Grid, Tab, Tabs} from '@mui/material';
-import TabPanel from '~shared/ui/Tabs/TabPanel';
-import PostCommentPage from '../comment/PostCommentPage';
-import {PostPage} from '../../Components/Posts/PostPage/PostPage';
-import {UsersPage} from '../../pages/users/UsersPage/UsersPage';
+import {HomePage} from "pages/home/home-page.ui";
+import {UsersPage} from 'pages/users/UsersPage/UsersPage';
+import TabPanel from 'shared/ui/Tabs/TabPanel';
+import {CommentsFeed} from 'widgets/comments-feed';
 
 
 export type IProfileTabs = {
@@ -44,8 +44,8 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
                       direction='column'
                       justifyContent='space-between'
                       alignItems='stretch'>
-                    <PostPage isOwner={true} isMainPage={false}
-                              userId={props.userId} isFavorite={false} isLoad={true}></PostPage>
+                    <HomePage isOwner={true} isMainPage={false}
+                              userId={props.userId} isFavorite={false} isLoad={true}></HomePage>
                 </Grid>
             </TabPanel>
             <TabPanel value={tabIndex} index={2}>
@@ -53,7 +53,7 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
                       direction='column'
                       justifyContent='space-between'
                       alignItems='stretch'>
-                    <PostCommentPage userId={props.userId}/>
+                    <CommentsFeed userId={props.userId}/>
                 </Grid>
             </TabPanel>
             {props.isOwner && <TabPanel value={tabIndex} index={3}>
@@ -61,8 +61,8 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
                       direction='column'
                       justifyContent='space-between'
                       alignItems='stretch'>
-                    <PostPage isOwner={props.isOwner} isMainPage={false}
-                              userId={props.userId} isFavorite={true} isLoad={true}></PostPage>
+                    <HomePage isOwner={props.isOwner} isMainPage={false}
+                              userId={props.userId} isFavorite={true} isLoad={true}></HomePage>
                 </Grid>
             </TabPanel>}
         </Container>

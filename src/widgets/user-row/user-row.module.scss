@@ -1,0 +1,76 @@
+.userRow {
+  height: 60px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+
+  .rowContent {
+    width: 60%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    .userAvatar {
+      width: 80px;
+      height: 80px;
+      margin-left: 10px;
+      align-self: center;
+    }
+
+    .userInfo {
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      margin-left: 30px;
+      position: relative;
+
+      .stats {
+        position: absolute;
+        bottom: -10px;
+        padding-left: 15px;
+        color: rgba(0, 0, 0, 0.26);
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+
+        span {
+          margin-right: 15px;
+        }
+      }
+    }
+
+    a {
+      text-decoration: none;
+      color: #000;
+    }
+  }
+
+  .userRowActions {
+    width: 40%;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .btn {
+      width: 48%;
+      font-size: 12px;
+      height: 30px;
+      text-align: start;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      overflow: hidden !important;
+    }
+  }
+}
+
+@media (width <= 1200px) {
+  .btnText {
+    display: none;
+  }
+}

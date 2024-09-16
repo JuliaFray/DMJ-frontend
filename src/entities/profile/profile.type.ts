@@ -36,3 +36,15 @@ export type TUser = {
     isFollowed: boolean,
     isFriend: boolean
 }
+
+export type ILoginData = {
+    email: string,
+    password: string,
+    rememberMe?: boolean,
+    captcha?: string | null
+}
+
+export type IFilter = {
+    term: string,
+    friend: boolean | null
+}

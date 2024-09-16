@@ -6,6 +6,7 @@ import {articlePageRoute} from "pages/article";
 import {homePageRoute} from "pages/home";
 import {loginPageRoute} from "pages/login";
 import {page404Router} from 'pages/page-404';
+import {profilePageRoute} from "pages/profile";
 import {registerPageRoute} from "pages/register";
 import {useSelector} from "react-redux";
 import {createBrowserRouter, NavLink, Outlet, redirect, RouterProvider, useRouteError} from "react-router-dom";
@@ -17,19 +18,19 @@ import {getMyProfile} from "shared/model/profile/profile-selectors";
 import {Spinner} from "shared/ui/spinner";
 
 const GenericLayout = lazy(() =>
-    import('shared/ui/layouts').then((module) => ({
+    import('pages/layouts').then((module) => ({
         default: module.GenericLayout,
     })),
 )
 
 const GuestLayout = lazy(() =>
-    import('shared/ui/layouts').then((module) => ({
+    import('pages/layouts').then((module) => ({
         default: module.GuestLayout,
     })),
 )
 
 const UserLayout = lazy(() =>
-    import('shared/ui/layouts').then((module) => ({
+    import('pages/layouts').then((module) => ({
         default: module.UserLayout,
     })),
 )
@@ -64,6 +65,7 @@ const browserRouter = createBrowserRouter([
             {
                 element: createElement(enhance(UserLayout)),
                 // children: [editorPageRoute, settingsPageRoute, profilePageRoute],
+                children: [profilePageRoute],
             },
             {
                 element: createElement(enhance(GuestLayout)),
