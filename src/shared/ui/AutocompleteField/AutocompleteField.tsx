@@ -6,10 +6,9 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import {TChipData} from 'entities/tag';
 import {useSelector} from 'react-redux';
+import {useLazyGetAllTagsQuery} from "shared/api/post-api";
 import {v4 as uuidv4} from 'uuid';
-import {useAppDispatch} from '../../hook/hooks';
 import {getAllFetchedTags} from '../../model/posts/posts-selectors';
-import {getAllTags} from '../../model/posts/posts-thunks';
 
 type IAutocompleteField = {
     values: (string | TChipData)[],
@@ -22,11 +21,12 @@ const AutocompleteField: React.FC<IAutocompleteField> = (props, context) => {
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState<(string | TChipData)[]>(props.values);
     const loading = open && options.length === 0;
-    const dispatch = useAppDispatch();
     const tags = useSelector(getAllFetchedTags);
 
+    const [triggerGetAllTags] = useLazyGetAllTagsQuery();
+    
     useEffect(() => {
-        dispatch(getAllTags({}));
+        triggerGetAllTags({});
     }, [])
 
     useEffect(() => {

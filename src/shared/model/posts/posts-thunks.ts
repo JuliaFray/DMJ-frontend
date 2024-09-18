@@ -3,28 +3,28 @@ import {TArticle} from 'entities/article';
 import {TComment} from 'entities/comment';
 import {TChipData} from 'entities/tag';
 import {ACCESS_DENIED} from '../../lib/DictConstants';
-import {PostsResponseType, ResultCodeEnum} from './../../api/api-types';
+import {ResultCodeEnum} from './../../api/api-types';
 import {postAPI} from './../../api/post-api';
 import {appActions} from './../app/app-slice';
 import {authActions} from './../auth/auth-slice';
 
 const UNDEFINED_ERROR = "Неизвестная ошибка"
 
-export const getAllPosts = createAsyncThunk<PostsResponseType, { query: string }>(
-    'posts', async (data, thunkAPI) => {
-        try {
-            const response = await postAPI.getAll(data.query);
-            if(response.resultCode === ResultCodeEnum.Error) {
-                return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
-            }
-            return response;
-        } catch(e) {
-            thunkAPI.dispatch(authActions.logout());
-            thunkAPI.dispatch(appActions.setUninitialized());
-            return thunkAPI.rejectWithValue(ACCESS_DENIED);
-        }
-    }
-);
+// export const getAllPosts = createAsyncThunk<PostsResponseType, { query: string }>(
+//     'posts', async (data, thunkAPI) => {
+//         try {
+//             const response = await postAPI.getAll(data.query);
+//             if(response.resultCode === ResultCodeEnum.Error) {
+//                 return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+//             }
+//             return response;
+//         } catch(e) {
+//             thunkAPI.dispatch(authActions.logout());
+//             thunkAPI.dispatch(appActions.setUninitialized());
+//             return thunkAPI.rejectWithValue(ACCESS_DENIED);
+//         }
+//     }
+// );
 
 export const markPostFavorite = createAsyncThunk<void, { postId: string }, { rejectValue: string }>(
     'posts/favorite', async (data, thunkAPI) => {
@@ -97,7 +97,7 @@ export const editPost = createAsyncThunk<void, { file: FormData, id: string }, {
             if(response.resultCode === ResultCodeEnum.Error) {
                 return thunkAPI.rejectWithValue(response.message)
             }
-            thunkAPI.dispatch(getAllPosts({query: ''}));
+            // thunkAPI.dispatch(getAllPosts({query: ''}));
             return response.data;
         } catch(e) {
             thunkAPI.dispatch(authActions.logout());
@@ -140,21 +140,21 @@ export const deletePost = createAsyncThunk<void, { payload: TArticle }, { reject
     }
 );
 
-export const getAllTags = createAsyncThunk<TChipData[], {}, { rejectValue: string }>(
-    'posts/allTags', async (__, thunkAPI) => {
-        const response = await postAPI.getAllTags();
-        try {
-            if(response.resultCode === ResultCodeEnum.Error) {
-                return thunkAPI.rejectWithValue(response.message);
-            }
-            return response.data;
-        } catch(e) {
-            thunkAPI.dispatch(authActions.logout());
-            thunkAPI.dispatch(appActions.setUninitialized());
-            return thunkAPI.rejectWithValue(ACCESS_DENIED);
-        }
-    }
-);
+// export const getAllTags = createAsyncThunk<TChipData[], {}, { rejectValue: string }>(
+//     'posts/allTags', async (__, thunkAPI) => {
+//         const response = await postAPI.getAllTags();
+//         try {
+//             if(response.resultCode === ResultCodeEnum.Error) {
+//                 return thunkAPI.rejectWithValue(response.message);
+//             }
+//             return response.data;
+//         } catch(e) {
+//             thunkAPI.dispatch(authActions.logout());
+//             thunkAPI.dispatch(appActions.setUninitialized());
+//             return thunkAPI.rejectWithValue(ACCESS_DENIED);
+//         }
+//     }
+// );
 
 export const getPopularTags = createAsyncThunk<TChipData[], {}, { rejectValue: string }>(
     'posts/tags', async (__, thunkAPI) => {

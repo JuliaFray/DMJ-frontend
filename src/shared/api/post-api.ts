@@ -1,27 +1,13 @@
+import {BaseQueryFn, createApi, EndpointBuilder} from '@reduxjs/toolkit/query/react';
 import {TArticle} from "entities/article";
 import {TComment} from "entities/comment";
 import {TChipData} from "entities/tag";
+import customFetchBase from "shared/api/custom-fetch-base";
 import instance from "./api";
 import {GenericResponseType, PostsResponseType} from "./api-types";
 
 const baseUrl = 'posts';
 export const postAPI = {
-    getAll(query: string) {
-        return instance
-            .get<PostsResponseType>(`${baseUrl}${query}`)
-            .then(response => {
-                return response.data
-            })
-    },
-
-    getAllTags() {
-        return instance
-            .get<GenericResponseType<TChipData[]>>(`all-tags`)
-            .then(response => {
-                return response.data
-            })
-    },
-
     getPopularTags() {
         return instance
             .get<GenericResponseType<TChipData[]>>(`tags`)
@@ -126,3 +112,27 @@ export const postAPI = {
             })
     },
 };
+export const articleApi = createApi({
+    reducerPath: 'articleApi',
+    baseQuery: customFetchBase,
+    endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
+        getAllArticles: build.query<PostsResponseType, { searchParams: string }>({
+            query: ({searchParams}) => {
+                return {
+                    url: `${baseUrl}${searchParams}`,
+                    method: 'GET',
+                }
+            },
+        }),
+        getAllTags: build.query<GenericResponseType<TChipData[]>, {}>({
+            query: ({}) => {
+                return {
+                    url: `${baseUrl}/all-tags`,
+                    method: 'GET',
+                }
+            },
+        })
+    })
+});
+
+export const {useLazyGetAllArticlesQuery, useLazyGetAllTagsQuery} = articleApi;

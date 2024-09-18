@@ -1,0 +1,12 @@
+@import "shared/themes/palette.module";
+
+.linkItem {
+  &:hover {
+    background-color: $secondary
+  }
+
+  .link {
+    text-decoration: none;
+    color: #333
+  }
+}

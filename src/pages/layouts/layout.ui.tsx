@@ -1,29 +1,11 @@
-import React, {ReactNode} from "react"
+import React from "react"
+import {Logout} from "@mui/icons-material";
 import Login from "@mui/icons-material/Login";
-import {Grid, Tooltip, Typography, useMediaQuery} from "@mui/material";
-import {useSelector} from "react-redux";
+import {Tooltip, Typography} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import {NavLink} from "react-router-dom";
 import {pathKeys} from "shared/lib/react-router";
-import {getMyProfile} from "shared/model/profile/profile-selectors";
-import {theme} from "shared/themes/theme";
-import ScrollToTop from "shared/ui/ScrollToTop";
 import styles from './layout.module.scss';
-import {Logout} from "@mui/icons-material";
-
-export const Footer = () => {
-    return (
-        <footer>
-            <div className="container">
-                <NavLink
-                    className="logo-font"
-                    to={pathKeys.home()}
-                >
-                    DMJ
-                </NavLink>
-            </div>
-        </footer>
-    )
-}
 
 export function BrandLink() {
     return (
@@ -32,20 +14,13 @@ export function BrandLink() {
             to={pathKeys.home()}
         >
             <Typography variant='h6' component='div' sx={{flexGrow: 1}}>
-                DMJ
+                <IconButton>
+                    <img alt={'logo'}
+                         style={{height: '40px'}}
+                         src={window.location.origin + '/logo.png'}/>
+                </IconButton>
             </Typography>
 
-        </NavLink>
-    )
-}
-
-export function HomeLink() {
-    return (
-        <NavLink
-            className="nav-link"
-            to={pathKeys.home()}
-        >
-            Home
         </NavLink>
     )
 }
@@ -70,13 +45,6 @@ export function SignOutLink() {
     )
 }
 
-export function SignUpLink() {
-    return (
-        <NavLink to={pathKeys.register()}>
-            Sign up
-        </NavLink>
-    )
-}
 
 export function NewArticleLink() {
     return (
@@ -90,71 +58,3 @@ export function NewArticleLink() {
     )
 }
 
-export function SettingsProfileLink() {
-    return (
-        <NavLink
-            className="nav-link"
-            to={pathKeys.settings()}
-        >
-            {/*<IoSettingsSharp size={16} />*/}
-            &nbsp;Settings
-        </NavLink>
-    )
-}
-
-export function ProfileLink() {
-    const profile = useSelector(getMyProfile);
-
-    return (
-        profile ? <NavLink
-            className="nav-link"
-            to={pathKeys.profile.byUsername({username: profile.username})}
-        >
-            <img
-                className="user-pic"
-                src={profile.image}
-                alt={profile.username}
-            />
-            {profile.username}
-        </NavLink> : null
-    )
-}
-type TPageLayout = {
-    isMainPage: boolean,
-    mainChildren: ReactNode,
-    leftChildren?: ReactNode,
-    rightChildren?: ReactNode,
-    mainSx?: Record<string, any>
-}
-
-export const CommonLayoutUi: React.FC<TPageLayout> = (props, context) => {
-    const isMore1200px = useMediaQuery(theme.breakpoints.up('lg'));
-
-    const mdMain = props.isMainPage
-        ? isMore1200px
-            ? 7
-            : props.rightChildren ? 8.5 : 12
-        : 12
-
-    const mdSide = isMore1200px
-        ? 2.5
-        : 3.5;
-
-    return (
-        <div className={styles.main}>
-
-            <Grid container spacing={2} sx={{height: '100%'}}>
-                {isMore1200px && props.isMainPage && <Grid item md={2.5} className={styles.left}>{props.leftChildren}</Grid>}
-
-                <Grid item xs={12} sm={12} md={mdMain} sx={props.mainSx ? props.mainSx : {height: 'auto'}}>
-                    {props.mainChildren}
-                </Grid>
-
-                {props.rightChildren && props.isMainPage && <Grid item md={mdSide} className={styles.right}>{props.rightChildren}</Grid>}
-
-            </Grid>
-            <ScrollToTop/>
-        </div>
-
-    );
-}

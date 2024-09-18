@@ -23,7 +23,7 @@ export const pathKeys = {
             return pathKeys.root.concat('users/')
         },
         byId({id}: any) {
-            return pathKeys.article.root().concat(id)
+            return pathKeys.root.concat(id)
         },
     },
     article: {
@@ -43,6 +43,10 @@ export const pathKeys = {
         },
         byUsernameFavorites({username}: any) {
             return pathKeys.profile.byUsername({username}).concat('favorites/')
+        },
+        byId({id}: any) {
+            console.log(id)
+            return pathKeys.profile.root().concat(id)
         },
     },
     editor: {

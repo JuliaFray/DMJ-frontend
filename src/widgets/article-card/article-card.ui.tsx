@@ -89,7 +89,7 @@ export const ArticleCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain, 
 
                     {!isMain && <CardActions disableSpacing style={{position: 'relative', marginLeft: '20px',}}
                                              sx={{
-                                                 height: '10%',
+                                                 height: '12%',
                                                  alignSelf: 'stretch',
                                                  display: 'flex',
                                                  justifyContent: 'flex-start',

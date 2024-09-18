@@ -18,30 +18,6 @@ export type RegisterDataType = {
     password: string,
 }
 
-export const checkAuth = createAsyncThunk<TUser | undefined, {}, {}>(
-    'auth/status', async (data, thunkAPI) => {
-        try {
-            const response = await authAPI.checkStatus();
-            if(response.resultCode === ResultCodeEnum.Success) {
-                if(response.token) {
-                    window?.localStorage?.setItem('token', response.token)
-                }
-                thunkAPI.dispatch(appActions.setInitialized());
-                thunkAPI.dispatch(appActions.addUserOnline({type: 'app/addUserOnline', payload: response.data}));
-                thunkAPI.dispatch(profileActions.setProfile(response.data));
-                return response.data;
-            } else {
-                thunkAPI.dispatch(authActions.logout());
-                thunkAPI.dispatch(appActions.setUninitialized());
-            }
-        } catch(e) {
-            thunkAPI.rejectWithValue(ACCESS_DENIED);
-            thunkAPI.dispatch(authActions.logout());
-            thunkAPI.dispatch(appActions.setUninitialized());
-        }
-    }
-);
-
 export const login = createAsyncThunk<TUser | undefined,
     { userData: ILoginData },
     {}>

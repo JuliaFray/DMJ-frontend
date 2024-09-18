@@ -21,14 +21,14 @@ export const UserLayout = () => {
                 </AppBar>
             </Box>
             <Container maxWidth={'xl'} fixed>
-                <Grid container spacing={1} className={styles.main}>
+                <Grid container spacing={2} className={styles.main}>
                     <Grid item md={3} className={styles.left}>
                         <MenuWidget userId={userId}/>
                     </Grid>
-                    <Grid item md={9}>
-                        <Container fixed maxWidth={'lg'}>
+                    <Grid item md={9} className={styles.right}>
+                        {/*<Container fixed maxWidth={'lg'}>*/}
                             <Outlet/>
-                        </Container>
+                        {/*</Container>*/}
                     </Grid>
                 </Grid>
             </Container>

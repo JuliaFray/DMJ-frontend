@@ -3,11 +3,11 @@ import {Grid} from '@mui/material';
 import {TUser} from 'entities/profile';
 import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
+import {useLazyGetAllUsersQuery} from "shared/api/users-api";
 import {useAppDispatch} from 'shared/hook/hooks';
 import {getAuthId} from 'shared/model/auth/auth-selectors';
 import {toggleFollowProfile} from 'shared/model/profile/profile-thunks';
 import {getIsFetching, getTotalCount, getUsers} from 'shared/model/users/users-selectors';
-import {getAllUsers} from 'shared/model/users/users-thunks';
 import {CustomPagination} from 'shared/ui/pagination';
 import {v4 as uuidv4} from 'uuid';
 import {UserRowSkeleton} from 'widgets/user-row/user-row.skeleton';
@@ -29,13 +29,15 @@ const UsersMain: React.FC<IUsersMain> = (props, context) => {
     const dispatch = useAppDispatch();
 
     const params = useParams();
+    
+    const [triggerGetAllUsers] = useLazyGetAllUsersQuery();
 
     useEffect(() => {
-        dispatch(getAllUsers({
+        triggerGetAllUsers({
             currentPage: props.currentPage,
             isFollowers: props.isFollowers,
             userId: params.id || profileId
-        }));
+        });
     }, [dispatch, props.currentPage, props.isFollowers]);
 
     const toggleFollow = (userId: string, isFollow: boolean) => {

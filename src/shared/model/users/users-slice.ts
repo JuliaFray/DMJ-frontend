@@ -1,15 +1,15 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {TUser} from 'entities/profile';
-import {getAllUsers} from './users-thunks';
+import {usersApi} from "shared/api/users-api";
 
-export type InitialStateType = {
+export type TInitial = {
     users: TUser[],
     totalCount: number,
     isFetching: boolean,
     userId: string | null
 }
 
-let initialState: InitialStateType = {
+let initialState: TInitial = {
     isFetching: false,
     users: [],
     totalCount: 0,
@@ -22,22 +22,27 @@ const usersSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            //=====getAllUsers=====//
-            .addCase(getAllUsers.pending, (state, action) => {
-                state.isFetching = true;
-            })
-            .addCase(getAllUsers.fulfilled, (state, action) => {
-                state.isFetching = false;
-                if(action.payload) {
+            .addMatcher(
+                usersApi.endpoints.getAllUsers.matchPending,
+                (state: TInitial, action: PayloadAction<any, string, any>) => {
+                    state.isFetching = true;
+                }
+            )
+            .addMatcher(
+                usersApi.endpoints.getAllUsers.matchFulfilled,
+                (state: TInitial, action: PayloadAction<any, string, any>) => {
                     state.users = action.payload.data;
                     state.totalCount = action.payload.totalCount;
                 }
-            })
-            .addCase(getAllUsers.rejected, (state, action) => {
-                state.isFetching = false;
-                state.users = [];
-                state.totalCount = 0;
-            })
+            )
+            .addMatcher(
+                usersApi.endpoints.getAllUsers.matchRejected,
+                (state: TInitial, action: PayloadAction<any, string, any>) => {
+                    state.isFetching = false;
+                    state.users = [];
+                    state.totalCount = 0;
+                }
+            );
     }
 });
 

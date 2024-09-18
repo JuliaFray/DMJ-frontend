@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {checkAuth, login, registerUser} from './auth-thunks';
+import {login, registerUser} from './auth-thunks';
 
 type ValidationError = Record<string, any>
 
@@ -23,6 +23,10 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
+        setAuth: (state, payload: any) => {
+            state.isAuth = true;
+            state.id = payload.id;
+        },
         logout: (state) => {
             state.isAuth = false;
             state.id = '';
@@ -44,20 +48,6 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            //=====checkAuth=====//
-            .addCase(checkAuth.pending, (state) => {
-                state.isFetching = true;
-            })
-            .addCase(checkAuth.fulfilled, (state, action) => {
-                state.isFetching = false;
-                state.isAuth = true;
-                if(action.payload) {
-                    state.id = action.payload?._id
-                }
-            })
-            .addCase(checkAuth.rejected, (state) => {
-                state.isFetching = false;
-            })
             //=====login=====//
             .addCase(login.pending, (state) => {
                 state.isFetching = true;

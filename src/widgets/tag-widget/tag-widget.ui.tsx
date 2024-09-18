@@ -1,10 +1,6 @@
 import React from 'react';
 import TagIcon from '@mui/icons-material/Tag';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Skeleton from '@mui/material/Skeleton';
+import {Chip} from "@mui/material";
 import {TChipData} from 'entities/tag';
 import {SideBlock} from 'shared'
 import {useQueryParams} from 'shared/hook/hooks';
@@ -24,20 +20,10 @@ export const TagWidget: React.FC<ITagBlock> = ({items, isLoading = true, query})
     }
 
     return (
-        <SideBlock title='Популярные теги'>
+        <SideBlock title='Популярное'>
             {(items || [...Array(5)]).map((item, i) =>
-                <ListItem key={i} disablePadding onClick={() => handleTagChange(item)}>
-                    <ListItemButton className={styles.tag}>
-                        <ListItemIcon className={styles.icon}>
-                            <TagIcon/>
-                        </ListItemIcon>
-                        {isLoading ? (
-                            <Skeleton width={'100%'}/>
-                        ) : (
-                            <ListItemText primary={`${item.value} (${item.useCount})`}/>
-                        )}
-                    </ListItemButton>
-                </ListItem>
+                <Chip color='primary' icon={<TagIcon className={styles.icon}/>} size="small" label={`${item.value} (${item.useCount})`} className={styles.tag}
+                      variant="outlined" onClick={() => handleTagChange(item)}/>
             )}
         </SideBlock>
     );

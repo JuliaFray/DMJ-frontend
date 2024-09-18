@@ -1,14 +1,13 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {TArticle, TImage} from 'entities/article';
 import {TChipData} from 'entities/tag';
-import {PostsResponseType} from './../../api/api-types';
+import {GenericResponseType} from "shared/api/api-types";
+import {articleApi} from "shared/api/post-api";
 import {
     createPost,
     createPostComment,
     deletePost,
     editPost,
-    getAllPosts,
-    getAllTags,
     getOnePost,
     getPopularPost,
     getPopularTags,
@@ -16,7 +15,7 @@ import {
     getUserPostComments
 } from './posts-thunks';
 
-type InitialStateType = {
+type TInitial = {
     isFetching: boolean,
     totalCount: number,
     posts: TArticle[],
@@ -29,7 +28,7 @@ type InitialStateType = {
     postComments: TArticle[],
 }
 
-const initialState: InitialStateType = {
+const initialState: TInitial = {
     posts: [],
     totalCount: 0,
     popularPosts: [],
@@ -67,37 +66,6 @@ const postsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            //=====getAllPosts=====//
-            .addCase(getAllPosts.pending, (state) => {
-                state.isFetching = true;
-                state.posts = [];
-                state.popularPosts = [];
-                state.post = null;
-                state.totalCount = 0;
-            })
-            .addCase(getAllPosts.fulfilled, (state, action: PayloadAction<PostsResponseType>) => {
-                state.isFetching = false;
-                state.posts = action.payload.data;
-                state.totalCount = action.payload.totalCount;
-            })
-            .addCase(getAllPosts.rejected, (state) => {
-                state.isFetching = false;
-                state.posts = [];
-                state.totalCount = 0;
-            })
-            //=====getAllTags=====//
-            .addCase(getAllTags.pending, (state) => {
-                state.isFetching = true;
-                state.allTags = [];
-            })
-            .addCase(getAllTags.fulfilled, (state, action: PayloadAction<TChipData[]>) => {
-                state.isFetching = false;
-                state.allTags = action.payload;
-            })
-            .addCase(getAllTags.rejected, (state) => {
-                state.isFetching = false;
-                state.allTags = [];
-            })
             //=====getPopularTags=====//
             .addCase(getPopularTags.pending, (state) => {
                 state.isFetching = true;
@@ -202,6 +170,55 @@ const postsSlice = createSlice({
                 state.isFetching = false;
                 state.postComments = [];
             })
+            //=====getAllPosts=====//
+            .addMatcher(
+                articleApi.endpoints.getAllArticles.matchPending,
+                (state: TInitial) => {
+                    state.isFetching = true;
+                    state.posts = [];
+                    state.popularPosts = [];
+                    state.post = null;
+                    state.totalCount = 0;
+                }
+            )
+            .addMatcher(
+                articleApi.endpoints.getAllArticles.matchFulfilled,
+                (state: TInitial, action: PayloadAction<any, string, any>) => {
+                    state.isFetching = false;
+                    state.posts = action.payload.data;
+                    state.totalCount = action.payload.totalCount;
+                }
+            )
+            .addMatcher(
+                articleApi.endpoints.getAllArticles.matchRejected,
+                (state: TInitial) => {
+                    state.isFetching = false;
+                    state.posts = [];
+                    state.totalCount = 0;
+                }
+            )
+            //=====getAllTags=====//
+            .addMatcher(
+                articleApi.endpoints.getAllTags.matchPending,
+                (state) => {
+                    state.isFetching = true;
+                    state.allTags = [];
+                }
+            )
+            .addMatcher(
+                articleApi.endpoints.getAllTags.matchFulfilled,
+                (state, action: PayloadAction<GenericResponseType<TChipData[]>>) => {
+                    state.isFetching = false;
+                    state.allTags = action.payload.data;
+                }
+            )
+            .addMatcher(
+                articleApi.endpoints.getAllTags.matchRejected,
+                (state) => {
+                    state.isFetching = false;
+                    state.allTags = [];
+                }
+            )
     }
 });
 

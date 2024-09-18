@@ -64,7 +64,6 @@ const browserRouter = createBrowserRouter([
             },
             {
                 element: createElement(enhance(UserLayout)),
-                // children: [editorPageRoute, settingsPageRoute, profilePageRoute],
                 children: [profilePageRoute],
             },
             {
@@ -93,15 +92,10 @@ function BubbleError() {
 function LayoutSkeleton() {
     return (
         <>
-            <nav className="navbar navbar-light">
-                <div className="container">
+            <nav>
+                <div>
                     <Stack justifyContent="space-between">
-                        <NavLink
-                            className="navbar-brand"
-                            to={pathKeys.home()}
-                        >
-                            DMJ
-                        </NavLink>
+                        <NavLink to={pathKeys.home()}>DMJ</NavLink>
 
                         <Stack
                             spacing={16}
@@ -117,10 +111,7 @@ function LayoutSkeleton() {
                 </div>
             </nav>
 
-            <Spinner
-                display
-                position="center"
-            />
+            <Spinner display position="center"/>
         </>
     )
 }

@@ -42,13 +42,13 @@ const CustomCardActions: React.FC<ICardActions> = (props, context) => {
         <ul className={styles.postDetails}>
             {isAuth && <li key={'rating'} className={styles.comment}>
                 <IconButton disabled={userRating === -1} aria-label="up rating" onClick={() => onClickRating(-1)}>
-                    <ArrowDropDown/>
+                    <ArrowDropDown style={{color: '#8d5676', opacity: userRating === -1 ? '0.4' : '1'}}/>
                 </IconButton>
 
                 <span>{rating}</span>
 
                 <IconButton disabled={userRating === 1} aria-label="down rating" onClick={() => onClickRating(1)}>
-                    <ArrowDropUp/>
+                    <ArrowDropUp style={{color: '#039a9a', opacity: userRating === 1 ? '0.4' : '1'}}/>
                 </IconButton>
             </li>}
             <li key={'viewsCount'}>

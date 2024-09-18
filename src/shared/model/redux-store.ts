@@ -1,7 +1,9 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {Action} from 'redux';
 import {ThunkAction} from 'redux-thunk';
+import {articleApi} from "shared/api/post-api";
 import {usdaApi} from "shared/api/usda-api";
+import {usersApi} from "shared/api/users-api";
 import {appSlice} from './app';
 import {authSlice} from './auth';
 import {dialogSlice} from './dialog';
@@ -21,6 +23,8 @@ const rootReducer = combineReducers({
     spinner: spinnerSlice.spinnerReducer,
     ws: wsReducer.wsReducer,
     [usdaApi.reducerPath]: usdaApi.reducer,
+    [articleApi.reducerPath]: articleApi.reducer,
+    [usersApi.reducerPath]: usersApi.reducer,
 });
 
 const store = configureStore({
@@ -31,7 +35,9 @@ const store = configureStore({
                     extraArgument: {}
                 }
             })
-                .concat(usdaApi.middleware),
+                .concat(usdaApi.middleware)
+                .concat(articleApi.middleware)
+                .concat(usersApi.middleware),
     }
 );
 

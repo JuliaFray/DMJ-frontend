@@ -174,9 +174,9 @@ const CreateArticle: React.FC = () => {
                             <Button type="submit" size="large" variant="contained">
                                 {!!id ? "Сохранить" : "Опубликовать"}
                             </Button>
-                            <Link to={!!id ? pathKeys.article.byId(id) : "/"}>
-                                <Button size="large">Отмена</Button>
-                            </Link>
+                            {/*<Link to={!!id ? pathKeys.article.byId(id) : "/"}>*/}
+                            {/*    <Button size="large">Отмена</Button>*/}
+                            {/*</Link>*/}
                         </div>
                     </form>
                 </Paper>

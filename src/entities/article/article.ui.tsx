@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import {Tooltip} from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
-import {TArticle} from 'entities/article';
+import {ArticleSkeleton, TArticle} from 'entities/article';
 import {TChipData} from 'entities/tag';
 import ReactMarkdown from 'react-markdown';
 import {useDispatch} from "react-redux";
@@ -13,7 +13,6 @@ import {getFullName, getImage, hasImage} from 'shared/lib/helper';
 import {deletePost} from 'shared/model/posts/posts-thunks';
 import {v4 as uuidv4} from 'uuid';
 import CustomCardActions from 'widgets/article-card/CustomCardActions';
-import {PostSkeleton} from 'widgets/article-card/PostSkeleton';
 import {UserInfo} from 'widgets/user-info/UserInfo';
 import styles from './article.module.scss';
 
@@ -38,7 +37,7 @@ export const Article: React.FC<PostPropsType> = ({
     };
 
     if(isLoading) {
-        return <PostSkeleton/>;
+        return <ArticleSkeleton/>;
     }
 
     return (

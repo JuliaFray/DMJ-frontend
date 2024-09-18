@@ -4,10 +4,11 @@ import {TArticle} from "entities/article";
 import {TChipData} from "entities/tag";
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {compose} from 'redux';
+import {useLazyGetAllArticlesQuery} from "shared/api/post-api";
 import {createQueryString, useQueryParams} from 'shared/hook/hooks';
 import {getAuthId} from 'shared/model/auth/auth-selectors';
 import {getAllFetchedTags, getDataLength, getFetchedPopularTags, getIsFetching, getPopularPosts} from 'shared/model/posts/posts-selectors';
-import {getAllPosts, getPopularPost, getPopularTags} from 'shared/model/posts/posts-thunks';
+import {getPopularPost, getPopularTags} from 'shared/model/posts/posts-thunks';
 import {RootState} from 'shared/model/redux-store';
 import {CustomPagination} from "shared/ui/pagination";
 import {PopularPost} from "widgets/article-card/PopularPost";
@@ -44,6 +45,8 @@ const HomePage: React.FC<TPostPage> = React.memo((props, context) => {
     const [searchValue, setSearchValue] = useState<string>('');
     const [currentPage, setCurrentPage] = useState(1);
 
+    const [triggerGetAllArticles] = useLazyGetAllArticlesQuery();
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -72,7 +75,7 @@ const HomePage: React.FC<TPostPage> = React.memo((props, context) => {
             }
         }
 
-        dispatch(getAllPosts({query: createQueryString(query)}));
+        triggerGetAllArticles({searchParams: createQueryString(query)}, false);
 
         if(!props.userId && !tag) {
             dispatch(getPopularPost({}));

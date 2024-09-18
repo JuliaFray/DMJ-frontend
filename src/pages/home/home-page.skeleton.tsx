@@ -1,8 +1,9 @@
 import React from 'react'
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import {ArticlesFeedSkeleton} from "widgets/articles-feed/articles-feed.skeleton";
 
-export function HomePageSkeleton() {
+export const HomePageSkeleton = () => {
     return (
         <div className="home-page">
             <div className="banner">
@@ -37,7 +38,7 @@ export function HomePageSkeleton() {
                             </li>
                         </ul>
 
-                        {/*<ArticlesFeedSkeleton />*/}
+                        <ArticlesFeedSkeleton />
                     </div>
 
                     <div className="col-md-3">
