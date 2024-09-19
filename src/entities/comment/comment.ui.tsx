@@ -40,7 +40,7 @@ export const Comment: React.FC<TCommentType> = ({item, isLoading}, context) => {
 
     return (
         <React.Fragment key={uuidv4()}>
-            <ListItem alignItems='flex-start'>
+            <ListItem alignItems='flex-start' sx={{width: '100%'}}>
                 <ListItemAvatar key={uuidv4()}>
                     {isLoading ? (
                         <Skeleton key={uuidv4()} variant='circular' width={40} height={40}/>
@@ -64,17 +64,17 @@ export const Comment: React.FC<TCommentType> = ({item, isLoading}, context) => {
 
                 <Stack key={uuidv4()} spacing={1} direction={'column'}>
 
-                    <span key={uuidv4()}>{moment(item.createdAt).fromNow()}</span>
+                    <span key={uuidv4()}>{moment(item.createdAt).locale('ru').fromNow()}</span>
                     {isAuth && <Stack key={uuidv4()} spacing={1} direction={'row'}>
                         <Box key={uuidv4()}>
-                            <IconButton key={uuidv4()} disabled={userRating === -1} aria-label='up rating' onClick={() => onClickRating(-1)}>
-                                <ArrowDropDown key={uuidv4()}/>
+                            <IconButton key={uuidv4()} disabled={userRating === -1} aria-label="up rating" onClick={() => onClickRating(-1)}>
+                                <ArrowDropDown style={{color: '#8d5676', opacity: userRating === -1 ? '0.4' : '1'}}/>
                             </IconButton>
 
                             <span key={uuidv4()}>{rating}</span>
 
-                            <IconButton key={uuidv4()} disabled={userRating === 1} aria-label='down rating' onClick={() => onClickRating(1)}>
-                                <ArrowDropUp key={uuidv4()}/>
+                            <IconButton key={uuidv4()} disabled={userRating === 1} aria-label="down rating" onClick={() => onClickRating(1)}>
+                                <ArrowDropUp style={{color: '#039a9a', opacity: userRating === 1 ? '0.4' : '1'}}/>
                             </IconButton>
                         </Box>
                     </Stack>}

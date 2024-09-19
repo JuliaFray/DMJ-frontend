@@ -3,9 +3,15 @@ import {Logout} from "@mui/icons-material";
 import Login from "@mui/icons-material/Login";
 import {Tooltip, Typography} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import {useDispatch, useSelector} from "react-redux";
 import {NavLink} from "react-router-dom";
 import {pathKeys} from "shared/lib/react-router";
+import {appActions} from "shared/model/app/app-slice";
+import {authActions} from "shared/model/auth/auth-slice";
 import styles from './layout.module.scss';
+import {getAuthId} from "shared/model/auth/auth-selectors";
+import {SocketEvents} from "shared/lib/DictConstants";
+import useWebSocket from "shared/hook/hooks";
 
 export function BrandLink() {
     return (
@@ -36,12 +42,23 @@ export function SignInLink() {
 }
 
 export function SignOutLink() {
+    const dispatch = useDispatch();
+    const authId = useSelector(getAuthId);
+
+    const ws = useWebSocket();
+
+    const handleLogout = () => {
+        ws?.send(JSON.stringify({type: SocketEvents.LOGOUT_EVENT, id: authId}));
+        dispatch(authActions.logout());
+        dispatch(appActions.setUninitialized());
+    }
+
     return (
-        <NavLink to={pathKeys.login()}>
-            <Tooltip title="Выйти">
-                <Logout/>
-            </Tooltip>
-        </NavLink>
+        <Tooltip title="Выйти">
+            <IconButton onClick={handleLogout}>
+                <Logout color='success'/>
+            </IconButton>
+        </Tooltip>
     )
 }
 

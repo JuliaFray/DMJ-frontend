@@ -27,7 +27,7 @@ const ProfileData: React.FC<IProfileData> = React.memo((props) => {
 
     return (
         <>
-            <div className={styles.profileHeader}>{getFullName(props.profile)}</div>
+            <div className={styles.profileTitle}>{getFullName(props.profile)}</div>
 
             <List dense={true} className={styles.profileList}>
                 <ListItem key={'regList'}>

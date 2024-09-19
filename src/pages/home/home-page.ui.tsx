@@ -4,7 +4,7 @@ import {TArticle} from "entities/article";
 import {TChipData} from "entities/tag";
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {compose} from 'redux';
-import {useLazyGetAllArticlesQuery} from "shared/api/post-api";
+import {useLazyGetAllArticlesQuery, useLazyGetAllTagsQuery} from "shared/api/post-api";
 import {createQueryString, useQueryParams} from 'shared/hook/hooks';
 import {getAuthId} from 'shared/model/auth/auth-selectors';
 import {getAllFetchedTags, getDataLength, getFetchedPopularTags, getIsFetching, getPopularPosts} from 'shared/model/posts/posts-selectors';
@@ -28,7 +28,7 @@ type TPostPage = {
 const HomePage: React.FC<TPostPage> = React.memo((props, context) => {
 
     // const isMore1200px = useMediaQuery(theme.breakpoints.up('lg'));
-    const mdMain = props.isMainPage ? 9 : 12
+    const mdMain = props.isMainPage ? 9 : 12;
     const mdSide = 3;
 
     const isFetching = useSelector(getIsFetching);
@@ -46,6 +46,7 @@ const HomePage: React.FC<TPostPage> = React.memo((props, context) => {
     const [currentPage, setCurrentPage] = useState(1);
 
     const [triggerGetAllArticles] = useLazyGetAllArticlesQuery();
+    const [triggerGetAllTags] = useLazyGetAllTagsQuery();
 
     const dispatch = useDispatch();
 
@@ -53,6 +54,7 @@ const HomePage: React.FC<TPostPage> = React.memo((props, context) => {
         if(!props.isOwner) {
             dispatch(getPopularTags({}))
         }
+        triggerGetAllTags({});
     }, [dispatch, props.isOwner, props.isFavorite, props.userId])
 
     useEffect(() => {
@@ -96,15 +98,14 @@ const HomePage: React.FC<TPostPage> = React.memo((props, context) => {
                 </ArticleCarousel>}
 
                 <ArticlesFeed isMainPage={props.isMainPage} isFetching={isFetching}
-                              selectedTag={selectedTag} setSearchValue={setSearchValue}
-                              setTabIndex={setTabIndex} setSelectedTag={setSelectedTag}
+                              setSearchValue={setSearchValue} setTabIndex={setTabIndex}
                               currentPage={currentPage} setCurrentPage={setCurrentPage}/>
 
                 <CustomPagination page={currentPage} dataLength={dataLength} setCurrentPage={setCurrentPage}/>
             </Grid>
-            <Grid item md={mdSide} className={styles.right}>
+            {props.isMainPage && <Grid item md={mdSide} className={styles.right}>
                 <TagWidget items={popularTags} isLoading={isFetching} query={selectedTag}/>
-            </Grid>
+            </Grid>}
         </Grid>
     );
 });

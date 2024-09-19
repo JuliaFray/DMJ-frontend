@@ -45,7 +45,6 @@ export const pathKeys = {
             return pathKeys.profile.byUsername({username}).concat('favorites/')
         },
         byId({id}: any) {
-            console.log(id)
             return pathKeys.profile.root().concat(id)
         },
     },

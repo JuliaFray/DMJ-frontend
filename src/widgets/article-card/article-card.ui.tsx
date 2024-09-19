@@ -1,4 +1,6 @@
 import * as React from 'react';
+import TagIcon from "@mui/icons-material/Tag";
+import {Chip} from "@mui/material";
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -13,7 +15,6 @@ import {useQueryParams} from 'shared/hook/hooks';
 import {NO_AVATAR} from 'shared/lib/DictConstants';
 import {getFullName} from 'shared/lib/helper';
 import palette from 'shared/themes/palette.module.scss';
-import {v4 as uuidv4} from 'uuid';
 import CustomCardActions from './CustomCardActions';
 
 export type PostCardProps = {
@@ -28,13 +29,12 @@ export const ArticleCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain, 
     const {queryParams, setQueryParams} = useQueryParams({tags: ''});
 
     const handleTagClick = (el: TChipData) => {
-        setQueryParams({tags: el.value});
+        setQueryParams({tags: queryParams.tags === el.value ? '' : el.value});
     }
 
     const height = isMain ? '350px' : isComments ? '100px' : '250px';
     const titleRows = isMain ? 2 : 1;
-    const bodyRows = isMain ? 12 : 4;
-
+    const bodyRows = isMain ? 8 : 4;
     const image = (post.author.avatar && `data:image/jpeg;base64,${post.author.avatar?.data}`) || NO_AVATAR;
     return (
         <Card className={styles.card} sx={{height: height, display: 'flex', flexDirection: 'column', justifyContent: 'space-around'}}>
@@ -53,7 +53,7 @@ export const ArticleCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain, 
                         {avatarAbbr}
                     </Avatar>
                 }
-                title={<Link to={`/${post._id}`}>{post.title}</Link>}
+                title={<Link to={`article/${post._id}`}>{post.title}</Link>}
                 subheader={<Link className={styles.subtitle} to={`/user/${post.author._id}`}>{getFullName(post.author)}</Link>}
                 titleTypographyProps={{
                     variant: 'subtitle1',
@@ -78,13 +78,19 @@ export const ArticleCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain, 
                     </CardContent>
 
                     {!isMain && <div className={styles.cardContentTags}>
-                        <ul className={styles.tags}>
-                            {!!post.tags.length && post.tags.map((tag: TChipData) => (
-                                <li key={uuidv4()} onClick={() => handleTagClick(tag)}>
-                                    #{tag.value}
-                                </li>
-                            ))}
-                        </ul>
+                        {!!post.tags.length && post.tags.map((tag: TChipData) => (
+                            <Chip color='secondary' icon={<TagIcon className={styles.icon}/>} size="small" label={`${tag.value}`} className={styles.tag}
+                                  variant={queryParams.tags === tag.value ? 'filled' : 'outlined'} onClick={() => handleTagClick(tag)}/>
+                        ))}
+
+
+                        {/*<ul className={styles.tags}>*/}
+                        {/*    {!!post.tags.length && post.tags.map((tag: TChipData) => (*/}
+                        {/*        <li key={uuidv4()} onClick={() => handleTagClick(tag)}>*/}
+                        {/*            #{tag.value}*/}
+                        {/*        </li>*/}
+                        {/*    ))}*/}
+                        {/*</ul>*/}
                     </div>}
 
                     {!isMain && <CardActions disableSpacing style={{position: 'relative', marginLeft: '20px',}}

@@ -23,7 +23,7 @@ export const getMyProfileAvatar = (state: RootState) => {
 
 export const getMyProfileFullName = (state: RootState) => {
     const profile = state.profile?.my || '';
-    return profile ? (`${profile.firstName} ${profile.secondName} ${profile.lastName}`) : '';
+    return profile ? (`${profile.firstName} ${profile.secondName} ${profile.lastName ? profile.lastName : ''}`) : '';
 };
 
 export const getStats = (state: RootState) => {

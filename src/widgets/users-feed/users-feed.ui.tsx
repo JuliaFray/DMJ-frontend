@@ -19,12 +19,12 @@ type IUsersMain = {
     isFollowers: boolean
 }
 
-const UsersMain: React.FC<IUsersMain> = (props, context) => {
+const UsersFeed: React.FC<IUsersMain> = (props, context) => {
 
     const users = useSelector(getUsers);
     const isFetching = useSelector(getIsFetching);
     const profileId = useSelector(getAuthId);
-    const dataLength = useSelector(getTotalCount);
+
 
     const dispatch = useAppDispatch();
 
@@ -54,14 +54,16 @@ const UsersMain: React.FC<IUsersMain> = (props, context) => {
     };
 
     return (
-        <div style={{position: 'relative'}}>
-            <Grid container sx={{margin: 0}}
-                  rowSpacing={{xs: 2, sm: 2, md: 2}}
-                  style={{marginTop: '20px', marginBottom: '100px'}}>
+        <div style={{position: 'relative', margin: 0, padding: 0}}>
+
+            <Grid container sx={{margin: 0, padding: 0}}
+                  rowSpacing={{xs: 1, sm: 2, md: 3}}
+                  columnSpacing={{xs: 1, sm: 2, md: 3}}
+                  style={{marginBottom: '30px'}}>
                 {isFetching
-                    ? [...Array(5)].map(() => <Grid item xs={12} key={uuidv4()}><UserRowSkeleton/></Grid>)
+                    ? [...Array(5)].map(() => <Grid item xs={6} key={uuidv4()}><UserRowSkeleton/></Grid>)
                     : users.map((u: TUser) => (
-                        <Grid item xs={12} key={u._id}>
+                        <Grid item xs={6} key={u._id}>
                             <UserRow user={u}
                                      key={u._id}
                                      toggleFollow={toggleFollow}/>
@@ -69,9 +71,9 @@ const UsersMain: React.FC<IUsersMain> = (props, context) => {
                     ))
                 }
             </Grid>
-            <CustomPagination page={props.currentPage} dataLength={dataLength} setCurrentPage={props.setCurrentPage}/>
+
         </div>
     )
 }
 
-export default UsersMain;
+export default UsersFeed;

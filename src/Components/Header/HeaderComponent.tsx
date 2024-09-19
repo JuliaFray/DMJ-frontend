@@ -29,7 +29,7 @@ const HeaderComponent: React.FC = () => {
 
     const userId = useSelector(authSelector.getAuthId);
     const isAuth = useSelector(authSelector.getIsAuth);
-    const notifications = useSelector(appSelector.getNotifications);
+    const notifications = useSelector(appSelector.getAllNotifications);
     const dispatch = useAppDispatch();
 
     const ws = useWebSocket();
@@ -40,7 +40,7 @@ const HeaderComponent: React.FC = () => {
                 dispatch(appSlice.appActions.addNotification({type: 'app/addNotification', payload: msg}))
             }
             if(type === SocketEvents.AUTH_EVENT) {
-                dispatch(appSlice.appActions.addUserOnline({type: 'app/addUserOnline', payload: data}))
+                dispatch(appSlice.appActions.setUsersOnline({type: 'app/setUserOnline', payload: data}))
             }
             if(type === SocketEvents.FRIEND_EVENT) {
                 dispatch(appSlice.appActions.addNotification({type: 'app/addNotification', payload: msg}))

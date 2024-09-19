@@ -8,6 +8,7 @@ import {loginPageRoute} from "pages/login";
 import {page404Router} from 'pages/page-404';
 import {profilePageRoute} from "pages/profile";
 import {registerPageRoute} from "pages/register";
+import {usersPageRoute} from "pages/users/user-page.route";
 import {useSelector} from "react-redux";
 import {createBrowserRouter, NavLink, Outlet, redirect, RouterProvider, useRouteError} from "react-router-dom";
 import {compose} from "redux";
@@ -60,11 +61,11 @@ const browserRouter = createBrowserRouter([
         children: [
             {
                 element: createElement(enhance(GenericLayout)),
-                children: [homePageRoute, articlePageRoute],
+                children: [homePageRoute, articlePageRoute, profilePageRoute, usersPageRoute],
             },
             {
                 element: createElement(enhance(UserLayout)),
-                children: [profilePageRoute],
+                children: [],
             },
             {
                 element: createElement(enhance(GuestLayout)),

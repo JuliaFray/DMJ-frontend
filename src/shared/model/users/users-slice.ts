@@ -33,6 +33,7 @@ const usersSlice = createSlice({
                 (state: TInitial, action: PayloadAction<any, string, any>) => {
                     state.users = action.payload.data;
                     state.totalCount = action.payload.totalCount;
+                    state.isFetching = false;
                 }
             )
             .addMatcher(

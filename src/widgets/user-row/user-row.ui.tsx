@@ -1,18 +1,20 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {Chat, Loyalty} from '@mui/icons-material';
-import {Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Tooltip, Typography} from '@mui/material';
+import {Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Tooltip, Typography} from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import {TUser} from 'entities/profile';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
-import useWebSocket from 'shared/hook/hooks';
+import useWebSocket, {useAppDispatch} from 'shared/hook/hooks';
 import {NO_AVATAR, SocketEvents} from 'shared/lib/DictConstants';
 import {getFullName} from 'shared/lib/helper';
+import {getUserOnline} from "shared/model/app/app-selectors";
 import {getAuthId} from 'shared/model/auth/auth-selectors';
 import styles from './user-row.module.scss';
+import {appActions} from "shared/model/app/app-slice";
 
 export type PostCardProps = {
     user: TUser,
@@ -27,6 +29,27 @@ export const UserRow: React.FC<PostCardProps> = ({user, toggleFollow}) => {
     const [open, setOpen] = React.useState(false);
 
     const image = user.avatar && `data:image/jpeg;base64,${user.avatar?.data}` || NO_AVATAR;
+
+    const dispatch = useAppDispatch();
+
+    const handleWS = useCallback(
+        (e: any) => {
+            const {type, data} = JSON.parse(e.data);
+            if(type === SocketEvents.LOGOUT_EVENT) {
+                dispatch(
+                    appActions.setUsersOnline({type: 'app/setUserOnline', payload: data})
+                );
+            }
+        },
+        [dispatch, user._id]
+    );
+
+    useEffect(() => {
+        if(!ws) return;
+
+        ws.addEventListener("message", handleWS);
+        return () => ws.removeEventListener("message", handleWS);
+    }, [handleWS, ws]);
 
     const handleMessageClick = () => {
         setOpen(true);
@@ -57,11 +80,26 @@ export const UserRow: React.FC<PostCardProps> = ({user, toggleFollow}) => {
 
         handleClose();
     }
+    const users = useSelector(getUserOnline);
+    const isOnline = users.includes(user._id);
 
     return (
-        <Card className={styles.userRow}>
-            <div className={styles.rowContent}>
-                <Avatar alt={user.firstName} src={image} aria-label="avatar" className={styles.userAvatar}/>
+        <Card className={styles.userRow} raised>
+
+            <Container className={
+                isOnline
+                    ? `${styles.profileHeader} ${styles.on}`
+                    : `${styles.profileHeader} ${styles.off}`
+            }>
+                <Avatar variant='circular'
+                        className={styles.avatar}
+                        src={image}
+                        alt={user.firstName}/>
+
+
+            </Container>
+
+            <Container className={styles.rowContent}>
                 <div className={styles.userInfo}>
                     <CardContent>
                         <Typography component="div" variant="h5">
@@ -69,10 +107,9 @@ export const UserRow: React.FC<PostCardProps> = ({user, toggleFollow}) => {
                         </Typography>
                     </CardContent>
                 </div>
-            </div>
+            </Container>
 
-
-            <Box className={styles.userRowActions}>
+            <Box className={styles.actions}>
                 {isFollowed
                     ? <Tooltip title={'Отписаться'}>
                         <Button className={styles.btn} onClick={handleFollowClick} size='medium' variant='contained' startIcon={<Loyalty/>}>

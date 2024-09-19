@@ -25,10 +25,8 @@ export const UserLayout = () => {
                     <Grid item md={3} className={styles.left}>
                         <MenuWidget userId={userId}/>
                     </Grid>
-                    <Grid item md={9} className={styles.right}>
-                        {/*<Container fixed maxWidth={'lg'}>*/}
-                            <Outlet/>
-                        {/*</Container>*/}
+                    <Grid item md={9} width={'100%'}>
+                        <Outlet/>
                     </Grid>
                 </Grid>
             </Container>

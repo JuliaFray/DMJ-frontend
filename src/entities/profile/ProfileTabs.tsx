@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Container, Grid, Tab, Tabs} from '@mui/material';
 import {HomePage} from "pages/home/home-page.ui";
-import {UsersPage} from 'pages/users/UsersPage/UsersPage';
+import {UsersPage} from 'pages/users/users-page.ui';
 import TabPanel from 'shared/ui/Tabs/TabPanel';
 import {CommentsFeed} from 'widgets/comments-feed';
 
@@ -23,7 +23,7 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
     };
 
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{margin: 0, padding: 0}}>
             <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
                 <Tab label='Подписки' {...a11yProps(0)}/>
                 <Tab label={props.isOwner ? 'Мои публикации' : 'Публикации'} {...a11yProps(1)}/>
@@ -32,7 +32,7 @@ export const ProfileTabs: React.FC<IProfileTabs> = (props, context) => {
             </Tabs>
 
             <TabPanel value={tabIndex} index={0}>
-                <Grid container
+                <Grid container sx={{margin: 0, padding: 0}}
                       direction='column'
                       justifyContent='space-between'
                       alignItems='stretch'>

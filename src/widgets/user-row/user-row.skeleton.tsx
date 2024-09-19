@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 
 export const UserRowSkeleton: React.FC = () => {
     return (
-        <Stack direction={'row'} spacing={1} height={100} sx={{alignItems: 'center'}}>
+        <Stack direction={'row'} spacing={1} height={200} sx={{alignItems: 'center'}}>
             <Skeleton variant='circular' width={80} height={80}/>
             <Skeleton variant='rounded' width={'80%'} height={100}/>
         </Stack>

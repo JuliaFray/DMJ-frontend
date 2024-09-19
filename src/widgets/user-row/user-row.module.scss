@@ -1,46 +1,67 @@
 .userRow {
-  height: 60px;
+  height: 250px;
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: start;
   align-items: center;
-  padding: 20px 0;
+  position: relative;
+
+  .profileHeader {
+    background-image: url("./../../../public/logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 10%;
+    width: 100%;
+    height: 80px;
+    position: relative;
+
+    &.on {
+      box-shadow: 0 0 90px 50px rgba(159, 237, 215, 0.2) inset;
+    }
+
+    &.off {
+      box-shadow: 0 0 90px 50px rgba(0, 0, 0, 0.1) inset;
+    }
+
+    .avatar {
+      position: absolute;
+      left: 1em;
+      bottom: -30px;
+      height: 50px;
+      width: 50px;
+      border: 10px solid white;
+    }
+  }
 
   .rowContent {
-    width: 60%;
+    width: 100%;
+    height: 125px;
     overflow: hidden;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
 
-    .userAvatar {
-      width: 80px;
-      height: 80px;
-      margin-left: 10px;
-      align-self: center;
-    }
-
     .userInfo {
-      width: 70%;
+      width: 100%;
       display: flex;
       flex-direction: column;
-      margin-left: 30px;
+      margin-left: 55px;
       position: relative;
 
-      .stats {
-        position: absolute;
-        bottom: -10px;
-        padding-left: 15px;
-        color: rgba(0, 0, 0, 0.26);
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-
-        span {
-          margin-right: 15px;
-        }
-      }
+      //.stats {
+      //  position: absolute;
+      //  bottom: -10px;
+      //  padding-left: 15px;
+      //  color: rgba(0, 0, 0, 0.26);
+      //  display: flex;
+      //  flex-direction: row;
+      //  align-items: flex-start;
+      //
+      //  span {
+      //    margin-right: 15px;
+      //  }
+      //}
     }
 
     a {
@@ -49,15 +70,17 @@
     }
   }
 
-  .userRowActions {
-    width: 40%;
-    padding: 0 20px;
+  .actions {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 10px;
 
     .btn {
-      width: 48%;
+      width: 45%;
       font-size: 12px;
       height: 30px;
       text-align: start;

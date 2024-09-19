@@ -127,7 +127,7 @@ export const articleApi = createApi({
         getAllTags: build.query<GenericResponseType<TChipData[]>, {}>({
             query: ({}) => {
                 return {
-                    url: `${baseUrl}/all-tags`,
+                    url: `all-tags`,
                     method: 'GET',
                 }
             },

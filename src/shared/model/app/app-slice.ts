@@ -24,21 +24,8 @@ const appSlice = createSlice({
         setUninitialized: (state) => {
             state.initialized = false;
         },
-        addUserOnline: (state, payload) => {
-            const data = state.usersOnline;
-            if (typeof payload.payload.payload === 'string') {
-                if (!data.includes(payload.payload.payload)) {
-                    data.push(payload.payload.payload);
-                }
-            } else if (Array.isArray(payload.payload.payload)) {
-                data.push(...payload.payload.payload);
-            } else {
-                data.push(payload.payload.payload._id);
-            }
-            state.usersOnline = data;
-        },
-        removeUserOnline: (state, payload) => {
-            state.usersOnline = state.usersOnline.filter(id => id !== payload.payload.payload);
+        setUsersOnline: (state, payload) => {
+            state.usersOnline = payload.payload.payload;
         },
         addNotification: (state, payload) => {
             const data = state.notifications;

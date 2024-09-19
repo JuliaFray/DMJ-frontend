@@ -69,7 +69,7 @@ export const Article: React.FC<PostPropsType> = ({
                           fullName={getFullName(post.author)}
                           additionalText={post.createdAt}
                           userId={post.author._id}/>
-                <div className={styles.indention}>
+                <div >
                     <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
                         {isFullPost ? post.title : <Link key={post._id} to={`/${post._id}`}>{post.title}</Link>}
                     </h2>
@@ -84,7 +84,7 @@ export const Article: React.FC<PostPropsType> = ({
                         </ul>
                     }
 
-                    <ReactMarkdown children={post.text}/>
+                    <ReactMarkdown className={clsx(styles.text)} children={post.text}/>
 
                     <CustomCardActions post={post} isCard={false}/>
                 </div>

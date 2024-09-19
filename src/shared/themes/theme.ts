@@ -95,5 +95,13 @@ export const theme = createTheme({
                 }
             }
         },
+        MuiChip: {
+            styleOverrides: {
+                filledSecondary: {
+                    color: '#fff'
+                }
+
+            }
+        },
     }
 });
