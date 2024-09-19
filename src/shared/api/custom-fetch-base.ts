@@ -52,7 +52,7 @@ const customFetchBase: BaseQueryFn<string | FetchArgs,
                 } else {
                     api.dispatch(authActions.logout());
                     api.dispatch(appActions.setUninitialized())
-                    window.location.href = '/login';
+                    window.location.href = '/';
                 }
             } finally {
                 release();

@@ -1,7 +1,8 @@
 import React from 'react';
 import {Delete} from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
-import {Tooltip} from '@mui/material';
+import TagIcon from "@mui/icons-material/Tag";
+import {Box, Chip, Tooltip} from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import clsx from 'clsx';
 import {ArticleSkeleton, TArticle} from 'entities/article';
@@ -75,13 +76,13 @@ export const Article: React.FC<PostPropsType> = ({
                     </h2>
 
                     {!!post.tags?.length &&
-                        <ul className={styles.tags}>
+                        <Box className={styles.tags}>
                             {post.tags.length && post.tags.map((tag: TChipData) => (
-                                <li key={uuidv4()}>
-                                    #{tag.value}
-                                </li>
+                                <Chip key={uuidv4()} color='secondary' icon={<TagIcon className={styles.icon}/>} size="small" label={`${tag.value}`}
+                                      className={styles.tag}
+                                      variant='outlined'/>
                             ))}
-                        </ul>
+                        </Box>
                     }
 
                     <ReactMarkdown className={clsx(styles.text)} children={post.text}/>

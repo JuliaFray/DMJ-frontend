@@ -12,9 +12,9 @@ import useWebSocket, {useAppDispatch} from 'shared/hook/hooks';
 import {NO_AVATAR, SocketEvents} from 'shared/lib/DictConstants';
 import {getFullName} from 'shared/lib/helper';
 import {getUserOnline} from "shared/model/app/app-selectors";
+import {appActions} from "shared/model/app/app-slice";
 import {getAuthId} from 'shared/model/auth/auth-selectors';
 import styles from './user-row.module.scss';
-import {appActions} from "shared/model/app/app-slice";
 
 export type PostCardProps = {
     user: TUser,

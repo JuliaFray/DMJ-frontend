@@ -32,17 +32,14 @@ export const ArticlesFeed: React.FC<IPostMain> = (props) => {
 
                 {props.isFetching
                     ? <ArticlesFeedSkeleton/>
-                    : !!posts.length
-                        ? posts.map((el: TArticle) =>
-                            <Grid item xs={12} sm={12} md={12} key={el._id}>
-                                {el.author &&
-                                    <ArticleCard key={el._id} isMain={false} post={el}
-                                                 avatarAbbr={el.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}/>}
-                            </Grid>
-                        )
-                        : <div style={{margin: '0 auto'}}>
-                            К сожалению, список публикаций пуст :(
-                        </div>
+                    : posts.map((el: TArticle) =>
+                        <Grid item xs={12} sm={12} md={12} key={el._id}>
+                            {el.author &&
+                                <ArticleCard key={el._id} isMain={false} post={el}
+                                             avatarAbbr={el.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}/>}
+                        </Grid>
+                    )
+
                 }
 
                 {props.isMainPage && isAuth && <Link to='/add-post'>

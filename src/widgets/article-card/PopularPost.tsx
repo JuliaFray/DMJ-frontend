@@ -86,7 +86,7 @@ export const PopularPost: React.FC<IPopularPost> = ({post}, context) => {
             </Box>
 
             <Box sx={{width: '100%', display: 'flex', alignItems: 'end', pl: 1, pb: 1, justifyContent: 'end'}}>
-                <Link to={`/${post._id}`}>
+                <Link to={`article/${post._id}`}>
                     <Tooltip title="Читать далее">
                         <IconButton aria-label="forward">
                             <DoubleArrow/>

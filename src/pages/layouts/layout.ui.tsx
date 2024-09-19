@@ -5,13 +5,13 @@ import {Tooltip, Typography} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import {useDispatch, useSelector} from "react-redux";
 import {NavLink} from "react-router-dom";
+import useWebSocket from "shared/hook/hooks";
+import {SocketEvents} from "shared/lib/DictConstants";
 import {pathKeys} from "shared/lib/react-router";
 import {appActions} from "shared/model/app/app-slice";
+import {getAuthId} from "shared/model/auth/auth-selectors";
 import {authActions} from "shared/model/auth/auth-slice";
 import styles from './layout.module.scss';
-import {getAuthId} from "shared/model/auth/auth-selectors";
-import {SocketEvents} from "shared/lib/DictConstants";
-import useWebSocket from "shared/hook/hooks";
 
 export function BrandLink() {
     return (

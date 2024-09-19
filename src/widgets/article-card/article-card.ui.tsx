@@ -15,6 +15,7 @@ import {useQueryParams} from 'shared/hook/hooks';
 import {NO_AVATAR} from 'shared/lib/DictConstants';
 import {getFullName} from 'shared/lib/helper';
 import palette from 'shared/themes/palette.module.scss';
+import {v4 as uuidv4} from "uuid";
 import CustomCardActions from './CustomCardActions';
 
 export type PostCardProps = {
@@ -53,7 +54,7 @@ export const ArticleCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain, 
                         {avatarAbbr}
                     </Avatar>
                 }
-                title={<Link to={`article/${post._id}`}>{post.title}</Link>}
+                title={<Link replace to={`/article/${post._id}`}>{post.title}</Link>}
                 subheader={<Link className={styles.subtitle} to={`/user/${post.author._id}`}>{getFullName(post.author)}</Link>}
                 titleTypographyProps={{
                     variant: 'subtitle1',
@@ -79,18 +80,9 @@ export const ArticleCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain, 
 
                     {!isMain && <div className={styles.cardContentTags}>
                         {!!post.tags.length && post.tags.map((tag: TChipData) => (
-                            <Chip color='secondary' icon={<TagIcon className={styles.icon}/>} size="small" label={`${tag.value}`} className={styles.tag}
+                            <Chip key={uuidv4()} color='secondary' icon={<TagIcon className={styles.icon}/>} size="small" label={`${tag.value}`} className={styles.tag}
                                   variant={queryParams.tags === tag.value ? 'filled' : 'outlined'} onClick={() => handleTagClick(tag)}/>
                         ))}
-
-
-                        {/*<ul className={styles.tags}>*/}
-                        {/*    {!!post.tags.length && post.tags.map((tag: TChipData) => (*/}
-                        {/*        <li key={uuidv4()} onClick={() => handleTagClick(tag)}>*/}
-                        {/*            #{tag.value}*/}
-                        {/*        </li>*/}
-                        {/*    ))}*/}
-                        {/*</ul>*/}
                     </div>}
 
                     {!isMain && <CardActions disableSpacing style={{position: 'relative', marginLeft: '20px',}}
@@ -107,8 +99,6 @@ export const ArticleCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain, 
                     </CardActions>}
                 </>
             }
-
-
         </Card>
     );
 }

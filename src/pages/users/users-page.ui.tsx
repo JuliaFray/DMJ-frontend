@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import {Grid} from "@mui/material";
 import {connect, useSelector} from "react-redux";
 import {compose} from "redux";
-import {RootState} from 'shared/model/redux-store';
-import UsersFeed from 'widgets/users-feed/users-feed.ui';
 import {CustomPagination} from "shared";
+import {RootState} from 'shared/model/redux-store';
 import {getTotalCount} from "shared/model/users/users-selectors";
+import UsersFeed from 'widgets/users-feed/users-feed.ui';
 
 export type IUsersPage = {
     isMainPage: boolean,

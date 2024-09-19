@@ -1,5 +1,8 @@
 import React, {useEffect} from 'react';
 import {Grid} from "@mui/material";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
+import {ProfileTabs} from "entities/profile/ProfileTabs";
 import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import {getAuthId} from 'shared/model/auth/auth-selectors';
@@ -7,10 +10,6 @@ import {getProfile} from 'shared/model/profile/profile-selectors';
 import {getUserProfile, getUserProfileStats} from 'shared/model/profile/profile-thunks';
 import ProfileCard from 'widgets/profile-card/profile-card.ui';
 import styles from "./profile-page.module.scss";
-import {ProfileTabs} from "entities/profile/ProfileTabs";
-import Divider from "@mui/material/Divider";
-import Skeleton from "@mui/material/Skeleton";
-import Stack from "@mui/material/Stack";
 
 export const ProfilePage: React.FC = React.memo(() => {
 
@@ -38,7 +37,6 @@ export const ProfilePage: React.FC = React.memo(() => {
                     <Skeleton variant="rounded" width={'100%'} height={'40%'}/>
                 </Stack>
                 }
-
 
 
                 {!!profile && <ProfileTabs isOwner={isOwner} userId={profile._id}/>}

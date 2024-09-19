@@ -4,6 +4,7 @@ import {Chip} from "@mui/material";
 import {TChipData} from 'entities/tag';
 import {SideBlock} from 'shared'
 import {useQueryParams} from 'shared/hook/hooks';
+import {v4 as uuidv4} from "uuid";
 import styles from './tag-widget.module.scss';
 
 export type ITagBlock = {
@@ -32,7 +33,7 @@ export const TagWidget: React.FC<ITagBlock> = ({items, isLoading = true, query})
     return (
         <SideBlock title='Популярное'>
             {(items || [...Array(5)]).map((item, i) =>
-                <Chip color='primary' icon={<TagIcon className={styles.icon}/>} size="small" label={`${item.value} (${item.useCount})`} className={styles.tag}
+                <Chip key={uuidv4()} color='primary' icon={<TagIcon className={styles.icon}/>} size="small" label={`${item.value} (${item.useCount})`} className={styles.tag}
                       variant={item === selectedTag ? 'filled' : 'outlined'} onClick={() => handleTagChange(item)}/>
             )}
         </SideBlock>

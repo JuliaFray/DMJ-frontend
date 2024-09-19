@@ -15,9 +15,9 @@ import useWebSocket, {useAppDispatch} from "shared/hook/hooks";
 import {NO_AVATAR, SocketEvents} from "shared/lib/DictConstants";
 import {pathKeys} from "shared/lib/react-router";
 import {appSlice} from "shared/model";
+import {getInfoNotifications, getMsgNotifications} from "shared/model/app/app-selectors";
 import {getMyProfileAvatar, getMyProfileFullName} from "shared/model/profile/profile-selectors";
 import styles from "./menu-widget.module.scss";
-import {getInfoNotifications, getMsgNotifications} from "shared/model/app/app-selectors";
 
 type IItem = {
     name: string,

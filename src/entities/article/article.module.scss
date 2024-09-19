@@ -95,11 +95,14 @@ $blue: #4361ee;
 }
 
 .tags {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  height: 20px;
-  overflow-y: hidden;
+  height: 25px;
+  padding: 8px 16px;
+  overflow: hidden;
+  display: flex;
+  width: auto;
+  justify-content: start;
+  gap: 5px;
+  vertical-align: center;
 
   :hover {
     cursor: pointer;
