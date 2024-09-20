@@ -18,6 +18,11 @@ export const pathKeys = {
     dialogs() {
         return pathKeys.root.concat('dialogs')
     },
+    diet: {
+      root() {
+          return pathKeys.root.concat('planner/')
+      }
+    },
     users: {
         root() {
             return pathKeys.root.concat('users/')

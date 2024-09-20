@@ -7,11 +7,9 @@ import {useLazyGetAllUsersQuery} from "shared/api/users-api";
 import {useAppDispatch} from 'shared/hook/hooks';
 import {getAuthId} from 'shared/model/auth/auth-selectors';
 import {toggleFollowProfile} from 'shared/model/profile/profile-thunks';
-import {getIsFetching, getTotalCount, getUsers} from 'shared/model/users/users-selectors';
-import {CustomPagination} from 'shared/ui/pagination';
+import {getIsFetching, getUsers} from 'shared/model/users/users-selectors';
 import {v4 as uuidv4} from 'uuid';
-import {UserRowSkeleton} from 'widgets/user-row/user-row.skeleton';
-import {UserRow} from 'widgets/user-row/user-row.ui';
+import {UserRow, UserRowSkeleton} from 'widgets';
 
 type IUsersMain = {
     setCurrentPage: Dispatch<SetStateAction<number>>,
@@ -19,7 +17,7 @@ type IUsersMain = {
     isFollowers: boolean
 }
 
-const UsersFeed: React.FC<IUsersMain> = (props, context) => {
+export const UsersFeed: React.FC<IUsersMain> = (props, context) => {
 
     const users = useSelector(getUsers);
     const isFetching = useSelector(getIsFetching);
@@ -29,7 +27,7 @@ const UsersFeed: React.FC<IUsersMain> = (props, context) => {
     const dispatch = useAppDispatch();
 
     const params = useParams();
-    
+
     const [triggerGetAllUsers] = useLazyGetAllUsersQuery();
 
     useEffect(() => {
@@ -76,4 +74,3 @@ const UsersFeed: React.FC<IUsersMain> = (props, context) => {
     )
 }
 
-export default UsersFeed;

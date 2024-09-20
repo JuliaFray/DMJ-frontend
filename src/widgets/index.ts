@@ -4,3 +4,8 @@ export * from './tag-widget';
 export * from './home-tabs';
 export * from './article-carousel';
 export * from './article-card';
+export * from './profile-card';
+export * from './recommendations';
+export * from './user-info';
+export * from './user-row';
+export * from './users-feed';

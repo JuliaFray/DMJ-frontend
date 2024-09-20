@@ -5,7 +5,7 @@ import {compose} from "redux";
 import {CustomPagination} from "shared";
 import {RootState} from 'shared/model/redux-store';
 import {getTotalCount} from "shared/model/users/users-selectors";
-import UsersFeed from 'widgets/users-feed/users-feed.ui';
+import {UsersFeed} from 'widgets';
 
 export type IUsersPage = {
     isMainPage: boolean,

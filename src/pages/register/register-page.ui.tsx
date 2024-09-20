@@ -7,9 +7,9 @@ import Typography from '@mui/material/Typography';
 import {useForm} from 'react-hook-form';
 import {useDispatch, useSelector} from "react-redux";
 import {Link, Navigate} from 'react-router-dom';
-import {getAuthErrors, getGlobalError, getIsAuth, getIsFetching} from '../../shared/model/auth/auth-selectors';
-import {authActions} from '../../shared/model/auth/auth-slice';
-import {registerUser} from '../../shared/model/auth/auth-thunks';
+import {getAuthErrors, getGlobalError, getIsAuth, getIsFetching} from 'shared/model/auth/auth-selectors';
+import {authActions} from 'shared/model/auth/auth-slice';
+import {registerUser} from 'shared/model/auth/auth-thunks';
 import styles from './register-page.module.scss';
 
 export type RegisterDataType = {

@@ -14,7 +14,7 @@ import {getFullName, getImage, hasImage} from 'shared/lib/helper';
 import {deletePost} from 'shared/model/posts/posts-thunks';
 import {v4 as uuidv4} from 'uuid';
 import {CustomCardActions} from 'widgets';
-import {UserInfo} from 'widgets/user-info/UserInfo';
+import {UserInfo} from 'widgets';
 import styles from './article.module.scss';
 
 export type PostPropsType = {

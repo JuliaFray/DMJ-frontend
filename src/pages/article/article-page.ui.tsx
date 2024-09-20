@@ -9,7 +9,7 @@ import {getAuthId, getIsAuth} from 'shared/model/auth/auth-selectors';
 import {getIsFetching, getPost, getRecommendations} from 'shared/model/posts/posts-selectors';
 import {getOnePost, getRecommendationPost} from 'shared/model/posts/posts-thunks';
 import {CommentsBlock} from 'widgets';
-import Recommendations from 'widgets/recommendations/Recommendations';
+import {Recommendations} from 'widgets';
 import styles from "./article-page.module.scss";
 
 export const ArticlePage: React.FC = React.memo(() => {

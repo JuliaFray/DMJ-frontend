@@ -1,12 +1,8 @@
 import React from 'react';
 import {TArticle} from 'entities/article';
-import {ArticleCarousel} from 'widgets';
-import {ArticleCard} from 'widgets';
+import {ArticleCard, ArticleCarousel} from 'widgets';
 
-export type IRecommendations = {
-    posts: TArticle[],
-}
-const Recommendations: React.FC<IRecommendations> = (props, context) => {
+export const Recommendations: React.FC<{ posts: TArticle[] }> = (props, context) => {
     return (
         <ArticleCarousel posts={props.posts}>
             {props.posts.map(item => <ArticleCard isMain={true} key={item._id} post={item}
@@ -14,5 +10,3 @@ const Recommendations: React.FC<IRecommendations> = (props, context) => {
         </ArticleCarousel>
     )
 }
-
-export default Recommendations;

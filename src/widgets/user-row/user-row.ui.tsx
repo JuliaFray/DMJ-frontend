@@ -16,12 +16,12 @@ import {appActions} from "shared/model/app/app-slice";
 import {getAuthId} from 'shared/model/auth/auth-selectors';
 import styles from './user-row.module.scss';
 
-export type PostCardProps = {
+type TUSerRow = {
     user: TUser,
     toggleFollow: (userId: string, isFollow: boolean) => void,
 }
 
-export const UserRow: React.FC<PostCardProps> = ({user, toggleFollow}) => {
+export const UserRow: React.FC<TUSerRow> = ({user, toggleFollow}) => {
 
     const ws = useWebSocket();
     const authId = useSelector(getAuthId);

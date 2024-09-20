@@ -10,8 +10,8 @@ import {SocketEvents} from 'shared/lib/DictConstants';
 import {dialogSelector, dialogSlice} from 'shared/model/dialog';
 import {getMessagesByDialogId} from 'shared/model/dialog/dialog-thunks';
 import {v4 as uuidv4} from 'uuid';
-import DialogHeader from './../DialogHeader';
 import styles from '../dialog-page.module.scss';
+import DialogHeader from './../DialogHeader';
 import DialogItems from './DialogItems';
 
 const DialogMain = () => {

@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect} from "react";
 import {AccountBox, ChatBubble, Groups, LibraryBooks} from "@mui/icons-material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import TocIcon from '@mui/icons-material/Toc';
 import {Avatar, Badge} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ListItem from "@mui/material/ListItem";
@@ -30,7 +31,8 @@ export const MenuWidget: React.FC<{ userId: string }> = ({userId}) => {
     const items: IItem[] = [
         {name: 'Профиль', link: `/user/${userId}`, icon: <AccountBox/>},
         {name: 'Лента', link: pathKeys.root, icon: <LibraryBooks/>},
-        {name: 'Все пользователи', link: pathKeys.users.root(), icon: <Groups/>}
+        {name: 'Все пользователи', link: pathKeys.users.root(), icon: <Groups/>},
+        // {name: 'Планы питания', link: pathKeys.diet.root(), icon: <TocIcon/>},
     ];
 
     const avatar = useSelector(getMyProfileAvatar);
@@ -83,9 +85,9 @@ export const MenuWidget: React.FC<{ userId: string }> = ({userId}) => {
             </Badge>
 
             <Badge badgeContent={msgs.length} color="warning">
-                <Link to={pathKeys.dialogs()}>
+                {/*<Link to={pathKeys.dialogs()}>*/}
                     <ChatBubble color='primary'/>
-                </Link>
+                {/*</Link>*/}
             </Badge>
 
 

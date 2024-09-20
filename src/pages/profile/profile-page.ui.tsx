@@ -1,14 +1,12 @@
 import React, {useEffect} from 'react';
 import {Grid} from "@mui/material";
-import Skeleton from "@mui/material/Skeleton";
-import Stack from "@mui/material/Stack";
 import {ProfileTabs} from "entities/profile/ProfileTabs";
 import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import {getAuthId} from 'shared/model/auth/auth-selectors';
 import {getProfile} from 'shared/model/profile/profile-selectors';
 import {getUserProfile, getUserProfileStats} from 'shared/model/profile/profile-thunks';
-import ProfileCard from 'widgets/profile-card/profile-card.ui';
+import {ProfileCard} from 'widgets';
 import styles from "./profile-page.module.scss";
 
 export const ProfilePage: React.FC = React.memo(() => {

@@ -15,12 +15,12 @@ import {appActions} from "shared/model/app/app-slice";
 import {getAuthId} from "shared/model/auth/auth-selectors";
 import {toggleFollowProfile} from "shared/model/profile/profile-thunks";
 
-type IProfileMain = {
+type TProfileMain = {
     isOwner: boolean,
     profile: TProfile
 }
 
-const ProfileCard: React.FC<IProfileMain> = (props, context) => {
+export const ProfileCard: React.FC<TProfileMain> = (props, context) => {
 
     const authId = useSelector(getAuthId);
     const users = useSelector(getUserOnline);
@@ -167,5 +167,3 @@ const ProfileCard: React.FC<IProfileMain> = (props, context) => {
         </Card>
     );
 }
-
-export default ProfileCard;
