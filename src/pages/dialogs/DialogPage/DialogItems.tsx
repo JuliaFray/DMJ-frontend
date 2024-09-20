@@ -5,13 +5,13 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import Stack from '@mui/material/Stack';
-import {TDialog} from '~entities/message';
+import {TDialog} from 'entities/message';
 import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
-import {useAppDispatch} from '~shared/hook/hooks';
-import {getFullName, getImage} from '~shared/lib/helper';
-import {authSelector} from '~shared/model/auth';
-import {dialogSelector, dialogSlice} from '~shared/model/dialog';
+import {useAppDispatch} from 'shared/hook/hooks';
+import {getFullName, getImage} from 'shared/lib/helper';
+import {authSelector} from 'shared/model/auth';
+import {dialogSelector, dialogSlice} from 'shared/model/dialog';
 import {v4 as uuidv4} from 'uuid';
 
 const DialogItems: React.FC = () => {

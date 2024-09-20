@@ -1,55 +1,33 @@
 import React from 'react'
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import {ArticlesFeedSkeleton} from "widgets/articles-feed/articles-feed.skeleton";
 
 export function ProfilePageSkeleton() {
     return (
         <div className="home-page">
-            <div className="banner">
-                <div className="container">
-                    <Stack
-                        direction="column"
-                        alignItems="center"
-                    >
-                        <Skeleton
-                            variant="text"
-                            width={200}
-                            height={50}
-                        />
-                        <Skeleton
-                            variant="text"
-                            width={300}
-                            height={36}
-                        />
-                    </Stack>
-                </div>
-            </div>
+            <Stack
+                direction="row"
+                alignItems="center"
+                spacing={10}
+            >
+                <Skeleton variant="circular" width={150} height={150}/>
 
-            <div className="container page">
-                <div className="row">
-                    <div className="col-md-9">
-                        <ul className="nav nav-pills outline-active">
-                            <li className="nav-item">
-                                <Skeleton
-                                    width={100}
-                                    height={16}
-                                />
-                            </li>
-                        </ul>
+                <Stack>
+                    <Skeleton
+                        variant="text"
+                        width={200}
+                        height={50}
+                    />
+                    <Skeleton
+                        variant="text"
+                        width={200}
+                        height={50}
+                    />
+                </Stack>
+            </Stack>
 
-                        {/*<ArticlesFeedSkeleton />*/}
-                    </div>
-
-                    <div className="col-md-3">
-                        <div className="sidebar">
-                            <Skeleton
-                                width="100%"
-                                height={180}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ArticlesFeedSkeleton />
         </div>
     )
 }

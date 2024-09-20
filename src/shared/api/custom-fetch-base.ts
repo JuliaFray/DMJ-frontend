@@ -22,16 +22,17 @@ const baseQuery = fetchBaseQuery({
     }
 });
 
+// @ts-ignore
 const customFetchBase: BaseQueryFn<string | FetchArgs,
     unknown,
     FetchBaseQueryError> = async (args, api, extraOptions) => {
-
-    await mutex.waitForUnlock();
-    let result = await baseQuery(args, api, extraOptions);
     // @ts-ignore
     const isAuth = api.getState()?.auth?.isAuth;
 
-    if((result.error?.data as any)?.message === 'Нет доступа' || (localStorage.getItem('token') && !isAuth)) {
+    await mutex.waitForUnlock();
+    let result;
+
+    if((localStorage.getItem('token') && !isAuth)) {
         if(!mutex.isLocked()) {
             const release = await mutex.acquire();
 
@@ -60,6 +61,13 @@ const customFetchBase: BaseQueryFn<string | FetchArgs,
         } else {
             await mutex.waitForUnlock();
             result = await baseQuery(args, api, extraOptions);
+        }
+    } else {
+        result = await baseQuery(args, api, extraOptions);
+        if((result.error?.data as any)?.message === 'Нет доступа') {
+            api.dispatch(authActions.logout());
+            api.dispatch(appActions.setUninitialized())
+            window.location.href = '/';
         }
     }
 

@@ -3,20 +3,17 @@ import {Container, Dialog, DialogActions, DialogContent, DialogContentText, Dial
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
 import {TProfile} from 'entities/profile';
 import ProfileData from "entities/profile/ProfileData";
 import styles from "entities/profile/ProfileInfo.module.scss";
 import {useSelector} from "react-redux";
 import useWebSocket, {useAppDispatch} from "shared/hook/hooks";
 import {SocketEvents} from "shared/lib/DictConstants";
-import {convertBase64ToBlob, getFullName} from "shared/lib/helper";
+import {getFullName} from "shared/lib/helper";
 import {getUserOnline} from "shared/model/app/app-selectors";
 import {appActions} from "shared/model/app/app-slice";
 import {getAuthId} from "shared/model/auth/auth-selectors";
-import {getIsFetching} from "shared/model/profile/profile-selectors";
-import {saveUserProfile, toggleFollowProfile} from "shared/model/profile/profile-thunks";
+import {toggleFollowProfile} from "shared/model/profile/profile-thunks";
 
 type IProfileMain = {
     isOwner: boolean,
@@ -26,15 +23,12 @@ type IProfileMain = {
 const ProfileCard: React.FC<IProfileMain> = (props, context) => {
 
     const authId = useSelector(getAuthId);
-    const [editMode, setEditMode] = useState(false);
-    const [state, setState] = useState<TProfile>(props.profile);
+    const users = useSelector(getUserOnline);
+
     const [file, setFile] = useState<File | string | null>(props.profile?.avatar?.data);
     const [status, setStatus] = useState(false);
     const [isFollowed, setIsFollowed] = useState(props.profile.isFollowed);
     const [open, setOpen] = React.useState(false);
-
-    const isFetching = useSelector(getIsFetching);
-    const users = useSelector(getUserOnline);
 
     const ws = useWebSocket();
     const dispatch = useAppDispatch();
@@ -59,40 +53,6 @@ const ProfileCard: React.FC<IProfileMain> = (props, context) => {
         return () => ws.removeEventListener("message", handleWS);
     }, [handleWS, ws]);
 
-    const getKeyValue = <T, K extends keyof T>(obj: T, key: K): T[K] =>
-        obj[key];
-
-    const handleEdit = (isChanged: boolean) => {
-        setEditMode((prevState) => !prevState);
-        if(isChanged) {
-            if(state && editMode) {
-                const formData = new FormData();
-                for(let key in state) {
-                    const val = getKeyValue<TProfile, keyof TProfile>(state, key);
-                    formData.append(
-                        key,
-                        typeof val === "string" ? val : JSON.stringify(val)
-                    );
-                }
-
-                if(file) {
-                    if(file instanceof File) {
-                        formData.append("image", file);
-                    } else {
-                        formData.append("image", convertBase64ToBlob(file));
-                    }
-                }
-
-                dispatch(saveUserProfile({profileId: state._id, file: formData}));
-            }
-        } else {
-            setState(props.profile);
-        }
-    };
-
-    const handleMessageClick = () => {
-        setOpen(true);
-    }
 
     const handleClose = () => {
         setOpen(false);
@@ -112,13 +72,6 @@ const ProfileCard: React.FC<IProfileMain> = (props, context) => {
     }
 
     const isOnline = status || users.includes(props.profile._id);
-
-    if(!props.profile) {
-        return <Stack spacing={4} height={'100%'}>
-            <Skeleton variant="rounded" width={'100%'} height={'25%'}/>
-            <Skeleton variant="rounded" width={'100%'} height={'40%'}/>
-        </Stack>
-    }
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>, user: TProfile) => {
         event.preventDefault();
@@ -171,7 +124,7 @@ const ProfileCard: React.FC<IProfileMain> = (props, context) => {
                                 </Tooltip>}
 
                             <Tooltip title={'Написать'}>
-                                <Button className={styles.buttons} onClick={handleMessageClick} size='small' variant='outlined'>
+                                <Button className={styles.buttons} onClick={() => setOpen(true)} size='small' variant='outlined'>
                                     <span>Написать</span>
                                 </Button>
                             </Tooltip>
@@ -206,11 +159,9 @@ const ProfileCard: React.FC<IProfileMain> = (props, context) => {
 
             <Container className={styles.profileInfo}>
                 <ProfileData
-                    profile={state}
+                    profile={props.profile}
                     isOwner={props.isOwner}
-                    editMode={editMode}
-                    state={state}
-                    setState={setState}
+                    file={file}
                 />
             </Container>
         </Card>

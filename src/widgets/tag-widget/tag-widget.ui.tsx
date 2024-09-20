@@ -27,14 +27,15 @@ export const TagWidget: React.FC<ITagBlock> = ({items, isLoading = true, query})
 
     const handleTagChange = (item: TChipData) => {
         setQueryParams({tags: selectedTag && selectedTag === item ? '' : item.value});
-        setSelectedTag(prev => prev && prev === item ? null : item);
+
     }
 
     return (
         <SideBlock title='Популярное'>
             {(items || [...Array(5)]).map((item, i) =>
-                <Chip key={uuidv4()} color='primary' icon={<TagIcon className={styles.icon}/>} size="small" label={`${item.value} (${item.useCount})`} className={styles.tag}
-                      variant={item === selectedTag ? 'filled' : 'outlined'} onClick={() => handleTagChange(item)}/>
+                <Chip key={uuidv4()} color='primary' icon={<TagIcon className={styles.icon}/>} size="small" label={`${item.value} (${item.useCount})`}
+                      className={styles.tag}
+                      variant={selectedTag && item.value === selectedTag.value ? 'filled' : 'outlined'} onClick={() => handleTagChange(item)}/>
             )}
         </SideBlock>
     );

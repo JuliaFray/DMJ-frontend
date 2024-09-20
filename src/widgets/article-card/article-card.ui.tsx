@@ -1,6 +1,6 @@
 import * as React from 'react';
 import TagIcon from "@mui/icons-material/Tag";
-import {Chip} from "@mui/material";
+import {Chip, Tooltip} from "@mui/material";
 import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -16,7 +16,7 @@ import {NO_AVATAR} from 'shared/lib/DictConstants';
 import {getFullName} from 'shared/lib/helper';
 import palette from 'shared/themes/palette.module.scss';
 import {v4 as uuidv4} from "uuid";
-import CustomCardActions from './CustomCardActions';
+import {CustomCardActions} from './custom-card-actions.ui';
 
 export type PostCardProps = {
     post: TArticle,
@@ -54,7 +54,7 @@ export const ArticleCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain, 
                         {avatarAbbr}
                     </Avatar>
                 }
-                title={<Link replace to={`/article/${post._id}`}>{post.title}</Link>}
+                title={<Tooltip title={post.title}><Link replace to={`/article/${post._id}`}>{post.title}</Link></Tooltip>}
                 subheader={<Link className={styles.subtitle} to={`/user/${post.author._id}`}>{getFullName(post.author)}</Link>}
                 titleTypographyProps={{
                     variant: 'subtitle1',
@@ -68,7 +68,9 @@ export const ArticleCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain, 
                             overflow: 'hidden',
                             display: '-webkit-box',
                             WebkitLineClamp: bodyRows,
-                            WebkitBoxOrient: 'vertical'
+                            WebkitBoxOrient: 'vertical',
+                            textIndent: '25px',
+                            textAlign: 'justify'
                         }
                     }}>
                         <Typography variant="body2" color="text.secondary">
@@ -80,7 +82,8 @@ export const ArticleCard: React.FC<PostCardProps> = ({avatarAbbr, post, isMain, 
 
                     {!isMain && <div className={styles.cardContentTags}>
                         {!!post.tags.length && post.tags.map((tag: TChipData) => (
-                            <Chip key={uuidv4()} color='secondary' icon={<TagIcon className={styles.icon}/>} size="small" label={`${tag.value}`} className={styles.tag}
+                            <Chip key={uuidv4()} color='secondary' icon={<TagIcon className={styles.icon}/>} size="small" label={`${tag.value}`}
+                                  className={styles.tag}
                                   variant={queryParams.tags === tag.value ? 'filled' : 'outlined'} onClick={() => handleTagClick(tag)}/>
                         ))}
                     </div>}

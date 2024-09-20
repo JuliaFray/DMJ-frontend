@@ -17,7 +17,7 @@ export type ICardActions = {
     isCard: boolean,
 }
 
-const CustomCardActions: React.FC<ICardActions> = (props, context) => {
+export const CustomCardActions: React.FC<ICardActions> = (props, context) => {
 
     const isAuth = useSelector(getIsAuth);
 
@@ -80,5 +80,3 @@ const CustomCardActions: React.FC<ICardActions> = (props, context) => {
         </ul>
     );
 }
-
-export default CustomCardActions;

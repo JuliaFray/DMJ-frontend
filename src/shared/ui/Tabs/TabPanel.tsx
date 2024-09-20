@@ -17,7 +17,7 @@ const TabPanel: React.FC<ITabPanel> = ({children, value, index, ...other}) => {
             aria-labelledby={`full-width-tab-${index}`}
             {...other}
         >
-            {value === index && (<Box sx={{p: 3}}>{children}</Box>)}
+            {value === index && (<Box style={{marginTop: '24px'}}>{children}</Box>)}
         </div>
     );
 }

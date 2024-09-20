@@ -25,7 +25,7 @@ export const UserLayout = () => {
                     <Grid item md={3} className={styles.left}>
                         <MenuWidget userId={userId}/>
                     </Grid>
-                    <Grid item md={9} width={'100%'}>
+                    <Grid item md={9} width={'100%'} style={{minHeight: 'calc(100vh - 70px)'}}>
                         <Outlet/>
                     </Grid>
                 </Grid>

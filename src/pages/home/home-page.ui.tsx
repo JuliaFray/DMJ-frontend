@@ -11,9 +11,9 @@ import {getAllFetchedTags, getDataLength, getFetchedPopularTags, getIsFetching, 
 import {getPopularPost, getPopularTags} from 'shared/model/posts/posts-thunks';
 import {RootState} from 'shared/model/redux-store';
 import {CustomPagination} from "shared/ui/pagination";
-import {PopularPost} from "widgets/article-card/PopularPost";
-import {ArticleCarousel} from "widgets/article-carousel/article-carousel.ui";
-import {ArticlesFeed} from 'widgets/articles-feed/articles-feed.ui';
+import {ArticleCarousel} from "widgets";
+import {PopularPost} from "widgets";
+import {ArticlesFeed} from 'widgets';
 import {HomeTabs} from "widgets/home-tabs";
 import {TagWidget} from 'widgets/tag-widget/tag-widget.ui';
 import styles from './home-page.module.scss';

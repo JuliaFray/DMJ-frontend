@@ -4,13 +4,13 @@ import {AvatarGroup, Box, Typography} from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import {TDialog} from '~entities/message';
+import {TDialog} from 'entities/message';
 import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
-import {getFullName, getImage} from '~shared/lib/helper';
-import {getAuthId} from '~shared/model/auth/auth-selectors';
+import {getFullName, getImage} from 'shared/lib/helper';
+import {getAuthId} from 'shared/model/auth/auth-selectors';
 import {v4 as uuidv4} from 'uuid';
-import styles from './DialogPage/Dialog.module.scss';
+import styles from './dialog-page.module.scss';
 
 type IDialogHeader = {
     selectedDialog: TDialog

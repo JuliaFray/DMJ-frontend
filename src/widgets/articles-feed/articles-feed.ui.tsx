@@ -6,10 +6,10 @@ import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {getIsAuth} from "shared/model/auth/auth-selectors";
 import {getPosts} from 'shared/model/posts/posts-selectors';
-import {ArticleCard} from 'widgets/article-card/article-card.ui';
+import {ArticleCard} from 'widgets';
 import {ArticlesFeedSkeleton} from "widgets/articles-feed/articles-feed.skeleton";
 
-type IPostMain = {
+type TPostMain = {
     isFetching: boolean,
     isMainPage: boolean,
     setSearchValue: Dispatch<SetStateAction<string>>,
@@ -18,7 +18,7 @@ type IPostMain = {
     currentPage: number
 }
 
-export const ArticlesFeed: React.FC<IPostMain> = (props) => {
+export const ArticlesFeed: React.FC<TPostMain> = (props) => {
 
     const posts = useSelector(getPosts);
     const isAuth = useSelector(getIsAuth);

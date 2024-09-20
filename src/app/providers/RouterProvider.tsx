@@ -3,6 +3,7 @@ import {Stack} from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import {TProfile} from "entities/profile";
 import {articlePageRoute} from "pages/article";
+import {dialogPageRoute} from "pages/dialogs/dialog-page.route";
 import {homePageRoute} from "pages/home";
 import {loginPageRoute} from "pages/login";
 import {page404Router} from 'pages/page-404';
@@ -65,7 +66,7 @@ const browserRouter = createBrowserRouter([
             },
             {
                 element: createElement(enhance(UserLayout)),
-                children: [],
+                children: [dialogPageRoute],
             },
             {
                 element: createElement(enhance(GuestLayout)),

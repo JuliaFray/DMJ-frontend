@@ -29,8 +29,7 @@ export const MenuWidget: React.FC<{ userId: string }> = ({userId}) => {
 
     const items: IItem[] = [
         {name: 'Профиль', link: `/user/${userId}`, icon: <AccountBox/>},
-        // {name: 'Сообщения', link: pathKeys.dialogs(), icon: <ChatBubble/>},
-        {name: 'Публикации', link: pathKeys.root, icon: <LibraryBooks/>},
+        {name: 'Лента', link: pathKeys.root, icon: <LibraryBooks/>},
         {name: 'Все пользователи', link: pathKeys.users.root(), icon: <Groups/>}
     ];
 
@@ -77,11 +76,16 @@ export const MenuWidget: React.FC<{ userId: string }> = ({userId}) => {
 
         <Stack sx={{width: '100%'}} direction={'row'} alignItems={'center'} justifyContent={'space-around'} height={'100%'}>
             <Badge badgeContent={notifications.length} color="warning">
+                {/*<Link to={pathKeys.dialogs()}>*/}
                 <NotificationsIcon color='primary'/>
+                {/*</Link>*/}
+
             </Badge>
 
             <Badge badgeContent={msgs.length} color="warning">
-                <ChatBubble color='primary'/>
+                <Link to={pathKeys.dialogs()}>
+                    <ChatBubble color='primary'/>
+                </Link>
             </Badge>
 
 

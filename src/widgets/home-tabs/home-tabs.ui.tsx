@@ -56,11 +56,11 @@ export const HomeTabs: React.FC<IPostFilter> = (props, context) => {
             <Container maxWidth='lg'>
                 {isAuth && <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
                     <Tab label='Мои подписки' {...a11yProps(0)}/>
-                    <Tab label='Новые' {...a11yProps(1)}/>
+                    <Tab label='Все' {...a11yProps(1)}/>
                     <Tab label='Лучшие' {...a11yProps(2)}/>
                 </Tabs>}
                 {!isAuth && <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
-                    <Tab label='Новые' {...a11yProps(0)}/>
+                    <Tab label='Все' {...a11yProps(0)}/>
                     <Tab label='Лучшие' {...a11yProps(1)}/>
                 </Tabs>}
             </Container>

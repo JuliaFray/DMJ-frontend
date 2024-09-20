@@ -9,10 +9,7 @@ import {Link} from 'react-router-dom';
 import palette from 'shared/themes/palette.module.scss';
 import {theme} from 'shared/themes/theme';
 
-export type IPopularPost = {
-    post: TArticle
-}
-export const PopularPost: React.FC<IPopularPost> = ({post}, context) => {
+export const PopularPost: React.FC<{post: TArticle}> = ({post}) => {
 
     const cardSx = {
         height: 250,
@@ -32,13 +29,13 @@ export const PopularPost: React.FC<IPopularPost> = ({post}, context) => {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: palette.warning,
+        backgroundColor: palette.secondary,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        opacity: 0.1,
+        opacity: 0.2,
         transition: 'opacity 0.3s ease-in-out',
         '&:hover': {
-            opacity: 0.2,
+            opacity: 0.3,
         }
     };
 
@@ -69,19 +66,7 @@ export const PopularPost: React.FC<IPopularPost> = ({post}, context) => {
                     </Typography>
                 </CardContent>
 
-                <Box sx={boxSx}>
-                    {post?.image &&
-                        <img style={{
-                            width: '100%',
-                            height: '100%',
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat',
-                            backgroundSize: 'cover'
-                        }}
-                             src={`data:image/jpeg;base64,${post.image.data}`}
-                             alt={'postImage'}
-                        />}
-                </Box>
+                <Box sx={boxSx}/>
 
             </Box>
 

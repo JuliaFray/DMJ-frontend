@@ -31,14 +31,6 @@ export const ProfilePage: React.FC = React.memo(() => {
         <Grid container spacing={2} width={'100%'}>
             <Grid item md={9} width={'100%'}>
                 {!!profile && <ProfileCard isOwner={isOwner} profile={profile}/>}
-
-                {!profile && <Stack spacing={4} height={'100%'}>
-                    <Skeleton variant="rounded" width={'100%'} height={'25%'}/>
-                    <Skeleton variant="rounded" width={'100%'} height={'40%'}/>
-                </Stack>
-                }
-
-
                 {!!profile && <ProfileTabs isOwner={isOwner} userId={profile._id}/>}
             </Grid>
 

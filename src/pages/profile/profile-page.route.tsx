@@ -15,13 +15,6 @@ const enhance = compose(
         )
 );
 
-// const enhance = compose(
-//     (component) =>
-//         withSuspense(
-//             withAuthRedirect(component), {FallbackComponent: ProfilePageSkeleton}
-//         )
-// );
-
 export const profilePageRoute: RouteObject = {
     path: pathKeys.profile.root(),
     element: createElement(enhance(ProfilePage)),

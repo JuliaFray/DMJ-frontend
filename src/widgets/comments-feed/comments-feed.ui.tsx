@@ -8,7 +8,7 @@ import {useAppDispatch} from 'shared/hook/hooks';
 import {getPostComments} from 'shared/model/posts/posts-selectors';
 import {getUserPostComments} from 'shared/model/posts/posts-thunks';
 import {v4 as uuidv4} from 'uuid';
-import {ArticleCard} from 'widgets/article-card/article-card.ui';
+import {ArticleCard} from 'widgets';
 
 type IPostCommentPage = {
     userId: string

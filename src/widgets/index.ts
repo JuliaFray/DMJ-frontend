@@ -3,3 +3,4 @@ export * from './articles-feed';
 export * from './tag-widget';
 export * from './home-tabs';
 export * from './article-carousel';
+export * from './article-card';

@@ -1,7 +1,7 @@
 import React from 'react';
 import {TArticle} from 'entities/article';
 import {ArticleCarousel} from 'widgets';
-import {ArticleCard} from 'widgets/article-card';
+import {ArticleCard} from 'widgets';
 
 export type IRecommendations = {
     posts: TArticle[],

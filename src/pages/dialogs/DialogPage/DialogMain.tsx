@@ -11,7 +11,7 @@ import {dialogSelector, dialogSlice} from 'shared/model/dialog';
 import {getMessagesByDialogId} from 'shared/model/dialog/dialog-thunks';
 import {v4 as uuidv4} from 'uuid';
 import DialogHeader from './../DialogHeader';
-import styles from './Dialog.module.scss';
+import styles from '../dialog-page.module.scss';
 import DialogItems from './DialogItems';
 
 const DialogMain = () => {
@@ -68,8 +68,12 @@ const DialogMain = () => {
     }
 
     return (
-        <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}} className={styles.dialogMain}
-              sx={{margin: 0}} style={{marginBottom: '20px'}}>
+        <div style={{position: 'relative', height: '100%'}}>
+        <Grid container sx={{margin: 0}}
+              className={styles.dialogMain}
+              direction={'column'}
+                       rowSpacing={{xs: 1, sm: 2, md: 3}}
+                       style={{marginTop: '-10px', marginBottom: '30px'}}>
             {selectedDialog && <DialogHeader selectedDialog={selectedDialog}/>}
 
             <Box ref={listRef} sx={{overflow: 'hidden', px: 3}} className={styles.dialogBox}>
@@ -80,7 +84,7 @@ const DialogMain = () => {
 
             {selectedDialog && <SendMsg selectedDialog={selectedDialog}/>}
         </Grid>
-
+        </div>
     );
 }
 

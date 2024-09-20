@@ -20,8 +20,8 @@ const UsersPage: React.FC<IUsersPage> = React.memo((props, context) => {
     const dataLength = useSelector(getTotalCount);
 
     return (
-        <Grid container spacing={2} width={'100%'} sx={{margin: 0, padding: 0}}>
-            <Grid item md={mdMain} width={'100%'} sx={{margin: 0, padding: 0}}>
+        <Grid container spacing={2} width={'100%'} style={{margin: 0, padding: 0}}>
+            <Grid item md={mdMain} width={'100%'} style={{margin: 0, padding: 0}}>
                 <UsersFeed
                     isFollowers={props.isFollowers}
                     currentPage={currentPage} setCurrentPage={setCurrentPage}

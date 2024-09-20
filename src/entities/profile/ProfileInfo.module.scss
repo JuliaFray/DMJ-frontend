@@ -35,9 +35,9 @@
   .avatar {
     position: absolute;
     left: 1em;
-    bottom: -60px;
-    height: 100px;
-    width: 100px;
+    bottom: -120px;
+    height: 140px;
+    width: 140px;
     border: 10px solid white;
   }
 
@@ -51,11 +51,13 @@
 
 .profileInfo {
   height: 100%;
-  width: 100%;
+  width: auto;
   flex-wrap: nowrap;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
+  margin-left: 170px;
+  margin-bottom: 20px;
 
   .profileTitle {
     font-weight: 600;
@@ -64,190 +66,33 @@
     height: 10%;
     width: auto;
     overflow: hidden;
-    padding-bottom: 10px;
-    margin-left: 150px;
+    padding-bottom: 0;
     margin-top: 10px;
   }
 
-  .profileList {
-    margin-top: 20px;
+  .profileLocation {
+    display: flex;
+    align-items: center;
   }
 
-  .stats {
-    padding: 10px 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.2);
-    height: 10%;
+  .profileDescription {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .profileStatus {
+    margin-top: 10px;
+    margin-bottom: 0 !important;
+  }
+
+  .profileList {
+    width: 100%;
+    display: flex;
 
     li {
-      display: flex;
-      height: 20px;
-      width: 50px;
-      padding: 0;
-      color: rgba(0, 0, 0, 0.26);
-
-      div {
-        margin: 0 10px 0 0;
-        width: 20px;
-        min-width: 20px;
-      }
-
-      div:last-child {
-        span {
-          font-size: 15px;
-          font-weight: 600;
-        }
-      }
+      padding: 0 !important;
     }
+
   }
-
-
-  //.profileCards {
-  //  height: 400px;
-  //  width: 100%;
-  //  justify-content: center;
-  //  align-items: center;
-  //  flex-direction: row;
-  //
-  //  .profile {
-  //    height: 100%;
-  //    padding: 10px;
-  //    display: flex;
-  //    flex-direction: column;
-  //    justify-content: space-around;
-  //    //background-color: #fff;
-  //  }
-
-  //.right {
-  //  width: 40%;
-  //  align-items: center;
-  //  border-radius: 0 10px 10px 0;
-  //
-  //  &.on {
-  //    box-shadow: 50px 0 50px $secondary;
-  //  }
-  //
-  //  &.off {
-  //    box-shadow: 50px 0 50px rgba(0, 0, 0, 0.3);
-  //  }
-  //
-  //  .avatar {
-  //    width: 100%;
-  //    height: 87%;
-  //  }
-  //
-  //  .btnBlock {
-  //    border-top: 1px solid rgba($secondary, 0.5);
-  //    height: 10%;
-  //    width: 100%;
-  //    padding-top: 10px;
-  //    display: flex;
-  //    flex-direction: row;
-  //    justify-content: center;
-  //
-  //    .button {
-  //      height: 100%;
-  //      width: 80%;
-  //    }
-  //
-  //    .buttons {
-  //      height: 100%;
-  //      width: 45%;
-  //      overflow: hidden;
-  //    }
-  //  }
-  //
-  //}
-
-  //.left {
-  //  width: 60%;
-  //  border-radius: 10px 0 0 10px;
-  //
-  //  &.on {
-  //    box-shadow: -50px 0 50px $secondary;
-  //  }
-  //
-  //  &.off {
-  //    box-shadow: -50px 0 50px rgba(0, 0, 0, 0.3);
-  //  }
-  //
-  //  .profileHeader {
-  //    font-weight: 600;
-  //    font-size: 20px;
-  //    text-align: start;
-  //    height: 10%;
-  //    width: 100%;
-  //    overflow: hidden;
-  //    padding-bottom: 10px;
-  //    border-bottom: 1px solid rgba($secondary, 0.5);
-  //    display: flex;
-  //    justify-content: space-between;
-  //  }
-  //
-  //  .profileList {
-  //    height: 80%;
-  //    overflow: hidden;
-  //
-  //    li {
-  //      height: 60px;
-  //
-  //      &:last-child {
-  //        height: 120px;
-  //      }
-  //
-  //
-  //      .editFields {
-  //        width: 50%;
-  //
-  //        .input {
-  //          width: 100% !important;
-  //        }
-  //
-  //        .datePicker {
-  //          height: 40px !important;
-  //
-  //          div {
-  //            height: 40px !important;
-  //          }
-  //        }
-  //
-  //      }
-  //
-  //    }
-  //  }
-  //
-  //  .stats {
-  //    padding-top: 10px;
-  //    border-top: 1px solid rgba($secondary, 0.5);
-  //    height: 10%;
-  //    display: flex;
-  //    flex-direction: row;
-  //    justify-content: space-around;
-  //
-  //    li {
-  //      display: flex;
-  //      height: 20px;
-  //      width: 50px;
-  //      padding: 0;
-  //      color: rgba(0, 0, 0, 0.26);
-  //
-  //      div {
-  //        margin: 0 10px 0 0;
-  //        width: 20px;
-  //        min-width: 20px;
-  //      }
-  //
-  //      div:last-child {
-  //        span {
-  //          font-size: 15px;
-  //          font-weight: 600;
-  //        }
-  //      }
-  //    }
-  //  }
-  //
-  //}
-  //}
 }

@@ -1,88 +1,113 @@
-import React, {Dispatch, SetStateAction} from 'react';
-import {Article, Grade, ImportExport, Insights, People} from '@mui/icons-material';
-import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import {ListItem, ListItemText, Tooltip} from '@mui/material';
-import List from '@mui/material/List';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import {TProfile, TProfileStats} from 'entities/profile';
-import moment from 'moment';
+import React, {useState} from 'react';
+import CelebrationIcon from '@mui/icons-material/Celebration';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import {Box, Typography} from '@mui/material';
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import {TProfile} from 'entities/profile';
 import {useSelector} from 'react-redux';
-import {getFullName} from 'shared/lib/helper';
+import {CustomProvider, DatePicker, InlineEdit, Input} from 'rsuite';
+import {useAppDispatch} from "shared/hook/hooks";
+import {convertBase64ToBlob, getFullName} from 'shared/lib/helper';
 import {getStats} from 'shared/model/profile/profile-selectors';
-import EditProfileField from './EditProfileField';
+import {saveUserProfile} from "shared/model/profile/profile-thunks";
+import {v4 as uuidv4} from "uuid";
 import styles from './ProfileInfo.module.scss';
+import 'dayjs/locale/ru';
+import ruRu from 'rsuite/locales/ru_RU';
+import 'rsuite/dist/rsuite.min.css';
 
+
+dayjs.extend(customParseFormat);
 
 type IProfileData = {
     profile: TProfile,
     isOwner: boolean,
-    editMode: boolean,
-    state: TProfile | null,
-    setState: Dispatch<SetStateAction<TProfile>>
+    file: File | string | null
 }
 
-const ProfileData: React.FC<IProfileData> = React.memo((props) => {
+const ProfileData: React.FC<IProfileData> = React.memo(({profile, isOwner, file}) => {
 
-    const stats = useSelector(getStats);
+    const [initState, setInitState] = useState(profile);
+
+    const dispatch = useAppDispatch();
+
+    const getKeyValue = <T, K extends keyof T>(obj: T, key: K): T[K] =>
+        obj[key];
+
+    const handleSave = () => {
+        const formData = new FormData();
+
+        for(let key in initState) {
+            const val = getKeyValue<TProfile, keyof TProfile>(initState, key);
+            formData.append(
+                key,
+                typeof val === "string" ? val : JSON.stringify(val)
+            );
+        }
+
+        if(file) {
+            if(file instanceof File) {
+                formData.append("image", file);
+            } else {
+                formData.append("image", convertBase64ToBlob(file));
+            }
+        }
+
+
+        dispatch(saveUserProfile({profileId: profile._id, file: formData}));
+    }
+
+    const handleChange = (name: string, value: any) => {
+        setInitState({...initState, [name]: value});
+    }
+
 
     return (
         <>
-            <div className={styles.profileTitle}>{getFullName(props.profile)}</div>
+            <Typography className={styles.profileTitle} key={uuidv4()} noWrap>{getFullName(profile)}</Typography>
 
-            <List dense={true} className={styles.profileList}>
-                <ListItem key={'regList'}>
-                    <ListItemText key={'regT'} primary='Дата регистрации:'/>
-                    <div className={styles.editFields}>
-                        <ListItemText key={'reg'} primary={moment(props.profile.createdAt).format('DD.MM.yyyy')}/>
-                    </div>
+            <InlineEdit disabled={!isOwner} className={styles.profileDescription} size={'md'} stateOnBlur={'save'} onSave={handleSave}
+                        onChange={(value) => handleChange('description', value)}
+                        defaultValue={profile.description} style={{width: '100%'}}>
 
-                </ListItem>
+                {// @ts-ignore
+                    (prop, ref) => {
+                        const {value, onChange, plaintext, ...rest} = prop;
 
-                <ListItem key={'ageList'}>
-                    <ListItemText key={'ageT'} primary='День рождения:'/>
-                    <EditProfileField editMode={props.editMode} name={'age'} state={props.state}
-                                      value={props.profile.age} type={'date'} setState={props.setState}/>
-                </ListItem>
+                        if(plaintext) {
+                            return <Typography variant={'subtitle2'} sx={{color: 'grey'}} paragraph className={styles.profileStatus} key={uuidv4()}
+                                               noWrap>{value}</Typography>
+                        }
 
-                <ListItem key={'cityList'}>
-                    <ListItemText key={'cityT'} primary='Город:'/>
-                    <EditProfileField editMode={props.editMode} name={'city'} placeholder={'Город'}
-                                      value={props.profile.city} type={'string'} state={props.state} setState={props.setState}/>
-                </ListItem>
+                        return (
+                            <Input {...rest} as="textarea" rows={2} ref={ref}
+                                   value={value}
+                                   onChange={event => {
+                                       // @ts-ignore
+                                       onChange(event, event);
+                                   }}/>
+                        );
+                    }}
+            </InlineEdit>
 
-                <ListItem key={'profileList'}>
-                    <ListItemText key={'profile'} primary='О себе:'/>
-                    <EditProfileField editMode={props.editMode} name={'description'} placeholder={'О себе'}
-                                      value={props.profile.description} type={'textarea'} state={props.state} setState={props.setState}/>
-                </ListItem>
-            </List>
+            <Box className={styles.profileLocation}>
+                <LocationOnIcon color='action'/>
+                <InlineEdit disabled={!isOwner} onSave={handleSave} size={'md'} stateOnBlur={'save'} defaultValue={profile.city || ' '}/>
+            </Box>
 
-            <ListItems stats={stats}/>
+            <Box className={styles.profileLocation}>
+                <CustomProvider locale={ruRu}>
+                    <CelebrationIcon color='action'/>
+                    <InlineEdit disabled={!isOwner} size={'md'} stateOnBlur={'save'} onSave={handleSave}
+                                defaultValue={dayjs(profile.age, 'DD.MM.YYYY').toDate() || null}>
+                        <DatePicker format="dd.MM.yyyy" cleanable plaintext/>
+                    </InlineEdit>
+                </CustomProvider>
+
+            </Box>
         </>
     )
 });
-
-
-const ListItems: React.FC<{ stats: TProfileStats | null }> = ({stats}) => {
-    const items = [
-        {name: 'comments', value: 'Комментарии', icon: <CommentIcon color={'disabled'}/>},
-        {name: 'posts', value: 'Публикации', icon: <Article color={'disabled'}/>},
-        {name: 'favorites', value: 'Избранное', icon: <Grade color={'disabled'}/>},
-        {name: 'rating', value: 'Рейтинг', icon: <Insights color={'disabled'}/>},
-        {name: 'marks', value: 'Оценки', icon: <ImportExport color={'disabled'}/>},
-        {name: 'followers', value: 'Подписки', icon: <People color={'disabled'}/>},
-    ];
-
-    return (
-        <div className={styles.stats}>
-            {items.filter(key => stats && +stats[key.name] >= 0).map(key => <Tooltip key={key.name + '_tooltip'} title={key.value}>
-                <ListItem key={key.name + '_item'}>
-                    <ListItemIcon key={key.name + '_icon'}>{key.icon}</ListItemIcon>
-                    <ListItemText key={key.name} primary={stats ? stats[key.name] : 0}/>
-                </ListItem>
-            </Tooltip>)}
-        </div>
-    );
-}
 
 export default ProfileData;
