@@ -1,95 +1,121 @@
-import React from 'react';
-import {Delete} from '@mui/icons-material';
-import EditIcon from '@mui/icons-material/Edit';
+import React from "react";
+
+import clsx from "clsx";
+import { ArticleSkeleton } from "entities/article";
+import ReactMarkdown from "react-markdown";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { getFullName, getImage, hasImage } from "shared/lib/helper";
+import { v4 as uuidv4 } from "uuid";
+
+import { Delete } from "@mui/icons-material";
+import EditIcon from "@mui/icons-material/Edit";
 import TagIcon from "@mui/icons-material/Tag";
-import {Box, Chip, Tooltip} from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import clsx from 'clsx';
-import {ArticleSkeleton, TArticle} from 'entities/article';
-import {TChipData} from 'entities/tag';
-import ReactMarkdown from 'react-markdown';
-import {useDispatch} from "react-redux";
-import {Link, useNavigate} from "react-router-dom";
-import {getFullName, getImage, hasImage} from 'shared/lib/helper';
-import {deletePost} from 'shared/model/posts/posts-thunks';
-import {v4 as uuidv4} from 'uuid';
-import {CustomCardActions} from 'widgets';
-import {UserInfo} from 'widgets';
-import styles from './article.module.scss';
+import { Box, Chip, Tooltip } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+
+import { deletePost, TArticle, TChipData } from "shared";
+
+import { CustomCardActions, UserInfo } from "widgets";
+
+import styles from "./article.module.scss";
 
 export type PostPropsType = {
-    post: TArticle,
-    isFullPost: boolean,
-    isLoading: boolean,
-    isEditable: boolean
-}
+  post: TArticle;
+  isFullPost: boolean;
+  isLoading: boolean;
+  isEditable: boolean;
+};
 
 export const Article: React.FC<PostPropsType> = ({
-    post, isFullPost, isLoading, isEditable,
+  post,
+  isFullPost,
+  isLoading,
+  isEditable,
 }) => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const onClickRemove = () => {
-        if(window.confirm('Вы действительно хотите удалить статью?')) {
-            dispatch(deletePost({payload: post}));
-            navigate('/');
-        }
-    };
-
-    if(isLoading) {
-        return <ArticleSkeleton/>;
+  const onClickRemove = () => {
+    if (window.confirm("Вы действительно хотите удалить статью?")) {
+      dispatch(deletePost({ payload: post }));
+      navigate("/");
     }
+  };
 
-    return (
-        <div className={clsx(styles.root, {[styles.rootFull]: isFullPost})}>
-            {isEditable && (
-                <div className={styles.editButtons}>
-                    <Link to={`/${post._id}/edit`}>
-                        <Tooltip title='Редактировать'>
-                            <IconButton color="primary">
-                                <EditIcon/>
-                            </IconButton>
-                        </Tooltip>
+  if (isLoading) {
+    return <ArticleSkeleton />;
+  }
 
-                    </Link>
-                    <IconButton onClick={onClickRemove} color="error">
-                        <Tooltip title='Удалить'>
-                            <Delete/>
-                        </Tooltip>
-                    </IconButton>
-                </div>
-            )}
-
-            {hasImage(post.image) && <img alt={'postImage'}
-                                          className={styles.image}
-                                          src={getImage(post.image)}/>}
-
-            <div className={styles.wrapper}>
-                <UserInfo avatar={getImage(post.author.avatar, true)}
-                          fullName={getFullName(post.author)}
-                          additionalText={post.createdAt}
-                          userId={post.author._id}/>
-                <div >
-                    <h2 className={clsx(styles.title, {[styles.titleFull]: isFullPost})}>
-                        {isFullPost ? post.title : <Link key={post._id} to={`/${post._id}`}>{post.title}</Link>}
-                    </h2>
-
-                    {!!post.tags?.length &&
-                        <Box className={styles.tags}>
-                            {post.tags.length && post.tags.map((tag: TChipData) => (
-                                <Chip key={uuidv4()} color='secondary' icon={<TagIcon className={styles.icon}/>} size="small" label={`${tag.value}`}
-                                      className={styles.tag}
-                                      variant='outlined'/>
-                            ))}
-                        </Box>
-                    }
-
-                    <ReactMarkdown className={clsx(styles.text)} children={post.text}/>
-
-                    <CustomCardActions post={post} isCard={false}/>
-                </div>
-            </div>
+  return (
+    <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
+      {isEditable && (
+        <div className={styles.editButtons}>
+          <Link to={`/editor/${post._id}`}>
+            <Tooltip title="Редактировать">
+              <IconButton color="primary">
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
+          <IconButton onClick={onClickRemove} color="error">
+            <Tooltip title="Удалить">
+              <Delete />
+            </Tooltip>
+          </IconButton>
         </div>
-    );
+      )}
+
+      {hasImage(post.image) && (
+        <img
+          alt={"postImage"}
+          className={styles.image}
+          src={getImage(post.image)}
+        />
+      )}
+
+      <div className={styles.wrapper}>
+        <UserInfo
+          avatar={getImage(post.author.avatar, true)}
+          fullName={getFullName(post.author)}
+          additionalText={post.createdAt}
+          userId={post.author._id}
+        />
+        <div>
+          <h2
+            className={clsx(styles.title, { [styles.titleFull]: isFullPost })}
+          >
+            {isFullPost ? (
+              post.title
+            ) : (
+              <Link key={post._id} to={`/${post._id}`}>
+                {post.title}
+              </Link>
+            )}
+          </h2>
+
+          {!!post.tags?.length && (
+            <Box className={styles.tags}>
+              {post.tags.length &&
+                post.tags.map((tag: TChipData) => (
+                  <Chip
+                    key={uuidv4()}
+                    color="secondary"
+                    icon={<TagIcon className={styles.icon} />}
+                    size="small"
+                    label={`${tag.value}`}
+                    className={styles.tag}
+                    variant="outlined"
+                  />
+                ))}
+            </Box>
+          )}
+
+          <ReactMarkdown className={clsx(styles.text)} children={post.text} />
+
+          <CustomCardActions post={post} isCard={false} />
+        </div>
+      </div>
+    </div>
+  );
 };

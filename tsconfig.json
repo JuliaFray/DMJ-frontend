@@ -19,43 +19,28 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "paths": {
-      "~app": [
+      "app": [
         "./app"
       ],
-      "~app/*": [
-        "./app/*"
-      ],
-      "~pages": [
+      "pages": [
         "./pages"
       ],
-      "~pages/*": [
-        "./pages/*"
-      ],
-      "~widgets": [
+      "widgets": [
         "./widgets"
       ],
-      "~widgets/*": [
-        "./widgets/*"
-      ],
-      "~features": [
+      "features": [
         "./features"
       ],
-      "~features/*": [
-        "./features/*"
-      ],
-      "~entities": [
+      "entities": [
         "./entities"
       ],
-      "~entities/*": [
-        "./entities/*"
-      ],
-      "~shared": [
+      "shared": [
         "./shared"
       ],
-      "~shared/*": [
-        "./shared/*"
+      "public": [
+        "./../public"
       ]
     }
   },
@@ -64,7 +49,7 @@
   "noUnusedParameters": true,
   "noFallthroughCasesInSwitch": true,
   "include": [
-    "src", "shared"
+    "src"
   ],
   "exclude": [
     "node_modules"

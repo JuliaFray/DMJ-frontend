@@ -1,7 +1,9 @@
 import React from 'react'
+
+import {ArticlesFeedSkeleton} from "widgets";
+
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-import {ArticlesFeedSkeleton} from "widgets/articles-feed/articles-feed.skeleton";
 
 export function ProfilePageSkeleton() {
     return (
@@ -27,7 +29,7 @@ export function ProfilePageSkeleton() {
                 </Stack>
             </Stack>
 
-            <ArticlesFeedSkeleton />
+            <ArticlesFeedSkeleton/>
         </div>
     )
 }

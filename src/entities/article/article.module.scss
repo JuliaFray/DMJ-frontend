@@ -64,10 +64,6 @@ $blue: #4361ee;
   }
 }
 
-.indention {
-  padding-left: 40px;
-}
-
 .title {
   font-size: 28px;
   margin: 0;
@@ -79,7 +75,8 @@ $blue: #4361ee;
     color: #000;
 
     &:hover {
-      color: $blue;
+      color: #000;
+      text-decoration: none;
     }
   }
 
@@ -92,6 +89,7 @@ $blue: #4361ee;
 .text {
   text-align: justify;
   text-indent: 40px;
+  margin: 20px 0;
 }
 
 .tags {
@@ -103,10 +101,8 @@ $blue: #4361ee;
   justify-content: start;
   gap: 5px;
   vertical-align: center;
+  margin-top: 20px;
 
-  :hover {
-    cursor: pointer;
-  }
 
   li {
     display: inline-block;
@@ -123,14 +119,6 @@ $blue: #4361ee;
       color: #000;
     }
   }
-}
-
-.rowContent {
-  height: 35%;
-  padding: 0 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
 }
 
 .cardContentTags {
@@ -184,23 +172,6 @@ $blue: #4361ee;
   }
 }
 
-.skeletonUser {
-  display: flex;
-
-  &Details {
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-.skeletonTags {
-  display: flex;
-
-  span {
-    margin-right: 15px;
-  }
-}
-
 .editButtons {
   position: absolute;
   right: 15px;
@@ -215,6 +186,11 @@ $blue: #4361ee;
   a {
     text-decoration: none;
     color: #000;
+
+    &:hover {
+      text-decoration: none;
+      color: #000;
+    }
   }
 
   .title {

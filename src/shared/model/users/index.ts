@@ -1,2 +1,2 @@
-export * as usersSlice from './users-slice'
-export * as usersSelector from './users-selectors'
+export {usersSlice, usersActions, usersReducer} from "./users-slice";
+export {getIsFetching, getUsers, getTotalCount} from "./users-selectors";

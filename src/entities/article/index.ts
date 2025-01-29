@@ -1,3 +1,2 @@
-export * from './article.skeleton';
-export * from './article.type';
-export * from './article.ui';
+export { ArticleSkeleton } from "./article.skeleton";
+export { Article } from "./article.ui";

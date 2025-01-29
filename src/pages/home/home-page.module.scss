@@ -1,5 +1,12 @@
-@media (width <= 900px) {
+.hiddenWidget {
+  display: none;
+}
+
+@media (width <= 1200px) {
   .right, .left {
     display: none;
+  }
+  .hiddenWidget {
+    display: block;
   }
 }

@@ -1,5 +1,7 @@
 import {createElement, lazy} from "react";
+
 import {RouteObject} from "react-router-dom";
+
 import {pathKeys} from "shared/lib/react-router";
 
 const RegisterPage = lazy(() =>

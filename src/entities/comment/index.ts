@@ -1,2 +1,1 @@
-export * from './comment.type';
-export * from './comment.ui';
+export { Comment } from "./comment.ui";

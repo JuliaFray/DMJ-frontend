@@ -1,3 +1,9 @@
-export * as authSlice from './auth-slice';
-export * as authSelector from './auth-selectors';
-export * as authThunk from './auth-thunks';
+export { authReducer, authActions, authSlice } from "./auth-slice";
+export {
+  getAuthId,
+  getIsAuth,
+  getAuthErrors,
+  getAuthGlobalError,
+  getAuthFetching,
+} from "./auth-selectors";
+export { registerUser, login } from "./auth-thunks";

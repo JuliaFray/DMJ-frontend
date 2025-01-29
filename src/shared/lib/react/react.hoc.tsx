@@ -1,7 +1,9 @@
 import React, {ComponentType, createElement, ForwardedRef, forwardRef, Suspense, SuspenseProps,} from 'react'
+
 import {connect, useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
-import {getIsAuth} from "shared/model/auth/auth-selectors";
+import {getIsAuth} from "shared";
+
 import {RootState} from "shared/model/redux-store";
 
 export function withSuspense<Props extends object>(

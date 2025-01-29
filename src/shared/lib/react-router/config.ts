@@ -19,9 +19,9 @@ export const pathKeys = {
         return pathKeys.root.concat('dialogs')
     },
     diet: {
-      root() {
-          return pathKeys.root.concat('planner/')
-      }
+        root() {
+            return pathKeys.root.concat('planner/')
+        }
     },
     users: {
         root() {
@@ -57,8 +57,8 @@ export const pathKeys = {
         root() {
             return pathKeys.root.concat('editor/')
         },
-        bySlug({slug}: any) {
-            return pathKeys.editor.root().concat(slug, '/')
+        byId({id}: any) {
+            return pathKeys.editor.root().concat(id)
         },
     },
 }

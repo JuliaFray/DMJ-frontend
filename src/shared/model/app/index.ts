@@ -1,2 +1,7 @@
-export * as appSlice from './app-slice';
-export * as appSelector from './app-selectors';
+export {appSlice, appActions, appReducer} from "./app-slice";
+export {
+    getAppMsgNotifications,
+    getAppInfoNotifications,
+    getAppAllNotifications,
+    getAppUserOnline,
+} from "./app-selectors";

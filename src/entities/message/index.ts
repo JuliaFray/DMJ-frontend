@@ -1,2 +1,1 @@
-export * from './message.ui';
-export * from './message.type';
+export { Message } from "./message.ui";

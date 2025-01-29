@@ -9,25 +9,25 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-
-
 }
 
 .dialogHeader {
   height: 60px;
+
   .dialogHeaderInfo {
     height: 55px;
     display: flex;
     align-items: center;
   }
 }
+
 .dialogBox {
   position: relative;
-  height: 70%;
+  height: 85%;
   overflow-y: auto;
 }
 
-@media (width <= 900px) {
+@media (width <= 1200px) {
   .right {
     display: none;
   }

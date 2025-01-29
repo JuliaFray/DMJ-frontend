@@ -15,14 +15,27 @@
     gap: 10px 5px;
     margin: 20px 0;
   }
+
   .filter {
     width: 100%;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-around;
+
     div {
       width: 100%;
       margin-right: 10px;
+    }
+  }
+
+  .link {
+    display: flex;
+    text-decoration: none;
+    color: black;
+    justify-content: space-around;
+
+    .title {
+      align-self: center;
     }
   }
 }

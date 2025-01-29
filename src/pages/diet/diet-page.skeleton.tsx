@@ -1,5 +1,6 @@
 import React from 'react'
-import {ArticlesFeedSkeleton} from "widgets/articles-feed/articles-feed.skeleton";
+
+import {ArticlesFeedSkeleton} from "widgets";
 
 export const DietPageSkeleton = () => {
     return (

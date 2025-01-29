@@ -1,0 +1,64 @@
+.message {
+  margin: 5px 0;
+}
+
+.messageOuter {
+  display: flex;
+}
+
+.messageInner {
+  flex: 1;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.messageActions {
+  width: 67px;
+  padding-right: 5px;
+}
+
+.messageSpacer {
+  flex: 1;
+}
+
+.messageBubble {
+  max-width: calc(100% - 67px);
+  overflow-wrap: break-word;
+  border-radius: 2em;
+  padding: 10px;
+}
+
+.messageActions {
+  flex-shrink: 0;
+}
+
+.messageStatus {
+  width: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.messageAvatar {
+  padding-left: 6px;
+  padding-right: 8px;
+}
+
+/* Отправитель, сообщения с синим фоном */
+
+/* Первое сообщение */
+.messageFirst {
+  border-end-end-radius: 4px;
+}
+
+/* Сообщение, находящееся в середине набора сообщений */
+.messageMiddle {
+  border-start-end-radius: 4px;
+  border-end-end-radius: 4px;
+}
+
+/* Последнее сообщение */
+.messageLast {
+  border-start-end-radius: 4px;
+}

@@ -1,6 +1,3 @@
-export * from './tag';
-export * from './article';
-export * from './profile';
-export * from './comment';
-export * from './message';
-export * from './notification';
+export { Article, ArticleSkeleton } from "./article";
+export * from "./comment";
+export * from "./message";

@@ -1,13 +1,15 @@
+@import "shared/themes/palette.module";
+
 .root {
   width: 400px;
   padding: 50px;
   border: 1px solid #dedede;
   margin: 50px auto;
-  border-radius: 10px!important;
+  border-radius: 10px !important;
 }
 
-.field {
-  padding-bottom: 20px !important;
+.field:not(:last-of-type) {
+  margin-bottom: 25px !important;
 }
 
 .title {

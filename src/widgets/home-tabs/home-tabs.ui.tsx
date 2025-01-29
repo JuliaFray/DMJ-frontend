@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Container, Tab, Tabs} from '@mui/material';
-import Paper from '@mui/material/Paper';
+
 import {useForm} from 'react-hook-form';
 import {useSelector} from "react-redux";
-import {getIsAuth} from "shared/model/auth/auth-selectors";
+import {getIsAuth} from "shared";
+
+import {Container, Tab, Tabs} from '@mui/material';
+import Paper from '@mui/material/Paper';
+
 import styles from './home-tabs.module.scss';
 
 const a11yProps = (index: number) => {

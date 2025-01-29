@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {Grid} from "@mui/material";
+import {Grid, useMediaQuery} from "@mui/material";
 import {connect, useSelector} from "react-redux";
 import {compose} from "redux";
 import {CustomPagination} from "shared";
 import {RootState} from 'shared/model/redux-store';
 import {getTotalCount} from "shared/model/users/users-selectors";
+import {theme} from "shared/themes/theme";
 import {UsersFeed} from 'widgets';
 
 export type IUsersPage = {
@@ -13,8 +14,8 @@ export type IUsersPage = {
 }
 
 const UsersPage: React.FC<IUsersPage> = React.memo((props, context) => {
-
-    const mdMain = props.isMainPage ? 9 : 12
+    const isMore1200px = useMediaQuery(theme.breakpoints.up('lg'));
+    const mdMain = props.isMainPage && isMore1200px ? 9 : 12
 
     const [currentPage, setCurrentPage] = useState(1);
     const dataLength = useSelector(getTotalCount);

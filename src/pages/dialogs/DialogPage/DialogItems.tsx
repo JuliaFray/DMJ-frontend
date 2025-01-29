@@ -1,54 +1,74 @@
-import React from 'react';
-import {AvatarGroup, ListItem, Typography} from '@mui/material';
-import Avatar from '@mui/material/Avatar';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import Stack from '@mui/material/Stack';
-import {TDialog} from 'entities/message';
-import {useSelector} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
-import {useAppDispatch} from 'shared/hook/hooks';
-import {getFullName, getImage} from 'shared/lib/helper';
-import {authSelector} from 'shared/model/auth';
-import {dialogSelector, dialogSlice} from 'shared/model/dialog';
-import {v4 as uuidv4} from 'uuid';
+import React from "react";
+
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "shared/hook/hooks";
+import { getFullName, getImage } from "shared/lib/helper";
+import { dialogActions, getDialogs } from "shared/model/dialog";
+import { v4 as uuidv4 } from "uuid";
+
+import {
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
+} from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+
+import { getAuthId, TDialog } from "shared";
 
 const DialogItems: React.FC = () => {
+  const items = useSelector(getDialogs);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const authId = useSelector(getAuthId);
 
-    const items = useSelector(dialogSelector.getDialogs);
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-    const authId = useSelector(authSelector.getAuthId);
+  const onDialogSelect = (item: TDialog) => {
+    dispatch(dialogActions.addSelectedDialog(item));
+    navigate(`/dialogs/${item._id}`);
+  };
 
-    const onDialogSelect = (item: TDialog) => {
-        dispatch(dialogSlice.dialogActions.addSelectedDialog(item));
-        navigate(`/dialogs/${item._id}`)
-    }
-
-    return (
-        <List key={uuidv4()} sx={{width: '100%'}}>
-            {
-                items.map((item: TDialog) => {
-                    const users = item.isPrivate ? item.users.filter(u => u._id !== authId) : item.users
-                    return (<>
-                        <ListItem key={uuidv4()} alignItems="flex-start">
-                            <ListItemButton key={uuidv4()} onClick={() => onDialogSelect(item)}>
-                                <AvatarGroup key={uuidv4()} max={5}>
-                                    {users.map(user => <Stack key={uuidv4()} spacing={2} direction='row' alignItems='center'>
-                                        <Avatar key={uuidv4()} alt={getFullName(user)} src={getImage(user.avatar, true)}/>
-                                        <Typography key={uuidv4()} noWrap>{getFullName(user)}</Typography>
-                                    </Stack>)}
-                                </AvatarGroup>
-                            </ListItemButton>
-                        </ListItem>
-                        <Divider/>
-                    </>)
-                })
-            }
-
-        </List>
-    )
-}
+  return (
+    <List key={uuidv4()} sx={{ width: "100%", bgcolor: "background.paper" }}>
+      {items.map((item: TDialog) => {
+        const users = item.isPrivate
+          ? item.users.filter((u) => u._id !== authId)
+          : item.users;
+        const user =
+          item.lastMsg.from.userId === authId
+            ? item.lastMsg.from
+            : item.lastMsg.to;
+        return (
+          <ListItem alignItems="flex-start">
+            <ListItemButton key={uuidv4()} onClick={() => onDialogSelect(item)}>
+              <ListItemAvatar>
+                <Avatar
+                  key={uuidv4()}
+                  alt={getFullName(user)}
+                  src={getImage(user.avatar, true)}
+                />
+              </ListItemAvatar>
+              <ListItemText
+                primary={`${user.firstName} ${user.secondName}`}
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      sx={{ color: "text.primary", display: "inline" }}
+                    ></Typography>
+                    {item.lastMsg.text}
+                  </React.Fragment>
+                }
+              />
+            </ListItemButton>
+          </ListItem>
+        );
+      })}
+    </List>
+  );
+};
 
 export default DialogItems;

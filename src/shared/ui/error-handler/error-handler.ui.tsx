@@ -9,7 +9,7 @@ type ErrorHandlerProps = {
 const isDevelopment = process.env.MODE === 'dev'
 
 export const ErrorHandler = (props: ErrorHandlerProps) => {
-    const { error, resetErrorBoundary } = props
+    const {error, resetErrorBoundary} = props
 
     return (
         <div>

@@ -1,4 +1,4 @@
-import { ComponentType } from 'react'
+import {ComponentType} from 'react'
 
 export function compose<Props extends object>(
     ...hocs: Array<(component: ComponentType<Props>) => ComponentType<Props>>

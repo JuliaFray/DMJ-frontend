@@ -7,9 +7,9 @@ const timeFormat = "h:mm A";
 export const validateDate = (value: any) => {
     let errors;
 
-    if (!value) {
+    if(!value) {
         errors = "Required!";
-    } else if (
+    } else if(
         moment(value).format(dateFormat) < moment(Date.now()).format(dateFormat)
     ) {
         errors = "Invalid date!";
@@ -21,9 +21,9 @@ export const validateDate = (value: any) => {
 export const validateEmail = (value: any) => {
     let errors;
 
-    if (!value) {
+    if(!value) {
         errors = "Required!";
-    } else if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
+    } else if(!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
         errors = "Invalid email address!";
     }
 

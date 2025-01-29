@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {usdaApi} from "~shared/api/usda-api";
+import {usdaApi} from "shared/api/usda-api";
 
 type TInitial = {
     display: any,

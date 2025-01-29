@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {Chip, Paper} from '@mui/material';
-import {styled} from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
-import {TChipData} from 'entities/tag';
-import styles from 'features/create-article/create-article.module.scss';
+
+import {TChipData} from 'shared';
 import {v4 as uuidv4} from 'uuid';
+
+import {Chip, Paper} from '@mui/material';
+import TextField from '@mui/material/TextField';
+import {styled} from '@mui/material/styles';
+
+import styles from 'features/create-article/create-article.module.scss';
+
 
 const ListItem = styled('li')(({theme}) => ({
     margin: theme.spacing(0.5),

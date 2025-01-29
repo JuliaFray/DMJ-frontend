@@ -1,1 +1,2 @@
-export * from './create-comment';
+export * from "./create-comment";
+export { SendMsg } from "./create-message";

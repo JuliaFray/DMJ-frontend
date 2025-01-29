@@ -1,5 +1,7 @@
 import React from "react";
+
 import {ProfileContext} from "app/providers/RouterProvider";
+
 import {GuestLayout} from "./guest.layout";
 import {UserLayout} from "./user.layout";
 

@@ -1,5 +1,7 @@
 import React, {Dispatch, SetStateAction} from 'react';
+
 import {Pagination} from '@mui/material';
+
 import style from './custom-pagination.module.scss';
 
 type TPagination = {

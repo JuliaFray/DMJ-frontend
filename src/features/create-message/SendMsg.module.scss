@@ -1,6 +1,10 @@
-@import "~shared/themes/palette.module";
+@import "shared/themes/palette.module";
 
 .sendMsg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 
   .sendForm {
     width: 100%;

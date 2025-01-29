@@ -1,0 +1,25 @@
+@import "shared/themes/palette.module";
+
+.stats {
+  background-color: $info;
+  border-radius: 10px;
+  margin: 0 !important;
+
+  .statRow {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    &__vetical {
+      flex-direction: column;
+    }
+  }
+
+  .statItem {
+    width: 50%;
+    color: $primary;
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+}

@@ -1,4 +1,5 @@
 import {AnyAction} from 'redux';
+
 import {WS_CONNECT_ERR, WS_CONNECT_START, WS_CONNECTED, WS_SHOW_RECONNECT} from '../../lib/DictConstants';
 
 const initialState = {
@@ -9,7 +10,7 @@ const initialState = {
 };
 
 export function wsReducer(state = initialState, action: AnyAction) {
-    switch (action.type) {
+    switch(action.type) {
         case WS_CONNECT_START:
             return {
                 ...state,

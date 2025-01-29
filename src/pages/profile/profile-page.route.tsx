@@ -1,7 +1,10 @@
 import {createElement, lazy} from "react";
+
 import {RouteObject} from "react-router-dom";
-import {compose, withAuthRedirect, withSuspense} from "shared/lib/react";
+
+import {compose, withSuspense} from "shared/lib/react";
 import {pathKeys} from "shared/lib/react-router";
+
 import {ProfilePageSkeleton} from "./profile-page.skeleton";
 
 const ProfilePage = lazy(() =>
