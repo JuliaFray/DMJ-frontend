@@ -1,4 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
+
 import { TArticle, TChipData, TComment } from "shared";
 
 import { postAPI } from "../../api";
@@ -73,6 +75,10 @@ export const getOnePost = createAsyncThunk<
     }
     return response.data;
   } catch (e) {
+    if ((e as AxiosError)?.response?.status === 404) {
+      window.location.href = "/404";
+      return thunkAPI.rejectWithValue("");
+    }
     thunkAPI.dispatch(authActions.logout());
     thunkAPI.dispatch(appActions.setUninitialized());
     return thunkAPI.rejectWithValue(ACCESS_DENIED);

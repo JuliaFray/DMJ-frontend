@@ -54,6 +54,10 @@ export const theme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: {
+          "&.Mui-focused": {
+            border: "1px solid rgb(3,154,154)",
+            borderRadius: "2em",
+          },
           height: "50px",
           borderRadius: "2em !important",
         },
@@ -62,19 +66,16 @@ export const theme = createTheme({
           padding: "0 10px !important",
           borderRadius: "2em",
         },
-        focused: {
-          border: "1px solid rgb(3,154,154)",
-          borderRadius: "2em",
-        },
+        // focused: {
+        //   border: "1px solid rgb(3,154,154)",
+        //   borderRadius: "2em",
+        // },
       },
     },
     MuiInputLabel: {
       styleOverrides: {
         root: {
           marginTop: "10px",
-        },
-        required: {
-          color: "red",
         },
       },
     },

@@ -12,6 +12,16 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import SimpleMDE from "react-simplemde-editor";
+import { useAppDispatch } from "shared/hook/hooks";
+import { convertBase64ToBlob } from "shared/lib/helper";
+
+import DeleteIcon from "@mui/icons-material/Clear";
+import { Tooltip } from "@mui/material";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+
 import {
   AutocompleteField,
   createPost,
@@ -22,16 +32,6 @@ import {
   postsActions,
   TChipData,
 } from "shared";
-
-import DeleteIcon from "@mui/icons-material/Clear";
-import { Tooltip } from "@mui/material";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-
-import { useAppDispatch } from "shared/hook/hooks";
-import { convertBase64ToBlob } from "shared/lib/helper";
 
 import styles from "./create-article.module.scss";
 

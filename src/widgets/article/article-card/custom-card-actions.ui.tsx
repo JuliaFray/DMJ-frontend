@@ -85,11 +85,13 @@ export const CustomCardActions: React.FC<ICardActions> = (props, context) => {
       )}
       <li key={"viewsCount"}>
         <EyeIcon className={styles.comment} />
-        <span>{props.post.viewsCount}</span>
+        <span className={styles.commentText}>{props.post.viewsCount}</span>
       </li>
       <li key={"comments"}>
         <CommentIcon className={styles.comment} />
-        <span>{props.post.comments?.length}</span>
+        <span className={styles.commentText}>
+          {props.post.comments?.length}
+        </span>
       </li>
 
       {isAuth && (

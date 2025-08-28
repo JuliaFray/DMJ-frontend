@@ -1,26 +1,5 @@
 import React, { createElement, lazy } from "react";
 
-import { useSelector } from "react-redux";
-import {
-  createBrowserRouter,
-  NavLink,
-  Outlet,
-  redirect,
-  RouterProvider,
-  useRouteError,
-} from "react-router-dom";
-import { compose } from "redux";
-import { TProfile } from "shared";
-import { getIsAuth } from "shared";
-import { getMyProfile } from "shared";
-
-import { Stack } from "@mui/material";
-import Skeleton from "@mui/material/Skeleton";
-
-import { withSuspense } from "shared/lib/react/react.hoc";
-import { pathKeys } from "shared/lib/react-router";
-import { Spinner } from "shared/ui/spinner";
-
 import { articlePageRoute } from "pages/article";
 import { dialogPageRoute } from "pages/dialogs/dialog-page.route";
 import { dietPageRoute } from "pages/diet";
@@ -32,6 +11,26 @@ import { page404Router } from "pages/page-404";
 import { profilePageRoute } from "pages/profile";
 import { registerPageRoute } from "pages/register";
 import { usersPageRoute } from "pages/users/user-page.route";
+import { useSelector } from "react-redux";
+import {
+  createBrowserRouter,
+  NavLink,
+  Outlet,
+  redirect,
+  RouterProvider,
+  useRouteError,
+} from "react-router-dom";
+import { compose } from "redux";
+import { withSuspense } from "shared/lib/react/react.hoc";
+import { pathKeys } from "shared/lib/react-router";
+import { Spinner } from "shared/ui/spinner";
+
+import { Stack } from "@mui/material";
+import Skeleton from "@mui/material/Skeleton";
+
+import { getMyProfile } from "shared";
+import { getIsAuth } from "shared";
+import { TProfile } from "shared";
 
 const GenericLayout = lazy(() =>
   import("pages/layouts").then((module) => ({

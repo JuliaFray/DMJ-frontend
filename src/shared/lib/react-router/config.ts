@@ -1,64 +1,67 @@
 export const pathKeys = {
-    root: '/',
-    login() {
-        return pathKeys.root.concat('login/')
+  root: "/",
+  login() {
+    return pathKeys.root.concat("login/");
+  },
+  register() {
+    return pathKeys.root.concat("register/");
+  },
+  settings() {
+    return pathKeys.root.concat("settings/");
+  },
+  home() {
+    return pathKeys.root;
+  },
+  page404() {
+    return pathKeys.root.concat("404/");
+  },
+  dialogs() {
+    return pathKeys.root.concat("dialogs");
+  },
+  diet: {
+    root() {
+      return pathKeys.root.concat("planner/");
     },
-    register() {
-        return pathKeys.root.concat('register/')
+    byId({ id }: any) {
+      return pathKeys.diet.root().concat(id);
     },
-    settings() {
-        return pathKeys.root.concat('settings/')
+  },
+  users: {
+    root() {
+      return pathKeys.root.concat("users/");
     },
-    home() {
-        return pathKeys.root
+    byId({ id }: any) {
+      return pathKeys.root.concat(id);
     },
-    page404() {
-        return pathKeys.root.concat('404/')
+  },
+  article: {
+    root() {
+      return pathKeys.root.concat("article/");
     },
-    dialogs() {
-        return pathKeys.root.concat('dialogs')
+    byId({ id }: any) {
+      return pathKeys.article.root().concat(id);
     },
-    diet: {
-        root() {
-            return pathKeys.root.concat('planner/')
-        }
+  },
+  profile: {
+    root() {
+      return pathKeys.root.concat("user/");
     },
-    users: {
-        root() {
-            return pathKeys.root.concat('users/')
-        },
-        byId({id}: any) {
-            return pathKeys.root.concat(id)
-        },
+    byUsername({ username }: any) {
+      return pathKeys.profile.root().concat(username, "/");
     },
-    article: {
-        root() {
-            return pathKeys.root.concat('article/')
-        },
-        byId({id}: any) {
-            return pathKeys.article.root().concat(id)
-        },
+    byUsernameFavorites({ username }: any) {
+      return pathKeys.profile.byUsername({ username }).concat("favorites/");
     },
-    profile: {
-        root() {
-            return pathKeys.root.concat('user/')
-        },
-        byUsername({username}: any) {
-            return pathKeys.profile.root().concat(username, '/')
-        },
-        byUsernameFavorites({username}: any) {
-            return pathKeys.profile.byUsername({username}).concat('favorites/')
-        },
-        byId({id}: any) {
-            return pathKeys.profile.root().concat(id)
-        },
+    byId({ id }: any) {
+      return pathKeys.profile.root().concat(id);
     },
-    editor: {
-        root() {
-            return pathKeys.root.concat('editor/')
-        },
-        byId({id}: any) {
-            return pathKeys.editor.root().concat(id)
-        },
+  },
+  editor: {
+    root() {
+      return pathKeys.root.concat("editor/");
     },
-}
+    byId({ id }: any) {
+      return pathKeys.editor.root().concat(id);
+    },
+  },
+};

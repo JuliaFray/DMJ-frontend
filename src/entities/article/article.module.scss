@@ -128,7 +128,7 @@ $blue: #4361ee;
   display: flex;
   width: auto;
   justify-content: start;
-  gap: 5px;
+  gap: 10px;
   vertical-align: center;
 }
 
@@ -136,19 +136,21 @@ $blue: #4361ee;
   list-style: none;
   padding: 0;
   margin: 0;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 
   li {
     display: inline-flex;
     align-items: center;
     font-size: 14px;
-    margin-right: 20px;
     opacity: 0.5;
     height: 20px;
 
-    .comment {
-      margin-top: 3px
-    }
-
+.commentText {
+  margin-top: -3px;
+}
     svg {
       font-size: 18px;
       margin-right: 5px;

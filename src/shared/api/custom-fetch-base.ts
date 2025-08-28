@@ -58,6 +58,9 @@ const customFetchBase: BaseQueryFn<
 
           result = await baseQuery(args, api, extraOptions);
         } else {
+          // if ((result.error?.data as any)?.code === 404) {
+          //   window.location.href = "/404";
+          // }
           api.dispatch(authActions.logout());
           api.dispatch(appActions.setUninitialized());
           window.location.href = "/";

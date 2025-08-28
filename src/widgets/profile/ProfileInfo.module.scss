@@ -35,14 +35,17 @@
 
   .actions {
     position: absolute;
-    right: 1em;
-    bottom: 0;
+    right: 0.1em;
+    bottom: 2em;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
   }
 }
 
 .avatar {
-
+  margin-top: 10px;
   height: 140px;
   width: 140px;
   border: 10px solid white;

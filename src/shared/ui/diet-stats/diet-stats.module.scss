@@ -1,9 +1,10 @@
 @import "shared/themes/palette.module";
 
 .stats {
-  background-color: $info;
+  background-color: $success;
   border-radius: 10px;
   margin: 0 !important;
+  padding: 10px 0;
 
   .statRow {
     display: flex;
