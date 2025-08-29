@@ -108,11 +108,11 @@ export const CustomCardActions: React.FC<ICardActions> = (props, context) => {
         <li key={"link"}>
           <Link
             to={`/article/${props.post._id}`}
-            style={{ position: "absolute", right: "0" }}
+            style={{ position: "absolute", right: "10px" }}
           >
             <Tooltip title="Читать далее">
               <IconButton aria-label="forward">
-                <DoubleArrow />
+                <DoubleArrow style={{fill: "black"}} />
               </IconButton>
             </Tooltip>
           </Link>

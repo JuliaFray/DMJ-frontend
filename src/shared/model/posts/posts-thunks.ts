@@ -158,6 +158,24 @@ export const getPopularTags = createAsyncThunk<
   }
 });
 
+export const getPopularAuthors = createAsyncThunk<
+    TChipData[],
+    {},
+    { rejectValue: string }
+    >("posts/authors", async (__, thunkAPI) => {
+  const response = await postAPI.getPopularAuthors();
+  try {
+    if (response.resultCode === ResultCodeEnum.Error) {
+      return thunkAPI.rejectWithValue(response.message);
+    }
+    return response.data;
+  } catch (e) {
+    thunkAPI.dispatch(authActions.logout());
+    thunkAPI.dispatch(appActions.setUninitialized());
+    return thunkAPI.rejectWithValue(ACCESS_DENIED);
+  }
+});
+
 export const createPostComment = createAsyncThunk<
   TArticle,
   { comment: TComment; postId: string },

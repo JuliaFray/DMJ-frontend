@@ -1,62 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, {Dispatch, SetStateAction} from "react";
 
-import { useQueryParams } from "shared/hook/hooks";
-import { v4 as uuidv4 } from "uuid";
+import {v4 as uuidv4} from "uuid";
 
 import TagIcon from "@mui/icons-material/Tag";
-import { Chip } from "@mui/material";
+import {Chip} from "@mui/material";
 
-import { SideBlock, TChipData } from "shared";
+import {SideBlock, TChipData} from "shared";
 
 import styles from "./tag-widget.module.scss";
 
 export type ITagBlock = {
-  items: TChipData[];
-  isLoading: boolean;
-  query: string | null;
+    title: string;
+    items: TChipData[];
+    setSelectedTags: Dispatch<SetStateAction<Set<TChipData>>>
 };
 export const TagWidget: React.FC<ITagBlock> = ({
-  items,
-  isLoading = true,
-  query,
+    title,
+    items,
+    setSelectedTags
 }) => {
-  const [selectedTag, setSelectedTag] = useState<TChipData | null>(null);
-  const { queryParams, setQueryParams } = useQueryParams({
-    tags: query ? query : "",
-  });
 
-  useEffect(() => {
-    setSelectedTag((prev) => {
-      return prev && prev.value === queryParams.tags
-        ? null
-        : items.find((item) => item.value === queryParams.tags)!;
-    });
-  }, [queryParams]);
+    const handleTagChange = (item: TChipData) => {
+        setSelectedTags((prev) =>
+            new Set(prev).add(item)
+        );
+    };
 
-  const handleTagChange = (item: TChipData) => {
-    setQueryParams({
-      tags: selectedTag && selectedTag === item ? "" : item.value,
-    });
-  };
-
-  return (
-    <SideBlock title="Популярное">
-      {(items || [...Array(5)]).map((item, i) => (
-        <Chip
-          key={uuidv4()}
-          color="primary"
-          icon={<TagIcon className={styles.icon} />}
-          size="small"
-          label={`${item.value} (${item.useCount})`}
-          className={styles.tag}
-          variant={
-            selectedTag && item.value === selectedTag.value
-              ? "filled"
-              : "outlined"
-          }
-          onClick={() => handleTagChange(item)}
-        />
-      ))}
-    </SideBlock>
-  );
+    return (
+        <SideBlock title={title}>
+            {(items || [...Array(5)]).map((item, i) => (
+                <Chip
+                    key={uuidv4()}
+                    color="primary"
+                    size="small"
+                    label={`${item.value} (${item.useCount})`}
+                    className={styles.tag}
+                    onClick={() => handleTagChange(item)}
+                />
+            ))}
+        </SideBlock>
+    );
 };

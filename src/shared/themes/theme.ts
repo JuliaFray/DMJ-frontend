@@ -47,7 +47,10 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           lineHeight: "1em",
-          top: "-10px!important",
+          top: "0px!important",
+          "&.Mui-focused": {
+            top: "-5px!important",
+          }
         },
       },
     },
@@ -56,26 +59,14 @@ export const theme = createTheme({
         root: {
           "&.Mui-focused": {
             border: "1px solid rgb(3,154,154)",
-            borderRadius: "2em",
           },
           height: "50px",
-          borderRadius: "2em !important",
+          borderRadius: "15px !important",
         },
         input: {
           height: "50px",
           padding: "0 10px !important",
-          borderRadius: "2em",
-        },
-        // focused: {
-        //   border: "1px solid rgb(3,154,154)",
-        //   borderRadius: "2em",
-        // },
-      },
-    },
-    MuiInputLabel: {
-      styleOverrides: {
-        root: {
-          marginTop: "10px",
+          borderRadius: "15px !important",
         },
       },
     },
@@ -97,7 +88,7 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           height: "40px",
-          borderRadius: "2em",
+          borderRadius: "15px",
         },
       },
     },

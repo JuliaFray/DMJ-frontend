@@ -19,7 +19,7 @@ export const PopularPost: React.FC<{ post: TArticle }> = ({ post }) => {
     margin: 0,
     position: "relative",
     overflow: "hidden",
-    borderRadius: "4px",
+    borderRadius: "15px",
     boxShadow: `0 8px 24px ${theme.palette.grey[400]}`,
     transition: "transform 0.15s ease-in-out",
     display: "flex",

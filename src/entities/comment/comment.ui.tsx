@@ -20,7 +20,7 @@ import Stack from "@mui/material/Stack";
 
 import {
   getIsAuth,
-  TCommentType,
+  TCommentType, theme,
   toggleCommentRating,
   useAppDispatch,
 } from "shared";
@@ -30,6 +30,10 @@ import styles from "./comment.module.scss";
 export const Comment: React.FC<TCommentType> = ({ item, isLoading }) => {
   const dispatch = useAppDispatch();
   const isAuth = useSelector(getIsAuth);
+
+  if(!item) {
+    return null;
+  }
 
   const [rating, setRating] = useState(item.rating || 0);
   const [userRating, setUserRating] = useState(item.userRating || 0);
@@ -45,8 +49,8 @@ export const Comment: React.FC<TCommentType> = ({ item, isLoading }) => {
   };
 
   return (
-    <React.Fragment key={uuidv4()}>
-      <ListItem alignItems="flex-start" sx={{ width: "100%" }}>
+    <React.Fragment key={uuidv4()} >
+      <ListItem alignItems="flex-start" sx={{ width: "100%" }} style={{backgroundColor: theme.palette.secondary.main, borderRadius: '15px', marginBottom: "10px"}}>
         <ListItemAvatar key={uuidv4()}>
           {isLoading ? (
             <Skeleton
@@ -138,7 +142,7 @@ export const Comment: React.FC<TCommentType> = ({ item, isLoading }) => {
           </>
         </Stack>
       </ListItem>
-      <Divider key={uuidv4()} variant="inset" component="li" />
+
     </React.Fragment>
   );
 };

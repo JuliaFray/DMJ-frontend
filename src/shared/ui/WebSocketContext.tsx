@@ -1,10 +1,10 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
-import { getAuthId } from "shared";
-
 import { SocketEvents } from "shared/lib/DictConstants";
 import Loader from "shared/ui/Loader";
+
+import { getAuthId } from "shared";
 
 import { useAppDispatch } from "../hook/hooks";
 import { wsConnect, wsShowReconnect } from "../model/ws/ws";
@@ -21,7 +21,7 @@ function WS(props: React.PropsWithChildren<{}>) {
 
   const [conn, setConn] = useState<WebSocket | null>(null);
   const [tryingAgainIn, setTryingAgainIn] = useState(5);
-  const [silentConnect, setSilentConnect] = useState(false);
+  const [silentConnect, setSilentConnect] = useState(true);
   const [intervalID, setIntervalID] = useState<number>();
   const [tries, setTries] = useState(0);
 

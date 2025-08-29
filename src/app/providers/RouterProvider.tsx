@@ -124,7 +124,7 @@ function LayoutSkeleton() {
       <nav>
         <div>
           <Stack justifyContent="space-between">
-            <NavLink to={pathKeys.home()}>DMJ</NavLink>
+            <NavLink to={pathKeys.home()}>HealthBalance</NavLink>
 
             <Stack
               spacing={16}

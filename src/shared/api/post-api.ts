@@ -20,6 +20,14 @@ export const postAPI = {
       });
   },
 
+  getPopularAuthors() {
+    return instance
+        .get<GenericResponseType<TChipData[]>>(`authors`)
+        .then((response) => {
+          return response.data;
+        });
+  },
+
   markPostFavorite(postId: string) {
     return instance
       .put<GenericResponseType<void>>(`${baseUrl}/${postId}/like`)

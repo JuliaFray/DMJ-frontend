@@ -24,6 +24,10 @@ export const getFetchedPopularTags = (state: RootState) => {
   return state.posts.popularTags;
 };
 
+export const getFetchedPopularAuthors = (state: RootState) => {
+  return state.posts.popularAuthors;
+};
+
 export const getAllFetchedTags = (state: RootState) => {
   return state.posts.allTags;
 };

@@ -20,8 +20,8 @@ export const GuestLayout = () => {
       </Box>
       <Container maxWidth={"xl"} fixed>
         <Grid container spacing={1} className={styles.main}>
-          <Grid item md={3} className={styles.left}></Grid>
-          <Grid item md={9} width={"100%"}>
+          {/*<Grid item md={3} className={styles.left}></Grid>*/}
+          <Grid item md={12} width={"100%"}>
             <Outlet />
           </Grid>
         </Grid>

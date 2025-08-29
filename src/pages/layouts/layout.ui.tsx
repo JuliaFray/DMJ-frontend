@@ -1,8 +1,5 @@
 import React from "react"
-import {Logout} from "@mui/icons-material";
-import Login from "@mui/icons-material/Login";
-import {Tooltip, Typography} from "@mui/material";
-import IconButton from "@mui/material/IconButton";
+
 import {useDispatch, useSelector} from "react-redux";
 import {NavLink} from "react-router-dom";
 import useWebSocket from "shared/hook/hooks";
@@ -11,6 +8,12 @@ import {pathKeys} from "shared/lib/react-router";
 import {appActions} from "shared/model/app/app-slice";
 import {getAuthId} from "shared/model/auth/auth-selectors";
 import {authActions} from "shared/model/auth/auth-slice";
+
+import {Logout} from "@mui/icons-material";
+import Login from "@mui/icons-material/Login";
+import {Tooltip, Typography} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+
 import styles from './layout.module.scss';
 
 export function BrandLink() {
@@ -25,6 +28,7 @@ export function BrandLink() {
                          style={{height: '40px'}}
                          src={window.location.origin + '/logo.png'}/>
                 </IconButton>
+                HealthBalance
             </Typography>
 
         </NavLink>

@@ -8,7 +8,7 @@ import {
   createPostComment,
   deletePost,
   editPost,
-  getOnePost,
+  getOnePost, getPopularAuthors,
   getPopularPost,
   getPopularTags,
   getRecommendationPost,
@@ -23,6 +23,7 @@ type TInitial = {
   recommendations: TArticle[];
   post: TArticle | null;
   popularTags: TChipData[];
+  popularAuthors: TChipData[];
   allTags: TChipData[];
   img: TImage | null;
   postComments: TArticle[];
@@ -35,6 +36,7 @@ const initialState: TInitial = {
   post: null,
   isFetching: true,
   popularTags: [],
+  popularAuthors: [],
   allTags: [],
   img: null,
   recommendations: [],
@@ -49,6 +51,7 @@ const postsSlice = createSlice({
       state.posts = [];
       state.totalCount = 0;
       state.popularPosts = [];
+      state.popularAuthors = [];
       state.post = null;
       state.isFetching = false;
       state.popularTags = [];
@@ -82,6 +85,22 @@ const postsSlice = createSlice({
         state.isFetching = false;
         state.popularTags = [];
       })
+        //=====getPopularAuthors=====//
+        .addCase(getPopularAuthors.pending, (state) => {
+          state.isFetching = true;
+          state.popularAuthors = [];
+        })
+        .addCase(
+            getPopularAuthors.fulfilled,
+            (state, action: PayloadAction<TChipData[]>) => {
+              state.isFetching = false;
+              state.popularAuthors = action.payload;
+            }
+        )
+        .addCase(getPopularAuthors.rejected, (state) => {
+          state.isFetching = false;
+          state.popularAuthors = [];
+        })
       //=====getPopularPost=====//
       .addCase(getPopularPost.pending, (state) => {
         state.isFetching = true;

@@ -4,7 +4,7 @@ $blue: #4361ee;
 .root {
   background-color: #fff;
   border: 1px solid #dedede;
-  border-radius: 6px;
+  border-radius: 15px;
   overflow: hidden;
   margin-bottom: 15px;
   position: relative;
@@ -98,7 +98,7 @@ $blue: #4361ee;
   overflow: hidden;
   display: flex;
   width: auto;
-  justify-content: start;
+  justify-content: flex-start;
   gap: 5px;
   vertical-align: center;
   margin-top: 20px;
@@ -123,11 +123,11 @@ $blue: #4361ee;
 
 .cardContentTags {
   height: 25px;
-  padding: 8px 16px;
+  padding: 4px 16px;
   overflow: hidden;
   display: flex;
   width: auto;
-  justify-content: start;
+  justify-content: flex-start;
   gap: 10px;
   vertical-align: center;
 }
@@ -161,7 +161,7 @@ $blue: #4361ee;
 .skeleton {
   background-color: #fff;
   border: 1px solid #dedede;
-  border-radius: 6px;
+  border-radius: 15px;
   overflow: hidden;
   margin-bottom: 15px;
 
@@ -179,12 +179,16 @@ $blue: #4361ee;
   right: 15px;
   top: 15px;
   background-color: rgba(255, 255, 255, 1);
-  border-radius: 10px;
+  border-radius: 15px;
   opacity: 0;
   transition: all 0.15s ease-in-out;
 }
 
 .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 15px!important;
   a {
     text-decoration: none;
     color: #000;
