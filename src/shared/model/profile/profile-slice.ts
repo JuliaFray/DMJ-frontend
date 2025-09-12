@@ -1,4 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+
+import { TProfile, TProfileStats } from '../../types';
 
 import {
   createFriendProfile,
@@ -7,9 +9,7 @@ import {
   saveUserProfile,
   toggleFollowProfile,
   toggleFriendProfile,
-  TProfile,
-  TProfileStats,
-} from "shared";
+} from './profile-thunks';
 
 type InitialStateType = {
   profile: TProfile | null;
@@ -26,17 +26,17 @@ const initialState: InitialStateType = {
 };
 
 const profileSlice = createSlice({
-  name: "profile",
+  name: 'profile',
   initialState,
   reducers: {
-    setProfile: (state, action) => {
+    setProfile: (state: InitialStateType, action) => {
       state.my = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
-      //=====getUserProfile=====//
-      .addCase(getUserProfile.pending, (state, action) => {
+      //= ====getUserProfile=====//
+      .addCase(getUserProfile.pending, (state) => {
         state.isFetching = true;
         state.profile = null;
       })
@@ -44,12 +44,12 @@ const profileSlice = createSlice({
         state.isFetching = false;
         state.profile = action.payload;
       })
-      .addCase(getUserProfile.rejected, (state, action) => {
+      .addCase(getUserProfile.rejected, (state) => {
         state.isFetching = false;
         state.profile = null;
       })
-      //=====getUserProfileStats=====//
-      .addCase(getUserProfileStats.pending, (state, action) => {
+      //= ====getUserProfileStats=====//
+      .addCase(getUserProfileStats.pending, (state) => {
         state.isFetching = true;
         state.stats = null;
       })
@@ -57,48 +57,48 @@ const profileSlice = createSlice({
         state.isFetching = false;
         state.stats = action.payload;
       })
-      .addCase(getUserProfileStats.rejected, (state, action) => {
+      .addCase(getUserProfileStats.rejected, (state) => {
         state.isFetching = false;
         state.stats = null;
       })
-      //=====saveUserProfile=====//
-      .addCase(saveUserProfile.pending, (state, action) => {
+      //= ====saveUserProfile=====//
+      .addCase(saveUserProfile.pending, (state) => {
         state.isFetching = true;
       })
-      .addCase(saveUserProfile.fulfilled, (state, action) => {
+      .addCase(saveUserProfile.fulfilled, (state) => {
         state.isFetching = false;
       })
-      .addCase(saveUserProfile.rejected, (state, action) => {
+      .addCase(saveUserProfile.rejected, (state) => {
         state.isFetching = false;
       })
-      //=====toggleFollowProfile=====//
-      .addCase(toggleFollowProfile.pending, (state, action) => {
+      //= ====toggleFollowProfile=====//
+      .addCase(toggleFollowProfile.pending, (state) => {
         state.isFetching = true;
       })
-      .addCase(toggleFollowProfile.fulfilled, (state, action) => {
+      .addCase(toggleFollowProfile.fulfilled, (state) => {
         state.isFetching = false;
       })
-      .addCase(toggleFollowProfile.rejected, (state, action) => {
+      .addCase(toggleFollowProfile.rejected, (state) => {
         state.isFetching = false;
       })
-      //=====createFriendProfile=====//
-      .addCase(createFriendProfile.pending, (state, action) => {
+      //= ====createFriendProfile=====//
+      .addCase(createFriendProfile.pending, (state) => {
         state.isFetching = true;
       })
-      .addCase(createFriendProfile.fulfilled, (state, action) => {
+      .addCase(createFriendProfile.fulfilled, (state) => {
         state.isFetching = false;
       })
-      .addCase(createFriendProfile.rejected, (state, action) => {
+      .addCase(createFriendProfile.rejected, (state) => {
         state.isFetching = false;
       })
-      //=====toggleFriendProfile=====//
-      .addCase(toggleFriendProfile.pending, (state, action) => {
+      //= ====toggleFriendProfile=====//
+      .addCase(toggleFriendProfile.pending, (state) => {
         state.isFetching = true;
       })
-      .addCase(toggleFriendProfile.fulfilled, (state, action) => {
+      .addCase(toggleFriendProfile.fulfilled, (state) => {
         state.isFetching = false;
       })
-      .addCase(toggleFriendProfile.rejected, (state, action) => {
+      .addCase(toggleFriendProfile.rejected, (state) => {
         state.isFetching = false;
       });
   },

@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import Carousel from "react-material-ui-carousel";
+import Carousel from 'react-material-ui-carousel';
 
-import { TArticle } from "shared";
+import { TArticle } from 'shared/types';
 
 type IPostCarousel = {
   posts: TArticle[];

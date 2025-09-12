@@ -1,12 +1,8 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { TDialog, TDialogFriends, TMessage } from "shared";
+import { TDialog, TDialogFriends, TMessage } from '../../types';
 
-import {
-  getAllDialogs,
-  getMessagesByDialogId,
-  getUsersWithStatus,
-} from "./dialog-thunks";
+import { getAllDialogs, getMessagesByDialogId, getUsersWithStatus } from './dialog-thunks';
 
 type InitialStateType = {
   messages: Array<TMessage>;
@@ -15,7 +11,7 @@ type InitialStateType = {
   selectedDialog: TDialog | null;
 };
 
-let initialState: InitialStateType = {
+const initialState: InitialStateType = {
   messages: [],
   dialogs: [],
   users: [],
@@ -23,7 +19,7 @@ let initialState: InitialStateType = {
 };
 
 const dialogSlice = createSlice({
-  name: "dialog",
+  name: 'dialog',
   initialState,
   reducers: {
     addMsg: (state, payload) => {
@@ -38,29 +34,23 @@ const dialogSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      //=====getAllDialogs=====//
+      //= ====getAllDialogs=====//
       .addCase(getAllDialogs.pending, (state) => {})
       .addCase(getAllDialogs.fulfilled, (state, action: PayloadAction<any>) => {
         state.dialogs = action.payload.data;
       })
       .addCase(getAllDialogs.rejected, (state) => {})
-      //=====getMessagesByDialog=====//
+      //= ====getMessagesByDialog=====//
       .addCase(getMessagesByDialogId.pending, (state) => {})
-      .addCase(
-        getMessagesByDialogId.fulfilled,
-        (state, action: PayloadAction<any>) => {
-          state.messages = action.payload.data;
-        }
-      )
+      .addCase(getMessagesByDialogId.fulfilled, (state, action: PayloadAction<any>) => {
+        state.messages = action.payload.data;
+      })
       .addCase(getMessagesByDialogId.rejected, (state) => {})
-      //=====getUsersWithStatus=====//
+      //= ====getUsersWithStatus=====//
       .addCase(getUsersWithStatus.pending, (state) => {})
-      .addCase(
-        getUsersWithStatus.fulfilled,
-        (state, action: PayloadAction<any>) => {
-          state.users = action.payload.data;
-        }
-      )
+      .addCase(getUsersWithStatus.fulfilled, (state, action: PayloadAction<any>) => {
+        state.users = action.payload.data;
+      })
       .addCase(getUsersWithStatus.rejected, (state) => {});
   },
 });

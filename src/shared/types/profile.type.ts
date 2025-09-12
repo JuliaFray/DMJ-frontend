@@ -1,4 +1,4 @@
-import { TImage } from "shared";
+import { TImage } from './article.type';
 
 export interface TProfile extends Record<string, any> {
   _id: string;

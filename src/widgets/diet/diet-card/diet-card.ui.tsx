@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react';
 
-import { Link } from "react-router-dom";
-import { DietStats } from "shared";
+import { Link } from 'react-router-dom';
 
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 
-import { TDietPlan } from "shared/types/diet.type";
+import { TDietPlan } from 'shared/types';
+import { DietStats } from 'shared/ui';
 
-import styles from "./diet-card.module.scss";
+import styles from './diet-card.module.scss';
 
 type TDietCard = {
   diet: TDietPlan;
@@ -19,12 +19,12 @@ export const DietCard: React.FC<TDietCard> = ({ diet }) => {
     <Card>
       <CardHeader
         sx={{
-          height: "20%",
-          "& .MuiTypography-subtitle1": {
-            overflow: "hidden",
-            display: "-webkit-box",
+          height: '20%',
+          '& .MuiTypography-subtitle1': {
+            overflow: 'hidden',
+            display: '-webkit-box',
             WebkitLineClamp: 1,
-            WebkitBoxOrient: "vertical",
+            WebkitBoxOrient: 'vertical',
           },
         }}
         title={
@@ -33,22 +33,18 @@ export const DietCard: React.FC<TDietCard> = ({ diet }) => {
           </Link>
         }
         titleTypographyProps={{
-          variant: "subtitle1",
-          whiteSpace: "normal",
+          variant: 'subtitle1',
+          whiteSpace: 'normal',
         }}
       />
 
       <CardContent>
-        <DietStats
-          plan={diet.stats.plan}
-          period={diet.period}
-          rating={diet.stats.rating}
-        />
+        <DietStats plan={diet.stats.plan} period={diet.period} rating={diet.stats.rating} />
       </CardContent>
 
-      {/*<CardActions>*/}
-      {/*    actions*/}
-      {/*</CardActions>*/}
+      {/* <CardActions> */}
+      {/*    actions */}
+      {/* </CardActions> */}
     </Card>
   );
 };

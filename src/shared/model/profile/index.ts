@@ -1,4 +1,4 @@
-export { profileSlice, profileReducer, profileActions } from "./profile-slice";
+export { profileSlice, profileReducer, profileActions } from './profile-slice';
 export {
   getProfile,
   getMyProfile,
@@ -9,7 +9,7 @@ export {
   getMyProfileShortName,
   getStats,
   getProfileIsFetching,
-} from "./profile-selectors";
+} from './profile-selectors';
 export {
   getUserProfileStats,
   toggleFriendProfile,
@@ -18,4 +18,4 @@ export {
   toggleFollowProfile,
   getUserProfile,
   getNotifications,
-} from "./profile-thunks";
+} from './profile-thunks';

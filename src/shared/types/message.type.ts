@@ -1,4 +1,4 @@
-import { TProfile } from "shared";
+import { TProfile } from './profile.type';
 
 export type TMessage = {
   id: number;

@@ -1,41 +1,33 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import reactStringReplace from "react-string-replace";
-import useWebSocket, { useAppDispatch } from "shared/hook/hooks";
-import { SocketEvents } from "shared/lib/DictConstants";
-import { v4 as uuidv4 } from "uuid";
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import reactStringReplace from 'react-string-replace';
+import { v4 as uuidv4 } from 'uuid';
 
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import {
-  AppBar,
-  Box,
-  Button,
-  Fade,
-  Popper,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import { AppBar, Box, Button, Fade, Popper, Toolbar, Typography } from '@mui/material';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 
+import { useAppDispatch, useWebSocket } from 'shared/hook';
+import { SocketEvents } from 'shared/lib';
 import {
   appActions,
   getAppAllNotifications,
   getAuthId,
   getIsAuth,
-  INotifications,
   toggleFriendProfile,
-} from "shared";
+} from 'shared/model';
+import { INotifications } from 'shared/types';
 
-import styles from "./Header.module.scss";
-import HeaderMenu from "./HeaderMenu";
+import styles from './Header.module.scss';
+import HeaderMenu from './HeaderMenu';
 
 const HeaderComponent: React.FC = () => {
   const [showNotification, setShowNotification] = useState(false);
@@ -53,44 +45,44 @@ const HeaderComponent: React.FC = () => {
       if (type === SocketEvents.FOLLOW_EVENT) {
         dispatch(
           appActions.addNotification({
-            type: "app/addNotification",
+            type: 'app/addNotification',
             payload: msg,
-          })
+          }),
         );
       }
       if (type === SocketEvents.AUTH_EVENT) {
         dispatch(
           appActions.setUsersOnline({
-            type: "app/setUserOnline",
+            type: 'app/setUserOnline',
             payload: data,
-          })
+          }),
         );
       }
       if (type === SocketEvents.FRIEND_EVENT) {
         dispatch(
           appActions.addNotification({
-            type: "app/addNotification",
+            type: 'app/addNotification',
             payload: msg,
-          })
+          }),
         );
       }
       if (type === SocketEvents.MSG_EVENT && data.from._id !== userId) {
         dispatch(
           appActions.addNotification({
-            type: "app/addNotification",
+            type: 'app/addNotification',
             payload: msg,
-          })
+          }),
         );
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   useEffect(() => {
     if (!ws) return;
 
-    ws.addEventListener("message", handleWS);
-    return () => ws.removeEventListener("message", handleWS);
+    ws.addEventListener('message', handleWS);
+    return () => ws.removeEventListener('message', handleWS);
   }, [handleWS, ws]);
 
   const onShowNotification = (event: React.MouseEvent<HTMLElement>) => {
@@ -105,28 +97,28 @@ const HeaderComponent: React.FC = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }} className={styles.header}>
-      <AppBar position="static">
+      <AppBar position='static'>
         <Toolbar>
           {isAuth && (
             <>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                <Link to={"/posts"}>BLOG</Link>
+              <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+                <Link to='/posts'>BLOG</Link>
               </Typography>
 
               <IconButton
-                id={"ntf"}
+                id='ntf'
                 onClick={onShowNotification}
-                aria-label="notifications"
-                sx={{ marginRight: "20px" }}
+                aria-label='notifications'
+                sx={{ marginRight: '20px' }}
               >
-                {!!notifications.length ? (
-                  <NotificationsActiveIcon color="warning" />
+                {notifications.length ? (
+                  <NotificationsActiveIcon color='warning' />
                 ) : (
-                  <NotificationsIcon color="success" />
+                  <NotificationsIcon color='success' />
                 )}
               </IconButton>
               <Popper
-                id={"ntf"}
+                id='ntf'
                 open={showNotification}
                 anchorEl={anchorEl}
                 transition
@@ -138,30 +130,22 @@ const HeaderComponent: React.FC = () => {
                       sx={{
                         border: 1,
                         p: 1,
-                        bgcolor: "background.paper",
-                        borderColor: "#026670",
+                        bgcolor: 'background.paper',
+                        borderColor: '#026670',
                       }}
                     >
-                      <List dense={true}>
-                        {!!notifications.length ? (
+                      <List dense>
+                        {notifications.length ? (
                           notifications.map((it: INotifications) => (
                             <NotificationItem key={uuidv4()} item={it} />
                           ))
                         ) : (
-                          <NotificationItem
-                            key={uuidv4()}
-                            text="Уведомлений нет"
-                          />
+                          <NotificationItem key={uuidv4()} text='Уведомлений нет' />
                         )}
 
                         <ListItem key={uuidv4()} className={styles.item}>
-                          <ListItemButton
-                            className={styles.btn}
-                            onClick={handleReadAll}
-                          >
-                            <ListItemText
-                              primary={"Отметить все прочитанными"}
-                            />
+                          <ListItemButton className={styles.btn} onClick={handleReadAll}>
+                            <ListItemText primary='Отметить все прочитанными' />
                           </ListItemButton>
                         </ListItem>
                       </List>
@@ -179,14 +163,14 @@ const HeaderComponent: React.FC = () => {
 };
 
 const NotificationTypes = {
-  FOLLOW: "FOLLOW",
-  FRIEND: "FRIEND",
-  MSG: "MSG",
+  FOLLOW: 'FOLLOW',
+  FRIEND: 'FRIEND',
+  MSG: 'MSG',
 };
 
 const NotificationItem: React.FC<{ item?: INotifications; text?: string }> = (
   { item, text },
-  context
+  context,
 ) => {
   const dispatch = useAppDispatch();
   const userId = useSelector(getAuthId);
@@ -205,21 +189,18 @@ const NotificationItem: React.FC<{ item?: INotifications; text?: string }> = (
   const toggleAgree = (isAgree: boolean) => {
     dispatch(
       toggleFriendProfile({
-        userId: userId,
+        userId,
         query: `?fromId=${item.fromId}&isAgree=${isAgree}`,
-      })
+      }),
     );
   };
 
-  if (
-    item.type === NotificationTypes.FOLLOW ||
-    item.type === NotificationTypes.MSG
-  ) {
+  if (item.type === NotificationTypes.FOLLOW || item.type === NotificationTypes.MSG) {
     return (
       <>
         <ListItem key={uuidv4()} className={styles.item}>
           <ListItemText
-            primary={reactStringReplace(item.msg, "%s", (match, i) => (
+            primary={reactStringReplace(item.msg, '%s', (match, i) => (
               <Link to={`/user/${item.fromId}`}>{item.from}</Link>
             ))}
           />
@@ -234,24 +215,24 @@ const NotificationItem: React.FC<{ item?: INotifications; text?: string }> = (
       <>
         <ListItem key={uuidv4()} className={styles.item}>
           <ListItemText
-            primary={reactStringReplace(item.msg, "%s", (match, i) => (
+            primary={reactStringReplace(item.msg, '%s', (match, i) => (
               <Link to={`/user/${item.fromId}`}>{item.from}</Link>
             ))}
           />
           <ListItem className={styles.subItem}>
             <Button
-              size="small"
-              variant="outlined"
-              color={"error"}
+              size='small'
+              variant='outlined'
+              color='error'
               onClick={() => toggleAgree(false)}
             >
               Отклонить
             </Button>
 
             <Button
-              size="small"
-              variant="outlined"
-              color={"primary"}
+              size='small'
+              variant='outlined'
+              color='primary'
               onClick={() => toggleAgree(true)}
             >
               Принять

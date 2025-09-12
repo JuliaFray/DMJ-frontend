@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { Box } from "@mui/material";
+import { Box } from '@mui/material';
 
 type ITabPanel = {
   children?: React.ReactNode;
@@ -8,21 +8,16 @@ type ITabPanel = {
   value: number;
 };
 
-export const TabPanel: React.FC<ITabPanel> = ({
-  children,
-  value,
-  index,
-  ...other
-}) => {
+export const TabPanel: React.FC<ITabPanel> = ({ children, value, index, ...other }) => {
   return (
     <div
-      role="tabpanel"
+      role='tabpanel'
       hidden={value !== index}
       id={`full-width-tabpanel-${index}`}
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
     >
-      {value === index && <Box style={{ marginTop: "24px" }}>{children}</Box>}
+      {value === index && <Box style={{ marginTop: '24px' }}>{children}</Box>}
     </div>
   );
 };

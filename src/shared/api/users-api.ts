@@ -1,14 +1,11 @@
-import {
-  BaseQueryFn,
-  createApi,
-  EndpointBuilder,
-} from "@reduxjs/toolkit/query/react";
-import { UsersResponseType } from "shared/api/api-types";
-import customFetchBase from "shared/api/custom-fetch-base";
+import { BaseQueryFn, createApi, EndpointBuilder } from '@reduxjs/toolkit/query/react';
 
-const baseUrl = "users";
+import { UsersResponseType } from './api-types';
+import customFetchBase from './custom-fetch-base';
+
+const baseUrl = 'users';
 export const usersApi = createApi({
-  reducerPath: "usersApi",
+  reducerPath: 'usersApi',
   baseQuery: customFetchBase,
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
     getAllUsers: build.query<
@@ -17,17 +14,17 @@ export const usersApi = createApi({
     >({
       query: ({ currentPage, isFollowers, userId }) => {
         const searchParams = new URLSearchParams();
-        searchParams.append("currentPage", currentPage.toString());
+        searchParams.append('currentPage', currentPage.toString());
         if (isFollowers) {
-          searchParams.append("isFollowers", isFollowers + "");
+          searchParams.append('isFollowers', `${isFollowers}`);
         }
         if (userId) {
-          searchParams.append("userId", userId);
+          searchParams.append('userId', userId);
         }
 
         return {
-          url: `${baseUrl}?${searchParams.size ? searchParams.toString() : ""}`,
-          method: "GET",
+          url: `${baseUrl}?${searchParams.size ? searchParams.toString() : ''}`,
+          method: 'GET',
         };
       },
     }),

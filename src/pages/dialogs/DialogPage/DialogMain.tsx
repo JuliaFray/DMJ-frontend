@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from 'react';
 
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { SocketEvents } from "shared/lib/DictConstants";
-import { v4 as uuidv4 } from "uuid";
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
-import { Direction, Grid } from "@mui/material";
-import List from "@mui/material/List";
+import { Direction, Grid } from '@mui/material';
+import List from '@mui/material/List';
 
+import { useAppDispatch, useWebSocket } from 'shared/hook';
+import { SocketEvents } from 'shared/lib';
 import {
   appActions,
   dialogActions,
@@ -16,22 +17,18 @@ import {
   getMessages,
   getMessagesByDialogId,
   getSelectedDialog,
-  SimpleMessage,
-  TDialog,
-  TMessage,
-  useAppDispatch,
-  useWebSocket,
-} from "shared";
+} from 'shared/model';
+import { TDialog, TMessage } from 'shared/types';
+import { SimpleMessage } from 'shared/ui';
 
-import { SendMsg } from "features";
+import { SendMsg } from 'features';
+import { DialogHeader } from 'widgets';
 
-import { DialogHeader } from "widgets";
+import styles from '../dialog-page.module.scss';
 
-import styles from "../dialog-page.module.scss";
+import DialogItems from './DialogItems';
 
-import DialogItems from "./DialogItems";
-
-const DialogMain = () => {
+function DialogMain() {
   const ws = useWebSocket();
   const dispatch = useAppDispatch();
   const { id } = useParams();
@@ -51,11 +48,7 @@ const DialogMain = () => {
 
   useEffect(() => {
     if (!selectedDialog && dialogs.length) {
-      dispatch(
-        dialogActions.addSelectedDialog(
-          dialogs.find((d: TDialog) => d._id === id)
-        )
-      );
+      dispatch(dialogActions.addSelectedDialog(dialogs.find((d: TDialog) => d._id === id)));
     }
   }, [dialogs]);
 
@@ -66,14 +59,14 @@ const DialogMain = () => {
         dispatch(dialogActions.addMsg(data));
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   useEffect(() => {
     if (!ws) return;
 
-    ws.addEventListener("message", handleWS);
-    return () => ws.removeEventListener("message", handleWS);
+    ws.addEventListener('message', handleWS);
+    return () => ws.removeEventListener('message', handleWS);
   }, [handleWS, ws]);
 
   useEffect(() => {
@@ -90,13 +83,8 @@ const DialogMain = () => {
   }
 
   return (
-    <div style={{ position: "relative", height: "100%" }}>
-      <Grid
-        container
-        sx={{ margin: 0 }}
-        className={styles.dialogMain}
-        direction={"column"}
-      >
+    <div style={{ position: 'relative', height: '100%' }}>
+      <Grid container sx={{ margin: 0 }} className={styles.dialogMain} direction='column'>
         {selectedDialog && <DialogHeader selectedDialog={selectedDialog} />}
 
         <List className={styles.dialogBox}>
@@ -104,11 +92,11 @@ const DialogMain = () => {
             const sx =
               el?.from._id === authId
                 ? {
-                    direction: "ltr" as Direction,
+                    direction: 'ltr' as Direction,
                     backgroundColor: `rgba(159, 237, 215, 0.2)`,
                   }
                 : {
-                    direction: "rtl" as Direction,
+                    direction: 'rtl' as Direction,
                     backgroundColor: `rgba(2, 102, 112, 0.2)`,
                   };
 
@@ -129,6 +117,6 @@ const DialogMain = () => {
       </Grid>
     </div>
   );
-};
+}
 
 export default DialogMain;

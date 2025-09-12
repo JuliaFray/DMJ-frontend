@@ -1,6 +1,5 @@
-import { SocketEvents } from "shared/lib/DictConstants";
-
-import { RootState } from "../redux-store";
+import { SocketEvents } from '../../lib/DictConstants';
+import { RootState } from '../redux-store';
 
 export const getAppUserOnline = (state: RootState) => {
   return state.app.usersOnline;
@@ -11,9 +10,7 @@ export const getAppAllNotifications = (state: RootState) => {
 };
 
 export const getAppInfoNotifications = (state: RootState) => {
-  return state.app.notifications.filter(
-    (it) => it.type !== SocketEvents.MSG_EVENT
-  );
+  return state.app.notifications.filter((it) => it.type !== SocketEvents.MSG_EVENT);
 };
 
 export const getAppMsgNotifications = (state: RootState) => {

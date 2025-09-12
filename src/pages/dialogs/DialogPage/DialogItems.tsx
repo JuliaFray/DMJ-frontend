@@ -1,23 +1,18 @@
-import React from "react";
+import React from 'react';
 
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "shared/hook/hooks";
-import { getFullName, getImage } from "shared/lib/helper";
-import { dialogActions, getDialogs } from "shared/model/dialog";
-import { v4 as uuidv4 } from "uuid";
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
-import {
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Typography,
-} from "@mui/material";
-import Avatar from "@mui/material/Avatar";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
+import { ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
 
-import { getAuthId, TDialog } from "shared";
+import { useAppDispatch } from 'shared/hook';
+import { getFullName, getImage } from 'shared/lib';
+import { dialogActions, getAuthId, getDialogs } from 'shared/model';
+import { TDialog } from 'shared/types';
 
 const DialogItems: React.FC = () => {
   const items = useSelector(getDialogs);
@@ -31,36 +26,27 @@ const DialogItems: React.FC = () => {
   };
 
   return (
-    <List key={uuidv4()} sx={{ width: "100%", bgcolor: "background.paper" }}>
+    <List key={uuidv4()} sx={{ width: '100%', bgcolor: 'background.paper' }}>
       {items.map((item: TDialog) => {
-        const users = item.isPrivate
-          ? item.users.filter((u) => u._id !== authId)
-          : item.users;
-        const user =
-          item.lastMsg.from.userId === authId
-            ? item.lastMsg.from
-            : item.lastMsg.to;
+        const users = item.isPrivate ? item.users.filter((u) => u._id !== authId) : item.users;
+        const user = item.lastMsg.from.userId === authId ? item.lastMsg.from : item.lastMsg.to;
         return (
-          <ListItem alignItems="flex-start">
+          <ListItem alignItems='flex-start'>
             <ListItemButton key={uuidv4()} onClick={() => onDialogSelect(item)}>
               <ListItemAvatar>
-                <Avatar
-                  key={uuidv4()}
-                  alt={getFullName(user)}
-                  src={getImage(user.avatar, true)}
-                />
+                <Avatar key={uuidv4()} alt={getFullName(user)} src={getImage(user.avatar, true)} />
               </ListItemAvatar>
               <ListItemText
                 primary={`${user.firstName} ${user.secondName}`}
                 secondary={
-                  <React.Fragment>
+                  <>
                     <Typography
-                      component="span"
-                      variant="body2"
-                      sx={{ color: "text.primary", display: "inline" }}
-                    ></Typography>
+                      component='span'
+                      variant='body2'
+                      sx={{ color: 'text.primary', display: 'inline' }}
+                    />
                     {item.lastMsg.text}
-                  </React.Fragment>
+                  </>
                 }
               />
             </ListItemButton>

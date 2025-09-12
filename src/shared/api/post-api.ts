@@ -1,81 +1,63 @@
-import {
-  BaseQueryFn,
-  createApi,
-  EndpointBuilder,
-} from "@reduxjs/toolkit/query/react";
-import customFetchBase from "shared/api/custom-fetch-base";
+import { BaseQueryFn, createApi, EndpointBuilder } from '@reduxjs/toolkit/query/react';
 
-import { TArticle, TChipData, TComment } from "shared";
+import { TArticle, TChipData, TComment } from '../types';
 
-import { instance } from "./api";
-import { GenericResponseType, PostsResponseType } from "./api-types";
+import { instance } from './api';
+import { GenericResponseType, PostsResponseType } from './api-types';
+import customFetchBase from './custom-fetch-base';
 
-const baseUrl = "posts";
+const baseUrl = 'posts';
 export const postAPI = {
   getPopularTags() {
-    return instance
-      .get<GenericResponseType<TChipData[]>>(`tags`)
-      .then((response) => {
-        return response.data;
-      });
+    return instance.get<GenericResponseType<TChipData[]>>(`tags`).then((response) => {
+      return response.data;
+    });
   },
 
   getPopularAuthors() {
-    return instance
-        .get<GenericResponseType<TChipData[]>>(`authors`)
-        .then((response) => {
-          return response.data;
-        });
+    return instance.get<GenericResponseType<TChipData[]>>(`authors`).then((response) => {
+      return response.data;
+    });
   },
 
   markPostFavorite(postId: string) {
-    return instance
-      .put<GenericResponseType<void>>(`${baseUrl}/${postId}/like`)
-      .then((response) => {
-        return response.data;
-      });
+    return instance.put<GenericResponseType<void>>(`${baseUrl}/${postId}/like`).then((response) => {
+      return response.data;
+    });
   },
 
   toggleRating(postId: string, rating: number) {
     return instance
-      .put<GenericResponseType<void>>(
-        `${baseUrl}/${postId}/rating?rating=${rating}`
-      )
+      .put<GenericResponseType<void>>(`${baseUrl}/${postId}/rating?rating=${rating}`)
       .then((response) => {
         return response.data;
       });
   },
 
   getPopular() {
-    return instance
-      .get<GenericResponseType<TArticle[]>>(`${baseUrl}/popular`)
-      .then((response) => {
-        return response.data;
-      });
+    return instance.get<GenericResponseType<TArticle[]>>(`${baseUrl}/popular`).then((response) => {
+      return response.data;
+    });
   },
 
   getRecommendationPost(originPostId: string) {
     return instance
-      .get<GenericResponseType<TArticle[]>>(
-        `${baseUrl}/recommendations?postId=${originPostId}`
-      )
+      .get<GenericResponseType<TArticle[]>>(`${baseUrl}/recommendations?postId=${originPostId}`)
       .then((response) => {
         return response.data;
       });
   },
 
   getOne(postId: string) {
-    return instance
-      .get<GenericResponseType<TArticle>>(`${baseUrl}/${postId}`)
-      .then((response) => {
-        return response.data;
-      });
+    return instance.get<GenericResponseType<TArticle>>(`${baseUrl}/${postId}`).then((response) => {
+      return response.data;
+    });
   },
 
   createPost(data: FormData) {
     return instance
       .post<GenericResponseType<TArticle>>(`${baseUrl}`, data, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((response) => {
         return response.data;
@@ -85,7 +67,7 @@ export const postAPI = {
   updatePost(data: FormData, id: string) {
     return instance
       .put<GenericResponseType<void>>(`${baseUrl}/${id}`, data, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((response) => {
         return response.data;
@@ -93,19 +75,14 @@ export const postAPI = {
   },
 
   deletePost(postId: string) {
-    return instance
-      .delete<GenericResponseType<void>>(`${baseUrl}/${postId}`)
-      .then((response) => {
-        return response.data;
-      });
+    return instance.delete<GenericResponseType<void>>(`${baseUrl}/${postId}`).then((response) => {
+      return response.data;
+    });
   },
 
   createPostComment(comment: TComment, postId: string) {
     return instance
-      .post<GenericResponseType<TArticle>>(
-        `${baseUrl}/${postId}/comment`,
-        comment
-      )
+      .post<GenericResponseType<TArticle>>(`${baseUrl}/${postId}/comment`, comment)
       .then((response) => {
         return response.data;
       });
@@ -113,9 +90,7 @@ export const postAPI = {
 
   toggleCommentRating(commentId: string, rating: number) {
     return instance
-      .put<GenericResponseType<void>>(
-        `${baseUrl}/${commentId}/comment-rating?rating=${rating}`
-      )
+      .put<GenericResponseType<void>>(`${baseUrl}/${commentId}/comment-rating?rating=${rating}`)
       .then((response) => {
         return response.data;
       });
@@ -123,36 +98,33 @@ export const postAPI = {
 
   getUserPostComments(userId: string) {
     return instance
-      .get<GenericResponseType<TArticle[]>>(
-        `${baseUrl}/post-comments?userId=${userId}`
-      )
+      .get<GenericResponseType<TArticle[]>>(`${baseUrl}/post-comments?userId=${userId}`)
       .then((response) => {
         return response.data;
       });
   },
 };
 export const articleApi = createApi({
-  reducerPath: "articleApi",
+  reducerPath: 'articleApi',
   baseQuery: customFetchBase,
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
     getAllArticles: build.query<PostsResponseType, { searchParams: string }>({
       query: ({ searchParams }) => {
         return {
           url: `${baseUrl}${searchParams}`,
-          method: "GET",
+          method: 'GET',
         };
       },
     }),
-    getAllTags: build.query<GenericResponseType<TChipData[]>, {}>({
-      query: ({}) => {
+    getAllTags: build.query<GenericResponseType<TChipData[]>, unknown>({
+      query: (_) => {
         return {
           url: `all-tags`,
-          method: "GET",
+          method: 'GET',
         };
       },
     }),
   }),
 });
 
-export const { useLazyGetAllArticlesQuery, useLazyGetAllTagsQuery } =
-  articleApi;
+export const { useLazyGetAllArticlesQuery, useLazyGetAllTagsQuery } = articleApi;

@@ -1,28 +1,52 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
-import { Comment } from "entities/comment";
-import CommonLayoutUi from "pages/layouts/common-layout.ui";
-import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+import { useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
-import List from "@mui/material/List";
+import List from '@mui/material/List';
 
-import { getPostComments, getUserPostComments, useAppDispatch } from "shared";
-import { TArticle, TComment } from "shared";
+import { useAppDispatch } from 'shared/hook';
+import { getPostComments, getUserPostComments } from 'shared/model';
+import { TArticle, TComment } from 'shared/types';
 
-import { ArticleCard } from "widgets";
+import { Comment } from 'entities/comment';
+
+// eslint-disable-next-line no-restricted-imports
+import { ArticleCard } from 'widgets';
+
+// eslint-disable-next-line no-restricted-imports
+import { CommonLayoutUi } from '../../app/layouts';
 
 type IPostCommentPage = {
   userId: string;
 };
 
-export const CommentsFeed: React.FC<IPostCommentPage> = (props, context) => {
+const PostCommentItem: React.FC<{ item: TArticle }> = ({ item }) => {
+  return (
+    <>
+      <ArticleCard
+        key={item._id}
+        isMain={false}
+        isComments
+        post={item}
+        avatarAbbr={item.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}
+      />
+      <List key={uuidv4()}>
+        {item.comments.map((obj: TComment) => (
+          <Comment key={uuidv4()} item={obj} isLoading={false} />
+        ))}
+      </List>
+    </>
+  );
+};
+
+export const CommentsFeed: React.FC<IPostCommentPage> = ({ userId }) => {
   const dispatch = useAppDispatch();
 
   const postComments = useSelector(getPostComments);
 
   useEffect(() => {
-    dispatch(getUserPostComments({ userId: props.userId }));
+    dispatch(getUserPostComments({ userId }));
   }, []);
 
   return (
@@ -36,26 +60,5 @@ export const CommentsFeed: React.FC<IPostCommentPage> = (props, context) => {
         </div>
       }
     />
-  );
-};
-
-const PostCommentItem: React.FC<{ item: TArticle }> = (props, context) => {
-  return (
-    <>
-      <ArticleCard
-        key={props.item._id}
-        isMain={false}
-        isComments={true}
-        post={props.item}
-        avatarAbbr={
-          props.item.author?.firstName?.substring(0, 1).toUpperCase() || "U"
-        }
-      />
-      <List key={uuidv4()}>
-        {props.item.comments.map((obj: TComment) => (
-          <Comment key={uuidv4()} item={obj} isLoading={false} />
-        ))}
-      </List>
-    </>
   );
 };

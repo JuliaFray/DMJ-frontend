@@ -1,13 +1,9 @@
-import { NO_AVATAR } from "shared/lib/DictConstants";
+import { NO_AVATAR } from 'shared/lib';
 
-import { TImage, TProfile, TUser } from "shared";
+import { TImage, TProfile, TUser } from '../types';
 
 export const getImage = (img: TImage | undefined, isAvatar = false) => {
-  return !!img
-    ? `data:image/jpeg;base64,${img.data}`
-    : isAvatar
-    ? NO_AVATAR
-    : "";
+  return img ? `data:image/jpeg;base64,${img.data}` : isAvatar ? NO_AVATAR : '';
 };
 
 export const hasImage = (arr: TImage | undefined) => {
@@ -15,21 +11,17 @@ export const hasImage = (arr: TImage | undefined) => {
 };
 
 export const getFullName = (user: TUser | TProfile) => {
-  return `${user.firstName} ${user.secondName} ${
-    user.lastName ? user.lastName : ""
-  }`;
+  return `${user.firstName} ${user.secondName} ${user.lastName ? user.lastName : ''}`;
 };
 
 export const convertBase64ToBlob = (image: string): Blob => {
-  const byteString = atob(
-    image.replace(/^data:image\/(png|jpeg|jpg);base64,/, "")
-  );
+  const byteString = atob(image.replace(/^data:image\/(png|jpeg|jpg);base64,/, ''));
   const ab = new ArrayBuffer(byteString.length);
   const ia = new Uint8Array(ab);
   for (let i = 0; i < byteString.length; i += 1) {
     ia[i] = byteString.charCodeAt(i);
   }
   return new Blob([ab], {
-    type: "image/jpeg",
+    type: 'image/jpeg',
   });
 };

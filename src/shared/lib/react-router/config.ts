@@ -1,26 +1,26 @@
 export const pathKeys = {
-  root: "/",
+  root: '/',
   login() {
-    return pathKeys.root.concat("login/");
+    return pathKeys.root.concat('login/');
   },
   register() {
-    return pathKeys.root.concat("register/");
+    return pathKeys.root.concat('register/');
   },
   settings() {
-    return pathKeys.root.concat("settings/");
+    return pathKeys.root.concat('settings/');
   },
   home() {
     return pathKeys.root;
   },
   page404() {
-    return pathKeys.root.concat("404/");
+    return pathKeys.root.concat('404/');
   },
   dialogs() {
-    return pathKeys.root.concat("dialogs");
+    return pathKeys.root.concat('dialogs');
   },
   diet: {
     root() {
-      return pathKeys.root.concat("planner/");
+      return pathKeys.root.concat('planner/');
     },
     byId({ id }: any) {
       return pathKeys.diet.root().concat(id);
@@ -28,7 +28,7 @@ export const pathKeys = {
   },
   users: {
     root() {
-      return pathKeys.root.concat("users/");
+      return pathKeys.root.concat('users/');
     },
     byId({ id }: any) {
       return pathKeys.root.concat(id);
@@ -36,7 +36,7 @@ export const pathKeys = {
   },
   article: {
     root() {
-      return pathKeys.root.concat("article/");
+      return pathKeys.root.concat('article/');
     },
     byId({ id }: any) {
       return pathKeys.article.root().concat(id);
@@ -44,13 +44,13 @@ export const pathKeys = {
   },
   profile: {
     root() {
-      return pathKeys.root.concat("user/");
+      return pathKeys.root.concat('user/');
     },
     byUsername({ username }: any) {
-      return pathKeys.profile.root().concat(username, "/");
+      return pathKeys.profile.root().concat(username, '/');
     },
     byUsernameFavorites({ username }: any) {
-      return pathKeys.profile.byUsername({ username }).concat("favorites/");
+      return pathKeys.profile.byUsername({ username }).concat('favorites/');
     },
     byId({ id }: any) {
       return pathKeys.profile.root().concat(id);
@@ -58,7 +58,7 @@ export const pathKeys = {
   },
   editor: {
     root() {
-      return pathKeys.root.concat("editor/");
+      return pathKeys.root.concat('editor/');
     },
     byId({ id }: any) {
       return pathKeys.editor.root().concat(id);

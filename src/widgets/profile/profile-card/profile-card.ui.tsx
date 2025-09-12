@@ -1,10 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 
-import { useSelector } from "react-redux";
-import useWebSocket, { useAppDispatch } from "shared/hook/hooks";
-import { SocketEvents } from "shared/lib/DictConstants";
-import { getFullName } from "shared/lib/helper";
-import { ProfileData } from "widgets/profile";
+import { useSelector } from 'react-redux';
 
 import {
   Container,
@@ -15,31 +11,30 @@ import {
   DialogTitle,
   TextField,
   Tooltip,
-} from "@mui/material";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
+} from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
 
-import {
-  appActions,
-  getAppUserOnline,
-  getAuthId,
-  toggleFollowProfile,
-  TProfile,
-} from "shared";
+import { ProfileData } from 'widgets/profile';
 
-import styles from "./../ProfileInfo.module.scss";
+import { useAppDispatch, useWebSocket } from 'shared/hook';
+import { getFullName, SocketEvents } from 'shared/lib';
+import { appActions, getAppUserOnline, getAuthId, toggleFollowProfile } from 'shared/model';
+import { TProfile } from 'shared/types';
+
+import styles from '../ProfileInfo.module.scss';
 
 type TProfileMain = {
   isOwner: boolean;
   profile: TProfile;
 };
 
-export const ProfileCard: React.FC<TProfileMain> = (props, context) => {
+export const ProfileCard: React.FC<TProfileMain> = ({ isOwner, profile }) => {
   const authId = useSelector(getAuthId);
   const users = useSelector(getAppUserOnline);
 
   const [status, setStatus] = useState(false);
-  const [isFollowed, setIsFollowed] = useState(props.profile.isFollowed);
+  const [isFollowed, setIsFollowed] = useState(profile.isFollowed);
   const [open, setOpen] = React.useState(false);
 
   const ws = useWebSocket();
@@ -49,23 +44,23 @@ export const ProfileCard: React.FC<TProfileMain> = (props, context) => {
     (e: any) => {
       const { type, data } = JSON.parse(e.data);
       if (type === SocketEvents.LOGOUT_EVENT) {
-        setStatus(!data.includes(props.profile._id));
+        setStatus(!data.includes(profile._id));
         dispatch(
           appActions.setUsersOnline({
-            type: "app/setUserOnline",
-            payload: props.profile._id,
-          })
+            type: 'app/setUserOnline',
+            payload: profile._id,
+          }),
         );
       }
     },
-    [dispatch, props.profile._id]
+    [dispatch, profile._id],
   );
 
   useEffect(() => {
     if (!ws) return;
 
-    ws.addEventListener("message", handleWS);
-    return () => ws.removeEventListener("message", handleWS);
+    ws.addEventListener('message', handleWS);
+    return () => ws.removeEventListener('message', handleWS);
   }, [handleWS, ws]);
 
   const handleClose = () => {
@@ -78,18 +73,15 @@ export const ProfileCard: React.FC<TProfileMain> = (props, context) => {
     dispatch(
       toggleFollowProfile({
         profileId: authId,
-        query: `?userId=${props.profile._id}&isFollow=${!isFollowed}`,
-        userId: props.profile._id,
-      })
+        query: `?userId=${profile._id}&isFollow=${!isFollowed}`,
+        userId: profile._id,
+      }),
     );
   };
 
-  const isOnline = status || users.includes(props.profile._id);
+  const isOnline = status || users.includes(profile._id);
 
-  const onSubmit = (
-    event: React.FormEvent<HTMLFormElement>,
-    user: TProfile
-  ) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>, user: TProfile) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries((formData as any).entries());
@@ -101,7 +93,7 @@ export const ProfileCard: React.FC<TProfileMain> = (props, context) => {
       text: formJson.text,
       dialogId: null,
     };
-    ws?.send(JSON.stringify({ type: SocketEvents.MSG_EVENT, msg: msg }));
+    ws?.send(JSON.stringify({ type: SocketEvents.MSG_EVENT, msg }));
 
     handleClose();
   };
@@ -109,9 +101,7 @@ export const ProfileCard: React.FC<TProfileMain> = (props, context) => {
   return (
     <Card
       className={
-        isOnline
-          ? `${styles.profileCard} ${styles.on}`
-          : `${styles.profileCard} ${styles.off}`
+        isOnline ? `${styles.profileCard} ${styles.on}` : `${styles.profileCard} ${styles.off}`
       }
     >
       <Container
@@ -122,40 +112,40 @@ export const ProfileCard: React.FC<TProfileMain> = (props, context) => {
         }
       >
         <div className={styles.actions}>
-          {!props.isOwner && !!authId && (
+          {!isOwner && !!authId && (
             <>
               {isFollowed ? (
-                <Tooltip title={"Отписаться"}>
+                <Tooltip title='Отписаться'>
                   <Button
                     sx={{ mr: 1 }}
                     className={styles.buttons}
                     onClick={handleFollowClick}
-                    size="small"
-                    variant="contained"
+                    size='small'
+                    variant='contained'
                   >
                     <span>Отписаться</span>
                   </Button>
                 </Tooltip>
               ) : (
-                <Tooltip title={"Подписаться"}>
+                <Tooltip title='Подписаться'>
                   <Button
                     sx={{ mr: 1 }}
                     className={styles.buttons}
                     onClick={handleFollowClick}
-                    size="small"
-                    variant="outlined"
+                    size='small'
+                    variant='outlined'
                   >
                     <span>Подписаться</span>
                   </Button>
                 </Tooltip>
               )}
 
-              <Tooltip title={"Написать"}>
+              <Tooltip title='Написать'>
                 <Button
                   className={styles.buttons}
                   onClick={() => setOpen(true)}
-                  size="small"
-                  variant="outlined"
+                  size='small'
+                  variant='outlined'
                 >
                   <span>Написать</span>
                 </Button>
@@ -166,31 +156,28 @@ export const ProfileCard: React.FC<TProfileMain> = (props, context) => {
                 fullWidth
                 onClose={handleClose}
                 PaperProps={{
-                  component: "form",
-                  onSubmit: (event: React.FormEvent<HTMLFormElement>) =>
-                    onSubmit(event, props.profile),
+                  component: 'form',
+                  onSubmit: (event: React.FormEvent<HTMLFormElement>) => onSubmit(event, profile),
                 }}
               >
                 <DialogTitle>Отправить сообщение</DialogTitle>
                 <DialogContent>
-                  <DialogContentText>
-                    Кому: {getFullName(props.profile)}
-                  </DialogContentText>
+                  <DialogContentText>Кому: {getFullName(profile)}</DialogContentText>
                   <TextField
                     autoFocus
                     required
-                    margin="dense"
-                    id="name"
-                    name="text"
-                    placeholder="Введите сообщение..."
-                    type="text"
+                    margin='dense'
+                    id='name'
+                    name='text'
+                    placeholder='Введите сообщение...'
+                    type='text'
                     fullWidth
-                    variant="outlined"
+                    variant='outlined'
                   />
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>Отмена</Button>
-                  <Button variant="contained" type="submit">
+                  <Button variant='contained' type='submit'>
                     Отправить
                   </Button>
                 </DialogActions>
@@ -201,7 +188,7 @@ export const ProfileCard: React.FC<TProfileMain> = (props, context) => {
       </Container>
 
       <Container className={styles.profileInfo}>
-        <ProfileData profile={props.profile} isOwner={props.isOwner} />
+        <ProfileData profile={profile} isOwner={isOwner} />
       </Container>
     </Card>
   );

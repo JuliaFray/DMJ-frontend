@@ -1,2 +1,2 @@
-export * as spinnerSlice from './spinner-slice';
-export * as spinnerSelector from './spinner-selector';
+export * from './spinner-slice';
+export * from './spinner-selector';

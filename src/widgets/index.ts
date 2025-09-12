@@ -1,15 +1,10 @@
-export * from "./comment-block";
-export * from "./tag-widget";
-export * from "./home-tabs";
-export * from "./article";
-export {
-  ProfileTabs,
-  ProfileAvatar,
-  ProfileData,
-  ProfileCard,
-} from "./profile";
-export * from "./recommendations";
-export { UserRow, UserInfo, UserRowSkeleton, UsersFeed } from "./users";
-export { DietCard, DietsFeed } from "./diet";
-export * from "./dialog-header";
-export { MenuWidget } from "./menu-widget";
+export * from './comment-block';
+export * from './tag-widget';
+export * from './home-tabs';
+export * from './article';
+export { ProfileTabs, ProfileAvatar, ProfileData, ProfileCard } from './profile';
+export * from './recommendations';
+export { UserRow, UserInfo, UserRowSkeleton, UsersFeed } from './users';
+export { DietCard, DietsFeed } from './diet';
+export * from './dialog-header';
+export { MenuWidget } from './menu-widget';

@@ -1,6 +1,7 @@
-import palette from "shared/themes/palette.module.scss";
+import { createTheme } from '@mui/material';
 
-import { createTheme } from "@mui/material";
+// eslint-disable-next-line no-restricted-imports
+import palette from 'shared/themes/palette.module.scss';
 
 export const theme = createTheme({
   palette: {
@@ -21,7 +22,7 @@ export const theme = createTheme({
     },
     success: {
       main: palette.success,
-      dark: "rgba(0, 0, 0, 0.54)",
+      dark: 'rgba(0, 0, 0, 0.54)',
     },
   },
   typography: {
@@ -46,27 +47,27 @@ export const theme = createTheme({
     MuiFormLabel: {
       styleOverrides: {
         root: {
-          lineHeight: "1em",
-          top: "0px!important",
-          "&.Mui-focused": {
-            top: "-5px!important",
-          }
+          lineHeight: '1em',
+          top: '0px!important',
+          '&.Mui-focused': {
+            top: '-5px!important',
+          },
         },
       },
     },
     MuiInputBase: {
       styleOverrides: {
         root: {
-          "&.Mui-focused": {
-            border: "1px solid rgb(3,154,154)",
+          '&.Mui-focused': {
+            border: '1px solid rgb(3,154,154)',
           },
-          height: "50px",
-          borderRadius: "15px !important",
+          height: '50px',
+          borderRadius: '15px !important',
         },
         input: {
-          height: "50px",
-          padding: "0 10px !important",
-          borderRadius: "15px !important",
+          height: '50px',
+          padding: '0 10px !important',
+          borderRadius: '15px !important',
         },
       },
     },
@@ -76,35 +77,35 @@ export const theme = createTheme({
           padding: 0,
         },
         inputRoot: {
-          height: "max-content",
+          height: 'max-content',
         },
         input: {
-          height: "40px",
-          padding: "0 !important",
+          height: '40px',
+          padding: '0 !important',
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          height: "40px",
-          borderRadius: "15px",
+          height: '40px',
+          borderRadius: '15px',
         },
       },
     },
     MuiChip: {
       styleOverrides: {
         filledSecondary: {
-          color: "#fff",
+          color: '#fff',
         },
       },
     },
     MuiFormHelperText: {
       styleOverrides: {
         root: {
-          height: "20px",
-          marginBottom: "-20px",
-          marginTop: "0",
+          height: '20px',
+          marginBottom: '-20px',
+          marginTop: '0',
         },
       },
     },

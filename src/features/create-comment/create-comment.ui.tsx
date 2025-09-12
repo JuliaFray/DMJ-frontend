@@ -1,32 +1,31 @@
-import React from "react";
+import React from 'react';
 
-import { FieldValues, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { createPostComment } from "shared";
-import { getMyProfileAvatar, getMyProfileFullName } from "shared";
+import { FieldValues, useForm } from 'react-hook-form';
 
-import SendIcon from "@mui/icons-material/Send";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
+import SendIcon from '@mui/icons-material/Send';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
 
-import { NO_AVATAR } from "shared/lib/DictConstants";
+import { useAppDispatch, useAppSelector } from 'shared/hook';
+import { NO_AVATAR } from 'shared/lib';
+import { createPostComment, getMyProfileAvatar, getMyProfileFullName } from 'shared/model';
 
-import styles from "entities/comment/comment.module.scss";
+import { styles } from 'entities/comment';
 
 export type ICommentCreate = {
   postId: string;
 };
 
 export const CreateComment: React.FC<ICommentCreate> = ({ postId }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { register, handleSubmit, resetField } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
   });
 
-  const avatar = useSelector(getMyProfileAvatar);
-  const fullName = useSelector(getMyProfileFullName);
+  const avatar = useAppSelector(getMyProfileAvatar);
+  const fullName = useAppSelector(getMyProfileFullName);
 
   const onSubmit = (formData: FieldValues) => {
     dispatch(
@@ -35,36 +34,31 @@ export const CreateComment: React.FC<ICommentCreate> = ({ postId }) => {
           text: formData.text,
         },
         postId,
-      })
+      }),
     );
-    resetField("text");
+    resetField('text');
   };
 
   return (
-    <>
-      <div className={styles.root}>
-        <Avatar
-          className={styles.avatar}
-          src={(avatar && `data:image/jpeg;base64,${avatar.data}`) || NO_AVATAR}
-          alt={fullName}
+    <div className={styles.default.root}>
+      <Avatar
+        className={styles.default.avatar}
+        src={(avatar && `data:image/jpeg;base64,${avatar.data}`) || NO_AVATAR}
+        alt={fullName}
+      />
+      <form className={styles.default.form} onSubmit={handleSubmit((values) => onSubmit(values))}>
+        <TextField
+          label='Написать комментарий'
+          variant='outlined'
+          maxRows={10}
+          multiline
+          fullWidth
+          {...register('text')}
         />
-        <form
-          className={styles.form}
-          onSubmit={handleSubmit((values) => onSubmit(values))}
-        >
-          <TextField
-            label="Написать комментарий"
-            variant="outlined"
-            maxRows={10}
-            multiline
-            fullWidth
-            {...register("text")}
-          />
-          <IconButton className={styles.btn} type={"submit"} color="primary">
-            <SendIcon />
-          </IconButton>
-        </form>
-      </div>
-    </>
+        <IconButton className={styles.default.btn} type='submit' color='primary'>
+          <SendIcon />
+        </IconButton>
+      </form>
+    </div>
   );
 };

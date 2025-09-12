@@ -1,2 +1,2 @@
-export * from './react.hoc'
-export {compose} from './compose'
+export { withAuthRedirect, withSuspense } from './react.hoc';
+export { compose } from './compose';

@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-import { login, registerUser } from "shared";
+import { login, registerUser } from './auth-thunks';
 
 type ValidationError = Record<string, any>;
 
@@ -12,16 +12,16 @@ type InitialStateType = {
   globalError: string;
 };
 
-let initialState: InitialStateType = {
-  id: "",
+const initialState: InitialStateType = {
+  id: '',
   isAuth: false,
   isFetching: false,
   errors: {},
-  globalError: "",
+  globalError: '',
 };
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     setAuth: (state, payload: any) => {
@@ -30,8 +30,8 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.isAuth = false;
-      state.id = "";
-      window.localStorage.removeItem("token");
+      state.id = '';
+      window.localStorage.removeItem('token');
     },
     setErrors: (state, payload) => {
       if (payload.payload instanceof Array) {
@@ -48,7 +48,7 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      //=====login=====//
+      //= ====login=====//
       .addCase(login.pending, (state) => {
         state.isFetching = true;
       })
@@ -57,14 +57,14 @@ const authSlice = createSlice({
         if (action.payload) {
           state.isAuth = true;
           state.id = action.payload._id;
-          state.globalError = "";
+          state.globalError = '';
           state.errors = [];
         }
       })
       .addCase(login.rejected, (state) => {
         state.isFetching = false;
       })
-      //=====registerUser=====//
+      //= ====registerUser=====//
       .addCase(registerUser.pending, (state) => {
         state.isFetching = true;
       })
@@ -73,7 +73,7 @@ const authSlice = createSlice({
         if (action.payload) {
           state.isAuth = true;
           state.id = action.payload._id;
-          state.globalError = "";
+          state.globalError = '';
           state.errors = [];
         }
       })

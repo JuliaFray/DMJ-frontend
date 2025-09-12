@@ -1,27 +1,24 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 
-import { useSelector } from "react-redux";
-import { useLazyGetAllTagsQuery } from "shared/api/post-api";
-import { getAllFetchedTags } from "shared/model";
-import { v4 as uuidv4 } from "uuid";
+import { useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
-import { CircularProgress } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
+import { CircularProgress } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 
-import { TChipData } from "shared";
+import { useLazyGetAllTagsQuery } from '../../api';
+import { getAllFetchedTags } from '../../model';
+import { TChipData } from '../../types';
 
 type IAutocompleteField = {
   values: (string | TChipData)[];
   onChange: (val: (string | TChipData)[]) => void;
 };
-export const AutocompleteField: React.FC<IAutocompleteField> = (
-  props,
-  context
-) => {
-  const [currentTag, setCurrentTag] = useState<string>("");
+export const AutocompleteField: React.FC<IAutocompleteField> = (props) => {
+  const [currentTag, setCurrentTag] = useState<string>('');
   const [value, setValue] = useState<(string | TChipData)[]>(props.values);
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<(string | TChipData)[]>(props.values);
@@ -52,13 +49,13 @@ export const AutocompleteField: React.FC<IAutocompleteField> = (
   }, [options]);
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key == "Enter") {
-      const value = {
-        _id: uuidv4().replaceAll("-", "").slice(0, 24),
+    if (event.key === 'Enter') {
+      const v = {
+        _id: uuidv4().replaceAll('-', '').slice(0, 24),
         value: currentTag,
       };
-      setOptions([...options, value]);
-      setCurrentTag("");
+      setOptions([...options, v]);
+      setCurrentTag('');
 
       event.stopPropagation();
       event.preventDefault();
@@ -66,9 +63,9 @@ export const AutocompleteField: React.FC<IAutocompleteField> = (
   };
 
   return (
-    <Stack spacing={3} sx={{ width: "100%" }}>
+    <Stack spacing={3} sx={{ width: '100%' }}>
       <Autocomplete
-        id="autocomplete-standard"
+        id='autocomplete-standard'
         multiple
         freeSolo
         options={options}
@@ -85,31 +82,27 @@ export const AutocompleteField: React.FC<IAutocompleteField> = (
         onClose={() => {
           setOpen(false);
         }}
-        isOptionEqualToValue={(option, value) =>
-          typeof option === "string" || typeof value === "string"
-            ? option === value
-            : option._id === value._id
+        isOptionEqualToValue={(option, v) =>
+          typeof option === 'string' || typeof v === 'string' ? option === v : option._id === v._id
         }
         getOptionLabel={(option: string | TChipData) =>
-          typeof option === "string" ? option : option.value
+          typeof option === 'string' ? option : option.value
         }
         renderInput={(params) => (
           <TextField
             {...params}
-            variant="outlined"
-            label="Тэги"
+            variant='outlined'
+            label='Тэги'
             onKeyDown={handleKeyPress}
             value={currentTag}
             onChange={(e) => setCurrentTag(e.target.value)}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
-                <React.Fragment>
-                  {loading ? (
-                    <CircularProgress color="inherit" size={20} />
-                  ) : null}
+                <>
+                  {loading ? <CircularProgress color='inherit' size={20} /> : null}
                   {params.InputProps.endAdornment}
-                </React.Fragment>
+                </>
               ),
             }}
           />

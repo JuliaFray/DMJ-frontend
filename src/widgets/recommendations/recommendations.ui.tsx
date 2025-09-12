@@ -1,23 +1,18 @@
-import React from "react";
+import React from 'react';
 
-import { TArticle } from "shared";
+import { TArticle } from 'shared/types';
 
-import { ArticleCard, ArticleCarousel } from "widgets";
+import { ArticleCard, ArticleCarousel } from 'widgets';
 
-export const Recommendations: React.FC<{ posts: TArticle[] }> = (
-  props,
-  context
-) => {
+export const Recommendations: React.FC<{ posts: TArticle[] }> = ({ posts }) => {
   return (
-    <ArticleCarousel posts={props.posts}>
-      {props.posts.map((item) => (
+    <ArticleCarousel posts={posts}>
+      {posts.map((item) => (
         <ArticleCard
-          isMain={true}
+          isMain
           key={item._id}
           post={item}
-          avatarAbbr={
-            item.author?.firstName?.substring(0, 1).toUpperCase() || "U"
-          }
+          avatarAbbr={item.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}
         />
       ))}
     </ArticleCarousel>

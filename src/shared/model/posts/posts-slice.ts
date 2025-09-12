@@ -1,19 +1,21 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { GenericResponseType } from "shared/api/api-types";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { articleApi, TArticle, TChipData, TImage } from "shared";
+import { articleApi } from '../../api';
+import { GenericResponseType } from '../../api/api-types';
+import { TArticle, TChipData, TImage } from '../../types';
 
 import {
   createPost,
   createPostComment,
   deletePost,
   editPost,
-  getOnePost, getPopularAuthors,
+  getOnePost,
+  getPopularAuthors,
   getPopularPost,
   getPopularTags,
   getRecommendationPost,
   getUserPostComments,
-} from "./posts-thunks";
+} from './posts-thunks';
 
 type TInitial = {
   isFetching: boolean;
@@ -44,7 +46,7 @@ const initialState: TInitial = {
 };
 
 const postsSlice = createSlice({
-  name: "posts",
+  name: 'posts',
   initialState,
   reducers: {
     clearState: (state) => {
@@ -69,39 +71,33 @@ const postsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      //=====getPopularTags=====//
+      //= ====getPopularTags=====//
       .addCase(getPopularTags.pending, (state) => {
         state.isFetching = true;
         state.popularTags = [];
       })
-      .addCase(
-        getPopularTags.fulfilled,
-        (state, action: PayloadAction<TChipData[]>) => {
-          state.isFetching = false;
-          state.popularTags = action.payload;
-        }
-      )
+      .addCase(getPopularTags.fulfilled, (state, action: PayloadAction<TChipData[]>) => {
+        state.isFetching = false;
+        state.popularTags = action.payload;
+      })
       .addCase(getPopularTags.rejected, (state) => {
         state.isFetching = false;
         state.popularTags = [];
       })
-        //=====getPopularAuthors=====//
-        .addCase(getPopularAuthors.pending, (state) => {
-          state.isFetching = true;
-          state.popularAuthors = [];
-        })
-        .addCase(
-            getPopularAuthors.fulfilled,
-            (state, action: PayloadAction<TChipData[]>) => {
-              state.isFetching = false;
-              state.popularAuthors = action.payload;
-            }
-        )
-        .addCase(getPopularAuthors.rejected, (state) => {
-          state.isFetching = false;
-          state.popularAuthors = [];
-        })
-      //=====getPopularPost=====//
+      //= ====getPopularAuthors=====//
+      .addCase(getPopularAuthors.pending, (state) => {
+        state.isFetching = true;
+        state.popularAuthors = [];
+      })
+      .addCase(getPopularAuthors.fulfilled, (state, action: PayloadAction<TChipData[]>) => {
+        state.isFetching = false;
+        state.popularAuthors = action.payload;
+      })
+      .addCase(getPopularAuthors.rejected, (state) => {
+        state.isFetching = false;
+        state.popularAuthors = [];
+      })
+      //= ====getPopularPost=====//
       .addCase(getPopularPost.pending, (state) => {
         state.isFetching = true;
       })
@@ -113,7 +109,7 @@ const postsSlice = createSlice({
         state.isFetching = false;
         state.popularPosts = [];
       })
-      //=====getRecommendationPost=====//
+      //= ====getRecommendationPost=====//
       .addCase(getRecommendationPost.pending, (state) => {
         state.isFetching = true;
       })
@@ -125,7 +121,7 @@ const postsSlice = createSlice({
         state.isFetching = false;
         state.recommendations = [];
       })
-      //=====getOnePost=====//
+      //= ====getOnePost=====//
       .addCase(getOnePost.pending, (state) => {
         state.isFetching = true;
         state.post = null;
@@ -138,7 +134,7 @@ const postsSlice = createSlice({
         state.isFetching = false;
         state.post = null;
       })
-      //=====editPost=====//
+      //= ====editPost=====//
       .addCase(editPost.pending, (state) => {
         state.isFetching = true;
       })
@@ -148,7 +144,7 @@ const postsSlice = createSlice({
       .addCase(editPost.rejected, (state) => {
         state.isFetching = false;
       })
-      //=====createPost=====//
+      //= ====createPost=====//
       .addCase(createPost.pending, (state) => {
         state.isFetching = true;
       })
@@ -159,20 +155,18 @@ const postsSlice = createSlice({
       .addCase(createPost.rejected, (state) => {
         state.isFetching = false;
       })
-      //=====deletePost=====//
+      //= ====deletePost=====//
       .addCase(deletePost.pending, (state) => {
         state.isFetching = true;
       })
       .addCase(deletePost.fulfilled, (state, action) => {
         state.isFetching = false;
-        state.posts = state.posts.filter(
-          (p) => p._id !== action.meta.arg.payload._id
-        );
+        state.posts = state.posts.filter((p) => p._id !== action.meta.arg.payload._id);
       })
       .addCase(deletePost.rejected, (state) => {
         state.isFetching = false;
       })
-      //=====createPostComment=====//
+      //= ====createPostComment=====//
       .addCase(createPostComment.pending, (state) => {
         state.isFetching = true;
       })
@@ -182,7 +176,7 @@ const postsSlice = createSlice({
       .addCase(createPostComment.rejected, (state) => {
         state.isFetching = false;
       })
-      //=====getUserPostComments=====//
+      //= ====getUserPostComments=====//
       .addCase(getUserPostComments.pending, (state) => {
         state.isFetching = true;
       })
@@ -194,34 +188,28 @@ const postsSlice = createSlice({
         state.isFetching = false;
         state.postComments = [];
       })
-      //=====getAllPosts=====//
-      .addMatcher(
-        articleApi.endpoints.getAllArticles.matchPending,
-        (state: TInitial) => {
-          state.isFetching = true;
-          state.posts = [];
-          state.popularPosts = [];
-          state.post = null;
-          state.totalCount = 0;
-        }
-      )
+      //= ====getAllPosts=====//
+      .addMatcher(articleApi.endpoints.getAllArticles.matchPending, (state: TInitial) => {
+        state.isFetching = true;
+        state.posts = [];
+        state.popularPosts = [];
+        state.post = null;
+        state.totalCount = 0;
+      })
       .addMatcher(
         articleApi.endpoints.getAllArticles.matchFulfilled,
         (state: TInitial, action: PayloadAction<any, string, any>) => {
           state.isFetching = false;
           state.posts = action.payload.data;
           state.totalCount = action.payload.totalCount;
-        }
+        },
       )
-      .addMatcher(
-        articleApi.endpoints.getAllArticles.matchRejected,
-        (state: TInitial) => {
-          state.isFetching = false;
-          state.posts = [];
-          state.totalCount = 0;
-        }
-      )
-      //=====getAllTags=====//
+      .addMatcher(articleApi.endpoints.getAllArticles.matchRejected, (state: TInitial) => {
+        state.isFetching = false;
+        state.posts = [];
+        state.totalCount = 0;
+      })
+      //= ====getAllTags=====//
       .addMatcher(articleApi.endpoints.getAllTags.matchPending, (state) => {
         state.isFetching = true;
         state.allTags = [];
@@ -231,7 +219,7 @@ const postsSlice = createSlice({
         (state, action: PayloadAction<GenericResponseType<TChipData[]>>) => {
           state.isFetching = false;
           state.allTags = action.payload.data;
-        }
+        },
       )
       .addMatcher(articleApi.endpoints.getAllTags.matchRejected, (state) => {
         state.isFetching = false;

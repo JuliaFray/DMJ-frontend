@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-import { INotifications } from "shared";
+import { INotifications } from '../../types';
 
 type InitialStateType = {
   initialized: boolean;
@@ -10,7 +10,7 @@ type InitialStateType = {
   newMsgCounter: number;
 };
 
-let initialState: InitialStateType = {
+const initialState: InitialStateType = {
   initialized: false,
   usersOnline: [],
   notifications: [],
@@ -18,7 +18,7 @@ let initialState: InitialStateType = {
 };
 
 const appSlice = createSlice({
-  name: "app",
+  name: 'app',
   initialState,
   reducers: {
     setInitialized: (state) => {

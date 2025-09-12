@@ -1,4 +1,4 @@
-import { TUser } from "shared";
+import { TUser } from './profile.type';
 
 export type TDietPlan = {
   _id: string;

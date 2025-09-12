@@ -1,26 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
-import { SocketEvents } from "shared/lib/DictConstants";
-import { pathKeys } from "shared/lib/react-router";
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate } from 'react-router-dom';
 
-import { Button, Paper, Typography } from "@mui/material";
-import TextField from "@mui/material/TextField";
+import { Button, Paper, Typography } from '@mui/material';
+import TextField from '@mui/material/TextField';
 
+import { useAppDispatch, useWebSocket } from 'shared/hook';
+import { pathKeys, SocketEvents } from 'shared/lib';
 import {
   authActions,
   getAuthGlobalError,
   getAuthId,
   getIsAuth,
   getIsFetching,
-  ILoginData,
   login,
-  useWebSocket,
-} from "shared";
+} from 'shared/model';
+import { ILoginData } from 'shared/types';
 
-import styles from "./login-page.module.scss";
+import styles from './login-page.module.scss';
 
 export const LoginPage: React.FC = () => {
   const {
@@ -28,8 +27,8 @@ export const LoginPage: React.FC = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({
-    defaultValues: { email: "", password: "" },
-    mode: "onChange",
+    defaultValues: { email: '', password: '' },
+    mode: 'onChange',
   });
   const isAuth = useSelector(getIsAuth);
   const isFetching = useSelector(getIsFetching);
@@ -44,23 +43,23 @@ export const LoginPage: React.FC = () => {
     }
   }, [authId]);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onSubmit = (formData: ILoginData) => {
     dispatch(login({ userData: formData }));
   };
 
   const handleChange = () => {
-    dispatch(authActions.setGlobalError(""));
+    dispatch(authActions.setGlobalError(''));
   };
 
   if (isAuth) {
-    return <Navigate to={`/`} />;
+    return <Navigate to='/' />;
   }
 
   return (
     <Paper classes={{ root: styles.root }}>
-      <Typography classes={{ root: styles.title }} variant="h5">
+      <Typography classes={{ root: styles.title }} variant='h5'>
         Войти в аккаунт
       </Typography>
       <form
@@ -69,29 +68,29 @@ export const LoginPage: React.FC = () => {
       >
         <TextField
           className={styles.field}
-          label="Email"
+          label='Email'
           fullWidth
           error={Boolean(errors.email?.message)}
           helperText={errors.email?.message}
-          {...register("email", { required: "Обязательно для заполнения" })}
+          {...register('email', { required: 'Обязательно для заполнения' })}
         />
 
         <TextField
           className={styles.field}
-          label="Пароль"
+          label='Пароль'
           fullWidth
           error={Boolean(errors.password?.message)}
           helperText={errors.password?.message}
-          {...register("password", { required: "Обязательно для заполнения" })}
+          {...register('password', { required: 'Обязательно для заполнения' })}
         />
 
         <span className={styles.error}>{globalError}</span>
 
         <Button
-          type={"submit"}
-          size="large"
+          type='submit'
+          size='large'
           disabled={!isValid || isFetching}
-          variant="contained"
+          variant='contained'
           fullWidth
         >
           Войти

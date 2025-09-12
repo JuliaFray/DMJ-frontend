@@ -1,12 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import useWebSocket, { useAppDispatch } from "shared/hook/hooks";
-import { NO_AVATAR, SocketEvents } from "shared/lib/DictConstants";
-import { getFullName } from "shared/lib/helper";
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { Chat, Loyalty } from "@mui/icons-material";
+import { Chat, Loyalty } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -19,14 +16,17 @@ import {
   TextField,
   Tooltip,
   Typography,
-} from "@mui/material";
-import Avatar from "@mui/material/Avatar";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+} from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 
-import { appActions, getAppUserOnline, getAuthId, TUser } from "shared";
+import { useAppDispatch, useWebSocket } from 'shared/hook';
+import { getFullName, NO_AVATAR, SocketEvents } from 'shared/lib';
+import { appActions, getAppUserOnline, getAuthId } from 'shared/model';
+import { TUser } from 'shared/types';
 
-import styles from "./user-row.module.scss";
+import styles from './user-row.module.scss';
 
 type TUSerRow = {
   user: TUser;
@@ -39,8 +39,7 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
   const [isFollowed, setIsFollowed] = useState(user.isFollowed);
   const [open, setOpen] = React.useState(false);
 
-  const image =
-    (user.avatar && `data:image/jpeg;base64,${user.avatar?.data}`) || NO_AVATAR;
+  const image = (user.avatar && `data:image/jpeg;base64,${user.avatar?.data}`) || NO_AVATAR;
 
   const dispatch = useAppDispatch();
 
@@ -50,20 +49,22 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
       if (type === SocketEvents.LOGOUT_EVENT) {
         dispatch(
           appActions.setUsersOnline({
-            type: "app/setUserOnline",
+            type: 'app/setUserOnline',
             payload: data,
-          })
+          }),
         );
       }
     },
-    [dispatch, user._id]
+    [dispatch, user._id],
   );
 
   useEffect(() => {
     if (!ws) return;
 
-    ws.addEventListener("message", handleWS);
-    return () => ws.removeEventListener("message", handleWS);
+    ws.addEventListener('message', handleWS);
+    return () => {
+      ws.removeEventListener('message', handleWS);
+    };
   }, [handleWS, ws]);
 
   const handleMessageClick = () => {
@@ -79,7 +80,7 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
     toggleFollow(user._id, !isFollowed);
   };
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>, user: TUser) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>, u: TUser) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries((formData as any).entries());
@@ -87,11 +88,11 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
     const msg = {
       type: SocketEvents.MSG_EVENT,
       from: authId,
-      to: user._id,
+      to: u._id,
       text: formJson.text,
       dialogId: null,
     };
-    ws?.send(JSON.stringify({ type: SocketEvents.MSG_EVENT, msg: msg }));
+    ws?.send(JSON.stringify({ type: SocketEvents.MSG_EVENT, msg }));
 
     handleClose();
   };
@@ -107,18 +108,13 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
             : `${styles.profileHeader} ${styles.off}`
         }
       >
-        <Avatar
-          variant="circular"
-          className={styles.avatar}
-          src={image}
-          alt={user.firstName}
-        />
+        <Avatar variant='circular' className={styles.avatar} src={image} alt={user.firstName} />
       </Container>
 
       <Container className={styles.rowContent}>
         <div className={styles.userInfo}>
           <CardContent>
-            <Typography component="div" variant="h5">
+            <Typography component='div' variant='h5'>
               <Link to={`/user/${user._id}`}>{getFullName(user)}</Link>
             </Typography>
           </CardContent>
@@ -127,24 +123,24 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
 
       <Box className={styles.actions}>
         {isFollowed ? (
-          <Tooltip title={"Отписаться"}>
+          <Tooltip title='Отписаться'>
             <Button
               className={styles.btn}
               onClick={handleFollowClick}
-              size="medium"
-              variant="contained"
+              size='medium'
+              variant='contained'
               startIcon={<Loyalty />}
             >
               <span className={styles.btnText}>Отписаться</span>
             </Button>
           </Tooltip>
         ) : (
-          <Tooltip title={"Подписаться"}>
+          <Tooltip title='Подписаться'>
             <Button
               className={styles.btn}
               onClick={handleFollowClick}
-              size="medium"
-              variant="outlined"
+              size='medium'
+              variant='outlined'
               startIcon={<Loyalty />}
             >
               <span className={styles.btnText}>Подписаться</span>
@@ -152,12 +148,12 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
           </Tooltip>
         )}
 
-        <Tooltip title={"Написать"}>
+        <Tooltip title='Написать'>
           <Button
             className={styles.btn}
             onClick={handleMessageClick}
-            size="medium"
-            variant="outlined"
+            size='medium'
+            variant='outlined'
             startIcon={<Chat />}
           >
             <span className={styles.btnText}>Написать</span>
@@ -169,9 +165,8 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
           fullWidth
           onClose={handleClose}
           PaperProps={{
-            component: "form",
-            onSubmit: (event: React.FormEvent<HTMLFormElement>) =>
-              onSubmit(event, user),
+            component: 'form',
+            onSubmit: (event: React.FormEvent<HTMLFormElement>) => onSubmit(event, user),
           }}
         >
           <DialogTitle>Отправить сообщение</DialogTitle>
@@ -180,18 +175,18 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
             <TextField
               autoFocus
               required
-              margin="dense"
-              id="name"
-              name="text"
-              placeholder="Введите сообщение..."
-              type="text"
+              margin='dense'
+              id='name'
+              name='text'
+              placeholder='Введите сообщение...'
+              type='text'
               fullWidth
-              variant="outlined"
+              variant='outlined'
             />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Отмена</Button>
-            <Button variant="contained" type="submit">
+            <Button variant='contained' type='submit'>
               Отправить
             </Button>
           </DialogActions>

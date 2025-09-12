@@ -1,16 +1,16 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from 'react';
 
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { pathKeys } from "shared/lib/react-router";
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import EditIcon from "@mui/icons-material/Edit";
-import { Fab, Grid } from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import { Fab, Grid } from '@mui/material';
 
-import { getIsAuth, getPosts } from "shared";
-import { TArticle } from "shared";
+import { pathKeys } from 'shared/lib';
+import { getIsAuth, getPosts } from 'shared/model';
+import { TArticle } from 'shared/types';
 
-import { ArticleCard, ArticlesFeedSkeleton } from "widgets";
+import { ArticleCard, ArticlesFeedSkeleton } from 'widgets';
 
 type TPostMain = {
   isFetching: boolean;
@@ -21,20 +21,27 @@ type TPostMain = {
   currentPage: number;
 };
 
-export const ArticlesFeed: React.FC<TPostMain> = (props) => {
+export const ArticlesFeed: React.FC<TPostMain> = ({
+  isMainPage,
+  setCurrentPage,
+  currentPage,
+  setTabIndex,
+  setSearchValue,
+  isFetching,
+}) => {
   const posts = useSelector(getPosts);
   const isAuth = useSelector(getIsAuth);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: 'relative' }}>
       <Grid
         container
         sx={{ margin: 0 }}
         rowSpacing={{ xs: 1, sm: 2, md: 3 }}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        style={{ marginTop: "-10px", marginBottom: "30px" }}
+        style={{ marginTop: '-10px', marginBottom: '30px' }}
       >
-        {props.isFetching ? (
+        {isFetching ? (
           <ArticlesFeedSkeleton />
         ) : (
           posts.map((el: TArticle) => (
@@ -44,21 +51,19 @@ export const ArticlesFeed: React.FC<TPostMain> = (props) => {
                   key={el._id}
                   isMain={false}
                   post={el}
-                  avatarAbbr={
-                    el.author?.firstName?.substring(0, 1).toUpperCase() || "U"
-                  }
+                  avatarAbbr={el.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}
                 />
               )}
             </Grid>
           ))
         )}
 
-        {props.isMainPage && isAuth && (
+        {isMainPage && isAuth && (
           <Link to={pathKeys.editor.root()}>
             <Fab
-              color="primary"
-              aria-label="edit"
-              style={{ position: "fixed", bottom: "20px", right: "20px" }}
+              color='primary'
+              aria-label='edit'
+              style={{ position: 'fixed', bottom: '20px', right: '20px' }}
             >
               <EditIcon />
             </Fab>

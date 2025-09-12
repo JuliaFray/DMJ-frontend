@@ -6,4 +6,4 @@ export {
   useQueryParams,
   useQueryStringToObject,
   useCreateQueryString,
-} from "./hooks";
+} from './hooks';

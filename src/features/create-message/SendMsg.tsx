@@ -1,25 +1,26 @@
-import React from "react";
+import React from 'react';
 
-import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { useWebSocket, getAuthId, TDialog } from "shared";
+import { useForm } from 'react-hook-form';
 
-import SendIcon from "@mui/icons-material/Send";
-import { Box } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import TextField from "@mui/material/TextField";
+import SendIcon from '@mui/icons-material/Send';
+import { Box } from '@mui/material';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
 
-import { SocketEvents } from "shared/lib/DictConstants";
+import { useAppSelector, useWebSocket } from 'shared/hook';
+import { SocketEvents } from 'shared/lib';
+import { getAuthId } from 'shared/model';
+import { TDialog } from 'shared/types';
 
-import styles from "./SendMsg.module.scss";
+import styles from './SendMsg.module.scss';
 
 type ISendMsg = {
   selectedDialog: TDialog;
 };
 
-export const SendMsg: React.FC<ISendMsg> = (props, context) => {
-  const authId = useSelector(getAuthId);
+export const SendMsg: React.FC<ISendMsg> = (props) => {
+  const authId = useAppSelector(getAuthId);
 
   const ws = useWebSocket();
 
@@ -29,11 +30,11 @@ export const SendMsg: React.FC<ISendMsg> = (props, context) => {
     resetField,
     formState: { errors },
   } = useForm({
-    defaultValues: { text: "" },
-    mode: "onChange",
+    defaultValues: { text: '' },
+    mode: 'onChange',
   });
 
-  const onSubmit = (formData: any) => {
+  const onSubmit = (text: string) => {
     props.selectedDialog.users
       .filter((u) => u._id !== authId)
       .forEach((u) => {
@@ -41,34 +42,34 @@ export const SendMsg: React.FC<ISendMsg> = (props, context) => {
           type: SocketEvents.MSG_EVENT,
           from: authId,
           to: u._id,
-          text: formData.text,
+          text,
           dialogId: props.selectedDialog._id,
         };
-        ws?.send(JSON.stringify({ type: SocketEvents.MSG_EVENT, msg: msg }));
+        ws?.send(JSON.stringify({ type: SocketEvents.MSG_EVENT, msg }));
       });
 
-    resetField("text");
+    resetField('text');
   };
 
   return (
     <Box className={styles.sendMsg}>
-      <Divider sx={{ marginBottom: "20px" }} />
+      <Divider sx={{ marginBottom: '20px' }} />
 
       <form
         className={styles.sendForm}
-        onSubmit={handleSubmit((values: any) => onSubmit(values))}
+        onSubmit={handleSubmit((values: { text: string }) => onSubmit(values.text))}
       >
         <TextField
-          variant={"outlined"}
+          variant='outlined'
           className={styles.field}
-          placeholder={"Введите сообщение"}
+          placeholder='Введите сообщение'
           fullWidth
           error={Boolean(errors.text?.message)}
           helperText={errors.text?.message}
-          {...register("text", { maxLength: 100 })}
+          {...register('text', { maxLength: 100 })}
         />
 
-        <IconButton className={styles.btn} type={"submit"} color="primary">
+        <IconButton className={styles.btn} type='submit' color='primary'>
           <SendIcon />
         </IconButton>
       </form>

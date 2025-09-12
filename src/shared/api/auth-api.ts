@@ -1,14 +1,12 @@
-import { TUser } from "shared";
+import { TUser } from '../types';
 
-import { instance } from "./api";
-import { GenericResponseType } from "./api-types";
+import { instance } from './api';
+import { GenericResponseType } from './api-types';
 
 export const authAPI = {
   checkStatus() {
-    return instance
-      .get<GenericResponseType<TUser>>(`auth/status`)
-      .then((response) => {
-        return response.data;
-      });
+    return instance.get<GenericResponseType<TUser>>(`auth/status`).then((response) => {
+      return response.data;
+    });
   },
 };

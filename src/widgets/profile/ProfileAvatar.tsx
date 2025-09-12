@@ -1,10 +1,11 @@
-import React, { ChangeEvent, useRef } from "react";
+import React, { ChangeEvent, useRef } from 'react';
 
-import Avatar from "@mui/material/Avatar";
+import Avatar from '@mui/material/Avatar';
 
-import { ImageButton, TProfile } from "shared";
+import { TProfile } from 'shared/types';
+import { ImageButton } from 'shared/ui';
 
-import styles from "./ProfileInfo.module.scss";
+import styles from './ProfileInfo.module.scss';
 
 type IProfileAvatar = {
   profile: TProfile;
@@ -18,7 +19,7 @@ export const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
 
   const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const files = (event.target as HTMLInputElement).files;
+    const { files } = event.target as HTMLInputElement;
     if (files?.length) {
       props.setFile(files[0]);
     }
@@ -28,12 +29,7 @@ export const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
     <div className={styles.avatar}>
       {props.isOwner && (
         <>
-          <input
-            ref={inputRef}
-            type="file"
-            onChange={handleChangeFile}
-            hidden
-          />
+          <input ref={inputRef} type='file' onChange={handleChangeFile} hidden />
 
           <ImageButton
             focusRipple
@@ -41,7 +37,7 @@ export const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
             onClick={() => inputRef.current?.click()}
           >
             <Avatar
-              variant="rounded"
+              variant='rounded'
               className={styles.photo}
               src={props.file}
               alt={props.profile.firstName}
@@ -51,7 +47,7 @@ export const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
       )}
       {!props.isOwner && (
         <Avatar
-          variant="rounded"
+          variant='rounded'
           className={styles.photo}
           src={props.file}
           alt={props.profile.firstName}

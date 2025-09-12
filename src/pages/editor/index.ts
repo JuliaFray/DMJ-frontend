@@ -1,1 +1,1 @@
-export {articleEditorPageRoute} from './article-editor-page.route';
+export { articleEditorPageRoute } from './article-editor-page.route';

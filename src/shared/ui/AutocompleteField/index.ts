@@ -1,1 +1,1 @@
-export {AutocompleteField} from "./AutocompleteField";
+export { AutocompleteField } from './AutocompleteField';

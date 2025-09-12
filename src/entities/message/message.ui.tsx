@@ -1,46 +1,33 @@
-import React from "react";
+import React from 'react';
 
-import { useSelector } from "react-redux";
-import { getAuthId } from "shared";
-import { TMessage } from "shared";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
-import { Avatar, Paper, Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
+import { Avatar, SxProps, Typography } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import { Theme } from '@mui/material/styles';
 
-import { getFullName, getImage } from "shared/lib/helper";
+import { useAppSelector } from 'shared/hook';
+import { getFullName, getImage } from 'shared/lib';
+import { getAuthId } from 'shared/model';
+import { TMessage } from 'shared/types';
 
-import styles from "./message.module.scss";
+import styles from './message.module.scss';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  maxWidth: "95%",
-}));
-
-export const Message: React.FC<TMessage> = (props) => {
-  const authId = useSelector(getAuthId);
-  const user = props.from.userId === authId ? props.from : props.to;
-  let sx: Record<string, any> = { my: 1 };
+export const Message: React.FC<TMessage> = ({ from, to, text }) => {
+  const authId = useAppSelector(getAuthId);
+  const user = from.userId === authId ? from : to;
+  let sx: SxProps<Theme> = { my: 1 };
   sx =
-    props.from._id === authId
-      ? { ml: "55%", backgroundColor: `rgba(159, 237, 215, 0.2)`, ...sx }
-      : { mr: "55%", backgroundColor: `rgba(2, 102, 112, 0.2)`, ...sx };
+    from._id === authId
+      ? { ml: '55%', backgroundColor: `rgba(159, 237, 215, 0.2)`, ...sx }
+      : { mr: '55%', backgroundColor: `rgba(2, 102, 112, 0.2)`, ...sx };
 
   return (
-    <Stack direction="row" alignItems="start" columnGap={1}>
+    <Stack direction='row' alignItems='start' columnGap={1}>
       <Typography sx={sx} className={styles.msgItem} key={uuidv4()} noWrap>
-        {props.text}
+        {text}
       </Typography>
-      <Avatar
-        key={uuidv4()}
-        alt={getFullName(user)}
-        src={getImage(user.avatar, true)}
-      />
+      <Avatar key={uuidv4()} alt={getFullName(user)} src={getImage(user.avatar, true)} />
     </Stack>
   );
 };

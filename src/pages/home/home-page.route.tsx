@@ -1,21 +1,20 @@
-import {createElement, lazy} from "react";
+import { createElement, lazy } from 'react';
 
-import {RouteObject} from "react-router-dom";
+import { RouteObject } from 'react-router-dom';
 
-import {compose, withSuspense} from "shared/lib/react";
-import {pathKeys} from "shared/lib/react-router";
+import { compose, pathKeys, withSuspense } from 'shared/lib';
 
-import {HomePageSkeleton} from "./home-page.skeleton";
+import { HomePageSkeleton } from './home-page.skeleton';
 
 const HomePage = lazy(() =>
-    import('./home-page.ui').then((module) => ({default: module.GenericHomePage})),
-)
+  import('./home-page.ui').then((module) => ({ default: module.GenericHomePage })),
+);
 
 const enhance = compose((component) =>
-    withSuspense(component, {FallbackComponent: HomePageSkeleton}),
-)
+  withSuspense(component, { FallbackComponent: HomePageSkeleton }),
+);
 
 export const homePageRoute: RouteObject = {
-    path: pathKeys.home(),
-    element: createElement(enhance(HomePage)),
-}
+  path: pathKeys.home(),
+  element: createElement(enhance(HomePage)),
+};

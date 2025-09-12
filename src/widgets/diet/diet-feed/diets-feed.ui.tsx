@@ -1,13 +1,13 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from 'react';
 
-import { useSelector } from "react-redux";
-import { getDiets } from "shared/model/diet/diet-selector";
+import { useSelector } from 'react-redux';
 
-import { Grid } from "@mui/material";
+import { Grid } from '@mui/material';
 
-import { TDietPlan } from "shared";
+import { getDiets } from 'shared/model';
+import { TDietPlan } from 'shared/types';
 
-import { ArticlesFeedSkeleton, DietCard } from "widgets";
+import { ArticlesFeedSkeleton, DietCard } from 'widgets';
 
 type TPostMain = {
   isFetching: boolean;
@@ -16,19 +16,19 @@ type TPostMain = {
   currentPage: number;
 };
 
-export const DietsFeed: React.FC<TPostMain> = (props) => {
+export const DietsFeed: React.FC<TPostMain> = ({ isFetching }) => {
   const diets = useSelector(getDiets);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: 'relative' }}>
       <Grid
         container
         sx={{ margin: 0 }}
         rowSpacing={{ xs: 1, sm: 2, md: 3 }}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        style={{ marginTop: "-10px", marginBottom: "30px" }}
+        style={{ marginTop: '-10px', marginBottom: '30px' }}
       >
-        {props.isFetching ? (
+        {isFetching ? (
           <ArticlesFeedSkeleton />
         ) : (
           diets.map((el: TDietPlan) => (

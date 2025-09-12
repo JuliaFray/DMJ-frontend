@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { dietApi } from "shared/api/diet-api";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { TDietPlan } from "shared";
+import { dietApi } from '../../api/diet-api';
+import { TDietPlan } from '../../types';
 
 type TInitial = {
   diets: TDietPlan[];
@@ -16,35 +16,33 @@ const initialState: TInitial = {
 };
 
 const dietSlice = createSlice({
-  name: "diet",
+  name: 'diet',
   initialState,
-  reducers: {},
+  reducers: {
+    clearState: (state) => {
+      state.diets = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
-      .addMatcher(
-        dietApi.endpoints.getAllDiet.matchPending,
-        (state: TInitial) => {
-          state.isFetching = true;
-          state.diets = [];
-          state.totalCount = 0;
-        }
-      )
+      .addMatcher(dietApi.endpoints.getAllDiet.matchPending, (state: TInitial) => {
+        state.isFetching = true;
+        state.diets = [];
+        state.totalCount = 0;
+      })
       .addMatcher(
         dietApi.endpoints.getAllDiet.matchFulfilled,
         (state: TInitial, action: PayloadAction<any, string, any>) => {
           state.isFetching = false;
           state.diets = action.payload.data;
           state.totalCount = action.payload.totalCount;
-        }
+        },
       )
-      .addMatcher(
-        dietApi.endpoints.getAllDiet.matchRejected,
-        (state: TInitial) => {
-          state.isFetching = false;
-          state.diets = [];
-          state.totalCount = 0;
-        }
-      );
+      .addMatcher(dietApi.endpoints.getAllDiet.matchRejected, (state: TInitial) => {
+        state.isFetching = false;
+        state.diets = [];
+        state.totalCount = 0;
+      });
   },
 });
 

@@ -1,6 +1,7 @@
-import { TArticle, TUser } from "shared";
+import { TArticle, TUser } from '../types';
 
-export enum ResultCodeEnum {
+// eslint-disable-next-line no-shadow
+export const enum ResultCodes {
   Success = 0,
   Error = 1,
   ValidationError = 2,
@@ -8,10 +9,10 @@ export enum ResultCodeEnum {
   CaptchaIsRequired = 10,
 }
 
-export type GenericResponseType<D = {}> = {
+export type GenericResponseType<D = unknown> = {
   data: D;
   message: string;
-  resultCode: ResultCodeEnum;
+  resultCode: ResultCodes;
   token?: string;
 };
 
@@ -19,7 +20,7 @@ export type LoginResponseType = {
   token: string;
   data: TUser;
   message: string;
-  resultCode: ResultCodeEnum;
+  resultCode: ResultCodes;
 };
 
 export type CaptchaResponseType = {
@@ -29,13 +30,13 @@ export type CaptchaResponseType = {
 export type UsersResponseType = {
   data: TUser[];
   totalCount: number;
-  resultCode: ResultCodeEnum;
+  resultCode: ResultCodes;
   message: string;
 };
 
 export type PostsResponseType = {
   data: TArticle[];
   totalCount: number;
-  resultCode: ResultCodeEnum;
+  resultCode: ResultCodes;
   message: string;
 };

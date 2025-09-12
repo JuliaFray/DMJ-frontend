@@ -1,57 +1,63 @@
-import React, { createElement, lazy } from "react";
+import React, { createElement, lazy, useMemo } from 'react';
 
-import { articlePageRoute } from "pages/article";
-import { dialogPageRoute } from "pages/dialogs/dialog-page.route";
-import { dietPageRoute } from "pages/diet";
-import { dietPlanPageRoute } from "pages/diet-plan";
-import { articleEditorPageRoute } from "pages/editor";
-import { homePageRoute } from "pages/home";
-import { loginPageRoute } from "pages/login";
-import { page404Router } from "pages/page-404";
-import { profilePageRoute } from "pages/profile";
-import { registerPageRoute } from "pages/register";
-import { usersPageRoute } from "pages/users/user-page.route";
-import { useSelector } from "react-redux";
 import {
   createBrowserRouter,
-  NavLink,
   Outlet,
   redirect,
   RouterProvider,
   useRouteError,
-} from "react-router-dom";
-import { compose } from "redux";
-import { withSuspense } from "shared/lib/react/react.hoc";
-import { pathKeys } from "shared/lib/react-router";
-import { Spinner } from "shared/ui/spinner";
+} from 'react-router-dom';
+import { compose } from 'redux';
 
-import { Stack } from "@mui/material";
-import Skeleton from "@mui/material/Skeleton";
+import { articlePageRoute } from 'pages/article';
+import { dialogPageRoute } from 'pages/dialogs';
+import { dietPageRoute } from 'pages/diet';
+import { dietPlanPageRoute } from 'pages/diet-plan';
+import { articleEditorPageRoute } from 'pages/editor';
+import { homePageRoute } from 'pages/home';
+import { loginPageRoute } from 'pages/login';
+import { page404Router } from 'pages/page-404';
+import { profilePageRoute } from 'pages/profile';
+import { registerPageRoute } from 'pages/register';
+import { usersPageRoute } from 'pages/users';
 
-import { getMyProfile } from "shared";
-import { getIsAuth } from "shared";
-import { TProfile } from "shared";
+import { useAppSelector } from 'shared/hook';
+import { pathKeys, withSuspense } from 'shared/lib';
+import { getIsAuth, getMyProfile } from 'shared/model';
+import { TProfile } from 'shared/types';
+import { Spinner } from 'shared/ui';
 
 const GenericLayout = lazy(() =>
-  import("pages/layouts").then((module) => ({
+  import('../layouts').then((module) => ({
     default: module.GenericLayout,
-  }))
+  })),
 );
 
 const GuestLayout = lazy(() =>
-  import("pages/layouts").then((module) => ({
+  import('../layouts').then((module) => ({
     default: module.GuestLayout,
-  }))
+  })),
 );
 
 const UserLayout = lazy(() =>
-  import("pages/layouts").then((module) => ({
+  import('../layouts').then((module) => ({
     default: module.UserLayout,
-  }))
+  })),
 );
 
+function BubbleError() {
+  const error = useRouteError();
+
+  if (error) throw error;
+  return null;
+}
+
+function LayoutSkeleton() {
+  return <Spinner display position='center' />;
+}
+
 const enhance = compose((component: React.ComponentType<object>) =>
-  withSuspense(component, { FallbackComponent: LayoutSkeleton })
+  withSuspense(component, { FallbackComponent: LayoutSkeleton }),
 );
 type TProfileContext = {
   isAuth: boolean;
@@ -62,38 +68,17 @@ export const ProfileContext = React.createContext<TProfileContext>({
   me: null,
 });
 
-export const BrowserRouting = () => {
-  const isAuth = useSelector(getIsAuth);
-  const me = useSelector(getMyProfile);
-
-  return (
-    <ProfileContext.Provider value={{ isAuth: isAuth, me: me }}>
-      <RouterProvider router={browserRouter} />
-    </ProfileContext.Provider>
-  );
-};
-
 const browserRouter = createBrowserRouter([
   {
     errorElement: <BubbleError />,
     children: [
       {
         element: createElement(enhance(GenericLayout)),
-        children: [
-          homePageRoute,
-          articlePageRoute,
-          profilePageRoute,
-          usersPageRoute,
-        ],
+        children: [homePageRoute, articlePageRoute, profilePageRoute, usersPageRoute],
       },
       {
         element: createElement(enhance(UserLayout)),
-        children: [
-          dialogPageRoute,
-          articleEditorPageRoute,
-          dietPageRoute,
-          dietPlanPageRoute,
-        ],
+        children: [dialogPageRoute, articleEditorPageRoute, dietPageRoute, dietPlanPageRoute],
       },
       {
         element: createElement(enhance(GuestLayout)),
@@ -105,42 +90,21 @@ const browserRouter = createBrowserRouter([
       },
       {
         loader: async () => redirect(pathKeys.page404()),
-        path: "*",
+        path: '*',
       },
     ],
   },
 ]);
 
-function BubbleError() {
-  const error = useRouteError();
+export const BrowserRouting = () => {
+  const isAuth = useAppSelector(getIsAuth);
+  const me = useAppSelector(getMyProfile);
 
-  if (error) throw error;
-  return null;
-}
-
-function LayoutSkeleton() {
-  return (
-    <>
-      <nav>
-        <div>
-          <Stack justifyContent="space-between">
-            <NavLink to={pathKeys.home()}>HealthBalance</NavLink>
-
-            <Stack
-              spacing={16}
-              alignItems="center"
-              justifyContent="flex-end"
-              style={{ height: "38px" }}
-            >
-              <Skeleton width={40} />
-              <Skeleton width={45} />
-              <Skeleton width={50} />
-            </Stack>
-          </Stack>
-        </div>
-      </nav>
-
-      <Spinner display position="center" />
-    </>
-  );
-}
+  return useMemo(() => {
+    return (
+      <ProfileContext.Provider value={{ isAuth, me }}>
+        <RouterProvider router={browserRouter} />
+      </ProfileContext.Provider>
+    );
+  }, [isAuth, me]);
+};

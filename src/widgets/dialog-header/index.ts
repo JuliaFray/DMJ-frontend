@@ -1,1 +1,1 @@
-export {DialogHeader} from './dialog-header.ui';
+export { DialogHeader } from './dialog-header.ui';

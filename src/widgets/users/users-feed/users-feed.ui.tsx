@@ -1,22 +1,17 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
-import { Grid } from "@mui/material";
+import { Grid } from '@mui/material';
 
-import {
-  getAuthId,
-  getIsFetching,
-  getUsers,
-  toggleFollowProfile,
-  TUser,
-  useAppDispatch,
-  useLazyGetAllUsersQuery,
-} from "shared";
+import { useLazyGetAllUsersQuery } from 'shared/api';
+import { useAppDispatch } from 'shared/hook';
+import { getAuthId, getIsFetching, getUsers, toggleFollowProfile } from 'shared/model';
+import { TUser } from 'shared/types';
 
-import { UserRow, UserRowSkeleton } from "widgets";
+import { UserRow, UserRowSkeleton } from 'widgets';
 
 type IUsersMain = {
   setCurrentPage: Dispatch<SetStateAction<number>>;
@@ -24,7 +19,7 @@ type IUsersMain = {
   isFollowers: boolean;
 };
 
-export const UsersFeed: React.FC<IUsersMain> = (props) => {
+export const UsersFeed: React.FC<IUsersMain> = ({ currentPage, isFollowers }) => {
   const users = useSelector(getUsers);
   const isFetching = useSelector(getIsFetching);
   const profileId = useSelector(getAuthId);
@@ -37,32 +32,32 @@ export const UsersFeed: React.FC<IUsersMain> = (props) => {
 
   useEffect(() => {
     triggerGetAllUsers({
-      currentPage: props.currentPage,
-      isFollowers: props.isFollowers,
+      currentPage,
+      isFollowers,
       userId: params.id || profileId,
     });
-  }, [dispatch, props.currentPage, props.isFollowers]);
+  }, [dispatch, currentPage, isFollowers]);
 
   const toggleFollow = (userId: string, isFollow: boolean) => {
     if (profileId) {
       dispatch(
         toggleFollowProfile({
-          profileId: profileId,
+          profileId,
           query: `?userId=${userId}&isFollow=${isFollow}`,
-          userId: userId,
-        })
+          userId,
+        }),
       );
     }
   };
 
   return (
-    <div style={{ position: "relative", margin: 0, padding: 0 }}>
+    <div style={{ position: 'relative', margin: 0, padding: 0 }}>
       <Grid
         container
         sx={{ margin: 0, padding: 0 }}
         rowSpacing={{ xs: 1, sm: 2, md: 3 }}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        style={{ marginBottom: "30px" }}
+        style={{ marginBottom: '30px' }}
       >
         {isFetching
           ? [...Array(5)].map(() => (

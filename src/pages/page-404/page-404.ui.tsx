@@ -1,24 +1,24 @@
-import React from "react";
+import React from 'react';
 
-import { Link } from "react-router-dom";
-import { pathKeys } from "shared/lib/react-router";
+import { Link } from 'react-router-dom';
 
-import { Grid } from "@mui/material";
+import { Grid } from '@mui/material';
 
-import styles from "./page-404.module.scss";
+import { pathKeys } from 'shared/lib';
 
-export const Page404 = () => {
+import styles from './page-404.module.scss';
+
+export function Page404() {
   return (
-    <Grid container spacing={2} width={"100%"}>
+    <Grid container spacing={2} width='100%'>
       <div className={styles.outer}>
         <div className={styles.inner}>
           <div>
-            <h1 className="logo-font">Страница не найдена</h1>
+            <h1 className='logo-font'>Страница не найдена</h1>
             <p>
               Кажется, что-то пошло нет так! <br />
-              Страница, которую вы запрашиваете, не существует. Возможно она
-              устарела, была удалена или был введен неверный адрес в адресной
-              строке.
+              Страница, которую вы запрашиваете, не существует. Возможно она устарела, была удалена
+              или был введен неверный адрес в адресной строке.
             </p>
             <Link to={pathKeys.home()} className={styles.home}>
               Перейти на главную
@@ -28,4 +28,4 @@ export const Page404 = () => {
       </div>
     </Grid>
   );
-};
+}

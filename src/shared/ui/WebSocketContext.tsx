@@ -1,23 +1,23 @@
-import React, { createContext, useCallback, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from 'react';
 
-import { useSelector } from "react-redux";
-import { SocketEvents } from "shared/lib/DictConstants";
-import Loader from "shared/ui/Loader";
+import { useSelector } from 'react-redux';
 
-import { getAuthId } from "shared";
+import { useAppDispatch } from '../hook';
+import { SocketEvents } from '../lib';
+import { getAuthId } from '../model';
+import { wsConnect, wsShowReconnect } from '../model/ws/ws';
 
-import { useAppDispatch } from "../hook/hooks";
-import { wsConnect, wsShowReconnect } from "../model/ws/ws";
+import { Loader } from './Loader';
 
 export const WebSocketContext = createContext<WebSocket | null>(null);
 
-function WS(props: React.PropsWithChildren<{}>) {
+export const WS = (props: React.PropsWithChildren<unknown>) => {
   const dispatch = useAppDispatch();
 
   // @ts-ignore
   const ws = useSelector((state) => state.ws);
   const authId = useSelector(getAuthId);
-  const isAuth = !!authId || window.localStorage.getItem("token");
+  const isAuth = !!authId || window.localStorage.getItem('token');
 
   const [conn, setConn] = useState<WebSocket | null>(null);
   const [tryingAgainIn, setTryingAgainIn] = useState(5);
@@ -46,7 +46,7 @@ function WS(props: React.PropsWithChildren<{}>) {
       setSilentConnect(true);
       dispatch(wsConnect(onNewSocket, authId));
     },
-    [dispatch, authId]
+    [dispatch, authId],
   );
 
   const handleOpen = useCallback(() => {
@@ -82,12 +82,12 @@ function WS(props: React.PropsWithChildren<{}>) {
   useEffect(() => {
     if (!conn) return;
 
-    conn.addEventListener("open", handleOpen);
-    conn.addEventListener("close", handleClose);
+    conn.addEventListener('open', handleOpen);
+    conn.addEventListener('close', handleClose);
 
     return () => {
-      conn.removeEventListener("open", handleOpen);
-      conn.removeEventListener("close", handleClose);
+      conn.removeEventListener('open', handleOpen);
+      conn.removeEventListener('close', handleClose);
     };
   }, [conn, handleClose, handleOpen]);
 
@@ -101,16 +101,18 @@ function WS(props: React.PropsWithChildren<{}>) {
     return (
       <div
         style={{
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         {ws.error && (
           <div>
             {tries > 0 && <p>Упс... Кажется, что-то сломалось :(</p>}
-            <button onClick={retry}>Попробовать снова ({tryingAgainIn})</button>
+            <button type='button' onClick={retry}>
+              Попробовать снова ({tryingAgainIn})
+            </button>
           </div>
         )}
         {!ws.error && <Loader />}
@@ -119,14 +121,8 @@ function WS(props: React.PropsWithChildren<{}>) {
   }
 
   if ((ws.connected && !ws.error) || silentConnect) {
-    return (
-      <WebSocketContext.Provider value={conn}>
-        {props.children}
-      </WebSocketContext.Provider>
-    );
+    return <WebSocketContext.Provider value={conn}>{props.children}</WebSocketContext.Provider>;
   }
 
   return <div>Техническое обслуживание</div>;
-}
-
-export default WS;
+};

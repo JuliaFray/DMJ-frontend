@@ -1,1 +1,1 @@
-export { SendMsg } from "./SendMsg";
+export { SendMsg } from './SendMsg';

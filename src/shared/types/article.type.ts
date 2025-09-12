@@ -1,4 +1,13 @@
-import { TChipData, TComment, TUser } from "shared";
+import { TComment } from './comment.type';
+import { TUser } from './profile.type';
+import { TChipData } from './tag.type';
+
+export type TImage = {
+  _id: string;
+  files_id?: string;
+  data?: any;
+  contentType?: string;
+};
 
 export type TArticle = {
   _id: string;
@@ -15,11 +24,4 @@ export type TArticle = {
   comments: TComment[];
   rating: number;
   userRating: number;
-};
-
-export type TImage = {
-  _id: string;
-  files_id?: string;
-  data?: any;
-  contentType?: string;
 };

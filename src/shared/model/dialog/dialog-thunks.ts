@@ -1,60 +1,60 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { PostsResponseType, ResultCodeEnum } from "../../api/api-types";
-import { dialogAPI } from "../../api/dialog-api";
-import { ACCESS_DENIED } from "../../lib/DictConstants";
-import { appActions } from "../app";
-import { authActions } from "../auth";
+import { PostsResponseType, ResultCodes } from '../../api/api-types';
+import { dialogAPI } from '../../api/dialog-api';
+import { ACCESS_DENIED } from '../../lib';
+import { appActions } from '../apps';
+import { authActions } from '../auth';
 
-const UNDEFINED_ERROR = "Неизвестная ошибка";
+const UNDEFINED_ERROR = 'Неизвестная ошибка';
 
-export const getAllDialogs = createAsyncThunk<
-  PostsResponseType,
-  { query: string }
->("dialogs", async (data, thunkAPI) => {
-  try {
-    const response = await dialogAPI.getAllDialogs(data.query);
-    if (response.resultCode === ResultCodeEnum.Error) {
-      return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+export const getAllDialogs = createAsyncThunk<PostsResponseType, { query: string }>(
+  'dialogs',
+  async (data, thunkAPI) => {
+    try {
+      const response = await dialogAPI.getAllDialogs(data.query);
+      if (response.resultCode === ResultCodes.Error) {
+        return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+      }
+      return response;
+    } catch (e) {
+      thunkAPI.dispatch(authActions.logout());
+      thunkAPI.dispatch(appActions.setUninitialized());
+      return thunkAPI.rejectWithValue(ACCESS_DENIED);
     }
-    return response;
-  } catch (e) {
-    thunkAPI.dispatch(authActions.logout());
-    thunkAPI.dispatch(appActions.setUninitialized());
-    return thunkAPI.rejectWithValue(ACCESS_DENIED);
-  }
-});
+  },
+);
 
-export const getMessagesByDialogId = createAsyncThunk<
-  PostsResponseType,
-  { dialogId: string }
->("messages", async (data, thunkAPI) => {
-  try {
-    const response = await dialogAPI.getMessagesByDialog(data.dialogId);
-    if (response.resultCode === ResultCodeEnum.Error) {
-      return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+export const getMessagesByDialogId = createAsyncThunk<PostsResponseType, { dialogId: string }>(
+  'messages',
+  async (data, thunkAPI) => {
+    try {
+      const response = await dialogAPI.getMessagesByDialog(data.dialogId);
+      if (response.resultCode === ResultCodes.Error) {
+        return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+      }
+      return response;
+    } catch (e) {
+      thunkAPI.dispatch(authActions.logout());
+      thunkAPI.dispatch(appActions.setUninitialized());
+      return thunkAPI.rejectWithValue(ACCESS_DENIED);
     }
-    return response;
-  } catch (e) {
-    thunkAPI.dispatch(authActions.logout());
-    thunkAPI.dispatch(appActions.setUninitialized());
-    return thunkAPI.rejectWithValue(ACCESS_DENIED);
-  }
-});
+  },
+);
 
-export const getUsersWithStatus = createAsyncThunk<
-  PostsResponseType,
-  { query: string }
->("users", async (data, thunkAPI) => {
-  try {
-    const response = await dialogAPI.getUsersWithStatus(data.query);
-    if (response.resultCode === ResultCodeEnum.Error) {
-      return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+export const getUsersWithStatus = createAsyncThunk<PostsResponseType, { query: string }>(
+  'users',
+  async (data, thunkAPI) => {
+    try {
+      const response = await dialogAPI.getUsersWithStatus(data.query);
+      if (response.resultCode === ResultCodes.Error) {
+        return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
+      }
+      return response;
+    } catch (e) {
+      thunkAPI.dispatch(authActions.logout());
+      thunkAPI.dispatch(appActions.setUninitialized());
+      return thunkAPI.rejectWithValue(ACCESS_DENIED);
     }
-    return response;
-  } catch (e) {
-    thunkAPI.dispatch(authActions.logout());
-    thunkAPI.dispatch(appActions.setUninitialized());
-    return thunkAPI.rejectWithValue(ACCESS_DENIED);
-  }
-});
+  },
+);

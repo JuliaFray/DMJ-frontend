@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { TUser, usersApi } from "shared";
+import { usersApi } from '../../api';
+import { TUser } from '../../types';
 
 export type TInitial = {
   users: TUser[];
@@ -9,7 +10,7 @@ export type TInitial = {
   userId: string | null;
 };
 
-let initialState: TInitial = {
+const initialState: TInitial = {
   isFetching: false,
   users: [],
   totalCount: 0,
@@ -17,7 +18,7 @@ let initialState: TInitial = {
 };
 
 const usersSlice = createSlice({
-  name: "users",
+  name: 'users',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -26,7 +27,7 @@ const usersSlice = createSlice({
         usersApi.endpoints.getAllUsers.matchPending,
         (state: TInitial, action: PayloadAction<any, string, any>) => {
           state.isFetching = true;
-        }
+        },
       )
       .addMatcher(
         usersApi.endpoints.getAllUsers.matchFulfilled,
@@ -34,7 +35,7 @@ const usersSlice = createSlice({
           state.users = action.payload.data;
           state.totalCount = action.payload.totalCount;
           state.isFetching = false;
-        }
+        },
       )
       .addMatcher(
         usersApi.endpoints.getAllUsers.matchRejected,
@@ -42,7 +43,7 @@ const usersSlice = createSlice({
           state.isFetching = false;
           state.users = [];
           state.totalCount = 0;
-        }
+        },
       );
   },
 });

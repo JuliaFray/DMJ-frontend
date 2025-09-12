@@ -3,12 +3,12 @@ import {
   FetchArgs,
   fetchBaseQuery,
   FetchBaseQueryError,
-} from "@reduxjs/toolkit/query";
-import { Mutex } from "async-mutex";
-import { BASE_URL } from "shared/api/api";
+} from '@reduxjs/toolkit/query';
+import { Mutex } from 'async-mutex';
 
-import { appActions, profileActions } from "shared";
-import { authActions } from "shared/";
+import { appActions, authActions, profileActions, RootState } from '../model';
+
+import { BASE_URL } from './api';
 
 const baseUrl = BASE_URL;
 
@@ -18,43 +18,37 @@ const mutex = new Mutex();
 const baseQuery = fetchBaseQuery({
   baseUrl: `${baseUrl}`,
   prepareHeaders: async (headers) => {
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem('token');
     if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
+      headers.set('Authorization', `Bearer ${token}`);
     }
-    headers.set("Access-Control-Allow-Origin", `*`);
+    headers.set('Access-Control-Allow-Origin', `*`);
     return headers;
   },
 });
 
-// @ts-ignore
-const customFetchBase: BaseQueryFn<
-  string | FetchArgs,
-  unknown,
-  FetchBaseQueryError
-> = async (args, api, extraOptions) => {
-  // @ts-ignore
-  const isAuth = api.getState()?.auth?.isAuth;
+const customFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+  args,
+  api,
+  extraOptions,
+) => {
+  const isAuth = (api.getState() as RootState)?.auth?.isAuth;
 
   await mutex.waitForUnlock();
   let result;
 
-  if (localStorage.getItem("token") && !isAuth) {
+  if (localStorage.getItem('token') && !isAuth) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
 
       try {
-        const refreshResult: any = await baseQuery(
-          { url: "/auth/status" },
-          api,
-          extraOptions
-        );
+        const refreshResult: any = await baseQuery({ url: '/auth/status' }, api, extraOptions);
 
         if (refreshResult.data) {
           api.dispatch(appActions.setInitialized());
           api.dispatch(profileActions.setProfile(refreshResult.data.data));
           api.dispatch(authActions.setAuth(refreshResult.data.data));
-          window.localStorage.setItem("token", refreshResult.data.token);
+          window.localStorage.setItem('token', refreshResult.data.token);
 
           result = await baseQuery(args, api, extraOptions);
         } else {
@@ -63,7 +57,7 @@ const customFetchBase: BaseQueryFn<
           // }
           api.dispatch(authActions.logout());
           api.dispatch(appActions.setUninitialized());
-          window.location.href = "/";
+          window.location.href = '/';
         }
       } finally {
         release();
@@ -74,10 +68,10 @@ const customFetchBase: BaseQueryFn<
     }
   } else {
     result = await baseQuery(args, api, extraOptions);
-    if ((result.error?.data as any)?.message === "Нет доступа") {
+    if ((result.error?.data as any)?.message === 'Нет доступа') {
       api.dispatch(authActions.logout());
       api.dispatch(appActions.setUninitialized());
-      window.location.href = "/";
+      window.location.href = '/';
     }
   }
 

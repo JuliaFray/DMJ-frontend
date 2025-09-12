@@ -1,1 +1,1 @@
-export {DietStats} from './diet-stats.ui';
+export { DietStats } from './diet-stats.ui';

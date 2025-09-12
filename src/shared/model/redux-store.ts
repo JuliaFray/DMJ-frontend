@@ -1,22 +1,18 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { Action } from "redux";
-import { ThunkAction } from "redux-thunk";
-import {
-  articleApi,
-  dialogSlice,
-  dietApi,
-  postsSlice,
-  profileSlice,
-  usdaApi,
-  usersApi,
-  usersSlice,
-} from "shared";
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { Action } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 
-import { appSlice } from "./app";
-import { authSlice } from "./auth";
-import { dietSlice } from "./diet";
-import { spinnerSlice } from "./spinner";
-import { wsReducer } from "./ws";
+import { articleApi, dietApi, usdaApi, usersApi } from '../api';
+
+import { appSlice } from './apps';
+import { authSlice } from './auth';
+import { dialogSlice } from './dialog';
+import { dietSlice } from './diet';
+import { postsSlice } from './posts';
+import { profileSlice } from './profile';
+import { spinnerSlice } from './spinner';
+import { usersSlice } from './users';
+import { wsReducer } from './ws';
 
 const rootReducer = combineReducers({
   app: appSlice.reducer,
@@ -25,8 +21,8 @@ const rootReducer = combineReducers({
   posts: postsSlice.reducer,
   user: usersSlice.reducer,
   dialog: dialogSlice.reducer,
-  spinner: spinnerSlice.spinnerReducer,
-  diets: dietSlice.dietReducer,
+  spinner: spinnerSlice.reducer,
+  diets: dietSlice.reducer,
   ws: wsReducer.wsReducer,
   [usdaApi.reducerPath]: usdaApi.reducer,
   [articleApi.reducerPath]: articleApi.reducer,
@@ -34,7 +30,7 @@ const rootReducer = combineReducers({
   [dietApi.reducerPath]: dietApi.reducer,
 });
 
-const store = configureStore({
+export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -62,11 +58,4 @@ export type GenericThunkType<A extends Action, P = Promise<void>> = ThunkAction<
   unknown,
   A
 >;
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  {},
-  null,
-  Action<string>
->;
-
-export default store;
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, unknown, null, Action<string>>;

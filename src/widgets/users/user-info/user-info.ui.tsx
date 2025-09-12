@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 
-import moment from "moment";
-import "moment/locale/ru";
-import { Link } from "react-router-dom";
+import moment from 'moment';
+import 'moment/locale/ru';
+import { Link } from 'react-router-dom';
 
-import { Tooltip } from "@mui/material";
-import Avatar from "@mui/material/Avatar";
+import { Tooltip } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
 
-import styles from "./UserInfo.module.scss";
+import styles from './UserInfo.module.scss';
 
 export type IUserInfo = {
   avatar: string;
@@ -16,12 +16,7 @@ export type IUserInfo = {
   userId: string;
 };
 
-export const UserInfo: React.FC<IUserInfo> = ({
-  avatar,
-  fullName,
-  additionalText,
-  userId,
-}) => {
+export const UserInfo: React.FC<IUserInfo> = ({ avatar, fullName, additionalText, userId }) => {
   return (
     <div className={styles.root}>
       <Avatar className={styles.avatar} src={avatar} alt={fullName} />
@@ -31,11 +26,9 @@ export const UserInfo: React.FC<IUserInfo> = ({
         </Link>
         <Tooltip
           className={styles.additional}
-          title={moment(additionalText).locale("ru").format("DD.MM.YYYY HH:mm")}
+          title={moment(additionalText).locale('ru').format('DD.MM.YYYY HH:mm')}
         >
-          <span className={styles.additional}>
-            {moment(additionalText).locale("ru").fromNow()}
-          </span>
+          <span className={styles.additional}>{moment(additionalText).locale('ru').fromNow()}</span>
         </Tooltip>
       </div>
     </div>

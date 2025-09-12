@@ -1,4 +1,4 @@
-import { RootState } from "../redux-store";
+import { RootState } from '../redux-store';
 
 export const getProfile = (state: RootState) => {
   return state.profile.profile;
@@ -9,10 +9,8 @@ export const getProfileAvatar = (state: RootState) => {
 };
 
 export const getProfileFullName = (state: RootState) => {
-  const profile = state.profile?.profile || "";
-  return profile
-    ? `${profile.secondName} ${profile.firstName} ${profile.lastName}`
-    : "";
+  const profile = state.profile?.profile || '';
+  return profile ? `${profile.secondName} ${profile.firstName} ${profile.lastName}` : '';
 };
 
 export const getMyProfile = (state: RootState) => {
@@ -24,17 +22,15 @@ export const getMyProfileAvatar = (state: RootState) => {
 };
 
 export const getMyProfileFullName = (state: RootState) => {
-  const profile = state.profile?.my || "";
+  const profile = state.profile?.my || '';
   return profile
-    ? `${profile.firstName} ${profile.secondName} ${
-        profile.lastName ? profile.lastName : ""
-      }`
-    : "";
+    ? `${profile.firstName} ${profile.secondName} ${profile.lastName ? profile.lastName : ''}`
+    : '';
 };
 
 export const getMyProfileShortName = (state: RootState) => {
-  const profile = state.profile?.my || "";
-  return profile ? profile.secondName : "";
+  const profile = state.profile?.my || '';
+  return profile ? profile.secondName : '';
 };
 
 export const getStats = (state: RootState) => {

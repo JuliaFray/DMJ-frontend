@@ -1,4 +1,4 @@
-import { RootState } from "../redux-store";
+import { RootState } from '../redux-store';
 
 export const getPosts = (state: RootState) => {
   return state.posts.posts || [];

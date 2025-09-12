@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-import {ArticlesFeedSkeleton} from "widgets";
+import { ArticlesFeedSkeleton } from 'widgets';
 
-export const HomePageSkeleton = () => {
-    return (
-        <ArticlesFeedSkeleton/>
-    )
+export function HomePageSkeleton() {
+  return <ArticlesFeedSkeleton />;
 }

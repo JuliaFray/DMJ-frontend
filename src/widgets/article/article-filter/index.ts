@@ -1,1 +1,1 @@
-export {ArticleFilter} from './article-filter.ui'
+export { ArticleFilter } from './article-filter.ui';

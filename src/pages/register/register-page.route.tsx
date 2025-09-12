@@ -1,14 +1,14 @@
-import {createElement, lazy} from "react";
+import { createElement, lazy } from 'react';
 
-import {RouteObject} from "react-router-dom";
+import { RouteObject } from 'react-router-dom';
 
-import {pathKeys} from "shared/lib/react-router";
+import { pathKeys } from 'shared/lib';
 
 const RegisterPage = lazy(() =>
-    import ('./register-page.ui').then((module) => ({default: module.RegisterPage}))
-)
+  import('./register-page.ui').then((module) => ({ default: module.RegisterPage })),
+);
 
 export const registerPageRoute: RouteObject = {
-    path: pathKeys.register(),
-    element: createElement(RegisterPage)
-}
+  path: pathKeys.register(),
+  element: createElement(RegisterPage),
+};
