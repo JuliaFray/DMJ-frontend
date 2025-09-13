@@ -29,12 +29,12 @@ export type TUser = {
   firstName: string;
   secondName: string;
   lastName?: string;
-  avatarId: string;
-  avatar: TImage;
-  friends: TProfile[];
-  followers: TProfile[];
-  isFollowed: boolean;
-  isFriend: boolean;
+  avatarId?: string;
+  avatar?: TImage;
+  friends?: TProfile[];
+  followers?: TProfile[];
+  isFollowed?: boolean;
+  isFriend?: boolean;
 };
 
 export type ILoginData = {

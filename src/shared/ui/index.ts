@@ -11,3 +11,5 @@ export { logError, ErrorHandler } from './error-handler';
 export { WS } from './WebSocketContext';
 export { ScrollToTop } from './ScrollToTop';
 export { Loader } from './Loader';
+export { InputWrapper } from './InputWrapper';
+export { SelectWrapper } from './SelectWrapper';

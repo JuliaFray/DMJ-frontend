@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { isEmpty } from 'lodash';
 import { Outlet } from 'react-router-dom';
 
 import { AppBar, Box, Container, Grid, Toolbar } from '@mui/material';
@@ -21,7 +22,7 @@ export function UserLayout() {
         <AppBar position='static'>
           <Toolbar className={styles.toolbar}>
             <BrandLink />
-            {userId ? <SignOutLink /> : <SignInLink />}
+            {!isEmpty(userId) ? <SignOutLink /> : <SignInLink />}
           </Toolbar>
         </AppBar>
       </Box>

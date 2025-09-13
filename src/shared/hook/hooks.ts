@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from '../model';
 import { WebSocketContext } from '../ui/WebSocketContext';
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = () => useSelector;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const useLocalStorage = (key: string, initValue: string) => {
   const [value, setValue] = useState(() => {

@@ -9,34 +9,23 @@ export const enum ResultCodes {
   CaptchaIsRequired = 10,
 }
 
-export type GenericResponseType<D = unknown> = {
+export interface GenericResponseType<D = unknown> {
   data: D;
   message: string;
   resultCode: ResultCodes;
-  token?: string;
-};
-
-export type LoginResponseType = {
   token: string;
-  data: TUser;
-  message: string;
-  resultCode: ResultCodes;
-};
+}
+
+export type LoginResponseType = GenericResponseType<TUser>;
 
 export type CaptchaResponseType = {
   url: string;
 };
 
-export type UsersResponseType = {
-  data: TUser[];
+export interface UsersResponseType extends GenericResponseType<TUser[]> {
   totalCount: number;
-  resultCode: ResultCodes;
-  message: string;
-};
+}
 
-export type PostsResponseType = {
-  data: TArticle[];
+export interface PostsResponseType extends GenericResponseType<TArticle[]> {
   totalCount: number;
-  resultCode: ResultCodes;
-  message: string;
-};
+}

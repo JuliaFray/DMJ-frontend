@@ -1,56 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { Form, Formik } from 'formik';
 import { Link, Navigate } from 'react-router-dom';
 
-import { Button, Paper, Typography } from '@mui/material';
-import TextField from '@mui/material/TextField';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { Button, IconButton, InputAdornment, Paper, Stack, Typography } from '@mui/material';
 
-import { useAppDispatch, useWebSocket } from 'shared/hook';
-import { pathKeys, SocketEvents } from 'shared/lib';
-import {
-  authActions,
-  getAuthGlobalError,
-  getAuthId,
-  getIsAuth,
-  getIsFetching,
-  login,
-} from 'shared/model';
-import { ILoginData } from 'shared/types';
+import { pathKeys } from 'shared/lib';
+import { InputWrapper } from 'shared/ui';
 
+import { useLogin } from './login-page.hook';
 import styles from './login-page.module.scss';
 
 export const LoginPage: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm({
-    defaultValues: { email: '', password: '' },
-    mode: 'onChange',
-  });
-  const isAuth = useSelector(getIsAuth);
-  const isFetching = useSelector(getIsFetching);
-  const globalError = useSelector(getAuthGlobalError);
-  const authId = useSelector(getAuthId);
+  const { initialData, validation, handleSubmit, isAuth, isFetching, globalError } = useLogin();
+  const [showPassword, setShowPassword] = useState(false);
 
-  const ws = useWebSocket();
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  useEffect(() => {
-    if (authId) {
-      ws?.send(JSON.stringify({ type: SocketEvents.AUTH_EVENT, id: authId }));
-    }
-  }, [authId]);
-
-  const dispatch = useAppDispatch();
-
-  const onSubmit = (formData: ILoginData) => {
-    dispatch(login({ userData: formData }));
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
   };
 
-  const handleChange = () => {
-    dispatch(authActions.setGlobalError(''));
+  const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
   };
 
   if (isAuth) {
@@ -59,46 +32,61 @@ export const LoginPage: React.FC = () => {
 
   return (
     <Paper classes={{ root: styles.root }}>
-      <Typography classes={{ root: styles.title }} variant='h5'>
-        Войти в аккаунт
-      </Typography>
-      <form
-        onChange={handleChange}
-        onSubmit={handleSubmit((values: ILoginData) => onSubmit(values))}
-      >
-        <TextField
-          className={styles.field}
-          label='Email'
-          fullWidth
-          error={Boolean(errors.email?.message)}
-          helperText={errors.email?.message}
-          {...register('email', { required: 'Обязательно для заполнения' })}
-        />
+      <Stack spacing={2}>
+        <Typography classes={{ root: styles.title }} variant='h5'>
+          Войти в аккаунт
+        </Typography>
 
-        <TextField
-          className={styles.field}
-          label='Пароль'
-          fullWidth
-          error={Boolean(errors.password?.message)}
-          helperText={errors.password?.message}
-          {...register('password', { required: 'Обязательно для заполнения' })}
-        />
-
-        <span className={styles.error}>{globalError}</span>
-
-        <Button
-          type='submit'
-          size='large'
-          disabled={!isValid || isFetching}
-          variant='contained'
-          fullWidth
+        <Formik
+          initialValues={{ ...initialData }}
+          onSubmit={(values) => handleSubmit(values)}
+          validationSchema={validation}
+          enableReinitialize
         >
-          Войти
-        </Button>
-      </form>
-      <Link className={styles.link} to={pathKeys.register()}>
-        Создать аккаунт
-      </Link>
+          {({ isValid }) => (
+            <Form>
+              <InputWrapper name='email' label='Email' className={styles.field} />
+              <InputWrapper
+                name='password'
+                label='Пароль'
+                className={styles.field}
+                type={showPassword ? 'text' : 'password'}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <IconButton
+                        aria-label={showPassword ? 'hide the password' : 'display the password'}
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        onMouseUp={handleMouseUpPassword}
+                        edge='end'
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <span className={styles.error}>{globalError}</span>
+
+              <Button
+                type='submit'
+                size='large'
+                disabled={!isValid || isFetching}
+                variant='contained'
+                fullWidth
+              >
+                Войти
+              </Button>
+            </Form>
+          )}
+        </Formik>
+
+        <Link className={styles.link} to={pathKeys.register()}>
+          Создать аккаунт
+        </Link>
+      </Stack>
     </Paper>
   );
 };

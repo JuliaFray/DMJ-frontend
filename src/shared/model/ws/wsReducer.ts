@@ -14,7 +14,8 @@ const initialState = {
   showReconnect: false,
 };
 
-export function wsReducer(action: AnyAction, state = initialState) {
+// eslint-disable-next-line default-param-last
+export function wsReducer(state = initialState, action: AnyAction) {
   switch (action.type) {
     case WS_CONNECT_START:
       return {

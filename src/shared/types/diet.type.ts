@@ -1,5 +1,22 @@
 import { TUser } from './profile.type';
 
+// eslint-disable-next-line no-shadow
+export const enum Meal {
+  Breakfast = 0,
+  MorningSnack = 1,
+  Lunch = 2,
+  AfterNoonSnack = 3,
+  Dinner = 4,
+  EveningSnack = 5,
+}
+
+export type TDietStat = {
+  cal: number;
+  proteins: number;
+  fats: number;
+  carb: number;
+};
+
 export type TDietPlan = {
   _id: string;
   name: string;
@@ -12,19 +29,3 @@ export type TDietPlan = {
     rating: number;
   };
 };
-
-export type TDietStat = {
-  cal: number;
-  proteins: number;
-  fats: number;
-  carb: number;
-};
-
-export enum Meal {
-  Breakfast = 0,
-  MorningSnack = 1,
-  Lunch = 2,
-  AfterNoonSnack = 3,
-  Dinner = 4,
-  EveningSnack = 5,
-}

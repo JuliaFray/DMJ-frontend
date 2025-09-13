@@ -19,10 +19,4 @@ const enhance = compose((component) =>
 export const dietPageRoute: RouteObject = {
   path: pathKeys.diet.root(),
   element: createElement(enhance(DietPage)),
-  children: [
-    {
-      path: ':id',
-      element: createElement(enhance(DietPage)),
-    },
-  ],
 };
