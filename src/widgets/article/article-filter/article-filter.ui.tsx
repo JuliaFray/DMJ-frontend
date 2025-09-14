@@ -1,43 +1,25 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { FC } from 'react';
 
 import { Chip, Container } from '@mui/material';
 
 import { TChipData } from 'shared/types';
 
 interface Props {
-  tags: TChipData[];
-  setSelectedTags: Dispatch<SetStateAction<Set<TChipData>>>;
-  setSelectedAuthors: Dispatch<SetStateAction<Set<TChipData>>>;
+  allTags: TChipData[];
+  handleRemoveTag: (item: TChipData) => void;
 }
 
-export const ArticleFilter: FC<Props> = ({ tags, setSelectedTags, setSelectedAuthors }) => {
-  const handleRemove = (item: TChipData) => {
-    setSelectedTags((prev) => {
-      const newPrev = new Set(prev);
-      if (newPrev.delete(item)) {
-        return new Set(newPrev);
-      }
-      return new Set(prev);
-    });
-
-    setSelectedAuthors((prev) => {
-      const newPrev = new Set(prev);
-      if (newPrev.delete(item)) {
-        return new Set(newPrev);
-      }
-      return new Set(prev);
-    });
-  };
+export const ArticleFilter: FC<Props> = ({ allTags, handleRemoveTag }) => {
   return (
-    <Container>
-      {Array.from(tags).map((tag, index) => (
+    <Container sx={{ display: 'flex', justifyContent: 'start', gap: '10px', flexWrap: 'wrap' }}>
+      {Array.from(allTags).map((tag, index) => (
         <Chip
           key={index}
           color='primary'
           clickable
           size='small'
           label={tag.value}
-          onDelete={() => handleRemove(tag)}
+          onDelete={() => handleRemoveTag(tag)}
         />
       ))}
     </Container>

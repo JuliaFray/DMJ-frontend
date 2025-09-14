@@ -1,25 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { FC, useState } from 'react';
 
-import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { Form, Formik } from 'formik';
 import { Link, Navigate } from 'react-router-dom';
 
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { IconButton, InputAdornment, Stack } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import { useAppDispatch } from 'shared/hook';
-import {
-  authActions,
-  getAuthErrors,
-  getAuthFetching,
-  getAuthGlobalError,
-  getIsAuth,
-  registerUser,
-} from 'shared/model';
+import { InputWrapper } from 'shared/ui';
 
+import { useRegister } from './register-page.hook';
 import styles from './register-page.module.scss';
 
 export type RegisterDataType = {
@@ -29,46 +22,15 @@ export type RegisterDataType = {
   password: string;
 };
 
-export function RegisterPage() {
-  const isAuth = useSelector(getIsAuth);
-  const isFetching = useSelector(getAuthFetching);
-  const authErrors = useSelector(getAuthErrors);
-  const globalError = useSelector(getAuthGlobalError);
+export const RegisterPage: FC = () => {
+  const { initialData, validation, handleSubmit, isAuth, isFetching, globalError } = useRegister();
 
-  const {
-    register,
-    handleSubmit,
-    setError,
-    clearErrors,
-    formState: { errors, isValid },
-  } = useForm({
-    defaultValues: {
-      firstName: '',
-      secondName: '',
-      email: '',
-      password: '',
-    },
-    mode: 'onChange',
-  });
+  const [showPassword, setShowPassword] = useState(false);
 
-  const dispatch = useAppDispatch();
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  useEffect(() => {
-    dispatch(authActions.setGlobalError(''));
-    clearErrors();
-    Object.keys(authErrors).forEach((err) => {
-      setError(`root.${err}`, { message: authErrors[err] }, { shouldFocus: true });
-    });
-  }, [authErrors]);
-
-  const handleOnChange = () => {
-    clearErrors();
-    dispatch(authActions.setErrors({}));
-    dispatch(authActions.setGlobalError(''));
-  };
-
-  const onSubmit = (formData: RegisterDataType) => {
-    dispatch(registerUser({ userData: formData }));
+  const handleMousePassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
   };
 
   if (isAuth) {
@@ -77,67 +39,68 @@ export function RegisterPage() {
 
   return (
     <Paper classes={{ root: styles.root }}>
-      <Typography classes={{ root: styles.title }} variant='h5'>
-        Создать аккаунт
-      </Typography>
-      <div className={styles.avatar}>
-        <Avatar sx={{ width: 100, height: 100 }} />
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)} onChange={handleOnChange}>
-        <TextField
-          className={styles.field}
-          required
-          label='Фамилия'
-          fullWidth
-          error={Boolean(errors.firstName?.message)}
-          helperText={errors.firstName?.message}
-          {...register('firstName', { required: 'Обязательно для заполнения' })}
-        />
-        <TextField
-          className={styles.field}
-          required
-          label='Имя'
-          fullWidth
-          error={Boolean(errors.secondName?.message)}
-          helperText={errors.secondName?.message}
-          {...register('secondName', {
-            required: 'Обязательно для заполнения',
-          })}
-        />
-        <TextField
-          className={styles.field}
-          required
-          label='Email'
-          fullWidth
-          error={Boolean(errors.email?.message) || !!authErrors.email}
-          helperText={errors.email?.message || authErrors.email}
-          {...register('email', { required: 'Обязательно для заполнения' })}
-        />
-        <TextField
-          className={styles.field}
-          required
-          label='Пароль'
-          fullWidth
-          error={Boolean(errors.password?.message)}
-          helperText={errors.password?.message}
-          {...register('password', { required: 'Обязательно для заполнения' })}
-        />
+      <Stack spacing={1}>
+        <Typography classes={{ root: styles.title }} variant='h5'>
+          Создать аккаунт
+        </Typography>
+        <div className={styles.avatar}>
+          <Avatar sx={{ width: 100, height: 100 }} />
+        </div>
 
-        <span className={styles.error}>{globalError}</span>
-
-        <Button
-          type='submit'
-          size='large'
-          disabled={!isValid || isFetching}
-          variant='contained'
-          fullWidth
+        <Formik
+          initialValues={{ ...initialData }}
+          onSubmit={(values) => handleSubmit(values)}
+          validationSchema={validation}
+          enableReinitialize
         >
-          Зарегистрироваться
-        </Button>
-      </form>
-      <Link className={styles.link} to='/login'>
-        Войти в аккаунт
-      </Link>
+          {({ isValid }) => (
+            <Form>
+              <Stack spacing={1}>
+                <InputWrapper name='firstName' label='Фамилия' className={styles.field} />
+                <InputWrapper name='secondName' label='Имя' className={styles.field} />
+                <InputWrapper name='email' label='Email' className={styles.field} />
+                <InputWrapper
+                  name='password'
+                  label='Пароль'
+                  className={styles.field}
+                  type={showPassword ? 'text' : 'password'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton
+                          aria-label={showPassword ? 'hide the password' : 'display the password'}
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMousePassword}
+                          onMouseUp={handleMousePassword}
+                          edge='end'
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Stack>
+
+              <span className={styles.error}>{globalError}</span>
+
+              <Button
+                type='submit'
+                size='large'
+                disabled={!isValid || isFetching}
+                variant='contained'
+                fullWidth
+              >
+                Зарегистрироваться
+              </Button>
+            </Form>
+          )}
+        </Formik>
+
+        <Link className={styles.link} to='/login'>
+          Войти в аккаунт
+        </Link>
+      </Stack>
     </Paper>
   );
-}
+};

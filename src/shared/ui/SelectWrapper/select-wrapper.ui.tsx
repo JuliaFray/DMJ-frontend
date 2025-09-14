@@ -1,54 +1,64 @@
 import React, { FC } from 'react';
 
-import { useField } from 'formik';
+import { useField, useFormikContext } from 'formik';
 
-import { MenuItem, TextField } from '@mui/material';
+import { Box, Chip, MenuItem, TextField } from '@mui/material';
 import { TextFieldProps } from '@mui/material/TextField/TextField';
 
-interface Props<T> {
+import { TChipData } from 'shared/types';
+
+interface Props {
   name: string;
-  options: T[];
+  multiple?: boolean;
+  options: TChipData[];
 }
 
-export const SelectWrapper = () => {
-  return <div>select</div>;
+export const SelectWrapper: FC<Props & TextFieldProps> = ({
+  name,
+  options,
+  multiple = false,
+  ...otherProps
+}) => {
+  const [field, mata] = useField(name);
+  const { setFieldValue } = useFormikContext();
+
+  const handleChange = (evt) => {
+    const { value } = evt.target;
+    setFieldValue(name, value);
+  };
+
+  const fieldConfig = {
+    ...field,
+    ...otherProps,
+    select: true,
+    multiple,
+    variant: 'outlined',
+    fullWidth: true,
+    onChange: handleChange,
+    renderValue: (selected) => (
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+        {selected.map((value) => (
+          <Chip key={value._id} label={value.value} />
+        ))}
+      </Box>
+    ),
+  };
+
+  if (mata && mata.touched && mata.error) {
+    fieldConfig.error = true;
+    fieldConfig.helperText = mata.error;
+  }
+
+  return (
+    // @ts-ignore
+    <TextField {...fieldConfig}>
+      {options.map((item, pos) => {
+        return (
+          <MenuItem key={pos} value={item._id}>
+            {item.value}
+          </MenuItem>
+        );
+      })}
+    </TextField>
+  );
 };
-//
-// export const SelectWrapper =
-//   <T,>(): FC<Props<T> & TextFieldProps> =>
-//   ({ name, options, ...otherProps }) => {
-//     const [field, mata] = useField(name);
-//     const { setFieldValue } = useFormikContext();
-//
-//     const handleChange = (evt) => {
-//       const { value } = evt.target;
-//       setFieldValue(name, value);
-//     };
-//
-//     const fieldConfig = {
-//       ...field,
-//       ...otherProps,
-//       select: true,
-//       variant: 'outlined',
-//       fullWidth: true,
-//       onChange: handleChange,
-//     };
-//
-//     if (mata && mata.touched && mata.error) {
-//       fieldConfig.error = true;
-//       fieldConfig.helperText = mata.error;
-//     }
-//
-//     return (
-//       // @ts-ignore
-//       <TextField {...fieldConfig}>
-//         {Object.keys(options).map((item, pos) => {
-//           return (
-//             <MenuItem key={pos} value={item}>
-//               {options[item]}
-//             </MenuItem>
-//           );
-//         })}
-//       </TextField>
-//     );
-//   };

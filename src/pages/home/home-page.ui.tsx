@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { compose } from 'redux';
 
-import { Box, Grid, useMediaQuery } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 
 import { useLazyGetAllArticlesQuery, useLazyGetAllTagsQuery } from 'shared/api';
-import { useAppDispatch, useAppSelector, useCreateQueryString } from 'shared/hook';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useCreateQueryString,
+  useMedia,
+  useTagFilter,
+} from 'shared/hook';
 import {
   getAuthId,
   getFetchedPopularAuthors,
@@ -16,10 +22,7 @@ import {
   getPopularTags,
   getPostsDataLength,
   getPostsIsFetching,
-  RootState,
 } from 'shared/model';
-import { theme } from 'shared/themes';
-import { TChipData } from 'shared/types';
 import { CustomPagination } from 'shared/ui';
 
 import { ArticleFilter, ArticlesFeed, HomeTabs, TagWidget } from 'widgets';
@@ -29,14 +32,13 @@ import styles from './home-page.module.scss';
 type TPostPage = {
   isOwner: boolean;
   isMainPage: boolean;
-  userId: string | '';
+  userId: string;
   isFavorite: boolean;
   isLoad: boolean;
 };
 const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId, isFavorite }) => {
-  const isMore1200px = useMediaQuery(theme.breakpoints.up('lg'));
-  const mdMain = isMainPage && isMore1200px ? 9 : 12;
-  const mdSide = 3;
+  const { mdMain, mdSide } = useMedia(isMainPage);
+  const { allTags, selectedTags, selectedAuthor, handleAddTag, handleRemoveTag } = useTagFilter();
 
   const isFetching = useAppSelector(getPostsIsFetching);
   const popularTags = useSelector(getFetchedPopularTags);
@@ -44,8 +46,6 @@ const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId,
   const authId = useSelector(getAuthId);
   const dataLength = useSelector(getPostsDataLength);
 
-  const [selectedTags, setSelectedTags] = useState<Set<TChipData>>(new Set());
-  const [selectedAuthors, setSelectedAuthors] = useState<Set<TChipData>>(new Set());
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [searchValue, setSearchValue] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,10 +61,10 @@ const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId,
       dispatch(getPopularAuthors({}));
     }
     triggerGetAllTags({});
-  }, [dispatch, isOwner, isFavorite, userId]);
+  }, [dispatch, isOwner, isFavorite, userId, triggerGetAllTags]);
 
   useEffect(() => {
-    let query: Record<string, any> = {
+    let query: Record<string, string | number | string[]> = {
       userId: userId || authId,
       searchValue,
       currentPage,
@@ -72,9 +72,7 @@ const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId,
       tags: selectedTags.size
         ? JSON.stringify(Array.from(selectedTags)?.map((tag) => tag._id) || '')
         : '',
-      authors: selectedAuthors.size
-        ? JSON.stringify(Array.from(selectedAuthors)?.map((tag) => tag._id) || '')
-        : '',
+      authors: selectedAuthor ? JSON.stringify(selectedAuthor._id) : '',
       isMinePosts: JSON.stringify(isOwner),
     };
 
@@ -90,7 +88,7 @@ const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId,
     if (!userId) {
       dispatch(getPopularPost({}));
     }
-  }, [tabIndex, searchValue, currentPage, selectedTags, selectedAuthors]);
+  }, [tabIndex, searchValue, currentPage, selectedTags, selectedAuthor]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -99,60 +97,51 @@ const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId,
   return (
     <Grid container spacing={2}>
       <Grid item md={mdMain}>
-        {isMainPage && (
-          <Box className={styles.hiddenWidget}>
-            <TagWidget
-              title='Популярные темы'
-              items={popularTags}
-              setSelectedTags={setSelectedTags}
-            />
-            <TagWidget
-              title='Популярные авторы'
-              items={popularAuthors}
-              setSelectedTags={setSelectedAuthors}
-            />
-          </Box>
-        )}
+        <>
+          {isMainPage && (
+            <Box className={styles.hiddenWidget}>
+              <TagWidget title='Популярные темы' items={popularTags} handleAddTag={handleAddTag} />
+              <TagWidget
+                title='Популярные авторы'
+                items={popularAuthors}
+                handleAddTag={handleAddTag}
+                isAuthor
+              />
+            </Box>
+          )}
 
-        {isMainPage && <HomeTabs setSearchValue={setSearchValue} setTabIndex={setTabIndex} />}
+          {isMainPage && <HomeTabs setSearchValue={setSearchValue} setTabIndex={setTabIndex} />}
 
-        {isMainPage && (
-          <ArticleFilter
-            tags={[...Array.from(selectedTags), ...Array.from(selectedAuthors)]}
-            setSelectedTags={setSelectedTags}
-            setSelectedAuthors={setSelectedAuthors}
+          {isMainPage && <ArticleFilter allTags={allTags} handleRemoveTag={handleRemoveTag} />}
+
+          <ArticlesFeed
+            isMainPage={isMainPage}
+            isFetching={isFetching}
+            setSearchValue={setSearchValue}
+            setTabIndex={setTabIndex}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            allTags={allTags}
+            handleAddTag={handleAddTag}
           />
-        )}
 
-        <ArticlesFeed
-          isMainPage={isMainPage}
-          isFetching={isFetching}
-          setSearchValue={setSearchValue}
-          setTabIndex={setTabIndex}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
-
-        <CustomPagination
-          page={currentPage}
-          dataLength={dataLength}
-          setCurrentPage={setCurrentPage}
-        />
+          <CustomPagination
+            page={currentPage}
+            dataLength={dataLength}
+            setCurrentPage={setCurrentPage}
+          />
+        </>
       </Grid>
 
       <Grid item md={mdSide} className={styles.right}>
         {isMainPage && (
           <Box>
-            <TagWidget
-              title='Популярные темы'
-              items={popularTags}
-              setSelectedTags={setSelectedTags}
-            />
-
+            <TagWidget title='Популярные темы' items={popularTags} handleAddTag={handleAddTag} />
             <TagWidget
               title='Популярные авторы'
               items={popularAuthors}
-              setSelectedTags={setSelectedAuthors}
+              handleAddTag={handleAddTag}
+              isAuthor
             />
           </Box>
         )}

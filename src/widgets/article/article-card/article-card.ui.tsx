@@ -13,7 +13,6 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 
-import { useQueryParams } from 'shared/hook';
 import { getFullName, NO_AVATAR } from 'shared/lib';
 import { palette } from 'shared/themes';
 import { TArticle, TChipData } from 'shared/types';
@@ -27,15 +26,18 @@ export type PostCardProps = {
   avatarAbbr: string;
   isMain: boolean;
   isComments?: boolean;
+  allTags?: TChipData[];
+  handleAddTag?: (item: TChipData, isAuthor?: boolean) => void;
 };
 
-export const ArticleCard: React.FC<PostCardProps> = ({ avatarAbbr, post, isMain, isComments }) => {
-  const { queryParams, setQueryParams } = useQueryParams({ tags: '' });
-
-  const handleTagClick = (el: TChipData) => {
-    setQueryParams({ tags: queryParams.tags === el.value ? '' : el.value });
-  };
-
+export const ArticleCard: React.FC<PostCardProps> = ({
+  avatarAbbr,
+  post,
+  isMain,
+  isComments,
+  allTags,
+  handleAddTag,
+}) => {
   const height = isMain ? '450px' : isComments ? '100px' : '300px';
   const titleRows = 2;
   const bodyRows = isMain ? 8 : 4;
@@ -121,13 +123,13 @@ export const ArticleCard: React.FC<PostCardProps> = ({ avatarAbbr, post, isMain,
                 post.tags.map((tag: TChipData) => (
                   <Chip
                     key={uuidv4()}
-                    color='secondary'
+                    color={allTags?.some((t) => t._id === tag._id) ? 'primary' : 'secondary'}
                     icon={<TagIcon className={styles.default.icon} />}
                     size='small'
                     label={`${tag.value}`}
                     className={styles.default.tag}
-                    variant={queryParams.tags === tag.value ? 'filled' : 'outlined'}
-                    onClick={() => handleTagClick(tag)}
+                    variant={allTags?.some((t) => t._id === tag._id) ? 'filled' : 'outlined'}
+                    onClick={() => handleAddTag?.(tag)}
                   />
                 ))}
             </div>

@@ -1,4 +1,4 @@
-import React, { createElement, lazy } from 'react';
+import { createElement, lazy } from 'react';
 
 import { RouteObject } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ const enhance = compose((component) =>
 );
 
 export const articleEditorPageRoute: RouteObject = {
-  path: pathKeys.editor.root(),
+  path: pathKeys.article.editor.root(),
   element: createElement(enhance(ArticleEditorPage)),
   children: [
     {

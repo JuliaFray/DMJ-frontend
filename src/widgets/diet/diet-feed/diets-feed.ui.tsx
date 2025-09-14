@@ -1,10 +1,13 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
-import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { Grid } from '@mui/material';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import { Fab, Grid } from '@mui/material';
 
-import { getDiets } from 'shared/model';
+import { useAppSelector } from 'shared/hook';
+import { pathKeys } from 'shared/lib';
+import { getDiets, getIsAuth } from 'shared/model';
 import { TDietPlan } from 'shared/types';
 
 import { ArticlesFeedSkeleton, DietCard } from 'widgets';
@@ -17,7 +20,8 @@ type TPostMain = {
 };
 
 export const DietsFeed: React.FC<TPostMain> = ({ isFetching }) => {
-  const diets = useSelector(getDiets);
+  const diets = useAppSelector(getDiets);
+  const isAuth = useAppSelector(getIsAuth);
 
   return (
     <div style={{ position: 'relative' }}>
@@ -36,6 +40,18 @@ export const DietsFeed: React.FC<TPostMain> = ({ isFetching }) => {
               <DietCard key={el._id} diet={el} />
             </Grid>
           ))
+        )}
+
+        {isAuth && (
+          <Link to={pathKeys.diet.editor.root()}>
+            <Fab
+              color='primary'
+              aria-label='edit'
+              style={{ position: 'fixed', bottom: '20px', right: '20px' }}
+            >
+              <AddOutlinedIcon />
+            </Fab>
+          </Link>
         )}
       </Grid>
     </div>

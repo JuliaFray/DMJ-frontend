@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,23 +12,25 @@ import styles from './tag-widget.module.scss';
 export type ITagBlock = {
   title: string;
   items: TChipData[];
-  setSelectedTags: Dispatch<SetStateAction<Set<TChipData>>>;
+  handleAddTag: (item: TChipData, isAuthor?: boolean) => void;
+  isAuthor?: boolean;
 };
-export const TagWidget: React.FC<ITagBlock> = ({ title, items, setSelectedTags }) => {
-  const handleTagChange = (item: TChipData) => {
-    setSelectedTags((prev) => new Set(prev).add(item));
-  };
-
+export const TagWidget: React.FC<ITagBlock> = ({
+  title,
+  items,
+  handleAddTag,
+  isAuthor = false,
+}) => {
   return (
     <SideBlock title={title}>
-      {(items || [...Array(5)]).map((item, i) => (
+      {(items || [...Array(5)]).map((item) => (
         <Chip
           key={uuidv4()}
           color='primary'
           size='small'
           label={`${item.value} (${item.useCount})`}
           className={styles.tag}
-          onClick={() => handleTagChange(item)}
+          onClick={() => handleAddTag(item, isAuthor)}
         />
       ))}
     </SideBlock>

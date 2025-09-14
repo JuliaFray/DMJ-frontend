@@ -8,7 +8,7 @@ import { Fab, Grid } from '@mui/material';
 
 import { pathKeys } from 'shared/lib';
 import { getIsAuth, getPosts } from 'shared/model';
-import { TArticle } from 'shared/types';
+import { TArticle, TChipData } from 'shared/types';
 
 import { ArticleCard, ArticlesFeedSkeleton } from 'widgets';
 
@@ -19,15 +19,15 @@ type TPostMain = {
   setTabIndex: Dispatch<SetStateAction<number>>;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   currentPage: number;
+  allTags: TChipData[];
+  handleAddTag: (item: TChipData, isAuthor?: boolean) => void;
 };
 
 export const ArticlesFeed: React.FC<TPostMain> = ({
   isMainPage,
-  setCurrentPage,
-  currentPage,
-  setTabIndex,
-  setSearchValue,
   isFetching,
+  allTags,
+  handleAddTag,
 }) => {
   const posts = useSelector(getPosts);
   const isAuth = useSelector(getIsAuth);
@@ -52,6 +52,8 @@ export const ArticlesFeed: React.FC<TPostMain> = ({
                   isMain={false}
                   post={el}
                   avatarAbbr={el.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}
+                  allTags={allTags}
+                  handleAddTag={handleAddTag}
                 />
               )}
             </Grid>
@@ -59,7 +61,7 @@ export const ArticlesFeed: React.FC<TPostMain> = ({
         )}
 
         {isMainPage && isAuth && (
-          <Link to={pathKeys.editor.root()}>
+          <Link to={pathKeys.article.editor.root()}>
             <Fab
               color='primary'
               aria-label='edit'

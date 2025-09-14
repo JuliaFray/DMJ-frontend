@@ -7,3 +7,5 @@ export {
   useQueryStringToObject,
   useCreateQueryString,
 } from './hooks';
+export { useMedia } from './useMedia';
+export { useTagFilter } from './useTagFilter';

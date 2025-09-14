@@ -25,6 +25,14 @@ export const pathKeys = {
     byId({ id }: any) {
       return pathKeys.diet.root().concat(id);
     },
+    editor: {
+      root() {
+        return pathKeys.root.concat('editor/');
+      },
+      byId({ id }: any) {
+        return pathKeys.diet.editor.root().concat(id);
+      },
+    },
   },
   users: {
     root() {
@@ -41,6 +49,14 @@ export const pathKeys = {
     byId({ id }: any) {
       return pathKeys.article.root().concat(id);
     },
+    editor: {
+      root() {
+        return pathKeys.root.concat('editor/');
+      },
+      byId({ id }: any) {
+        return pathKeys.article.editor.root().concat(id);
+      },
+    },
   },
   profile: {
     root() {
@@ -54,14 +70,6 @@ export const pathKeys = {
     },
     byId({ id }: any) {
       return pathKeys.profile.root().concat(id);
-    },
-  },
-  editor: {
-    root() {
-      return pathKeys.root.concat('editor/');
-    },
-    byId({ id }: any) {
-      return pathKeys.editor.root().concat(id);
     },
   },
 };

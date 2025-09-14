@@ -1,4 +1,5 @@
 export type { TDietPlan, TDietStat } from './diet.type';
+export { Meal } from './diet.type';
 export type { INotifications } from './notification.type';
 export type { TArticle, TImage } from './article.type';
 export type { TDialog, TDialogFriends, TMessage } from './message.type';

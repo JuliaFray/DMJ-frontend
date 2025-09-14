@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { Form, Formik } from 'formik';
 import { Link, Navigate } from 'react-router-dom';
@@ -12,17 +12,13 @@ import { InputWrapper } from 'shared/ui';
 import { useLogin } from './login-page.hook';
 import styles from './login-page.module.scss';
 
-export const LoginPage: React.FC = () => {
+export const LoginPage: FC = () => {
   const { initialData, validation, handleSubmit, isAuth, isFetching, globalError } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
-  const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMousePassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
@@ -32,7 +28,7 @@ export const LoginPage: React.FC = () => {
 
   return (
     <Paper classes={{ root: styles.root }}>
-      <Stack spacing={2}>
+      <Stack spacing={1}>
         <Typography classes={{ root: styles.title }} variant='h5'>
           Войти в аккаунт
         </Typography>
@@ -45,28 +41,30 @@ export const LoginPage: React.FC = () => {
         >
           {({ isValid }) => (
             <Form>
-              <InputWrapper name='email' label='Email' className={styles.field} />
-              <InputWrapper
-                name='password'
-                label='Пароль'
-                className={styles.field}
-                type={showPassword ? 'text' : 'password'}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton
-                        aria-label={showPassword ? 'hide the password' : 'display the password'}
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        onMouseUp={handleMouseUpPassword}
-                        edge='end'
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              <Stack spacing={1}>
+                <InputWrapper name='email' label='Email' className={styles.field} />
+                <InputWrapper
+                  name='password'
+                  label='Пароль'
+                  className={styles.field}
+                  type={showPassword ? 'text' : 'password'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton
+                          aria-label={showPassword ? 'hide the password' : 'display the password'}
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMousePassword}
+                          onMouseUp={handleMousePassword}
+                          edge='end'
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Stack>
 
               <span className={styles.error}>{globalError}</span>
 

@@ -49,7 +49,7 @@ export const Article: React.FC<PostPropsType> = ({ post, isFullPost, isLoading, 
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
       {isEditable && (
         <div className={styles.editButtons}>
-          <Link to={`/editor/${post._id}`}>
+          <Link to={`/article/editor/${post._id}`}>
             <Tooltip title='Редактировать'>
               <IconButton color='primary'>
                 <EditIcon />
