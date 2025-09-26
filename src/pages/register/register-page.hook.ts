@@ -19,10 +19,9 @@ export const useRegister = () => {
 
   const dispatch = useAppDispatch();
 
-  const initialData = { firstName: '', secondName: '', email: '', password: '' };
+  const initialData = { login: '', email: '', password: '' };
   const validation = Yup.object().shape({
-    firstName: Yup.string().required('Обязательно для заполнения'),
-    secondName: Yup.string().required('Обязательно для заполнения'),
+    login: Yup.string().required('Обязательно для заполнения'),
     email: Yup.string().required('Обязательно для заполнения').email('Неверный формат почты'),
     password: Yup.string().required('Обязательно для заполнения'),
   });

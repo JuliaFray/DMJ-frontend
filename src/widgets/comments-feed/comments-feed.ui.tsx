@@ -26,10 +26,10 @@ const PostCommentItem: React.FC<{ item: TArticle }> = ({ item }) => {
     <>
       <ArticleCard
         key={item._id}
-        isMain={false}
+        isOneArticlePage={false}
         isComments
         post={item}
-        avatarAbbr={item.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}
+        avatarAbbr={item.author?.login?.substring(0, 1).toUpperCase() || 'U'}
       />
       <List key={uuidv4()}>
         {item.comments.map((obj: TComment) => (

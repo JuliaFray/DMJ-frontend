@@ -75,8 +75,9 @@ export const DietPlanPage: React.FC = () => {
                 period: 1,
                 author: {
                   _id: '11',
-                  firstName: 'firstName',
-                  secondName: 'secondName',
+                  login: 'login',
+                  email: 'email',
+                  userId: 'userId',
                 },
                 meals: [1, 2, 3],
                 stats: {

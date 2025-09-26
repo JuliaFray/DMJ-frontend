@@ -14,23 +14,27 @@ export type ITagBlock = {
   items: TChipData[];
   handleAddTag: (item: TChipData, isAuthor?: boolean) => void;
   isAuthor?: boolean;
+  selected: TChipData[] | null;
 };
+
 export const TagWidget: React.FC<ITagBlock> = ({
   title,
   items,
   handleAddTag,
   isAuthor = false,
+  selected,
 }) => {
   return (
     <SideBlock title={title}>
       {(items || [...Array(5)]).map((item) => (
         <Chip
           key={uuidv4()}
-          color='primary'
           size='small'
           label={`${item.value} (${item.useCount})`}
           className={styles.tag}
           onClick={() => handleAddTag(item, isAuthor)}
+          color='primary'
+          variant={selected?.some((t) => t._id === item._id) ? 'filled' : 'outlined'}
         />
       ))}
     </SideBlock>

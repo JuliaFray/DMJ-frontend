@@ -15,7 +15,7 @@ import { Box, Container, Typography } from '@mui/material';
 import { useAppDispatch } from 'shared/hook';
 import { convertBase64ToBlob, getFullName } from 'shared/lib';
 import { saveUserProfile } from 'shared/model';
-import { TProfile } from 'shared/types';
+import { TUser } from 'shared/types';
 
 import { ProfileAvatar } from './ProfileAvatar';
 import styles from './ProfileInfo.module.scss';
@@ -23,7 +23,7 @@ import styles from './ProfileInfo.module.scss';
 dayjs.extend(customParseFormat);
 
 type IProfileData = {
-  profile: TProfile;
+  profile: TUser;
   isOwner: boolean;
 };
 
@@ -40,7 +40,7 @@ export const ProfileData: React.FC<IProfileData> = React.memo(({ profile, isOwne
     const formData = new FormData();
 
     for (const key in initState) {
-      const val = getKeyValue<TProfile, keyof TProfile>(initState, key);
+      const val = getKeyValue<TUser, keyof TUser>(initState, key);
       formData.append(key, typeof val === 'string' ? val : JSON.stringify(val));
     }
 
@@ -79,80 +79,80 @@ export const ProfileData: React.FC<IProfileData> = React.memo(({ profile, isOwne
           {getFullName(profile)}
         </Typography>
 
-        <InlineEdit
-          disabled={!isOwner}
-          className={styles.profileDescription}
-          size='md'
-          stateOnBlur='save'
-          onSave={handleSave}
-          onChange={(value) => handleChange('description', value)}
-          defaultValue={profile.description}
-          style={{ width: '100%' }}
-        >
-          {
-            // @ts-ignore
-            (prop, ref) => {
-              const { value, onChange, plaintext, ...rest } = prop;
+        {/* <InlineEdit */}
+        {/*   disabled={!isOwner} */}
+        {/*   className={styles.profileDescription} */}
+        {/*   size='md' */}
+        {/*   stateOnBlur='save' */}
+        {/*   onSave={handleSave} */}
+        {/*   onChange={(value) => handleChange('description', value)} */}
+        {/*   defaultValue={profile.description} */}
+        {/*   style={{ width: '100%' }} */}
+        {/* > */}
+        {/*   { */}
+        {/*     // @ts-ignore */}
+        {/*     (prop, ref) => { */}
+        {/*       const { value, onChange, plaintext, ...rest } = prop; */}
 
-              if (plaintext) {
-                return (
-                  <Typography
-                    variant='subtitle2'
-                    sx={{ color: 'grey' }}
-                    paragraph
-                    className={styles.profileStatus}
-                    key={uuidv4()}
-                    noWrap
-                  >
-                    {value}
-                  </Typography>
-                );
-              }
+        {/*       if (plaintext) { */}
+        {/*         return ( */}
+        {/*           <Typography */}
+        {/*             variant='subtitle2' */}
+        {/*             sx={{ color: 'grey' }} */}
+        {/*             paragraph */}
+        {/*             className={styles.profileStatus} */}
+        {/*             key={uuidv4()} */}
+        {/*             noWrap */}
+        {/*           > */}
+        {/*             {value} */}
+        {/*           </Typography> */}
+        {/*         ); */}
+        {/*       } */}
 
-              return (
-                <Input
-                  {...rest}
-                  as='textarea'
-                  rows={2}
-                  ref={ref}
-                  value={value}
-                  onChange={(event) => {
-                    // @ts-ignore
-                    onChange(event, event);
-                  }}
-                />
-              );
-            }
-          }
-        </InlineEdit>
+        {/*       return ( */}
+        {/*         <Input */}
+        {/*           {...rest} */}
+        {/*           as='textarea' */}
+        {/*           rows={2} */}
+        {/*           ref={ref} */}
+        {/*           value={value} */}
+        {/*           onChange={(event) => { */}
+        {/*             // @ts-ignore */}
+        {/*             onChange(event, event); */}
+        {/*           }} */}
+        {/*         /> */}
+        {/*       ); */}
+        {/*     } */}
+        {/*   } */}
+        {/* </InlineEdit> */}
 
-        <Box className={styles.profileLocation}>
-          <LocationOnIcon color='action' />
-          <InlineEdit
-            disabled={!isOwner}
-            onSave={handleSave}
-            size='md'
-            stateOnBlur='save'
-            defaultValue={profile.city || ' '}
-          />
-        </Box>
+        {/* <Box className={styles.profileLocation}> */}
+        {/*   <LocationOnIcon color='action' /> */}
+        {/*   <InlineEdit */}
+        {/*     disabled={!isOwner} */}
+        {/*     onSave={handleSave} */}
+        {/*     size='md' */}
+        {/*     stateOnBlur='save' */}
+        {/*     defaultValue={profile.city || ' '} */}
+        {/*   /> */}
+        {/* </Box> */}
 
-        <Box className={styles.profileLocation}>
-          <CustomProvider locale={ruRu}>
-            <CelebrationIcon color='action' />
-            {profile.age && (
-              <InlineEdit
-                disabled={!isOwner}
-                size='md'
-                stateOnBlur='save'
-                onSave={handleSave}
-                defaultValue={dayjs(profile.age, 'DD.MM.YYYY').toDate() || null}
-              >
-                <DatePicker format='dd.MM.yyyy' cleanable plaintext />
-              </InlineEdit>
-            )}
-          </CustomProvider>
-        </Box>
+        {/* <Box className={styles.profileLocation}> */}
+        {/*   <CustomProvider locale={ruRu}> */}
+        {/*     <CelebrationIcon color='action' /> */}
+        {/*     {profile.age && ( */}
+        {/*       <InlineEdit */}
+        {/*         disabled={!isOwner} */}
+        {/*         size='md' */}
+        {/*         stateOnBlur='save' */}
+        {/*         onSave={handleSave} */}
+        {/*         defaultValue={dayjs(profile.age, 'DD.MM.YYYY').toDate() || null} */}
+        {/*       > */}
+        {/*         <DatePicker format='dd.MM.yyyy' cleanable plaintext /> */}
+        {/*       </InlineEdit> */}
+        {/*     )} */}
+        {/*   </CustomProvider> */}
+        {/* </Box> */}
       </Container>
     </>
   );

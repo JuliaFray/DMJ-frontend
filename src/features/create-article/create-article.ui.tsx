@@ -14,7 +14,7 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 
 import { useAppDispatch, useAppSelector } from 'shared/hook';
-import { convertBase64ToBlob } from 'shared/lib';
+import { convertBase64ToBlob, pathKeys } from 'shared/lib';
 import { createPost, editPost, getOnePost, getPost, postsActions } from 'shared/model';
 import { TChipData } from 'shared/types';
 import { AutocompleteField, InputFileUpload } from 'shared/ui';
@@ -152,7 +152,7 @@ export const CreateArticle: React.FC = () => {
           <Button type='submit' size='large' variant='contained'>
             {id ? 'Сохранить' : 'Опубликовать'}
           </Button>
-          <Link to={id ? `/article/${id}` : '/'}>
+          <Link to={id ? `/article/${id}` : pathKeys.root}>
             <Button size='large'>Отмена</Button>
           </Link>
         </div>

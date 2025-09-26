@@ -10,11 +10,11 @@ import {
 import { compose } from 'redux';
 
 import { articlePageRoute } from 'pages/article';
+import { articleEditorPageRoute } from 'pages/article-editor';
+import { homePageRoute } from 'pages/article-feed';
 import { dialogPageRoute } from 'pages/dialogs';
-import { dietPageRoute } from 'pages/diet';
-import { dietPlanPageRoute } from 'pages/diet-plan';
-import { articleEditorPageRoute } from 'pages/editor';
-import { homePageRoute } from 'pages/home';
+import { dietPlanPageRoute } from 'pages/diet';
+import { dietPageRoute } from 'pages/diet-feed';
 import { loginPageRoute } from 'pages/login';
 import { page404Router } from 'pages/page-404';
 import { profilePageRoute } from 'pages/profile';
@@ -24,7 +24,7 @@ import { usersPageRoute } from 'pages/users';
 import { useAppSelector } from 'shared/hook';
 import { pathKeys, withSuspense } from 'shared/lib';
 import { getIsAuth, getMyProfile } from 'shared/model';
-import { TProfile } from 'shared/types';
+import { TUser } from 'shared/types';
 import { Spinner } from 'shared/ui';
 
 const GenericLayout = lazy(() =>
@@ -61,7 +61,7 @@ const enhance = compose((component: React.ComponentType<object>) =>
 );
 type TProfileContext = {
   isAuth: boolean;
-  me: null | TProfile;
+  me: null | TUser;
 };
 export const ProfileContext = React.createContext<TProfileContext>({
   isAuth: false,

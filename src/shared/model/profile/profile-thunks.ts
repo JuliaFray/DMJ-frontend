@@ -4,31 +4,30 @@ import { AxiosError } from 'axios';
 import { ResultCodes } from '../../api/api-types';
 import { profileAPI } from '../../api/profile-api';
 import { ACCESS_DENIED } from '../../lib';
-import { TProfile, TProfileStats } from '../../types';
+import { TProfileStats, TUser } from '../../types';
 import { appActions } from '../apps';
 import { authActions } from '../auth';
 
-export const getUserProfile = createAsyncThunk<
-  TProfile,
-  { userId: string },
-  { rejectValue: string }
->('profile', async (data, thunkAPI) => {
-  try {
-    const response = await profileAPI.getProfile(data.userId);
-    if (response.resultCode === ResultCodes.Error) {
-      return thunkAPI.rejectWithValue(response.message);
+export const getUserProfile = createAsyncThunk<TUser, { userId: string }, { rejectValue: string }>(
+  'profile',
+  async (data, thunkAPI) => {
+    try {
+      const response = await profileAPI.getProfile(data.userId);
+      if (response.resultCode === ResultCodes.Error) {
+        return thunkAPI.rejectWithValue(response.message);
+      }
+      return response?.data;
+    } catch (e) {
+      if ((e as AxiosError)?.response?.status === 404) {
+        window.location.href = '/404';
+        return thunkAPI.rejectWithValue('');
+      }
+      thunkAPI.dispatch(authActions.logout());
+      thunkAPI.dispatch(appActions.setUninitialized());
+      return thunkAPI.rejectWithValue(ACCESS_DENIED);
     }
-    return response?.data;
-  } catch (e) {
-    if ((e as AxiosError)?.response?.status === 404) {
-      window.location.href = '/404';
-      return thunkAPI.rejectWithValue('');
-    }
-    thunkAPI.dispatch(authActions.logout());
-    thunkAPI.dispatch(appActions.setUninitialized());
-    return thunkAPI.rejectWithValue(ACCESS_DENIED);
-  }
-});
+  },
+);
 
 export const getUserProfileStats = createAsyncThunk<
   TProfileStats,

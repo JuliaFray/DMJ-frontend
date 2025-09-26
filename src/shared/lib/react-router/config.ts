@@ -10,7 +10,7 @@ export const pathKeys = {
     return pathKeys.root.concat('settings/');
   },
   home() {
-    return pathKeys.root;
+    return pathKeys.article.root();
   },
   page404() {
     return pathKeys.root.concat('404/');
@@ -27,10 +27,7 @@ export const pathKeys = {
     },
     editor: {
       root() {
-        return pathKeys.root.concat('editor/');
-      },
-      byId({ id }: any) {
-        return pathKeys.diet.editor.root().concat(id);
+        return pathKeys.diet.root().concat('editor/');
       },
     },
   },
@@ -44,14 +41,14 @@ export const pathKeys = {
   },
   article: {
     root() {
-      return pathKeys.root.concat('article/');
+      return pathKeys.root.concat('article');
     },
     byId({ id }: any) {
       return pathKeys.article.root().concat(id);
     },
     editor: {
       root() {
-        return pathKeys.root.concat('editor/');
+        return pathKeys.article.root().concat('editor/');
       },
       byId({ id }: any) {
         return pathKeys.article.editor.root().concat(id);
@@ -70,6 +67,11 @@ export const pathKeys = {
     },
     byId({ id }: any) {
       return pathKeys.profile.root().concat(id);
+    },
+  },
+  diary: {
+    root() {
+      return pathKeys.root.concat('diary');
     },
   },
 };

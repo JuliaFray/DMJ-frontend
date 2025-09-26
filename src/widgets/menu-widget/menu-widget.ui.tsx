@@ -1,29 +1,25 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { LibraryBooks } from '@mui/icons-material';
-import TocIcon from '@mui/icons-material/Toc';
-import { Avatar } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ArticleIcon from '@mui/icons-material/Article';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import BallotIcon from '@mui/icons-material/Ballot';
+import SettingsIcon from '@mui/icons-material/Settings';
+import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
+import StraightenIcon from '@mui/icons-material/Straighten';
+import { Button, Container, Divider, MenuItem, MenuList, Typography } from '@mui/material';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import { useAppDispatch, useWebSocket } from 'shared/hook';
-import { NO_AVATAR, pathKeys, SocketEvents } from 'shared/lib';
-import {
-  appActions,
-  getAppInfoNotifications,
-  getAppMsgNotifications,
-  getMyProfileAvatar,
-  getMyProfileFullName,
-  getMyProfileShortName,
-} from 'shared/model';
-import { SideBlock } from 'shared/ui';
+import { pathKeys, SocketEvents } from 'shared/lib';
+import { appActions, getMyProfileShortName } from 'shared/model';
+import { getProfileEmail } from 'shared/model/profile/profile-selectors';
+import { theme } from 'shared/themes';
 
 import styles from './menu-widget.module.scss';
 
@@ -31,32 +27,40 @@ type IItem = {
   name: string;
   link: string;
   icon: React.JSX.Element;
+  pathname: string;
 };
 
-export const MenuWidget: React.FC<{ userId: string }> = ({ userId }) => {
-  const avatar = useSelector(getMyProfileAvatar);
-  const fullName = useSelector(getMyProfileFullName);
-  const shortName = useSelector(getMyProfileShortName);
-  const notifications = useSelector(getAppInfoNotifications);
-  const msgs = useSelector(getAppMsgNotifications);
+const items: IItem[] = [
+  {
+    name: 'Дневник питания',
+    pathname: 'diary',
+    link: pathKeys.diary.root(),
+    icon: <AutoStoriesIcon />,
+  },
+  { name: 'Планы питания', pathname: 'planner', link: pathKeys.diet.root(), icon: <BallotIcon /> },
+  { name: 'Тренировки', pathname: 'training', link: pathKeys.root, icon: <SportsGymnasticsIcon /> },
+  { name: 'Вес и измерения', pathname: 'measure', link: pathKeys.root, icon: <StraightenIcon /> },
+  {
+    name: 'Общая лента',
+    pathname: 'article',
+    link: pathKeys.article.root(),
+    icon: <ArticleIcon />,
+  },
+  { name: 'Настройки', pathname: 'settings', link: pathKeys.root, icon: <SettingsIcon /> },
+];
 
-  const items: IItem[] = [
-    { name: 'Планы питания', link: pathKeys.diet.root(), icon: <TocIcon /> },
-    { name: 'Лента', link: pathKeys.root, icon: <LibraryBooks /> },
-    // {name: "Все пользователи", link: pathKeys.users.root(), icon: <Groups/>},
-    // {
-    //     name: "Сообщения", link: pathKeys.dialogs(),
-    //     icon: <Badge badgeContent={msgs} color="warning">
-    //         <ChatBubble/>
-    //     </Badge>
-    // },
-    // {
-    //     name: "Уведомления", link: pathKeys.dialogs(),
-    //     icon: <Badge badgeContent={notifications.length} color="warning">
-    //         <NotificationsIcon/>
-    //     </Badge>
-    // },
-  ];
+export const MenuWidget: React.FC<{ userId: string }> = ({ userId }) => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const [selected, setSelected] = useState<string | undefined>();
+
+  const shortName = useSelector(getMyProfileShortName);
+  const email = useSelector(getProfileEmail);
+
+  useEffect(() => {
+    setSelected(pathname?.replaceAll('/', ''));
+  }, [pathname]);
 
   const dispatch = useAppDispatch();
 
@@ -107,46 +111,52 @@ export const MenuWidget: React.FC<{ userId: string }> = ({ userId }) => {
     return () => ws.removeEventListener('message', handleWS);
   }, [handleWS, ws]);
 
-  if (!userId) {
-    return (
-      <SideBlock title='Гость'>
+  return (
+    <Container>
+      <ListItem className={styles.listItem}>
+        <ListItemIcon>
+          <AccountCircleIcon />
+        </ListItemIcon>
+
+        <ListItemText>
+          {!userId && <Typography color={theme.palette.text.primary}>Гость</Typography>}
+          {!!userId && (
+            <>
+              <Typography color={theme.palette.text.primary}>{shortName}</Typography>
+              <Typography color={theme.palette.text.secondary}>{email}</Typography>
+            </>
+          )}
+        </ListItemText>
+      </ListItem>
+
+      {!userId && (
+        <Button
+          type='button'
+          size='large'
+          variant='contained'
+          fullWidth
+          style={{ margin: '8px' }}
+          onClick={() => navigate(pathKeys.login())}
+        >
+          Войти
+        </Button>
+      )}
+
+      <Divider />
+
+      <MenuList>
         {items.map((item, i) => (
-          <Link key={uuidv4()} className={styles.linkItem} to={item.link}>
-            <ListItem key={uuidv4()} disablePadding>
-              <ListItemButton key={uuidv4()}>
-                <ListItemIcon key={uuidv4()}>{item.icon}</ListItemIcon>
-                <ListItemText key={uuidv4()} primary={item.name} />
-              </ListItemButton>
-            </ListItem>
+          <Link key={i} className={styles.linkItem} to={item.link}>
+            <MenuItem
+              color={theme.palette.text.secondary}
+              className={selected?.startsWith(item.pathname) ? `${styles.active}` : ``}
+            >
+              {item.icon}
+              <Typography sx={{ marginLeft: '8px' }}>{item.name}</Typography>
+            </MenuItem>
           </Link>
         ))}
-      </SideBlock>
-    );
-  }
-
-  return (
-    <SideBlock
-      title={shortName}
-      link={`/user/${userId}`}
-      icon={
-        <IconButton sx={{ p: 0 }}>
-          <Avatar
-            alt={fullName}
-            src={(avatar && `data:image/jpeg;base64,${avatar.data}`) || NO_AVATAR}
-          />
-        </IconButton>
-      }
-    >
-      {items.map((item, i) => (
-        <Link key={uuidv4()} className={styles.linkItem} to={item.link}>
-          <ListItem key={uuidv4()} disablePadding>
-            <ListItemButton key={uuidv4()}>
-              <ListItemIcon key={uuidv4()}>{item.icon}</ListItemIcon>
-              <ListItemText key={uuidv4()} primary={item.name} />
-            </ListItemButton>
-          </ListItem>
-        </Link>
-      ))}
-    </SideBlock>
+      </MenuList>
+    </Container>
   );
 };

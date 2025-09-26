@@ -12,13 +12,13 @@ import { Comment } from 'entities/comment';
 
 export const CommentsBlock: React.FC<TCommentsBlock> = ({ items, children, isLoading = true }) => {
   return (
-    <SideBlock title='Комментарии'>
+    <>
       <List sx={{ width: '100%' }}>
         {(isLoading ? [...Array(5)] : items)?.map((obj: TComment) => (
           <Comment key={uuidv4()} item={obj} isLoading={isLoading} />
         ))}
       </List>
-      <Container>{children}</Container>
-    </SideBlock>
+      {children}
+    </>
   );
 };

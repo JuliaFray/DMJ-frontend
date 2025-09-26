@@ -9,13 +9,12 @@ export const ArticleSkeleton: React.FC = () => {
       <Stack spacing={1} direction='row' height='20%'>
         <Skeleton variant='circular' width={40} height={40} />
         <Stack spacing={1} width='90%' height='100%' sx={{ justifyContent: 'center' }}>
-          <Skeleton variant='rounded' width='100%' height={10} />
+          <Skeleton variant='rounded' width='20%' height={10} />
+          <Skeleton variant='rounded' width='20%' height={10} />
         </Stack>
       </Stack>
 
       <Skeleton variant='rounded' width='100%' height='60%' />
-
-      <Skeleton variant='rounded' width='100%' height='5%' />
     </Stack>
   );
 };

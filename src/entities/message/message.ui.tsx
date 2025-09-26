@@ -17,6 +17,7 @@ export const Message: React.FC<TMessage> = ({ from, to, text }) => {
   const authId = useAppSelector(getAuthId);
   const user = from.userId === authId ? from : to;
   let sx: SxProps<Theme> = { my: 1 };
+
   sx =
     from._id === authId
       ? { ml: '55%', backgroundColor: `rgba(159, 237, 215, 0.2)`, ...sx }

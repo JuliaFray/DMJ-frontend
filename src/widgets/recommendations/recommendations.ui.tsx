@@ -9,10 +9,10 @@ export const Recommendations: React.FC<{ posts: TArticle[] }> = ({ posts }) => {
     <ArticleCarousel posts={posts}>
       {posts.map((item) => (
         <ArticleCard
-          isMain
+          isOneArticlePage
           key={item._id}
           post={item}
-          avatarAbbr={item.author?.firstName?.substring(0, 1).toUpperCase() || 'U'}
+          avatarAbbr={item.author?.login?.substring(0, 1).toUpperCase() || 'U'}
         />
       ))}
     </ArticleCarousel>

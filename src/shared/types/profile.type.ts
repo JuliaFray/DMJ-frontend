@@ -1,20 +1,5 @@
 import { TImage } from './article.type';
 
-export interface TProfile extends Record<string, any> {
-  _id: string;
-  userId: string;
-  firstName: string;
-  secondName: string;
-  lastName?: string;
-  avatarId: string;
-  avatar: TImage;
-  city: string;
-  age: string;
-  description: string;
-  isFollowed: boolean;
-  createdAt?: Date;
-}
-
 export type TProfileStats = {
   [posts: string]: number;
   favorites: number;
@@ -24,18 +9,20 @@ export type TProfileStats = {
   marks: number;
 };
 
-export type TUser = {
+export interface TUser extends Record<string, unknown> {
   _id: string;
-  firstName: string;
-  secondName: string;
-  lastName?: string;
+  userId: string;
+  login: string;
+  email: string;
   avatarId?: string;
   avatar?: TImage;
-  friends?: TProfile[];
-  followers?: TProfile[];
+  birthDate?: Date;
+  friends?: TUser[];
+  followers?: TUser[];
   isFollowed?: boolean;
   isFriend?: boolean;
-};
+  createdAt?: Date;
+}
 
 export type ILoginData = {
   email: string;

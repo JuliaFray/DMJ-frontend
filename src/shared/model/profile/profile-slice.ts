@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { TProfile, TProfileStats } from '../../types';
+import { TProfileStats, TUser } from '../../types';
 
 import {
   createFriendProfile,
@@ -12,10 +12,10 @@ import {
 } from './profile-thunks';
 
 type InitialStateType = {
-  profile: TProfile | null;
+  profile: TUser | null;
   isFetching?: boolean;
   stats: TProfileStats | null;
-  my: TProfile | null;
+  my: TUser | null;
 };
 
 const initialState: InitialStateType = {

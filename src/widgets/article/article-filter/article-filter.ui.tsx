@@ -11,7 +11,15 @@ interface Props {
 
 export const ArticleFilter: FC<Props> = ({ allTags, handleRemoveTag }) => {
   return (
-    <Container sx={{ display: 'flex', justifyContent: 'start', gap: '10px', flexWrap: 'wrap' }}>
+    <Container
+      sx={{
+        display: 'flex',
+        justifyContent: 'start',
+        gap: '10px',
+        flexWrap: 'wrap',
+        margin: '12px',
+      }}
+    >
       {Array.from(allTags).map((tag, index) => (
         <Chip
           key={index}

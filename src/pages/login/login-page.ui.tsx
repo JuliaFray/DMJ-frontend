@@ -23,7 +23,7 @@ export const LoginPage: FC = () => {
   };
 
   if (isAuth) {
-    return <Navigate to='/' />;
+    return <Navigate to={pathKeys.article.root()} />;
   }
 
   return (

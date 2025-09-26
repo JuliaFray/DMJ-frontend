@@ -12,8 +12,7 @@ import { profileActions } from '../profile';
 import { authActions } from './auth-slice';
 
 export type RegisterDataType = {
-  firstName: string;
-  secondName: string;
+  login: string;
   email: string;
   password: string;
 };

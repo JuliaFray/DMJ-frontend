@@ -1,13 +1,35 @@
 @import "shared/themes/palette.module";
 
+.listItem {
+  justify-content: space-between;
+  padding: 0;
+}
+
 .linkItem {
   width: 100%;
   text-decoration: none;
-  color: #333;
+  color: rgba(0, 0, 0, 0.56);
+
+  li {
+    padding: 4px;
+    margin: 0;
+    height: 36px;
+    width: 100%;
+    overflow: hidden;
+
+    &:hover {
+      background-color: $success;
+      text-decoration: none;
+      color: rgba(0, 0, 0, 0.56);
+    }
+  }
 
   &:hover {
-    background-color: $secondary;
     text-decoration: none;
-    color: #333;
+    color: rgba(0, 0, 0, 0.56);
   }
+}
+
+.active {
+  background-color: $success !important;
 }

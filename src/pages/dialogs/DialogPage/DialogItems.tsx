@@ -37,7 +37,7 @@ const DialogItems: React.FC = () => {
                 <Avatar key={uuidv4()} alt={getFullName(user)} src={getImage(user.avatar, true)} />
               </ListItemAvatar>
               <ListItemText
-                primary={`${user.firstName} ${user.secondName}`}
+                primary={`${user.login}`}
                 secondary={
                   <>
                     <Typography

@@ -2,13 +2,13 @@ import React, { ChangeEvent, useRef } from 'react';
 
 import Avatar from '@mui/material/Avatar';
 
-import { TProfile } from 'shared/types';
+import { TUser } from 'shared/types';
 import { ImageButton } from 'shared/ui';
 
 import styles from './ProfileInfo.module.scss';
 
 type IProfileAvatar = {
-  profile: TProfile;
+  profile: TUser;
   isOwner: boolean;
   file: string;
   setFile: (file: File | string | null) => void;
@@ -33,14 +33,14 @@ export const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
 
           <ImageButton
             focusRipple
-            key={props.profile.firstName}
+            key={props.profile.login}
             onClick={() => inputRef.current?.click()}
           >
             <Avatar
               variant='rounded'
               className={styles.photo}
               src={props.file}
-              alt={props.profile.firstName}
+              alt={props.profile.login}
             />
           </ImageButton>
         </>
@@ -50,7 +50,7 @@ export const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
           variant='rounded'
           className={styles.photo}
           src={props.file}
-          alt={props.profile.firstName}
+          alt={props.profile.login}
         />
       )}
     </div>

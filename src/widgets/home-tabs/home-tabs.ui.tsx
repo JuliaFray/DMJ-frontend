@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -15,63 +15,39 @@ const a11yProps = (index: number) => {
     'aria-controls': `full-width-tabpanel-${index}`,
   };
 };
-type IPostFilter = {
-  setTabIndex: (val: number) => void;
-  setSearchValue: (val: string) => void;
-};
 
-export const HomeTabs: React.FC<IPostFilter> = ({ setSearchValue }) => {
+interface Props {
+  tabIndex: number;
+  setTabIndex: Dispatch<SetStateAction<number>>;
+}
+export const HomeTabs: React.FC<Props> = ({ tabIndex, setTabIndex }) => {
   const isAuth = useSelector(getIsAuth);
-  const [tabIndex, setTabIndex] = useState<number>(0);
-
-  // const {register, handleSubmit} = useForm({
-  //     defaultValues: {search: ''},
-  //     mode: 'onChange'
-  // });
 
   useEffect(() => {
     setTabIndex(0);
-  }, []);
+  }, [setTabIndex]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
-    setTabIndex(newValue);
   };
-  //
-  // const handleFilterSubmit = (formData: any) => {
-  //     setSearchValue(formData.search);
-  // }
 
   return (
-    <Paper classes={{ root: styles.root }}>
-      {/* <form className={styles.filter} onSubmit={handleSubmit((values: any) => handleFilterSubmit(values))}> */}
-      {/*    <TextField */}
-      {/*        variant={'outlined'} */}
-      {/*        label='Поиск...' */}
-      {/*        {...register('search')} */}
-      {/*    /> */}
-      {/*    <IconButton aria-label='start search' type={'submit'}> */}
-      {/*        <SearchIcon/> */}
-      {/*    </IconButton> */}
-      {/* </form> */}
-
-      <Container maxWidth='lg'>
-        <>
-          {isAuth && (
-            <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
-              <Tab label='Мои подписки' {...a11yProps(0)} />
-              <Tab label='Все' {...a11yProps(1)} />
-              <Tab label='Лучшие' {...a11yProps(2)} />
-            </Tabs>
-          )}
-          {!isAuth && (
-            <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
-              <Tab label='Все' {...a11yProps(0)} />
-              <Tab label='Лучшие' {...a11yProps(1)} />
-            </Tabs>
-          )}
-        </>
-      </Container>
-    </Paper>
+    <Container maxWidth='lg'>
+      <>
+        {isAuth && (
+          <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
+            <Tab label='Мои подписки' {...a11yProps(0)} />
+            <Tab label='Все' {...a11yProps(1)} />
+            <Tab label='Лучшие' {...a11yProps(2)} />
+          </Tabs>
+        )}
+        {!isAuth && (
+          <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
+            <Tab label='Все' {...a11yProps(0)} />
+            <Tab label='Лучшие' {...a11yProps(1)} />
+          </Tabs>
+        )}
+      </>
+    </Container>
   );
 };

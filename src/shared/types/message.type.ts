@@ -1,16 +1,16 @@
-import { TProfile } from './profile.type';
+import { TUser } from './profile.type';
 
 export type TMessage = {
   id: number;
   text: string;
-  from: TProfile;
-  to: TProfile;
+  from: TUser;
+  to: TUser;
   createdAt: Date;
 };
 
 export type TDialog = {
   isPrivate: boolean;
-  users: TProfile[];
+  users: TUser[];
   _id: string;
   lastMsg: TMessage;
 };

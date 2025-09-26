@@ -1,1 +1,1 @@
-export { dietPageRoute } from './diet-page.route';
+export { dietPlanPageRoute } from './diet-plan.route';

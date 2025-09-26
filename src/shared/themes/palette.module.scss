@@ -1,9 +1,11 @@
-$primary: #039a9a;
-$secondary: #83d3bc;
-$info: #fef9c7;
-$warning: #fce181;
-$success: #edeae5;
-$error: #8d5676;
+$primary: #2E958C;
+$secondary: #99D0D3;
+$info: #FFFCD9;
+$warning: #FCE0D5;
+$success: #C8C3C9;
+$error: #B47EB2;
+$grey: #BFBFBF;
+$white: #FFF;
 
 :export {
   primary: $primary;
@@ -11,5 +13,7 @@ $error: #8d5676;
   info: $info;
   warning: $warning;
   success: $success;
-  error: $error
+  error: $error;
+  grey: $grey;
+  white: $white;
 }

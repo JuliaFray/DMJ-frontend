@@ -108,7 +108,7 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
             : `${styles.profileHeader} ${styles.off}`
         }
       >
-        <Avatar variant='circular' className={styles.avatar} src={image} alt={user.firstName} />
+        <Avatar variant='circular' className={styles.avatar} src={image} alt={user.login} />
       </Container>
 
       <Container className={styles.rowContent}>

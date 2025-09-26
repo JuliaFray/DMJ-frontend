@@ -10,17 +10,23 @@ import IconButton from '@mui/material/IconButton';
 import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
 import { pathKeys, SocketEvents } from 'shared/lib';
 import { appActions, authActions, getAuthId } from 'shared/model';
+import { theme } from 'shared/themes';
 
 import styles from './layout.module.scss';
 
 export function BrandLink() {
   return (
     <NavLink className={styles.header} to={pathKeys.home()}>
-      <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+      <Typography
+        variant='h6'
+        component='div'
+        sx={{ flexGrow: 1 }}
+        color={theme.palette.primary.contrastText}
+      >
         <IconButton>
           <img alt='logo' style={{ height: '40px' }} src={`${window.location.origin}/logo.png`} />
         </IconButton>
-        HealthBalance
+        <span style={{ verticalAlign: 'middle' }}>HEALTH BALANCE</span>
       </Typography>
     </NavLink>
   );
@@ -30,7 +36,7 @@ export function SignInLink() {
   return (
     <NavLink to={pathKeys.login()}>
       <Tooltip title='Войти'>
-        <Login />
+        <Login sx={{ color: theme.palette.primary.contrastText }} />
       </Tooltip>
     </NavLink>
   );
@@ -51,7 +57,7 @@ export function SignOutLink() {
   return (
     <Tooltip title='Выйти'>
       <IconButton onClick={handleLogout}>
-        <Logout color='success' />
+        <Logout sx={{ color: theme.palette.primary.contrastText }} />
       </IconButton>
     </Tooltip>
   );

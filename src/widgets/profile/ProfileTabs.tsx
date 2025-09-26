@@ -5,7 +5,7 @@ import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import { Container, Tab, Tabs } from '@mui/material';
 
 // eslint-disable-next-line no-restricted-imports
-import { HomePage } from 'pages/home/home-page.ui';
+import { HomePage } from 'pages/article-feed/home-page.ui';
 // eslint-disable-next-line no-restricted-imports
 import { UsersPage } from 'pages/users/users-page.ui';
 

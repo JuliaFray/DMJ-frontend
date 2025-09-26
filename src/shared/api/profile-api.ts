@@ -1,4 +1,4 @@
-import { TProfile, TProfileStats } from '../types';
+import { TProfileStats, TUser } from '../types';
 
 import { instance } from './api';
 import { GenericResponseType } from './api-types';
@@ -6,7 +6,7 @@ import { GenericResponseType } from './api-types';
 const baseUrl = 'profile';
 export const profileAPI = {
   getProfile(userId: string) {
-    return instance.get<GenericResponseType<TProfile>>(`${baseUrl}/${userId}`).then((response) => {
+    return instance.get<GenericResponseType<TUser>>(`${baseUrl}/${userId}`).then((response) => {
       return response.data;
     });
   },

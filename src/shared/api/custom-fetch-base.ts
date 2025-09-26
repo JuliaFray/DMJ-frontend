@@ -6,6 +6,8 @@ import {
 } from '@reduxjs/toolkit/query';
 import { Mutex } from 'async-mutex';
 
+import { pathKeys } from 'shared/lib';
+
 import { appActions, authActions, profileActions, RootState } from '../model';
 
 import { BASE_URL } from './api';
@@ -57,7 +59,7 @@ const customFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryEr
           // }
           api.dispatch(authActions.logout());
           api.dispatch(appActions.setUninitialized());
-          window.location.href = '/';
+          window.location.href = pathKeys.root;
         }
       } finally {
         release();
@@ -71,7 +73,7 @@ const customFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryEr
     if ((result.error?.data as any)?.message === 'Нет доступа') {
       api.dispatch(authActions.logout());
       api.dispatch(appActions.setUninitialized());
-      window.location.href = '/';
+      window.location.href = pathKeys.root;
     }
   }
 

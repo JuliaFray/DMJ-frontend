@@ -1,24 +1,29 @@
 import React from 'react';
 
 import clsx from 'clsx';
+import moment from 'moment';
 import ReactMarkdown from 'react-markdown';
 import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Delete } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
-import TagIcon from '@mui/icons-material/Tag';
-import { Box, Chip, Tooltip } from '@mui/material';
+import { Box, CardHeader, Chip, Tooltip, Typography } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 
 import { useAppDispatch } from 'shared/hook';
-import { getFullName, getImage, hasImage } from 'shared/lib';
+import { getFullName, getImage, pathKeys } from 'shared/lib';
 import { deletePost } from 'shared/model';
+import { palette, theme } from 'shared/themes';
 import { TArticle, TChipData } from 'shared/types';
 
 import { ArticleSkeleton } from 'entities/article';
 
-import { CustomCardActions, UserInfo } from 'widgets';
+import { CustomCardActions } from 'widgets';
 
 import styles from './article.module.scss';
 
@@ -37,7 +42,7 @@ export const Article: React.FC<PostPropsType> = ({ post, isFullPost, isLoading, 
     // eslint-disable-next-line no-alert
     if (window.confirm('Вы действительно хотите удалить статью?')) {
       dispatch(deletePost({ payload: post }));
-      navigate('/');
+      navigate(pathKeys.root);
     }
   };
 
@@ -46,68 +51,82 @@ export const Article: React.FC<PostPropsType> = ({ post, isFullPost, isLoading, 
   }
 
   return (
-    <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
-      {isEditable && (
-        <div className={styles.editButtons}>
-          <Link to={`/article/editor/${post._id}`}>
-            <Tooltip title='Редактировать'>
-              <IconButton color='primary'>
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
+    <Card>
+      <CardHeader
+        avatar={
+          <Avatar
+            sx={{ bgcolor: palette.default.error }}
+            alt={post.author.login}
+            src={getImage(post.author.avatar, true)}
+            aria-label='post-avatar'
+          >
+            {post.author.login}
+          </Avatar>
+        }
+        title={
+          <Link to={`/user/${post.author._id}`}>
+            <Typography fontWeight={400} variant='body1' color={theme.palette.text.primary}>
+              {getFullName(post.author)}
+            </Typography>
           </Link>
-          <IconButton onClick={onClickRemove} color='error'>
-            <Tooltip title='Удалить'>
-              <Delete />
-            </Tooltip>
-          </IconButton>
-        </div>
-      )}
-
-      {hasImage(post.image) && (
-        <img alt='postImage' className={styles.image} src={getImage(post.image)} />
-      )}
-
-      <div className={styles.wrapper}>
-        <UserInfo
-          avatar={getImage(post.author.avatar, true)}
-          fullName={getFullName(post.author)}
-          additionalText={post.createdAt}
-          userId={post.author._id}
-        />
-        <div>
-          <h2 className={clsx(styles.title, { [styles.titleFull]: isFullPost })}>
-            {isFullPost ? (
-              post.title
-            ) : (
-              <Link key={post._id} to={`/${post._id}`}>
-                {post.title}
+        }
+        subheader={
+          <Typography variant='body2' color={theme.palette.text.secondary}>
+            {moment(post.createdAt).locale('ru').fromNow()}
+          </Typography>
+        }
+        action={
+          isEditable && (
+            <div>
+              <Link to={`/article/editor/${post._id}`}>
+                <Tooltip title='Редактировать'>
+                  <IconButton color='primary'>
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
               </Link>
-            )}
-          </h2>
+              <IconButton onClick={onClickRemove} color='error'>
+                <Tooltip title='Удалить'>
+                  <Delete />
+                </Tooltip>
+              </IconButton>
+            </div>
+          )
+        }
+      />
 
-          {!!post.tags?.length && (
-            <Box className={styles.tags}>
-              {post.tags.length &&
-                post.tags.map((tag: TChipData) => (
-                  <Chip
-                    key={uuidv4()}
-                    color='secondary'
-                    icon={<TagIcon className={styles.icon} />}
-                    size='small'
-                    label={`${tag.value}`}
-                    className={styles.tag}
-                    variant='outlined'
-                  />
-                ))}
-            </Box>
+      <CardContent>
+        <Typography fontWeight={500} variant='h6' style={{ marginBottom: '10px' }}>
+          {isFullPost ? (
+            post.title
+          ) : (
+            <Link key={post._id} to={`/${post._id}`}>
+              {post.title}
+            </Link>
           )}
+        </Typography>
 
-          <ReactMarkdown className={clsx(styles.text)}>{post.text}</ReactMarkdown>
+        <ReactMarkdown className={clsx(styles.text)}>{post.text}</ReactMarkdown>
+      </CardContent>
 
-          <CustomCardActions post={post} isCard={false} />
-        </div>
-      </div>
-    </div>
+      {!!post.tags?.length && (
+        <Box className={styles.tags}>
+          {post.tags.length &&
+            post.tags.map((tag: TChipData) => (
+              <Chip
+                key={uuidv4()}
+                color='primary'
+                size='small'
+                label={`${tag.value}`}
+                className={styles.tag}
+                variant='outlined'
+              />
+            ))}
+        </Box>
+      )}
+      <CardActions disableSpacing>
+        <CustomCardActions post={post} isCard={false} />
+      </CardActions>
+    </Card>
   );
 };

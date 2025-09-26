@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 import { connect, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 
-import { Box, Grid } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import { Box, Fab, Grid } from '@mui/material';
 
 import { useLazyGetAllArticlesQuery, useLazyGetAllTagsQuery } from 'shared/api';
 import {
@@ -13,15 +15,18 @@ import {
   useMedia,
   useTagFilter,
 } from 'shared/hook';
+import { pathKeys } from 'shared/lib';
 import {
   getAuthId,
   getFetchedPopularAuthors,
   getFetchedPopularTags,
+  getIsAuth,
   getPopularAuthors,
   getPopularPost,
   getPopularTags,
   getPostsDataLength,
   getPostsIsFetching,
+  RootState,
 } from 'shared/model';
 import { CustomPagination } from 'shared/ui';
 
@@ -40,6 +45,7 @@ const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId,
   const { mdMain, mdSide } = useMedia(isMainPage);
   const { allTags, selectedTags, selectedAuthor, handleAddTag, handleRemoveTag } = useTagFilter();
 
+  const isAuth = useSelector(getIsAuth);
   const isFetching = useAppSelector(getPostsIsFetching);
   const popularTags = useSelector(getFetchedPopularTags);
   const popularAuthors = useSelector(getFetchedPopularAuthors);
@@ -47,7 +53,6 @@ const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId,
   const dataLength = useSelector(getPostsDataLength);
 
   const [tabIndex, setTabIndex] = useState<number>(0);
-  const [searchValue, setSearchValue] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
 
   const [triggerGetAllArticles] = useLazyGetAllArticlesQuery();
@@ -66,7 +71,6 @@ const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId,
   useEffect(() => {
     let query: Record<string, string | number | string[]> = {
       userId: userId || authId,
-      searchValue,
       currentPage,
       isFavoritePosts: JSON.stringify(isFavorite),
       tags: selectedTags.size
@@ -88,7 +92,19 @@ const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId,
     if (!userId) {
       dispatch(getPopularPost({}));
     }
-  }, [tabIndex, searchValue, currentPage, selectedTags, selectedAuthor]);
+  }, [
+    tabIndex,
+    currentPage,
+    selectedTags,
+    selectedAuthor,
+    userId,
+    authId,
+    isFavorite,
+    isOwner,
+    isMainPage,
+    triggerGetAllArticles,
+    dispatch,
+  ]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -98,32 +114,11 @@ const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId,
     <Grid container spacing={2}>
       <Grid item md={mdMain}>
         <>
-          {isMainPage && (
-            <Box className={styles.hiddenWidget}>
-              <TagWidget title='Популярные темы' items={popularTags} handleAddTag={handleAddTag} />
-              <TagWidget
-                title='Популярные авторы'
-                items={popularAuthors}
-                handleAddTag={handleAddTag}
-                isAuthor
-              />
-            </Box>
-          )}
-
-          {isMainPage && <HomeTabs setSearchValue={setSearchValue} setTabIndex={setTabIndex} />}
+          {isMainPage && <HomeTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />}
 
           {isMainPage && <ArticleFilter allTags={allTags} handleRemoveTag={handleRemoveTag} />}
 
-          <ArticlesFeed
-            isMainPage={isMainPage}
-            isFetching={isFetching}
-            setSearchValue={setSearchValue}
-            setTabIndex={setTabIndex}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            allTags={allTags}
-            handleAddTag={handleAddTag}
-          />
+          <ArticlesFeed isFetching={isFetching} allTags={allTags} handleAddTag={handleAddTag} />
 
           <CustomPagination
             page={currentPage}
@@ -136,21 +131,39 @@ const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId,
       <Grid item md={mdSide} className={styles.right}>
         {isMainPage && (
           <Box>
-            <TagWidget title='Популярные темы' items={popularTags} handleAddTag={handleAddTag} />
+            <TagWidget
+              title='Популярные темы'
+              items={popularTags}
+              handleAddTag={handleAddTag}
+              selected={allTags}
+            />
             <TagWidget
               title='Популярные авторы'
               items={popularAuthors}
               handleAddTag={handleAddTag}
+              selected={allTags}
               isAuthor
             />
           </Box>
         )}
       </Grid>
+
+      {isMainPage && isAuth && (
+        <Link to={pathKeys.article.editor.root()}>
+          <Fab
+            color='primary'
+            aria-label='edit'
+            style={{ position: 'fixed', bottom: '20px', right: '20px' }}
+          >
+            <EditIcon />
+          </Fab>
+        </Link>
+      )}
     </Grid>
   );
 });
 
-const mapStateToProps = () => ({
+const mapStateToProps = (state: RootState) => ({
   isOwner: false,
   isMainPage: true,
   userId: '',

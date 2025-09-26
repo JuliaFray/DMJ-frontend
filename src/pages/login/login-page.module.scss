@@ -3,36 +3,34 @@
 .root {
   width: 400px;
   padding: 50px;
-  border: 1px solid #dedede;
   margin: 50px auto;
-  border-radius: 15px !important;
-}
 
-.field:not(:last-of-type) {
-  margin-bottom: 35px !important;
-}
-
-.title {
-  text-align: center !important;
-  font-weight: bold !important;
-  margin-bottom: 30px !important;
-}
-
-.link {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  color: #373a3c;
-
-  &:hover {
-    color: #373a3c;
+  .title {
+    text-align: center !important;
+    font-weight: bold !important;
+    margin-bottom: 30px !important;
   }
-}
 
-.error {
-  display: flex;
-  justify-content: center;
-  color: #f5a29d;
-  height: 20px;
-  padding-bottom: 20px;
+  .field:not(:last-of-type) {
+    margin-bottom: 35px !important;
+  }
+
+  .link {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    color: #373a3c;
+
+    &:hover {
+      color: #373a3c;
+    }
+  }
+
+  .error {
+    display: flex;
+    justify-content: center;
+    color: #f5a29d;
+    height: 20px;
+    padding-bottom: 20px;
+  }
 }

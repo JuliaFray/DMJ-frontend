@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { Container } from '@mui/material';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
 import styles from './side-block.module.scss';
@@ -16,7 +15,7 @@ type TSideBlock = {
 };
 export const SideBlock: React.FC<TSideBlock> = ({ title, icon, link, children }) => {
   return (
-    <Paper classes={{ root: styles.root }}>
+    <Container classes={{ root: styles.root }}>
       {link && (
         <Link className={styles.link} to={link}>
           {icon}
@@ -36,6 +35,6 @@ export const SideBlock: React.FC<TSideBlock> = ({ title, icon, link, children })
       )}
 
       <Container className={styles.container}>{children}</Container>
-    </Paper>
+    </Container>
   );
 };

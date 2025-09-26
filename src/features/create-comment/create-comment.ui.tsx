@@ -3,13 +3,12 @@ import React from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 
 import SendIcon from '@mui/icons-material/Send';
-import Avatar from '@mui/material/Avatar';
+import { Paper } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 
-import { useAppDispatch, useAppSelector } from 'shared/hook';
-import { NO_AVATAR } from 'shared/lib';
-import { createPostComment, getMyProfileAvatar, getMyProfileFullName } from 'shared/model';
+import { useAppDispatch } from 'shared/hook';
+import { createPostComment } from 'shared/model';
 
 import { styles } from 'entities/comment';
 
@@ -24,9 +23,6 @@ export const CreateComment: React.FC<ICommentCreate> = ({ postId }) => {
     mode: 'onChange',
   });
 
-  const avatar = useAppSelector(getMyProfileAvatar);
-  const fullName = useAppSelector(getMyProfileFullName);
-
   const onSubmit = (formData: FieldValues) => {
     dispatch(
       createPostComment({
@@ -40,12 +36,7 @@ export const CreateComment: React.FC<ICommentCreate> = ({ postId }) => {
   };
 
   return (
-    <div className={styles.default.root}>
-      <Avatar
-        className={styles.default.avatar}
-        src={(avatar && `data:image/jpeg;base64,${avatar.data}`) || NO_AVATAR}
-        alt={fullName}
-      />
+    <Paper className={styles.default.root}>
       <form className={styles.default.form} onSubmit={handleSubmit((values) => onSubmit(values))}>
         <TextField
           label='Написать комментарий'
@@ -59,6 +50,6 @@ export const CreateComment: React.FC<ICommentCreate> = ({ postId }) => {
           <SendIcon />
         </IconButton>
       </form>
-    </div>
+    </Paper>
   );
 };

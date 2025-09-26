@@ -10,7 +10,7 @@ export const getProfileAvatar = (state: RootState) => {
 
 export const getProfileFullName = (state: RootState) => {
   const profile = state.profile?.profile || '';
-  return profile ? `${profile.secondName} ${profile.firstName} ${profile.lastName}` : '';
+  return profile ? `${profile.login}` : '';
 };
 
 export const getMyProfile = (state: RootState) => {
@@ -23,14 +23,16 @@ export const getMyProfileAvatar = (state: RootState) => {
 
 export const getMyProfileFullName = (state: RootState) => {
   const profile = state.profile?.my || '';
-  return profile
-    ? `${profile.firstName} ${profile.secondName} ${profile.lastName ? profile.lastName : ''}`
-    : '';
+  return profile ? profile.login : '';
 };
 
 export const getMyProfileShortName = (state: RootState) => {
   const profile = state.profile?.my || '';
-  return profile ? profile.secondName : '';
+  return profile ? profile.login : '';
+};
+
+export const getProfileEmail = (state: RootState) => {
+  return state.profile.my?.email ?? '';
 };
 
 export const getStats = (state: RootState) => {

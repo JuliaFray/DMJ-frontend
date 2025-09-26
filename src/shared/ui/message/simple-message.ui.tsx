@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Avatar } from '@mui/material';
 
 import { getFullName, getImage } from 'shared/lib';
-import { TProfile } from 'shared/types';
+import { TUser } from 'shared/types';
 
 import styles from './message.module.scss';
 
@@ -14,7 +14,7 @@ type TMessage = {
   text: string;
   withPrev: boolean;
   withNext: boolean;
-  user: TProfile;
+  user: TUser;
   sx: CSSProperties;
 };
 export const SimpleMessage: React.FC<TMessage> = ({ text, user, withPrev, withNext, sx }) => {

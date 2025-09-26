@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 
 import moment from 'moment/moment';
 import { Link } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 
 import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
-import { Box, Tooltip } from '@mui/material';
+import { Box, Paper, Tooltip } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
@@ -17,7 +16,6 @@ import Stack from '@mui/material/Stack';
 import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { getFullName, NO_AVATAR } from 'shared/lib';
 import { getIsAuth, toggleCommentRating } from 'shared/model';
-import { theme } from 'shared/themes';
 import { TCommentType } from 'shared/types';
 
 import styles from './comment.module.scss';
@@ -42,23 +40,20 @@ export const Comment: React.FC<TCommentType> = ({ item, isLoading }) => {
   };
 
   return (
-    <React.Fragment key={uuidv4()}>
+    <Paper key={item._id}>
       <ListItem
         alignItems='flex-start'
         sx={{ width: '100%' }}
         style={{
-          backgroundColor: theme.palette.secondary.main,
-          borderRadius: '15px',
           marginBottom: '10px',
         }}
       >
-        <ListItemAvatar key={uuidv4()}>
+        <ListItemAvatar>
           {isLoading ? (
-            <Skeleton key={uuidv4()} variant='circular' width={40} height={40} />
+            <Skeleton variant='circular' width={40} height={40} />
           ) : (
             <Avatar
-              key={uuidv4()}
-              alt={item.author?.firstName ?? 'firstName'}
+              alt={item.author?.login ?? 'login'}
               src={
                 (item.author?.avatar && `data:image/jpeg;base64,${item.author?.avatar.data}`) ||
                 NO_AVATAR
@@ -66,33 +61,36 @@ export const Comment: React.FC<TCommentType> = ({ item, isLoading }) => {
             />
           )}
         </ListItemAvatar>
-        {isLoading || !item.author ? (
-          <div key={uuidv4()} style={{ display: 'flex', flexDirection: 'column' }}>
-            <Skeleton key={uuidv4()} variant='text' height={25} width={120} />
-            <Skeleton key={uuidv4()} variant='text' height={18} width={230} />
-          </div>
-        ) : (
-          <ListItemText key={uuidv4()} secondary={item.text}>
-            <Link key={uuidv4()} className={styles.name} to={`/user/${item.author._id}`}>
+
+        {(isLoading || !item.author) && (
+          <Box style={{ display: 'flex', flexDirection: 'column' }}>
+            <Skeleton variant='text' height={25} width={120} />
+            <Skeleton variant='text' height={18} width={230} />
+          </Box>
+        )}
+
+        {!isLoading && !!item.author && (
+          <ListItemText secondary={item.text}>
+            <Link className={styles.name} to={`/user/${item.author._id}`}>
               {getFullName(item.author)}
             </Link>
           </ListItemText>
         )}
 
-        <Stack key={uuidv4()} spacing={1} direction='column'>
+        <Stack spacing={1} direction='column'>
           <>
             <Tooltip
               className={styles.additional}
               title={moment(item.createdAt).locale('ru').format('DD.MM.YYYY HH:mm')}
             >
-              <span key={uuidv4()}>{moment(item.createdAt).locale('ru').fromNow()}</span>
+              <span>{moment(item.createdAt).locale('ru').fromNow()}</span>
             </Tooltip>
 
             {isAuth && (
-              <Stack key={uuidv4()} spacing={1} direction='row'>
-                <Box key={uuidv4()}>
+              <Stack spacing={1} direction='row'>
+                <Box>
                   <IconButton
-                    key={uuidv4()}
+                    key='up rating'
                     disabled={userRating === -1}
                     aria-label='up rating'
                     onClick={() => onClickRating(-1)}
@@ -105,10 +103,10 @@ export const Comment: React.FC<TCommentType> = ({ item, isLoading }) => {
                     />
                   </IconButton>
 
-                  <span key={uuidv4()}>{rating}</span>
+                  <span>{rating}</span>
 
                   <IconButton
-                    key={uuidv4()}
+                    key='down rating'
                     disabled={userRating === 1}
                     aria-label='down rating'
                     onClick={() => onClickRating(1)}
@@ -126,6 +124,6 @@ export const Comment: React.FC<TCommentType> = ({ item, isLoading }) => {
           </>
         </Stack>
       </ListItem>
-    </React.Fragment>
+    </Paper>
   );
 };

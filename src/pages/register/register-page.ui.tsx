@@ -10,14 +10,14 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
+import { pathKeys } from 'shared/lib';
 import { InputWrapper } from 'shared/ui';
 
 import { useRegister } from './register-page.hook';
 import styles from './register-page.module.scss';
 
 export type RegisterDataType = {
-  firstName: string;
-  secondName: string;
+  login: string;
   email: string;
   password: string;
 };
@@ -34,7 +34,7 @@ export const RegisterPage: FC = () => {
   };
 
   if (isAuth) {
-    return <Navigate to='/' />;
+    return <Navigate to={pathKeys.article.root()} />;
   }
 
   return (
@@ -56,8 +56,7 @@ export const RegisterPage: FC = () => {
           {({ isValid }) => (
             <Form>
               <Stack spacing={1}>
-                <InputWrapper name='firstName' label='Фамилия' className={styles.field} />
-                <InputWrapper name='secondName' label='Имя' className={styles.field} />
+                <InputWrapper name='login' label='Логин' className={styles.field} />
                 <InputWrapper name='email' label='Email' className={styles.field} />
                 <InputWrapper
                   name='password'
@@ -97,7 +96,7 @@ export const RegisterPage: FC = () => {
           )}
         </Formik>
 
-        <Link className={styles.link} to='/login'>
+        <Link className={styles.link} to={pathKeys.login()}>
           Войти в аккаунт
         </Link>
       </Stack>

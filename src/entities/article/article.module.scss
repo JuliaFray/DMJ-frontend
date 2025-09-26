@@ -1,128 +1,14 @@
 $blue: #4361ee;
 @import "shared/themes/palette.module";
 
-.root {
-  background-color: #fff;
-  border: 1px solid #dedede;
-  border-radius: 15px;
-  overflow: hidden;
-  margin-bottom: 15px;
-  position: relative;
-
-
-  &:hover {
-    border: 1px solid $blue;
-    box-shadow: 0 0 0 1px $blue;
-
-    .editButtons {
-      opacity: 1;
-    }
-  }
-
-  &Full {
-    &:hover {
-      background-color: #fff;
-      border: 1px solid #dedede;
-      box-shadow: none;
-    }
-  }
-}
-
-.cardContent {
-  padding-bottom: 0 !important;
-  padding-top: 0 !important;
-}
-
-.tag {
-  &:hover {
-    background-color: $secondary !important;
-    color: white !important;
-  }
-}
-
-.image {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-
-  &Full {
-    min-height: 300px;
-    height: 100%;
-  }
-}
-
-.wrapper {
-  padding: 10px 20px 20px;
-}
-
-.content {
-  margin: 30px 0 50px;
-
-  p {
-    font-size: 22px;
-    line-height: 36px;
-  }
-}
-
-.title {
-  font-size: 28px;
-  margin: 0;
-  text-align: justify;
-  text-indent: 40px;
-
-  a {
-    text-decoration: none;
-    color: #000;
-
-    &:hover {
-      color: #000;
-      text-decoration: none;
-    }
-  }
-
-  &Full {
-    font-size: 30px;
-    font-weight: 900;
-  }
-}
-
+// страница со статьей
 .text {
   text-align: justify;
-  text-indent: 40px;
   margin: 20px 0;
 }
 
 .tags {
-  height: 25px;
-  padding: 8px 16px;
-  overflow: hidden;
-  display: flex;
-  width: auto;
-  justify-content: flex-start;
-  gap: 5px;
-  vertical-align: center;
-  margin-top: 20px;
-
-
-  li {
-    display: inline-block;
-    font-size: 14px;
-    margin-right: 15px;
-    opacity: 0.5;
-
-    &:hover {
-      opacity: 1;
-    }
-
-    a {
-      text-decoration: none;
-      color: #000;
-    }
-  }
-}
-
-.cardContentTags {
-  height: 25px;
+  height: 26px;
   padding: 4px 16px;
   overflow: hidden;
   display: flex;
@@ -130,30 +16,12 @@ $blue: #4361ee;
   justify-content: flex-start;
   gap: 10px;
   vertical-align: center;
-}
 
-.postDetails {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  justify-content: space-between;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-
-  li {
-    display: inline-flex;
-    align-items: center;
-    font-size: 14px;
-    opacity: 0.5;
-    height: 20px;
-
-.commentText {
-  margin-top: -3px;
-}
-    svg {
-      font-size: 18px;
-      margin-right: 5px;
+  .tag {
+    cursor: pointer;
+    &:hover {
+      background-color: $primary !important;
+      color: white !important;
     }
   }
 }
@@ -174,21 +42,35 @@ $blue: #4361ee;
   }
 }
 
-.editButtons {
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  background-color: rgba(255, 255, 255, 1);
-  border-radius: 15px;
-  opacity: 0;
-  transition: all 0.15s ease-in-out;
-}
-
+// карточка статьи в основной ленте
 .card {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  border-radius: 15px!important;
+
+  .cardContent {
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .cardTags {
+    height: 26px;
+    padding: 4px 16px;
+    overflow: hidden;
+    display: flex;
+    width: auto;
+    justify-content: flex-start;
+    gap: 10px;
+    vertical-align: center;
+
+    .tag {
+      &:hover {
+        background-color: $primary !important;
+        color: white !important;
+      }
+    }
+  }
+
   a {
     text-decoration: none;
     color: #000;
@@ -199,11 +81,4 @@ $blue: #4361ee;
     }
   }
 
-  .title {
-    color: #000;
-  }
-
-  .subtitle {
-    color: rgba(0, 0, 0, 0.6);
-  }
 }

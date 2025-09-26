@@ -1,6 +1,6 @@
 import { NO_AVATAR } from 'shared/lib';
 
-import { TImage, TProfile, TUser } from '../types';
+import { TImage, TUser } from '../types';
 
 export const getImage = (img: TImage | undefined, isAvatar = false) => {
   return img ? `data:image/jpeg;base64,${img.data}` : isAvatar ? NO_AVATAR : '';
@@ -10,8 +10,8 @@ export const hasImage = (arr: TImage | undefined) => {
   return !!arr?.data;
 };
 
-export const getFullName = (user: TUser | TProfile) => {
-  return `${user.firstName} ${user.secondName} ${user.lastName ? user.lastName : ''}`;
+export const getFullName = (user: TUser) => {
+  return user.login;
 };
 
 export const convertBase64ToBlob = (image: string): Blob => {

@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { Grid, useMediaQuery } from '@mui/material';
+import { Grid } from '@mui/material';
 
-import { useAppDispatch } from 'shared/hook';
+import { useAppDispatch, useMedia } from 'shared/hook';
 import {
   getAuthId,
   getIsAuth,
@@ -15,7 +15,6 @@ import {
   getRecommendationPost,
   getRecommendations,
 } from 'shared/model';
-import { theme } from 'shared/themes';
 
 import { Article } from 'entities/article';
 
@@ -33,9 +32,7 @@ export const ArticlePage: React.FC = React.memo(() => {
   const recommendations = useSelector(getRecommendations);
   const isAuth = useSelector(getIsAuth);
 
-  const isMore1200px = useMediaQuery(theme.breakpoints.up('lg'));
-  const mdMain = isMore1200px ? 9 : 12;
-  const mdSide = 3;
+  const { mdMain, mdSide } = useMedia();
 
   useEffect(() => {
     if (id) {
