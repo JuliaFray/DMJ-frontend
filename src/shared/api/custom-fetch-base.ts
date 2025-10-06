@@ -59,7 +59,7 @@ const customFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryEr
           // }
           api.dispatch(authActions.logout());
           api.dispatch(appActions.setUninitialized());
-          window.location.href = pathKeys.root;
+          window.location.href = pathKeys.login();
         }
       } finally {
         release();
@@ -73,7 +73,7 @@ const customFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryEr
     if ((result.error?.data as any)?.message === 'Нет доступа') {
       api.dispatch(authActions.logout());
       api.dispatch(appActions.setUninitialized());
-      window.location.href = pathKeys.root;
+      window.location.href = pathKeys.login();
     }
   }
 

@@ -34,7 +34,7 @@ export const RegisterPage: FC = () => {
   };
 
   if (isAuth) {
-    return <Navigate to={pathKeys.article.root()} />;
+    return <Navigate to={pathKeys.home()} />;
   }
 
   return (

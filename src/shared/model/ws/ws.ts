@@ -4,7 +4,7 @@ import {
   WS_CONNECTED,
   WS_SHOW_RECONNECT,
 } from '../../lib/DictConstants';
-import { AppDispatch, RootState } from '../redux-store';
+import { AppDispatch } from '../redux-store';
 
 interface OnNewSocket {
   (newSocket: WebSocket): void;

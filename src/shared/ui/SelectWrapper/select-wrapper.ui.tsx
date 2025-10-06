@@ -31,17 +31,24 @@ export const SelectWrapper: FC<Props & TextFieldProps> = ({
     ...field,
     ...otherProps,
     select: true,
-    multiple,
     variant: 'outlined',
     fullWidth: true,
     onChange: handleChange,
-    renderValue: (selected) => (
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-        {selected.map((value) => (
-          <Chip key={value._id} label={value.value} />
-        ))}
-      </Box>
-    ),
+    SelectProps: {
+      multiple,
+      renderValue: (selected) => {
+        return (
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+            {selected.map((value) => (
+              <Chip
+                key={value}
+                label={(options || []).find((opt) => opt._id === value)?.value ?? ''}
+              />
+            ))}
+          </Box>
+        );
+      },
+    },
   };
 
   if (mata && mata.touched && mata.error) {
@@ -52,13 +59,11 @@ export const SelectWrapper: FC<Props & TextFieldProps> = ({
   return (
     // @ts-ignore
     <TextField {...fieldConfig}>
-      {options.map((item, pos) => {
-        return (
-          <MenuItem key={pos} value={item._id}>
-            {item.value}
-          </MenuItem>
-        );
-      })}
+      {options.map((item, pos) => (
+        <MenuItem key={pos} value={item._id}>
+          {item.value}
+        </MenuItem>
+      ))}
     </TextField>
   );
 };

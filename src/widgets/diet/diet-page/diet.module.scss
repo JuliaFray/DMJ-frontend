@@ -1,0 +1,30 @@
+@import "shared/themes/palette.module";
+
+.root {
+  color: rgba(0, 0, 0, 0.6);
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+
+    .wrapper {
+      width: 50% !important;
+      display: flex;
+
+      .percent {
+        width: 25%;
+        text-align: end;
+      }
+
+      .stat {
+        height: 20px !important;
+        border-radius: 4px;
+        width: 100%;
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+

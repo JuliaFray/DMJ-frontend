@@ -12,10 +12,10 @@ const spinnerSlice = createSlice({
   name: 'spinner',
   initialState,
   reducers: {
-    show: (state, payload) => {
+    show: (state) => {
       state.display = true;
     },
-    hide: (state, payload) => {
+    hide: (state) => {
       state.display = false;
     },
   },

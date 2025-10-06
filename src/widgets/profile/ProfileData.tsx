@@ -3,14 +3,10 @@ import React, { SyntheticEvent, useState } from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { CustomProvider, DatePicker, InlineEdit, Input } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
-import ruRu from 'rsuite/locales/ru_RU';
 import { v4 as uuidv4 } from 'uuid';
 
-import CelebrationIcon from '@mui/icons-material/Celebration';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { Box, Container, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 
 import { useAppDispatch } from 'shared/hook';
 import { convertBase64ToBlob, getFullName } from 'shared/lib';

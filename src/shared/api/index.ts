@@ -1,6 +1,5 @@
 export { instance } from './api';
 export { usersApi, useLazyGetAllUsersQuery } from './users-api';
-export { authAPI } from './auth-api';
 export { loginAPI } from './login-api';
 export {
   postAPI,

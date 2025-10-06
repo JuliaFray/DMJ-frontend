@@ -3,14 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { compose } from 'redux';
 
-import { Grid, useMediaQuery } from '@mui/material';
+import { Alert, Grid } from '@mui/material';
 
 import { DietsFeed } from 'widgets/diet';
 
 import { useLazyGetAllDietQuery } from 'shared/api';
-import { useAppDispatch } from 'shared/hook';
-import { getDietsDataLength, getDietsIsFetching } from 'shared/model';
-import { theme } from 'shared/themes';
+import { useAppDispatch, useMedia } from 'shared/hook';
+import { getDietsDataLength, getDietsIsFetching, getIsAuth } from 'shared/model';
 import { CustomPagination } from 'shared/ui';
 
 type TPostPage = {
@@ -20,50 +19,53 @@ type TPostPage = {
   isFavorite: boolean;
   isLoad: boolean;
 };
-const DietPage: React.FC<TPostPage> = React.memo((props) => {
-  const isMore1200px = useMediaQuery(theme.breakpoints.up('lg'));
+const DietPage: React.FC<TPostPage> = React.memo(
+  ({ isMainPage, userId, isOwner, isFavorite, isLoad }) => {
+    const { mdMain, mdSide } = useMedia(isMainPage);
 
-  const isFetching = useSelector(getDietsIsFetching);
-  const dataLength = useSelector(getDietsDataLength);
+    const isAuth = useSelector(getIsAuth);
+    const isFetching = useSelector(getDietsIsFetching);
+    const dataLength = useSelector(getDietsDataLength);
 
-  const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
 
-  const [triggerGetAllDiet] = useLazyGetAllDietQuery();
+    const [triggerGetAllDiet] = useLazyGetAllDietQuery();
 
-  const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    triggerGetAllDiet({});
-  }, [dispatch, props.isOwner, props.isFavorite, props.userId]);
+    useEffect(() => {
+      triggerGetAllDiet({});
+    }, [dispatch, isOwner, isFavorite, userId]);
 
-  useEffect(() => {
-    triggerGetAllDiet({});
-  }, [currentPage]);
+    useEffect(() => {
+      triggerGetAllDiet({});
+    }, [currentPage]);
 
-  // if (!props.userId) {
-  //     return <Alert severity="error">Вам необходимо авторизоваться, чтобы продолжить работу</Alert>
-  // }
+    if (!isAuth) {
+      return <Alert severity='error'>Вам необходимо авторизоваться, чтобы продолжить работу</Alert>;
+    }
 
-  return (
-    <Grid container spacing={2} width='100%'>
-      <Grid item md={isMore1200px ? 9 : 12} width='100%'>
-        <DietsFeed
-          isMainPage={props.isMainPage}
-          isFetching={isFetching}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+    return (
+      <Grid container spacing={2} width='100%'>
+        <Grid item md={mdMain} width='100%'>
+          <DietsFeed
+            isMainPage={isMainPage}
+            isFetching={isFetching}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
 
-        <CustomPagination
-          page={currentPage}
-          dataLength={dataLength}
-          setCurrentPage={setCurrentPage}
-        />
+          <CustomPagination
+            page={currentPage}
+            dataLength={dataLength}
+            setCurrentPage={setCurrentPage}
+          />
+        </Grid>
+        {/* {isMainPage && <Grid item md={mdSide} className={styles.right}/>} */}
       </Grid>
-      {/* {props.isMainPage && <Grid item md={mdSide} className={styles.right}/>} */}
-    </Grid>
-  );
-});
+    );
+  },
+);
 
 const mapStateToProps = () => ({
   isOwner: false,

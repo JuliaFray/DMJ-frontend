@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { Container } from '@mui/material';
 import List from '@mui/material/List';
-
-import { TComment, TCommentsBlock } from 'shared/types';
-import { SideBlock } from 'shared/ui';
 
 import { Comment } from 'entities/comment';
 
-export const CommentsBlock: React.FC<TCommentsBlock> = ({ items, children, isLoading = true }) => {
+import { TComment } from 'shared/types';
+
+interface Props {
+  items: TComment[];
+  isLoading: boolean;
+  children?: React.ReactNode;
+}
+
+export const CommentsBlock: FC<Props> = ({ items, isLoading = true, children }) => {
   return (
     <>
       <List sx={{ width: '100%' }}>

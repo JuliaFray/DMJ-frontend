@@ -42,7 +42,7 @@ export const Article: React.FC<PostPropsType> = ({ post, isFullPost, isLoading, 
     // eslint-disable-next-line no-alert
     if (window.confirm('Вы действительно хотите удалить статью?')) {
       dispatch(deletePost({ payload: post }));
-      navigate(pathKeys.root);
+      navigate(pathKeys.article.root());
     }
   };
 
@@ -64,7 +64,7 @@ export const Article: React.FC<PostPropsType> = ({ post, isFullPost, isLoading, 
           </Avatar>
         }
         title={
-          <Link to={`/user/${post.author._id}`}>
+          <Link to={pathKeys.users.byId({ id: post.author._id })}>
             <Typography fontWeight={400} variant='body1' color={theme.palette.text.primary}>
               {getFullName(post.author)}
             </Typography>
@@ -78,7 +78,7 @@ export const Article: React.FC<PostPropsType> = ({ post, isFullPost, isLoading, 
         action={
           isEditable && (
             <div>
-              <Link to={`/article/editor/${post._id}`}>
+              <Link to={pathKeys.article.editor.byId({ id: post._id })}>
                 <Tooltip title='Редактировать'>
                   <IconButton color='primary'>
                     <EditIcon />
@@ -100,7 +100,7 @@ export const Article: React.FC<PostPropsType> = ({ post, isFullPost, isLoading, 
           {isFullPost ? (
             post.title
           ) : (
-            <Link key={post._id} to={`/${post._id}`}>
+            <Link key={post._id} to={pathKeys.article.byId({ id: post._id })}>
               {post.title}
             </Link>
           )}

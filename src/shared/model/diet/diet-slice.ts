@@ -9,36 +9,6 @@ type TInitial = {
   isFetching: boolean;
 };
 
-const mock = [
-  {
-    _id: '1',
-    name: 'test',
-    period: 1,
-    author: {
-      _id: '11',
-      login: 'login',
-      email: 'email',
-      userId: 'userId',
-    },
-    meals: [1, 2, 3],
-    stats: {
-      plan: {
-        cal: 111,
-        proteins: 11,
-        fats: 11,
-        carb: 11,
-      },
-      fact: {
-        cal: 111,
-        proteins: 11,
-        fats: 11,
-        carb: 11,
-      },
-      rating: 5,
-    },
-  },
-];
-
 const initialState: TInitial = {
   diets: [],
   totalCount: 0,
@@ -70,7 +40,7 @@ const dietSlice = createSlice({
       )
       .addMatcher(dietApi.endpoints.getAllDiet.matchRejected, (state: TInitial) => {
         state.isFetching = false;
-        state.diets = mock;
+        state.diets = [];
         state.totalCount = 0;
       });
   },

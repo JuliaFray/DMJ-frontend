@@ -21,7 +21,7 @@ type IInputFileUpload = {
   text: string;
 };
 
-export const InputFileUpload: React.FC<IInputFileUpload> = (props, context) => {
+export const InputFileUpload: React.FC<IInputFileUpload> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (

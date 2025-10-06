@@ -1,5 +1,3 @@
-import { TArticle, TUser } from '../types';
-
 // eslint-disable-next-line no-shadow
 export const enum ResultCodes {
   Success = 0,
@@ -9,23 +7,17 @@ export const enum ResultCodes {
   CaptchaIsRequired = 10,
 }
 
-export interface GenericResponseType<D = unknown> {
+export interface GenericResponseType<D> {
   data: D;
   message: string;
   resultCode: ResultCodes;
   token: string;
 }
 
-export type LoginResponseType = GenericResponseType<TUser>;
+export interface CountResponseType<D> extends GenericResponseType<D> {
+  totalCount: number;
+}
 
 export type CaptchaResponseType = {
   url: string;
 };
-
-export interface UsersResponseType extends GenericResponseType<TUser[]> {
-  totalCount: number;
-}
-
-export interface PostsResponseType extends GenericResponseType<TArticle[]> {
-  totalCount: number;
-}

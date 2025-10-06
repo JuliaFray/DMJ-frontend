@@ -1,26 +1,24 @@
 @import "shared/themes/palette.module";
 
 .stats {
-  background-color: rgba($secondary, 0.15);
-  border-radius: 15px;
   margin: 0 !important;
   padding: 10px 0;
 
-  .statRow {
+  .stat {
     display: flex;
-    width: 100%;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: space-around;
 
-    &__vetical {
-      flex-direction: column;
+    .period {
+      font-size: 30px;
+      color: $primary;
+      justify-content: center;
+      text-align: center;
     }
+
   }
 
-  .statItem {
-    width: 50%;
-    color: $primary;
-    font-size: 20px;
-    font-weight: 400;
-  }
 
 }
+
+

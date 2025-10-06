@@ -1,25 +1,17 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
 import { Container, Tab, Tabs } from '@mui/material';
-import Paper from '@mui/material/Paper';
 
 import { getIsAuth } from 'shared/model';
-
-import styles from './home-tabs.module.scss';
-
-const a11yProps = (index: number) => {
-  return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
-  };
-};
+import { a11yProps } from 'shared/utils';
 
 interface Props {
   tabIndex: number;
   setTabIndex: Dispatch<SetStateAction<number>>;
 }
+
 export const HomeTabs: React.FC<Props> = ({ tabIndex, setTabIndex }) => {
   const isAuth = useSelector(getIsAuth);
 

@@ -16,7 +16,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
 import { useAppDispatch, useWebSocket } from 'shared/hook';
-import { SocketEvents } from 'shared/lib';
+import { pathKeys, SocketEvents } from 'shared/lib';
 import {
   appActions,
   getAppAllNotifications,
@@ -201,7 +201,7 @@ const NotificationItem: React.FC<{ item?: INotifications; text?: string }> = (
         <ListItem key={uuidv4()} className={styles.item}>
           <ListItemText
             primary={reactStringReplace(item.msg, '%s', (match, i) => (
-              <Link to={`/user/${item.fromId}`}>{item.from}</Link>
+              <Link to={pathKeys.users.byId({ id: item.fromId })}>{item.from}</Link>
             ))}
           />
         </ListItem>
@@ -216,7 +216,7 @@ const NotificationItem: React.FC<{ item?: INotifications; text?: string }> = (
         <ListItem key={uuidv4()} className={styles.item}>
           <ListItemText
             primary={reactStringReplace(item.msg, '%s', (match, i) => (
-              <Link to={`/user/${item.fromId}`}>{item.from}</Link>
+              <Link to={pathKeys.users.byId({ id: item.fromId })}>{item.from}</Link>
             ))}
           />
           <ListItem className={styles.subItem}>

@@ -1,6 +1,8 @@
 import { BaseQueryFn, createApi, EndpointBuilder } from '@reduxjs/toolkit/query/react';
 
-import { UsersResponseType } from './api-types';
+import { TUser } from 'shared/types';
+
+import { CountResponseType } from './api-types';
 import customFetchBase from './custom-fetch-base';
 
 const baseUrl = 'users';
@@ -9,7 +11,7 @@ export const usersApi = createApi({
   baseQuery: customFetchBase,
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
     getAllUsers: build.query<
-      UsersResponseType,
+      CountResponseType<TUser[]>,
       { currentPage: number; isFollowers: boolean; userId: string }
     >({
       query: ({ currentPage, isFollowers, userId }) => {

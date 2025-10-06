@@ -43,7 +43,7 @@ export const DietsFeed: React.FC<TPostMain> = ({ isFetching }) => {
         )}
 
         {isAuth && (
-          <Link to={pathKeys.diet.editor.root()}>
+          <Link to={pathKeys.planner.editor.root()}>
             <Fab
               color='primary'
               aria-label='edit'

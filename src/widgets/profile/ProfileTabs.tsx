@@ -10,15 +10,9 @@ import { HomePage } from 'pages/article-feed/home-page.ui';
 import { UsersPage } from 'pages/users/users-page.ui';
 
 import { TabPanel } from 'shared/ui';
+import { a11yProps } from 'shared/utils';
 
-import { CommentsFeed } from '../comments-feed';
-
-const a11yProps = (index: number) => {
-  return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
-  };
-};
+import { CommentsFeed } from '../comments/comments-feed';
 
 export type IProfileTabs = {
   isOwner: boolean;

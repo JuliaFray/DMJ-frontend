@@ -2,30 +2,61 @@ import { TUser } from './profile.type';
 
 // eslint-disable-next-line no-shadow
 export enum Meal {
-  Breakfast = 0,
-  MorningSnack = 1,
-  Lunch = 2,
-  AfterNoonSnack = 3,
-  Dinner = 4,
-  EveningSnack = 5,
+  Breakfast = 'Завтрак',
+  MorningSnack = 'Утренний перекус',
+  Lunch = 'Обед',
+  AfterNoonSnack = 'Обеденный перекус',
+  Dinner = 'Ужин',
+  EveningSnack = 'Вечерний перекус',
 }
 
-export type TDietStat = {
+/** Статистика плана питания */
+export interface TDietStat {
   cal: number;
   proteins: number;
   fats: number;
   carb: number;
-};
+  otherNutrients?: any;
+}
 
-export type TDietPlan = {
-  _id: string;
+export interface Food {
   name: string;
+  /** Распределение по дням */
+  days: {
+    /** Номер дня */
+    day: number;
+    /** Приемы пищи */
+    meals: {
+      /** Прием пищи */
+      meal: Meal;
+      /** Объем */
+      volume: number;
+    }[];
+  }[];
+  /** Показатели на 100г */
+  stat: TDietStat;
+}
+
+/** План питания */
+export interface TDietPlan {
+  _id: string;
+  /** Наименование плана питания */
+  name: string;
+  /** Количетсво дней */
   period: number;
+  /** Создатель */
   author: TUser;
+  /** Приемы пищи в плане */
   meals: Meal[];
-  stats: {
+  /** Статистика плана питания */
+  stat: {
+    /** Плановые показатели */
     plan: TDietStat;
+    /** Фактические показатели */
     fact: TDietStat;
+    /** Рейтинг плана */
     rating: number;
   };
-};
+  /** Список продуктов в плане питания */
+  foods?: Food[];
+}

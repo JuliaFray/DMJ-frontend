@@ -14,7 +14,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
 import { useAppDispatch, useAppSelector } from 'shared/hook';
-import { getFullName, NO_AVATAR } from 'shared/lib';
+import { getFullName, NO_AVATAR, pathKeys } from 'shared/lib';
 import { getIsAuth, toggleCommentRating } from 'shared/model';
 import { TCommentType } from 'shared/types';
 
@@ -71,7 +71,7 @@ export const Comment: React.FC<TCommentType> = ({ item, isLoading }) => {
 
         {!isLoading && !!item.author && (
           <ListItemText secondary={item.text}>
-            <Link className={styles.name} to={`/user/${item.author._id}`}>
+            <Link className={styles.name} to={pathKeys.users.byId({ id: item.author._id })}>
               {getFullName(item.author)}
             </Link>
           </ListItemText>

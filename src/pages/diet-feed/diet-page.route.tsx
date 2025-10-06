@@ -17,6 +17,6 @@ const enhance = compose((component) =>
 );
 
 export const dietPageRoute: RouteObject = {
-  path: pathKeys.diet.root(),
+  path: pathKeys.planner.root(),
   element: createElement(enhance(DietPage)),
 };

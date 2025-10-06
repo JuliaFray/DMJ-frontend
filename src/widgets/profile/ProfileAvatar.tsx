@@ -14,7 +14,7 @@ type IProfileAvatar = {
   setFile: (file: File | string | null) => void;
 };
 
-export const ProfileAvatar: React.FC<IProfileAvatar> = (props, context) => {
+export const ProfileAvatar: React.FC<IProfileAvatar> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {

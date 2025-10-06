@@ -67,7 +67,7 @@ const HeaderMenu: React.FC<{ userId: string }> = (props, context) => {
   const items: IItem[] = [
     {
       name: 'Профиль',
-      link: pathKeys.users.byId(props.userId),
+      link: pathKeys.users.byId({ id: props.userId }),
       icon: <AccountBox />,
     },
     { name: 'Сообщения', link: pathKeys.dialogs(), icon: <ChatBubble /> },

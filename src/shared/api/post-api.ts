@@ -3,7 +3,7 @@ import { BaseQueryFn, createApi, EndpointBuilder } from '@reduxjs/toolkit/query/
 import { TArticle, TChipData, TComment } from '../types';
 
 import { instance } from './api';
-import { GenericResponseType, PostsResponseType } from './api-types';
+import { CountResponseType, GenericResponseType } from './api-types';
 import customFetchBase from './custom-fetch-base';
 
 const baseUrl = 'posts';
@@ -108,7 +108,7 @@ export const articleApi = createApi({
   reducerPath: 'articleApi',
   baseQuery: customFetchBase,
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
-    getAllArticles: build.query<PostsResponseType, { searchParams: string }>({
+    getAllArticles: build.query<CountResponseType<TArticle[]>, { searchParams: string }>({
       query: ({ searchParams }) => {
         return {
           url: `${baseUrl}${searchParams}`,
@@ -117,7 +117,7 @@ export const articleApi = createApi({
       },
     }),
     getAllTags: build.query<GenericResponseType<TChipData[]>, unknown>({
-      query: (_) => {
+      query: () => {
         return {
           url: `all-tags`,
           method: 'GET',

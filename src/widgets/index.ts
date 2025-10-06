@@ -1,4 +1,4 @@
-export * from './comment-block';
+export * from './comments';
 export * from './tag-widget';
 export * from './home-tabs';
 export * from './article';
@@ -6,5 +6,5 @@ export { ProfileTabs, ProfileAvatar, ProfileData, ProfileCard } from './profile'
 export * from './recommendations';
 export { UserRow, UserInfo, UserRowSkeleton, UsersFeed } from './users';
 export * from './diet';
-export * from './dialog-header';
+export * from './dialog';
 export { MenuWidget } from './menu-widget';

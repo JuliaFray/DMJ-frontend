@@ -15,7 +15,7 @@ import { Comment } from 'entities/comment';
 import { ArticleCard } from 'widgets';
 
 // eslint-disable-next-line no-restricted-imports
-import { CommonLayoutUi } from '../../app/layouts';
+import { CommonLayoutUi } from '../../../app/layouts';
 
 type IPostCommentPage = {
   userId: string;
@@ -47,7 +47,7 @@ export const CommentsFeed: React.FC<IPostCommentPage> = ({ userId }) => {
 
   useEffect(() => {
     dispatch(getUserPostComments({ userId }));
-  }, []);
+  }, [dispatch, userId]);
 
   return (
     <CommonLayoutUi

@@ -22,7 +22,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
 import { useAppDispatch, useWebSocket } from 'shared/hook';
-import { getFullName, NO_AVATAR, SocketEvents } from 'shared/lib';
+import { getFullName, NO_AVATAR, pathKeys, SocketEvents } from 'shared/lib';
 import { appActions, getAppUserOnline, getAuthId } from 'shared/model';
 import { TUser } from 'shared/types';
 
@@ -115,7 +115,7 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
         <div className={styles.userInfo}>
           <CardContent>
             <Typography component='div' variant='h5'>
-              <Link to={`/user/${user._id}`}>{getFullName(user)}</Link>
+              <Link to={pathKeys.users.byId({ id: user._id })}>{getFullName(user)}</Link>
             </Typography>
           </CardContent>
         </div>

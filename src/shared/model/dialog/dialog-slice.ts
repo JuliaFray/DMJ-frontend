@@ -35,23 +35,23 @@ const dialogSlice = createSlice({
   extraReducers: (builder) => {
     builder
       //= ====getAllDialogs=====//
-      .addCase(getAllDialogs.pending, (state) => {})
+      .addCase(getAllDialogs.pending, () => {})
       .addCase(getAllDialogs.fulfilled, (state, action: PayloadAction<any>) => {
         state.dialogs = action.payload.data;
       })
-      .addCase(getAllDialogs.rejected, (state) => {})
+      .addCase(getAllDialogs.rejected, () => {})
       //= ====getMessagesByDialog=====//
-      .addCase(getMessagesByDialogId.pending, (state) => {})
+      .addCase(getMessagesByDialogId.pending, () => {})
       .addCase(getMessagesByDialogId.fulfilled, (state, action: PayloadAction<any>) => {
         state.messages = action.payload.data;
       })
-      .addCase(getMessagesByDialogId.rejected, (state) => {})
+      .addCase(getMessagesByDialogId.rejected, () => {})
       //= ====getUsersWithStatus=====//
-      .addCase(getUsersWithStatus.pending, (state) => {})
+      .addCase(getUsersWithStatus.pending, () => {})
       .addCase(getUsersWithStatus.fulfilled, (state, action: PayloadAction<any>) => {
         state.users = action.payload.data;
       })
-      .addCase(getUsersWithStatus.rejected, (state) => {});
+      .addCase(getUsersWithStatus.rejected, () => {});
   },
 });
 

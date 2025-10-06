@@ -8,6 +8,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 
+import { pathKeys } from 'shared/lib';
 import { theme } from 'shared/themes';
 // eslint-disable-next-line no-restricted-imports
 import palette from 'shared/themes/palette.module.scss';
@@ -84,7 +85,7 @@ export const PopularPost: React.FC<{ post: TArticle }> = ({ post }) => {
           justifyContent: 'end',
         }}
       >
-        <Link to={`article/${post._id}`}>
+        <Link to={pathKeys.article.byId({ id: post._id })}>
           <Tooltip title='Читать далее'>
             <IconButton aria-label='forward'>
               <DoubleArrow />

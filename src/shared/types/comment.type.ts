@@ -9,12 +9,6 @@ export type TComment = {
   createdAt?: Date;
 };
 
-export type TCommentsBlock = {
-  items: TComment[];
-  children: any;
-  isLoading: boolean;
-};
-
 export type TCommentType = {
   item: TComment;
   isLoading: boolean;

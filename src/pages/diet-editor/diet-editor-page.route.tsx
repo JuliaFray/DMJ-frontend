@@ -15,7 +15,7 @@ const enhance = compose((component) =>
 );
 
 export const dietEditorPageRoute: RouteObject = {
-  path: pathKeys.article.editor.root(),
+  path: pathKeys.planner.editor.root(),
   element: createElement(enhance(ArticleEditorPage)),
   children: [
     {

@@ -15,6 +15,6 @@ const enhance = compose((component) =>
 );
 
 export const homePageRoute: RouteObject = {
-  path: pathKeys.home(),
+  path: pathKeys.article.root(),
   element: createElement(enhance(HomePage)),
 };

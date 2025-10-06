@@ -62,12 +62,12 @@ export const theme = createTheme({
             border: '1px solid rgb(3,154,154)',
           },
           height: '50px',
-          borderRadius: '16px !important',
+          borderRadius: '5px !important',
         },
         input: {
           height: '50px',
           padding: '0 10px !important',
-          borderRadius: '16px !important',
+          borderRadius: '5px !important',
         },
       },
     },
@@ -89,7 +89,7 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           height: '50px',
-          borderRadius: '16px',
+          borderRadius: '5px',
         },
       },
     },

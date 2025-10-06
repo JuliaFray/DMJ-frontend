@@ -2,10 +2,14 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Tooltip } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
 
+import { pathKeys } from 'shared/lib';
 import { TDietPlan } from 'shared/types';
 import { DietStats } from 'shared/ui';
 
@@ -28,23 +32,29 @@ export const DietCard: React.FC<TDietCard> = ({ diet }) => {
           },
         }}
         title={
-          <Link className={styles.title} to={`/planner/${diet._id}`}>
+          <Link className={styles.title} to={pathKeys.planner.byId({ id: diet._id })}>
             {diet.name}
           </Link>
         }
-        titleTypographyProps={{
-          variant: 'subtitle1',
-          whiteSpace: 'normal',
-        }}
+        action={
+          <Link to={pathKeys.planner.byId({ id: diet._id })}>
+            <Tooltip title='Открыть план'>
+              <IconButton aria-label='forward'>
+                <ChevronRightIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
+        }
       />
 
-      <CardContent>
-        <DietStats plan={diet.stats.plan} period={diet.period} rating={diet.stats.rating} />
+      <CardContent style={{ height: '220px' }}>
+        <DietStats
+          plan={diet.stat.plan}
+          fact={diet.stat.fact}
+          period={diet.period}
+          rating={diet.stat.rating}
+        />
       </CardContent>
-
-      {/* <CardActions> */}
-      {/*    actions */}
-      {/* </CardActions> */}
     </Card>
   );
 };

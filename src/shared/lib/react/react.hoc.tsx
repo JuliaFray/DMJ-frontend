@@ -10,6 +10,8 @@ import React, {
 import { connect, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
+import { pathKeys } from 'shared/lib';
+
 import { getIsAuth, RootState } from '../../model';
 
 export function withSuspense<Props extends object>(
@@ -44,7 +46,7 @@ export function withAuthRedirect<T extends NonNullable<unknown>>(
     const isAuth = useSelector(getIsAuth);
     const { ...restProps } = props;
     if (!isAuth && !window.localStorage.getItem('token')) {
-      return <Navigate to='/login' />;
+      return <Navigate to={pathKeys.login()} />;
     }
     return <Component {...(restProps as T)} />;
   };

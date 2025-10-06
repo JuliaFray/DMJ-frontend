@@ -4,7 +4,6 @@ import moment from 'moment/moment';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import { DoubleArrow } from '@mui/icons-material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Box, Chip, Tooltip } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
@@ -76,7 +75,7 @@ export const ArticleCard: React.FC<PostCardProps> = ({
           )
         }
         title={
-          <Link to={`/user/${post.author._id}`}>
+          <Link to={pathKeys.users.byId({ id: post.author._id })}>
             <Typography fontWeight={400} variant='body1' color={theme.palette.text.primary}>
               {getFullName(post.author)}
             </Typography>
@@ -119,7 +118,7 @@ export const ArticleCard: React.FC<PostCardProps> = ({
             }}
           >
             <Typography fontWeight={500} variant='h6' style={{ marginBottom: '10px' }}>
-              <Link replace to={`/article/${post._id}`}>
+              <Link replace to={pathKeys.article.byId({ id: post._id })}>
                 {post.title}
               </Link>
             </Typography>
