@@ -1,13 +1,11 @@
 import { RootState } from '../redux-store';
 
-export const getDiets = (state: RootState) => {
-  return state.diets.diets;
-};
+import { dietSlice } from './diet-slice';
 
 export const getDietsDataLength = (state: RootState) => {
-  return state.diets.totalCount || 0;
+  return state[dietSlice.reducerPath]?.totalCount || 0;
 };
 
 export const getDietsIsFetching = (state: RootState) => {
-  return state.diets.isFetching;
+  return state[dietSlice.reducerPath]?.isFetching;
 };

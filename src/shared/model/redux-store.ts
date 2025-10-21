@@ -2,7 +2,9 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { articleApi, dietApi, usdaApi, usersApi } from '../api';
+import { foodSlice } from 'shared/model/usda/foodSlice';
+
+import { articleApi, dietApi, foodApi, usersApi } from '../api';
 
 import { appSlice } from './apps';
 import { authSlice } from './auth';
@@ -22,9 +24,10 @@ const rootReducer = combineReducers({
   user: usersSlice.reducer,
   dialog: dialogSlice.reducer,
   spinner: spinnerSlice.reducer,
-  diets: dietSlice.reducer,
+  [foodSlice.reducerPath]: foodSlice.reducer,
+  [dietSlice.reducerPath]: dietSlice.reducer,
   ws: wsReducer.wsReducer,
-  [usdaApi.reducerPath]: usdaApi.reducer,
+  [foodApi.reducerPath]: foodApi.reducer,
   [articleApi.reducerPath]: articleApi.reducer,
   [usersApi.reducerPath]: usersApi.reducer,
   [dietApi.reducerPath]: dietApi.reducer,
@@ -38,7 +41,7 @@ export const store = configureStore({
         extraArgument: {},
       },
     })
-      .concat(usdaApi.middleware)
+      .concat(foodApi.middleware)
       .concat(articleApi.middleware)
       .concat(usersApi.middleware)
       .concat(dietApi.middleware),

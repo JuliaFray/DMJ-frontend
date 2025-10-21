@@ -6,3 +6,5 @@ export type { TDialog, TDialogFriends, TMessage } from './message.type';
 export type { TUser, ILoginData, IFilter, TProfileStats } from './profile.type';
 export type { TCommentType, TComment } from './comment.type';
 export type { TChipData } from './tag.type';
+export * from './food.type';
+export type { WsType } from './general.type';

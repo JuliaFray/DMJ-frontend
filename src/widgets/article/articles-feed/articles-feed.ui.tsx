@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux';
 
 import { Grid } from '@mui/material';
 
-import { getPosts } from 'shared/model';
+import { useAppSelector } from 'shared/hook';
+import { getPosts, getPostsDataLength } from 'shared/model';
 import { TArticle, TChipData } from 'shared/types';
 
 import { ArticleCard, ArticlesFeedSkeleton } from 'widgets';
@@ -17,7 +18,8 @@ type TPostMain = {
 };
 
 export const ArticlesFeed: React.FC<TPostMain> = ({ isFetching, allTags, handleAddTag }) => {
-  const posts = useSelector(getPosts);
+  const posts = useAppSelector(getPosts);
+  const dataLength = useAppSelector(getPostsDataLength);
 
   return (
     <Grid

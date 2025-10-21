@@ -17,16 +17,19 @@ export function UserLayout() {
   const userId = useAppSelector(getAuthId);
 
   return (
-    <>
-      <Box sx={{ flexGrow: 1 }} className={styles.header}>
-        <AppBar position='static'>
-          <Toolbar className={styles.toolbar}>
-            <BrandLink />
-            {!isEmpty(userId) ? <SignOutLink /> : <SignInLink />}
-          </Toolbar>
-        </AppBar>
-      </Box>
-      <Container maxWidth='xl' fixed>
+    <Box display='flex'>
+      <AppBar
+        position='fixed'
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        className={styles.header}
+      >
+        <Toolbar className={styles.toolbar}>
+          <BrandLink />
+          {!isEmpty(userId) ? <SignOutLink /> : <SignInLink />}
+        </Toolbar>
+      </AppBar>
+
+      <Container fixed maxWidth='xl' sx={{ flexGrow: 1, marginTop: '80px' }}>
         <Grid container spacing={2} className={styles.main}>
           <Grid item md={3} className={styles.left}>
             <MenuWidget userId={userId} />
@@ -37,6 +40,6 @@ export function UserLayout() {
           </Grid>
         </Grid>
       </Container>
-    </>
+    </Box>
   );
 }

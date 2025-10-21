@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { Alert, Grid } from '@mui/material';
@@ -8,7 +8,7 @@ import { Alert, Grid } from '@mui/material';
 import { DietsFeed } from 'widgets/diet';
 
 import { useLazyGetAllDietQuery } from 'shared/api';
-import { useAppDispatch, useMedia } from 'shared/hook';
+import { useAppDispatch, useAppSelector, useMedia } from 'shared/hook';
 import { getDietsDataLength, getDietsIsFetching, getIsAuth } from 'shared/model';
 import { CustomPagination } from 'shared/ui';
 
@@ -23,22 +23,22 @@ const DietPage: React.FC<TPostPage> = React.memo(
   ({ isMainPage, userId, isOwner, isFavorite, isLoad }) => {
     const { mdMain, mdSide } = useMedia(isMainPage);
 
-    const isAuth = useSelector(getIsAuth);
-    const isFetching = useSelector(getDietsIsFetching);
-    const dataLength = useSelector(getDietsDataLength);
+    const isAuth = useAppSelector(getIsAuth);
+    const isFetching = useAppSelector(getDietsIsFetching);
+    const dataLength = useAppSelector(getDietsDataLength);
 
     const [currentPage, setCurrentPage] = useState(1);
 
-    const [triggerGetAllDiet] = useLazyGetAllDietQuery();
+    const [getAllDietPlans] = useLazyGetAllDietQuery();
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-      triggerGetAllDiet({});
+      getAllDietPlans({});
     }, [dispatch, isOwner, isFavorite, userId]);
 
     useEffect(() => {
-      triggerGetAllDiet({});
+      getAllDietPlans({});
     }, [currentPage]);
 
     if (!isAuth) {

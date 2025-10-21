@@ -17,8 +17,7 @@ import ListItemText from '@mui/material/ListItemText';
 
 import { useAppDispatch, useWebSocket } from 'shared/hook';
 import { pathKeys, SocketEvents } from 'shared/lib';
-import { appActions, getMyProfileShortName } from 'shared/model';
-import { getProfileEmail } from 'shared/model/profile/profile-selectors';
+import { appActions, getMyProfileShortName, getProfileEmail } from 'shared/model';
 import { theme } from 'shared/themes';
 
 import styles from './menu-widget.module.scss';
@@ -44,7 +43,12 @@ const items: IItem[] = [
     icon: <BallotIcon />,
   },
   { name: 'Тренировки', pathname: 'training', link: pathKeys.root, icon: <SportsGymnasticsIcon /> },
-  { name: 'Вес и измерения', pathname: 'measure', link: pathKeys.root, icon: <StraightenIcon /> },
+  {
+    name: 'Вес и измерения',
+    pathname: 'measure',
+    link: pathKeys.measure.root(),
+    icon: <StraightenIcon />,
+  },
   {
     name: 'Общая лента',
     pathname: 'article',
@@ -71,7 +75,7 @@ export const MenuWidget: React.FC<{ userId: string }> = ({ userId }) => {
 
   const ws = useWebSocket();
   const handleWS = useCallback(
-    (e: any) => {
+    (e: MessageEvent<string>) => {
       const { type, data, msg } = JSON.parse(e.data);
       if (type === SocketEvents.FOLLOW_EVENT) {
         dispatch(
@@ -106,7 +110,7 @@ export const MenuWidget: React.FC<{ userId: string }> = ({ userId }) => {
         );
       }
     },
-    [dispatch],
+    [dispatch, userId],
   );
 
   useEffect(() => {

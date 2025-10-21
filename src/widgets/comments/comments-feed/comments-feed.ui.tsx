@@ -5,11 +5,11 @@ import { v4 as uuidv4 } from 'uuid';
 
 import List from '@mui/material/List';
 
+import { Comment } from 'entities/comment';
+
 import { useAppDispatch } from 'shared/hook';
 import { getPostComments, getUserPostComments } from 'shared/model';
 import { TArticle, TComment } from 'shared/types';
-
-import { Comment } from 'entities/comment';
 
 // eslint-disable-next-line no-restricted-imports
 import { ArticleCard } from 'widgets';

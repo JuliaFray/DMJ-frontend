@@ -40,7 +40,7 @@ const HeaderComponent: React.FC = () => {
 
   const ws = useWebSocket();
   const handleWS = useCallback(
-    (e: any) => {
+    (e: MessageEvent<string>) => {
       const { type, data, msg } = JSON.parse(e.data);
       if (type === SocketEvents.FOLLOW_EVENT) {
         dispatch(

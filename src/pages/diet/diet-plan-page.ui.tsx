@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import { Form, Formik } from 'formik';
 import { useParams } from 'react-router-dom';
@@ -20,72 +20,122 @@ import DialogContentText from '@mui/material/DialogContentText';
 
 import { DietConsist, DietParams } from 'widgets/diet';
 
-import { useGetOneDietQuery } from 'shared/api';
-import { useAppDispatch, useMedia } from 'shared/hook';
-import { TabPanel } from 'shared/ui';
+import { useDeleteDietMutation, useGetOneDietQuery, useUpdateDietMutation } from 'shared/api';
+import { useAppDispatch, useAppSelector, useMedia, useWebSocket } from 'shared/hook';
+import { SocketEvents } from 'shared/lib';
+import { dietActions, dietSelectors } from 'shared/model';
+import { TDietPlan, WsType } from 'shared/types';
+import { Loader, TabPanel } from 'shared/ui';
 import { a11yProps } from 'shared/utils';
 
 export const DietPlanPage: FC = () => {
-  const { mdMain, mdSide } = useMedia();
+  const { mdMain } = useMedia();
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  const [openDialog, setOpenDialog] = useState(false);
 
-  const { data, error, isLoading } = useGetOneDietQuery({ id: id! });
+  const ws = useWebSocket();
+
+  const handleWS = useCallback(
+    (e: MessageEvent<string>) => {
+      const { type, data } = JSON.parse(e.data);
+      if (type === SocketEvents.CHANGE_WEIGHT_EVENT) {
+        dispatch(dietActions.updateDiet(data));
+      }
+    },
+    [dispatch],
+  );
+
+  useEffect(() => {
+    if (!ws) return;
+
+    ws.addEventListener('message', handleWS);
+    return () => ws.removeEventListener('message', handleWS);
+  }, [handleWS, ws]);
+
+  const { error, isLoading } = useGetOneDietQuery({ id: id! });
+  const [updateDiet, { isLoading: isUpdateLoading }] = useUpdateDietMutation();
+  const [deleteDiet] = useDeleteDietMutation();
+
+  const diet: TDietPlan | null = useAppSelector(dietSelectors.getDiet);
 
   const [tabIndex, setTabIndex] = useState<number>(0);
   useEffect(() => {
     setTabIndex(0);
   }, []);
 
-  const [openDialog, setOpenDialog] = useState(false);
   const handleDelete = () => {
     setOpenDialog(false);
-    console.log('delete');
+    deleteDiet({ id: id! });
   };
 
-  if (!data) {
-    return <div>error</div>;
+  const handleTabChange = (formValues: any) => (event: React.SyntheticEvent, newValue: number) => {
+    setTabIndex(newValue);
+    updateDiet({ id: id!, body: formValues });
+  };
+
+  if (!diet || error) {
+    return <div>{'error' || ''}</div>;
   }
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabIndex(newValue);
-  };
+  if (isLoading || isUpdateLoading) {
+    return <Loader />;
+  }
 
   return (
     <Grid container spacing={2}>
       <Grid item md={mdMain}>
         <Paper variant='elevation' elevation={4} sx={{ padding: '16px' }}>
           <Container sx={{ padding: '0!important' }}>
-            <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
-              <Tab wrapped label='Основные параметры' {...a11yProps(0)} />
-              <Tab wrapped label='Состав' {...a11yProps(1)} />
-              <Tab wrapped label='Итог' {...a11yProps(2)} />
-            </Tabs>
+            <Formik
+              initialValues={diet}
+              onSubmit={(v) => {
+                updateDiet({ id: id!, body: v });
+              }}
+            >
+              {({ values }) => (
+                <>
+                  <Tabs
+                    value={tabIndex}
+                    onChange={handleTabChange(values)}
+                    centered
+                    variant='fullWidth'
+                  >
+                    <Tab wrapped label='Основные параметры' {...a11yProps(0)} />
+                    <Tab wrapped label='Состав' {...a11yProps(1)} />
+                    <Tab wrapped label='Итог' {...a11yProps(2)} />
+                  </Tabs>
 
-            <Formik initialValues={data.data} onSubmit={(v) => console.log(v)}>
-              {() => (
-                <Form>
-                  <TabPanel value={tabIndex} index={0}>
-                    <DietParams diet={data.data} />
-                  </TabPanel>
-                  <TabPanel value={tabIndex} index={1}>
-                    <DietConsist diet={data.data} />
-                  </TabPanel>
+                  <Form>
+                    <TabPanel value={tabIndex} index={0}>
+                      <DietParams diet={diet} />
+                    </TabPanel>
+                    <TabPanel value={tabIndex} index={1}>
+                      <DietConsist diet={diet} />
+                    </TabPanel>
 
-                  <Box sx={{ display: 'flex', justifyContent: 'end', gap: '20px' }}>
-                    <Button
-                      type='button'
-                      size='large'
-                      variant='outlined'
-                      onClick={() => setOpenDialog(true)}
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'end',
+                        gap: '20px',
+                        marginTop: '24px',
+                      }}
                     >
-                      Удалить
-                    </Button>
-                    <Button type='submit' size='large' variant='contained'>
-                      Сохранить
-                    </Button>
-                  </Box>
-                </Form>
+                      <Button
+                        type='button'
+                        size='large'
+                        variant='outlined'
+                        onClick={() => setOpenDialog(true)}
+                      >
+                        Удалить
+                      </Button>
+                      <Button type='submit' size='large' variant='contained'>
+                        Сохранить
+                      </Button>
+                    </Box>
+                  </Form>
+                </>
               )}
             </Formik>
           </Container>

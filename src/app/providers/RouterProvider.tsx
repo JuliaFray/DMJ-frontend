@@ -14,8 +14,10 @@ import { articleEditorPageRoute } from 'pages/article-editor';
 import { homePageRoute } from 'pages/article-feed';
 import { dialogPageRoute } from 'pages/dialogs';
 import { dietPlanPageRoute } from 'pages/diet';
+import { dietDiaryPageRoute } from 'pages/diet-diary';
 import { dietPageRoute } from 'pages/diet-feed';
 import { loginPageRoute } from 'pages/login';
+import { measurePageRoute } from 'pages/measure';
 import { page404Router } from 'pages/page-404';
 import { profilePageRoute } from 'pages/profile';
 import { registerPageRoute } from 'pages/register';
@@ -78,7 +80,14 @@ const browserRouter = createBrowserRouter([
       },
       {
         element: createElement(enhance(UserLayout)),
-        children: [dialogPageRoute, articleEditorPageRoute, dietPageRoute, dietPlanPageRoute],
+        children: [
+          dialogPageRoute,
+          articleEditorPageRoute,
+          dietPageRoute,
+          dietPlanPageRoute,
+          dietDiaryPageRoute,
+          measurePageRoute,
+        ],
       },
       {
         element: createElement(enhance(GuestLayout)),

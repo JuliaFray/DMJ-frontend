@@ -1,13 +1,12 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Direction, Grid } from '@mui/material';
 import List from '@mui/material/List';
 
-import { useAppDispatch, useWebSocket } from 'shared/hook';
+import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
 import {
   appActions,
@@ -32,28 +31,28 @@ function DialogMain() {
   const ws = useWebSocket();
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const authId = useSelector(getAuthId);
+  const authId = useAppSelector(getAuthId);
   const listRef = useRef(null);
 
-  const messages = useSelector(getMessages);
-  const dialogs = useSelector(getDialogs);
-  const selectedDialog = useSelector(getSelectedDialog);
+  const messages = useAppSelector(getMessages);
+  const dialogs = useAppSelector(getDialogs);
+  const selectedDialog = useAppSelector(getSelectedDialog);
 
   useEffect(() => {
     if (id) {
       dispatch(dialogActions.clearState());
       dispatch(getMessagesByDialogId({ dialogId: id }));
     }
-  }, [id]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (!selectedDialog && dialogs.length) {
       dispatch(dialogActions.addSelectedDialog(dialogs.find((d: TDialog) => d._id === id)));
     }
-  }, [dialogs]);
+  }, [dialogs, dispatch, id, selectedDialog]);
 
   const handleWS = useCallback(
-    (e: any) => {
+    (e: MessageEvent<string>) => {
       const { type, data } = JSON.parse(e.data);
       if (type === SocketEvents.MSG_EVENT) {
         dispatch(dialogActions.addMsg(data));

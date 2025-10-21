@@ -15,13 +15,13 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 
+import { ArticleSkeleton } from 'entities/article';
+
 import { useAppDispatch } from 'shared/hook';
 import { getFullName, getImage, pathKeys } from 'shared/lib';
 import { deletePost } from 'shared/model';
 import { palette, theme } from 'shared/themes';
 import { TArticle, TChipData } from 'shared/types';
-
-import { ArticleSkeleton } from 'entities/article';
 
 import { CustomCardActions } from 'widgets';
 

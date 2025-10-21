@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 
 import { Grid } from '@mui/material';
 
+import { Article } from 'entities/article';
+
 import { useAppDispatch, useMedia } from 'shared/hook';
 import {
   getAuthId,
@@ -15,8 +17,6 @@ import {
   getRecommendationPost,
   getRecommendations,
 } from 'shared/model';
-
-import { Article } from 'entities/article';
 
 import { CreateComment } from 'features';
 import { CommentsBlock, Recommendations } from 'widgets';

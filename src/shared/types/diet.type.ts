@@ -20,6 +20,7 @@ export interface TDietStat {
 }
 
 export interface Food {
+  _id: string;
   name: string;
   /** Распределение по дням */
   days: {
@@ -32,6 +33,8 @@ export interface Food {
       /** Объем */
       volume: number;
     }[];
+    /** Рейтинг дня */
+    rating: number;
   }[];
   /** Показатели на 100г */
   stat: TDietStat;
@@ -45,7 +48,7 @@ export interface TDietPlan {
   /** Количетсво дней */
   period: number;
   /** Создатель */
-  author: TUser;
+  author: TUser & { healthInfo: { plan: TDietStat } };
   /** Приемы пищи в плане */
   meals: Meal[];
   /** Статистика плана питания */

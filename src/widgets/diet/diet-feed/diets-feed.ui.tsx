@@ -7,7 +7,7 @@ import { Fab, Grid } from '@mui/material';
 
 import { useAppSelector } from 'shared/hook';
 import { pathKeys } from 'shared/lib';
-import { getDiets, getIsAuth } from 'shared/model';
+import { dietSelectors, getIsAuth } from 'shared/model';
 import { TDietPlan } from 'shared/types';
 
 import { ArticlesFeedSkeleton, DietCard } from 'widgets';
@@ -20,7 +20,7 @@ type TPostMain = {
 };
 
 export const DietsFeed: React.FC<TPostMain> = ({ isFetching }) => {
-  const diets = useAppSelector(getDiets);
+  const diets = useAppSelector(dietSelectors.getDiets);
   const isAuth = useAppSelector(getIsAuth);
 
   return (

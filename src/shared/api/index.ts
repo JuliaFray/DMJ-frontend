@@ -7,5 +7,5 @@ export {
   useLazyGetAllTagsQuery,
   useLazyGetAllArticlesQuery,
 } from './post-api';
-export { dietApi, useGetOneDietQuery, useLazyGetAllDietQuery } from './diet-api';
-export { usdaApi, middleware, useGetFoodMutation } from './usda-api';
+export * from './diet-api';
+export * from './food-api';

@@ -14,11 +14,11 @@ import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
+import { styles } from 'entities/article';
+
 import { getFullName, NO_AVATAR, pathKeys } from 'shared/lib';
 import { palette, theme } from 'shared/themes';
 import { TArticle, TChipData } from 'shared/types';
-
-import { styles } from 'entities/article';
 
 import { CustomCardActions } from './custom-card-actions.ui';
 

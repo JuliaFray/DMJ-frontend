@@ -44,7 +44,7 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
   const dispatch = useAppDispatch();
 
   const handleWS = useCallback(
-    (e: any) => {
+    (e: MessageEvent<string>) => {
       const { type, data } = JSON.parse(e.data);
       if (type === SocketEvents.LOGOUT_EVENT) {
         dispatch(
@@ -55,7 +55,7 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
         );
       }
     },
-    [dispatch, user._id],
+    [dispatch],
   );
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
   const onSubmit = (event: React.FormEvent<HTMLFormElement>, u: TUser) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const formJson = Object.fromEntries((formData as any).entries());
+    const formJson = Object.fromEntries(formData.entries());
 
     const msg = {
       type: SocketEvents.MSG_EVENT,

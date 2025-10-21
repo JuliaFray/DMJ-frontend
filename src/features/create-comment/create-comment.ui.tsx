@@ -7,10 +7,10 @@ import { Paper } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 
+import { styles } from 'entities/comment';
+
 import { useAppDispatch } from 'shared/hook';
 import { createPostComment } from 'shared/model';
-
-import { styles } from 'entities/comment';
 
 export type ICommentCreate = {
   postId: string;

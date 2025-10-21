@@ -65,7 +65,7 @@ export const ProfileTabs: React.FC<IProfileTabs> = ({ isOwner, userId }) => {
       </TabPanel>
 
       <TabPanel value={tabIndex} index={1}>
-        <HomePage isOwner isMainPage={false} userId={userId} isFavorite={false} isLoad />
+        <HomePage showMyPosts isFeedPage={false} userId={userId} isFavorite={false} isLoad />
       </TabPanel>
 
       <TabPanel value={tabIndex} index={2}>
@@ -74,7 +74,7 @@ export const ProfileTabs: React.FC<IProfileTabs> = ({ isOwner, userId }) => {
 
       {isOwner && (
         <TabPanel value={tabIndex} index={3}>
-          <HomePage isOwner={isOwner} isMainPage={false} userId={userId} isFavorite isLoad />
+          <HomePage showMyPosts={isOwner} isFeedPage={false} userId={userId} isFavorite isLoad />
         </TabPanel>
       )}
     </Container>

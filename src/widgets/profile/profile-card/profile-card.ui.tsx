@@ -41,7 +41,7 @@ export const ProfileCard: React.FC<TProfileMain> = ({ isOwner, profile }) => {
   const dispatch = useAppDispatch();
 
   const handleWS = useCallback(
-    (e: any) => {
+    (e: MessageEvent<string>) => {
       const { type, data } = JSON.parse(e.data);
       if (type === SocketEvents.LOGOUT_EVENT) {
         setStatus(!data.includes(profile._id));
@@ -84,7 +84,7 @@ export const ProfileCard: React.FC<TProfileMain> = ({ isOwner, profile }) => {
   const onSubmit = (event: React.FormEvent<HTMLFormElement>, user: TUser) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const formJson = Object.fromEntries((formData as any).entries());
+    const formJson = Object.fromEntries(formData.entries());
 
     const msg = {
       type: SocketEvents.MSG_EVENT,

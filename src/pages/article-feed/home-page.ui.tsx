@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 
@@ -22,7 +22,6 @@ import {
   getFetchedPopularTags,
   getIsAuth,
   getPopularAuthors,
-  getPopularPost,
   getPopularTags,
   getPostsDataLength,
   getPostsIsFetching,
@@ -35,88 +34,83 @@ import { ArticleFilter, ArticlesFeed, HomeTabs, TagWidget } from 'widgets';
 import styles from './home-page.module.scss';
 
 type TPostPage = {
-  isOwner: boolean;
-  isMainPage: boolean;
+  showMyPosts: boolean;
+  isFeedPage: boolean;
   userId: string;
   isFavorite: boolean;
   isLoad: boolean;
 };
-const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId, isFavorite }) => {
-  const { mdMain, mdSide } = useMedia(isMainPage);
-  const { allTags, selectedTags, selectedAuthor, handleAddTag, handleRemoveTag } = useTagFilter();
+const HomePage: React.FC<TPostPage> = React.memo(
+  ({ showMyPosts, isFeedPage, userId, isFavorite }) => {
+    const { mdMain, mdSide } = useMedia(isFeedPage);
+    const { allTags, selectedTags, selectedAuthor, handleAddTag, handleRemoveTag } = useTagFilter();
 
-  const isAuth = useSelector(getIsAuth);
-  const isFetching = useAppSelector(getPostsIsFetching);
-  const popularTags = useSelector(getFetchedPopularTags);
-  const popularAuthors = useSelector(getFetchedPopularAuthors);
-  const authId = useSelector(getAuthId);
-  const dataLength = useSelector(getPostsDataLength);
+    const isAuth = useAppSelector(getIsAuth);
+    const isFetching = useAppSelector(getPostsIsFetching);
+    const popularTags = useAppSelector(getFetchedPopularTags);
+    const popularAuthors = useAppSelector(getFetchedPopularAuthors);
+    const authId = useAppSelector(getAuthId);
+    const dataLength = useAppSelector(getPostsDataLength);
 
-  const [tabIndex, setTabIndex] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState(1);
+    const [tabIndex, setTabIndex] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState(1);
 
-  const [triggerGetAllArticles] = useLazyGetAllArticlesQuery();
-  const [triggerGetAllTags] = useLazyGetAllTagsQuery();
+    const [triggerGetAllArticles] = useLazyGetAllArticlesQuery();
+    const [triggerGetAllTags] = useLazyGetAllTagsQuery();
 
-  const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (!isOwner) {
-      dispatch(getPopularTags({}));
-      dispatch(getPopularAuthors({}));
-    }
-    triggerGetAllTags({});
-  }, [dispatch, isOwner, isFavorite, userId, triggerGetAllTags]);
+    useEffect(() => {
+      setCurrentPage(1);
+    }, [tabIndex]);
 
-  useEffect(() => {
-    let query: Record<string, string | number | string[]> = {
-      userId: userId || authId,
-      currentPage,
-      isFavoritePosts: JSON.stringify(isFavorite),
-      tags: selectedTags.size
-        ? JSON.stringify(Array.from(selectedTags)?.map((tag) => tag._id) || '')
-        : '',
-      authors: selectedAuthor ? JSON.stringify(selectedAuthor._id) : '',
-      isMinePosts: JSON.stringify(isOwner),
-    };
+    useEffect(() => {
+      if (!showMyPosts) {
+        dispatch(getPopularTags({}));
+        dispatch(getPopularAuthors({}));
+      }
+      triggerGetAllTags({});
+    }, [dispatch, showMyPosts, isFavorite, userId, triggerGetAllTags]);
 
-    if (isMainPage) {
-      query = {
-        ...query,
-        tabIndex: JSON.stringify(tabIndex),
+    useEffect(() => {
+      let query: Record<string, string | number | string[]> = {
+        userId: userId || authId,
+        currentPage,
+        isFavoritePosts: JSON.stringify(isFavorite),
+        tags: selectedTags.size
+          ? JSON.stringify(Array.from(selectedTags)?.map((tag) => tag._id) || '')
+          : '',
+        authors: selectedAuthor ? JSON.stringify(selectedAuthor._id) : '',
+        isMinePosts: JSON.stringify(showMyPosts),
       };
-    }
 
-    triggerGetAllArticles({ searchParams: useCreateQueryString(query) }, false);
+      if (isFeedPage) {
+        query = {
+          ...query,
+          tabIndex: JSON.stringify(tabIndex),
+        };
+      }
 
-    if (!userId) {
-      dispatch(getPopularPost({}));
-    }
-  }, [
-    tabIndex,
-    currentPage,
-    selectedTags,
-    selectedAuthor,
-    userId,
-    authId,
-    isFavorite,
-    isOwner,
-    isMainPage,
-    triggerGetAllArticles,
-    dispatch,
-  ]);
+      triggerGetAllArticles({ searchParams: useCreateQueryString(query) }, false);
+    }, [
+      tabIndex,
+      currentPage,
+      selectedTags,
+      selectedAuthor,
+      userId,
+      authId,
+      isFavorite,
+      showMyPosts,
+      isFeedPage,
+      triggerGetAllArticles,
+      dispatch,
+    ]);
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [tabIndex]);
-
-  return (
-    <Grid container spacing={2}>
-      <Grid item md={mdMain}>
-        <>
-          {isMainPage && <HomeTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />}
-
-          {isMainPage && <ArticleFilter allTags={allTags} handleRemoveTag={handleRemoveTag} />}
+    return (
+      <Grid container spacing={2}>
+        <Grid item md={mdMain}>
+          {isFeedPage && <HomeTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />}
+          {isFeedPage && <ArticleFilter allTags={allTags} handleRemoveTag={handleRemoveTag} />}
 
           <ArticlesFeed isFetching={isFetching} allTags={allTags} handleAddTag={handleAddTag} />
 
@@ -125,47 +119,47 @@ const HomePage: React.FC<TPostPage> = React.memo(({ isOwner, isMainPage, userId,
             dataLength={dataLength}
             setCurrentPage={setCurrentPage}
           />
-        </>
-      </Grid>
+        </Grid>
 
-      <Grid item md={mdSide} className={styles.right}>
-        {isMainPage && (
-          <Box>
-            <TagWidget
-              title='Популярные темы'
-              items={popularTags}
-              handleAddTag={handleAddTag}
-              selected={allTags}
-            />
-            <TagWidget
-              title='Популярные авторы'
-              items={popularAuthors}
-              handleAddTag={handleAddTag}
-              selected={allTags}
-              isAuthor
-            />
-          </Box>
+        <Grid item md={mdSide} className={styles.right}>
+          {isFeedPage && (
+            <Box>
+              <TagWidget
+                title='Популярные темы'
+                items={popularTags}
+                handleAddTag={handleAddTag}
+                selected={allTags}
+              />
+              <TagWidget
+                title='Популярные авторы'
+                items={popularAuthors}
+                handleAddTag={handleAddTag}
+                selected={allTags}
+                isAuthor
+              />
+            </Box>
+          )}
+        </Grid>
+
+        {isFeedPage && isAuth && (
+          <Link to={pathKeys.article.editor.root()}>
+            <Fab
+              color='primary'
+              aria-label='edit'
+              style={{ position: 'fixed', bottom: '20px', right: '20px' }}
+            >
+              <EditIcon />
+            </Fab>
+          </Link>
         )}
       </Grid>
-
-      {isMainPage && isAuth && (
-        <Link to={pathKeys.article.editor.root()}>
-          <Fab
-            color='primary'
-            aria-label='edit'
-            style={{ position: 'fixed', bottom: '20px', right: '20px' }}
-          >
-            <EditIcon />
-          </Fab>
-        </Link>
-      )}
-    </Grid>
-  );
-});
+    );
+  },
+);
 
 const mapStateToProps = (state: RootState) => ({
-  isOwner: false,
-  isMainPage: true,
+  showMyPosts: false,
+  isFeedPage: true,
   userId: '',
   isFavorite: false,
 });

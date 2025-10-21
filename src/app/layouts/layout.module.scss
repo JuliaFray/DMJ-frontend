@@ -6,7 +6,8 @@
     text-decoration: none;
 
     &:hover {
-      color: $success
+      color: $success;
+      text-decoration: none;
     }
 
     &:active {

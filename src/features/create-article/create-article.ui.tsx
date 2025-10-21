@@ -52,7 +52,7 @@ export const CreateArticle: React.FC = () => {
         }
       }
     }
-  }, [id]);
+  }, [dispatch, id, post]);
 
   const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target as HTMLInputElement;

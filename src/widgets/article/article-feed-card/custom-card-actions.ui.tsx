@@ -52,9 +52,7 @@ export const CustomCardActions: React.FC<ICardActions> = ({ post, isCard }) => {
               />
             }
           />
-
           <BottomNavigationAction showLabel label={rating.toString()} />
-
           <BottomNavigationAction
             onClick={() => onClickRating(1)}
             disabled={userRating === 1}
@@ -69,22 +67,22 @@ export const CustomCardActions: React.FC<ICardActions> = ({ post, isCard }) => {
           />
         </>
       )}
-
       <BottomNavigationAction key='viewsCount' label={post.viewsCount} icon={<EyeIcon />} />
-
       <BottomNavigationAction key='comments' label={post.comments?.length} icon={<CommentIcon />} />
-      <BottomNavigationAction
-        showLabel
-        key='isFavorite'
-        label=' '
-        icon={
-          <Tooltip title='В избранное'>
-            <IconButton aria-label='add to favorites' onClick={onClickFavorite}>
-              <Grade color={isFavorite ? 'secondary' : 'disabled'} />
-            </IconButton>
-          </Tooltip>
-        }
-      />
+      {isAuth && (
+        <BottomNavigationAction
+          showLabel
+          key='isFavorite'
+          label=' '
+          icon={
+            <Tooltip title='В избранное'>
+              <IconButton aria-label='add to favorites' onClick={onClickFavorite}>
+                <Grade color={isFavorite ? 'secondary' : 'disabled'} />
+              </IconButton>
+            </Tooltip>
+          }
+        />
+      )}
     </BottomNavigation>
   );
 };

@@ -2,15 +2,33 @@ import React, { FC } from 'react';
 
 import { Row } from 'rsuite';
 
-import { Box, LinearProgress, Stack, Typography } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { Box, LinearProgress, Rating, Stack, styled, Typography } from '@mui/material';
 
 import { theme } from 'shared/themes';
 import { Food, TDietStat } from 'shared/types';
 
 import styles from './diet.module.scss';
 
+const StyledRating = styled(Rating)({
+  '& .MuiRating-iconFilled': {
+    color: theme.palette.secondary.main,
+  },
+});
+
 const calcPercent = (planValue: number, factValue: number) => {
   return Math.round((factValue / planValue) * 100);
+};
+
+const calcRating = (plan: TDietStat, fact: TDietStat) => {
+  return (
+    5 -
+    (((5 / 4) * Math.abs(plan.cal - fact.cal)) / plan.cal +
+      ((5 / 4) * Math.abs(plan.proteins - fact.proteins)) / plan.proteins +
+      ((5 / 4) * Math.abs(plan.carb - fact.carb)) / plan.carb +
+      ((5 / 4) * Math.abs(plan.fats - fact.fats)) / plan.fats)
+  );
 };
 
 const getColor = (mult: number) => {
@@ -118,6 +136,20 @@ export const DietStats: FC<Props> = ({ plan, foodRows, currentDay }) => {
             color={getColor(fact.carb / plan.carb)}
           />
           <Typography className={styles.percent}>{calcPercent(plan.carb, fact.carb)} %</Typography>
+        </Box>
+      </Row>
+      <Row className={styles.row}>
+        <Box className={styles.wrapper}>
+          <Typography>Рейтинг</Typography>
+        </Box>
+        <Box className={styles.wrapper}>
+          <StyledRating
+            emptyIcon={<FavoriteBorderIcon />}
+            icon={<FavoriteIcon />}
+            value={calcRating(plan, fact)}
+            precision={0.1}
+            readOnly
+          />
         </Box>
       </Row>
     </Stack>
