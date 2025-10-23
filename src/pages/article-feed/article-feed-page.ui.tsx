@@ -55,7 +55,7 @@ const HomePage: React.FC<TPostPage> = React.memo(
 
     useEffect(() => {
       setCurrentPage(1);
-    }, [tabIndex]);
+    }, [tabIndex, allTags]);
 
     useEffect(() => {
       if (!showMyPosts) {

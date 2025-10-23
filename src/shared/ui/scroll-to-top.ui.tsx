@@ -34,7 +34,7 @@ export function ScrollToTop() {
           onClick={scrollToTop}
           color='primary'
           aria-label='edit'
-          style={{ position: 'fixed', bottom: '20px', left: '10%' }}
+          style={{ position: 'fixed', bottom: '20px', right: '10%' }}
         >
           <KeyboardArrowUpIcon />
         </Fab>
