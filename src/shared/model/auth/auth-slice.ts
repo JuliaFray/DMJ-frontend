@@ -6,8 +6,6 @@ import { TUser } from 'shared/types';
 
 import { authApi } from '../../api';
 
-import { confirmEmail, registerUser } from './auth-thunks';
-
 type ValidationError = Record<string, any>;
 
 type InitialStateType = {

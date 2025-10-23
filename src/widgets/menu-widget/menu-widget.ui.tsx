@@ -1,4 +1,12 @@
-import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -6,11 +14,17 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArticleIcon from '@mui/icons-material/Article';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import BallotIcon from '@mui/icons-material/Ballot';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
 import StraightenIcon from '@mui/icons-material/Straighten';
-import { Button, Container, Divider, MenuItem, MenuList, Typography } from '@mui/material';
+import { Button, CSSObject, Divider, styled, Tooltip, Typography } from '@mui/material';
+import MuiDrawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
@@ -21,6 +35,62 @@ import { appActions } from 'shared/model';
 import { theme } from 'shared/themes';
 
 import styles from './menu-widget.module.scss';
+
+const drawerWidth = 25;
+
+const openedMixin = (): CSSObject => ({
+  width: `min(${drawerWidth}%, 400px)`,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
+
+const closedMixin = (): CSSObject => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
+
+const DrawerHeader = styled('div')(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  backgroundColor: theme.palette.primary.main,
+}));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(() => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  variants: [
+    {
+      props: ({ open }) => open,
+      style: {
+        ...openedMixin(),
+        '& .MuiDrawer-paper': openedMixin(),
+      },
+    },
+    {
+      props: ({ open }) => !open,
+      style: {
+        ...closedMixin(),
+        '& .MuiDrawer-paper': closedMixin(),
+      },
+    },
+  ],
+}));
 
 type IItem = {
   name: string;
@@ -58,7 +128,12 @@ const items: IItem[] = [
   { name: 'Настройки', pathname: 'settings', link: pathKeys.root, icon: <SettingsIcon /> },
 ];
 
-export const MenuWidget: FC = () => {
+interface Props {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export const MenuWidget: FC<Props> = ({ open, setOpen }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -114,52 +189,147 @@ export const MenuWidget: FC = () => {
     return () => ws.removeEventListener('message', handleWS);
   }, [handleWS, ws]);
 
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <Container>
-      <ListItem className={styles.listItem}>
-        <ListItemIcon>
-          <AccountCircleIcon />
-        </ListItemIcon>
-
-        <ListItemText>
-          {!authId && <Typography color={theme.palette.text.primary}>Гость</Typography>}
-          {!!authId && (
-            <Link to={pathKeys.user.byId({ id: authId })}>
-              <Typography color={theme.palette.text.primary}>{me?.login}</Typography>
-              <Typography color={theme.palette.text.secondary}>{me?.email}</Typography>
-            </Link>
-          )}
-        </ListItemText>
-      </ListItem>
-
-      {!authId && (
-        <Button
-          type='button'
-          size='large'
-          variant='contained'
-          fullWidth
-          style={{ margin: '8px' }}
-          onClick={() => navigate(pathKeys.login())}
-        >
-          Войти
-        </Button>
-      )}
-
+    <Drawer variant='permanent' open={open}>
+      <DrawerHeader>
+        <IconButton onClick={handleDrawerClose}>
+          {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon color='info' />}
+        </IconButton>
+      </DrawerHeader>
       <Divider />
-
-      <MenuList>
-        {items.map((item, i) => (
-          <Link key={i} className={styles.linkItem} to={item.link}>
-            <MenuItem
-              color={theme.palette.text.secondary}
-              className={selected?.startsWith(item.pathname) ? `${styles.active}` : ``}
+      <List>
+        <ListItem className={styles.listItem} disablePadding sx={{ display: 'block' }}>
+          <ListItemButton
+            sx={[
+              {
+                minHeight: 48,
+                px: 2.5,
+              },
+              open
+                ? {
+                    justifyContent: 'initial',
+                  }
+                : {
+                    justifyContent: 'center',
+                  },
+            ]}
+          >
+            <ListItemIcon
+              sx={[
+                {
+                  minWidth: 0,
+                  justifyContent: 'center',
+                },
+                open
+                  ? {
+                      mr: 3,
+                    }
+                  : {
+                      mr: 'auto',
+                    },
+              ]}
             >
-              {item.icon}
-              <Typography sx={{ marginLeft: '8px' }}>{item.name}</Typography>
-            </MenuItem>
-          </Link>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText
+              sx={[
+                open
+                  ? {
+                      opacity: 1,
+                    }
+                  : {
+                      opacity: 0,
+                    },
+              ]}
+            >
+              {!authId && <Typography color={theme.palette.text.primary}>Гость</Typography>}
+              {!!authId && (
+                <Link to={pathKeys.user.byId({ id: authId })}>
+                  <Typography color={theme.palette.text.primary}>{me?.login}</Typography>
+                  <Typography color={theme.palette.text.secondary}>{me?.email}</Typography>
+                </Link>
+              )}
+            </ListItemText>
+          </ListItemButton>
+
+          {!authId && open && (
+            <Button
+              type='button'
+              size='large'
+              variant='contained'
+              style={{ margin: '8px auto', width: '90%', display: 'block' }}
+              onClick={() => navigate(pathKeys.login())}
+            >
+              Войти
+            </Button>
+          )}
+        </ListItem>
+
+        <Divider />
+
+        {items.map((item, i) => (
+          <ListItem
+            key={i}
+            disablePadding
+            sx={{ display: 'block' }}
+            className={selected?.startsWith(item.pathname) ? `${styles.active}` : ``}
+          >
+            <Link key={i} className={styles.linkItem} to={item.link}>
+              <Tooltip title={item.name}>
+                <ListItemButton
+                  sx={[
+                    {
+                      minHeight: 48,
+                      px: 2.5,
+                    },
+                    open
+                      ? {
+                          justifyContent: 'initial',
+                        }
+                      : {
+                          justifyContent: 'center',
+                        },
+                  ]}
+                >
+                  <ListItemIcon
+                    sx={[
+                      {
+                        minWidth: 0,
+                        justifyContent: 'center',
+                      },
+                      open
+                        ? {
+                            mr: 3,
+                          }
+                        : {
+                            mr: 'auto',
+                          },
+                    ]}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.name}
+                    sx={[
+                      open
+                        ? {
+                            opacity: 1,
+                          }
+                        : {
+                            opacity: 0,
+                          },
+                    ]}
+                  />
+                </ListItemButton>
+              </Tooltip>
+            </Link>
+          </ListItem>
         ))}
-      </MenuList>
-    </Container>
+      </List>
+    </Drawer>
   );
 };

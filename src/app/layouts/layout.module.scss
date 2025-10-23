@@ -1,19 +1,53 @@
 @import "shared/themes/palette.module";
 
-.header {
-  a {
+.brandlink {
+  position: fixed;
+  left: 32%;
+  color: $success;
+  text-decoration: none;
+
+  &:hover {
     color: $success;
     text-decoration: none;
-
-    &:hover {
-      color: $success;
-      text-decoration: none;
-    }
-
-    &:active {
-      color: $success;
-    }
   }
+
+  &:active {
+    color: $success;
+  }
+}
+
+.sign {
+  position: fixed;
+  right: 2%;
+  color: $success;
+  text-decoration: none;
+
+  &:hover {
+    color: $success;
+    text-decoration: none;
+  }
+
+  &:active {
+    color: $success;
+  }
+}
+
+.header {
+  //a {
+  //  position: fixed;
+  //  left: 40%;
+  //  color: $success;
+  //  text-decoration: none;
+  //
+  //  &:hover {
+  //    color: $success;
+  //    text-decoration: none;
+  //  }
+  //
+  //  &:active {
+  //    color: $success;
+  //  }
+  //}
 
   .toolbar {
     justify-content: space-between;
@@ -77,7 +111,7 @@
 }
 
 @media (width <= 900px) {
-  .right, .left {
+  .right {
     display: none;
   }
 }

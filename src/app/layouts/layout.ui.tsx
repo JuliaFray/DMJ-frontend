@@ -15,9 +15,9 @@ import { theme } from 'shared/themes';
 
 import styles from './layout.module.scss';
 
-export function BrandLink() {
+export const BrandLink = () => {
   return (
-    <NavLink className={styles.header} to={pathKeys.home()}>
+    <NavLink className={styles.brandlink} to={pathKeys.home()}>
       <Typography
         variant='h6'
         component='div'
@@ -25,17 +25,17 @@ export function BrandLink() {
         color={theme.palette.primary.contrastText}
       >
         <IconButton>
-          <img alt='logo' style={{ height: '40px' }} src={`${window.location.origin}/logo.png`} />
+          <img alt='logo' style={{ height: '40px' }} src={`${process.env.PUBLIC_URL}/logo.png`} />
         </IconButton>
         <span style={{ verticalAlign: 'middle' }}>HEALTH BALANCE</span>
       </Typography>
     </NavLink>
   );
-}
+};
 
-export const SignInLink: FC = (t) => {
+export const SignInLink: FC = () => {
   return (
-    <NavLink to={pathKeys.login()}>
+    <NavLink className={styles.sign} to={pathKeys.login()}>
       <Tooltip title='Войти'>
         <Login sx={{ color: theme.palette.primary.contrastText }} />
       </Tooltip>
@@ -58,7 +58,7 @@ export const SignOutLink: FC = () => {
 
   return (
     <Tooltip title='Выйти'>
-      <IconButton onClick={handleLogout}>
+      <IconButton onClick={handleLogout} className={styles.sign}>
         <Logout sx={{ color: theme.palette.primary.contrastText }} />
       </IconButton>
     </Tooltip>
