@@ -7,7 +7,7 @@ import { theme } from 'shared/themes';
 import { ScrollToTop } from 'shared/ui';
 
 import styles from './layout.module.scss';
-
+// todo drop
 type IPageLayout = {
   isMainPage: boolean;
   mainChildren: ReactNode;
@@ -15,7 +15,7 @@ type IPageLayout = {
   rightChildren?: ReactNode;
   mainSx?: SxProps<Theme>;
 };
-export const CommonLayoutUi: React.FC<IPageLayout> = ({
+export const CommonLayout: React.FC<IPageLayout> = ({
   isMainPage,
   mainSx,
   mainChildren,

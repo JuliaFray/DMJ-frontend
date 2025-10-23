@@ -1,89 +1,129 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { login, registerUser } from './auth-thunks';
+import { GenericResponseType } from 'shared/api/api-types';
+import { appActions, profileActions } from 'shared/model';
+import { TUser } from 'shared/types';
+
+import { authApi } from '../../api';
+
+import { confirmEmail, registerUser } from './auth-thunks';
 
 type ValidationError = Record<string, any>;
 
 type InitialStateType = {
-  id: string;
+  id: string | null;
   isAuth: boolean;
   isFetching?: boolean;
   errors: ValidationError;
-  globalError: string;
+  globalError: string | null;
+  showSuccessSend: boolean;
 };
 
 const initialState: InitialStateType = {
-  id: '',
+  id: null,
   isAuth: false,
   isFetching: false,
   errors: {},
-  globalError: '',
+  globalError: null,
+  showSuccessSend: false,
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: 'authSlice',
   initialState,
   reducers: {
-    setAuth: (state, payload: any) => {
+    setAuth: (state, { payload }) => {
       state.isAuth = true;
-      state.id = payload.payload.id;
+      state.id = payload.id;
     },
     logout: (state) => {
       state.isAuth = false;
-      state.id = '';
+      state.id = null;
       window.localStorage.removeItem('token');
     },
-    setErrors: (state, payload) => {
-      if (payload.payload instanceof Array) {
-        payload.payload.forEach((err: any) => {
+    setErrors: (state, { payload }) => {
+      if (payload instanceof Array) {
+        payload.forEach((err: ValidationError) => {
           state.errors[err.field] = err.msg;
         });
       } else {
-        state.errors = payload.payload;
+        state.errors = payload;
       }
     },
-    setGlobalError: (state, payload) => {
-      state.globalError = payload.payload;
+    setGlobalError: (state, { payload }) => {
+      state.globalError = payload;
+    },
+    setShowSuccessSend: (state, { payload }) => {
+      state.showSuccessSend = payload;
     },
   },
   extraReducers: (builder) => {
     builder
       //= ====login=====//
-      .addCase(login.pending, (state) => {
+      .addMatcher(authApi.endpoints.login.matchPending, (state) => {
         state.isFetching = true;
+        state.globalError = null;
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
         state.isFetching = false;
-        if (action.payload) {
+        if (payload) {
           state.isAuth = true;
-          state.id = action.payload._id;
-          state.globalError = '';
+          state.id = payload._id;
+          state.globalError = null;
+          state.errors = [];
+          profileActions.setProfile(payload);
+        }
+      })
+      .addMatcher(authApi.endpoints.login.matchRejected, (state, { payload }) => {
+        state.isFetching = false;
+        state.globalError = (payload?.data as GenericResponseType<TUser>).message;
+        state.isAuth = false;
+        state.id = null;
+        window.localStorage.removeItem('token');
+        appActions.setUninitialized();
+      })
+      //= ===registerUser=====//
+      .addMatcher(authApi.endpoints.register.matchPending, (state) => {
+        state.isFetching = true;
+        state.showSuccessSend = false;
+      })
+      .addMatcher(authApi.endpoints.register.matchFulfilled, (state, { payload }) => {
+        state.isFetching = false;
+        state.showSuccessSend = true;
+        if (payload) {
+          state.isAuth = true;
+          state.id = payload._id;
+          state.globalError = null;
           state.errors = [];
         }
       })
-      .addCase(login.rejected, (state) => {
+      .addMatcher(authApi.endpoints.register.matchRejected, (state) => {
         state.isFetching = false;
+        state.showSuccessSend = false;
       })
-      //= ====registerUser=====//
-      .addCase(registerUser.pending, (state) => {
+      //= ====confirmEmail=====//
+      .addMatcher(authApi.endpoints.confirm.matchPending, (state) => {
         state.isFetching = true;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addMatcher(authApi.endpoints.confirm.matchFulfilled, (state) => {
         state.isFetching = false;
-        if (action.payload) {
-          state.isAuth = true;
-          state.id = action.payload._id;
-          state.globalError = '';
-          state.errors = [];
-        }
       })
-      .addCase(registerUser.rejected, (state) => {
+      .addMatcher(authApi.endpoints.confirm.matchRejected, (state) => {
         state.isFetching = false;
       });
+  },
+  selectors: {
+    getIsAuth: (state: InitialStateType) => state.isAuth,
+    getIsFetching: (state: InitialStateType) => state.isFetching,
+    getAuthId: (state: InitialStateType) => state.id,
+    getAuthErrors: (state: InitialStateType) => state.errors,
+    getAuthGlobalError: (state: InitialStateType) => state.globalError,
+    getSuccessSend: (state: InitialStateType) => state.showSuccessSend,
   },
 });
 
 const authActions = authSlice.actions;
 const authReducer = authSlice.reducer;
+const authSelector = authSlice.selectors;
 
-export { authSlice, authActions, authReducer };
+export { authSlice, authActions, authReducer, authSelector };

@@ -2,8 +2,6 @@ import React, { FC, useState } from 'react';
 
 import { InlineEdit, Input } from 'rsuite';
 
-import { Typography } from '@mui/material';
-
 interface Props {
   initialValue: number;
   handleChange: (newVal: number) => void;

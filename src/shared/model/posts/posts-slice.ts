@@ -46,7 +46,7 @@ const initialState: TInitial = {
 };
 
 const postsSlice = createSlice({
-  name: 'posts',
+  name: 'postSlice',
   initialState,
   reducers: {
     clearState: (state) => {
@@ -226,9 +226,21 @@ const postsSlice = createSlice({
         state.allTags = [];
       });
   },
+  selectors: {
+    getPosts: (state: TInitial) => state.posts,
+    getPostsDataLength: (state: TInitial) => state.totalCount,
+    getRecommendations: (state: TInitial) => state.recommendations,
+    getPost: (state: TInitial) => state.post,
+    getFetchedPopularTags: (state: TInitial) => state.popularTags,
+    getFetchedPopularAuthors: (state: TInitial) => state.popularAuthors,
+    getAllFetchedTags: (state: TInitial) => state.allTags,
+    getPostsIsFetching: (state: TInitial) => state.isFetching,
+    getPostComments: (state: TInitial) => state.postComments,
+  },
 });
 
 const postsActions = postsSlice.actions;
 const postsReducer = postsSlice.reducer;
+const postsSelector = postsSlice.selectors;
 
-export { postsSlice, postsActions, postsReducer };
+export { postsSlice, postsActions, postsReducer, postsSelector };

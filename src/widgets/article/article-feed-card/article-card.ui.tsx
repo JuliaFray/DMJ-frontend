@@ -75,7 +75,7 @@ export const ArticleCard: React.FC<PostCardProps> = ({
           )
         }
         title={
-          <Link to={pathKeys.users.byId({ id: post.author._id })}>
+          <Link to={pathKeys.user.byId({ id: post.author._id })}>
             <Typography fontWeight={400} variant='body1' color={theme.palette.text.primary}>
               {getFullName(post.author)}
             </Typography>

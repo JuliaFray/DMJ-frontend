@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { CircularProgress } from '@mui/material';
@@ -9,8 +8,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
+import { useAppSelector } from 'shared/hook';
+
 import { useLazyGetAllTagsQuery } from '../../api';
-import { getAllFetchedTags } from '../../model';
+import { postsSelector } from '../../model';
 import { TChipData } from '../../types';
 
 type IAutocompleteField = {
@@ -23,7 +24,7 @@ export const AutocompleteField: React.FC<IAutocompleteField> = (props) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<(string | TChipData)[]>(props.values);
   const loading = open && options.length === 0;
-  const tags = useSelector(getAllFetchedTags);
+  const tags = useAppSelector(postsSelector.getAllFetchedTags);
 
   const [triggerGetAllTags] = useLazyGetAllTagsQuery();
 

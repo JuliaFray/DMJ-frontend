@@ -35,3 +35,9 @@ export type IFilter = {
   term: string;
   friend: boolean | null;
 };
+
+export type RegisterDataType = {
+  login: string;
+  email: string;
+  password: string;
+};

@@ -1,3 +1,2 @@
-export { dialogSlice, dialogActions } from './dialog-slice';
-export { getDialogs, getSelectedDialog, getDialogUsers, getMessages } from './dialog-selectors';
+export { dialogSlice, dialogActions, dialogSelector } from './dialog-slice';
 export { getAllDialogs, getMessagesByDialogId, getUsersWithStatus } from './dialog-thunks';

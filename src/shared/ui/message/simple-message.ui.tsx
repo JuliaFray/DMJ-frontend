@@ -5,8 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Avatar } from '@mui/material';
 
-import { getFullName, getImage } from 'shared/lib';
-import { TUser } from 'shared/types';
+import { getFullName, getImage } from '../../lib';
+import { TUser } from '../../types';
 
 import styles from './message.module.scss';
 

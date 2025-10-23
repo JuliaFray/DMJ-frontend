@@ -5,7 +5,7 @@ import {
   WS_CONNECT_START,
   WS_CONNECTED,
   WS_SHOW_RECONNECT,
-} from '../../lib/DictConstants';
+} from '../../lib/constants';
 
 const initialState = {
   connecting: false,

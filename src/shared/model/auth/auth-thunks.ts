@@ -1,21 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
+import { RegisterDataType } from 'shared/types/profile.type';
+
 import { loginAPI } from '../../api';
 import { ResultCodes } from '../../api/api-types';
 import { ACCESS_DENIED } from '../../lib';
 import { ILoginData, TUser } from '../../types';
-// eslint-disable-next-line no-restricted-imports
 import { appActions } from '../apps';
 import { profileActions } from '../profile';
 
 import { authActions } from './auth-slice';
-
-export type RegisterDataType = {
-  login: string;
-  email: string;
-  password: string;
-};
 
 export const login = createAsyncThunk<
   TUser | undefined,
@@ -66,6 +61,21 @@ export const registerUser = createAsyncThunk<
       thunkAPI.dispatch(authActions.setGlobalError(e.response.data.message));
     }
     thunkAPI.dispatch(authActions.logout());
+    thunkAPI.dispatch(appActions.setUninitialized());
+  }
+});
+
+export const confirmEmail = createAsyncThunk<
+  void,
+  { email: string; token: string },
+  NonNullable<unknown>
+>('auth/confirm', async (data, thunkAPI) => {
+  try {
+    const response = await loginAPI.confirm({ email: data.email, token: data.token });
+    if (response.resultCode === ResultCodes.Success) {
+      return response.data;
+    }
+  } catch (e: any) {
     thunkAPI.dispatch(appActions.setUninitialized());
   }
 });

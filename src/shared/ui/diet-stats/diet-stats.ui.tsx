@@ -8,6 +8,7 @@ import { Grid, Rating, styled } from '@mui/material';
 import { PieChart } from '@mui/x-charts/PieChart';
 
 import { theme } from 'shared/themes';
+import { StyledRating } from 'shared/ui';
 
 import { TDietStat } from '../../types';
 
@@ -19,12 +20,6 @@ type DietStatsProps = {
   rating: number;
   fact: TDietStat;
 };
-
-const StyledRating = styled(Rating)({
-  '& .MuiRating-iconFilled': {
-    color: theme.palette.secondary.main,
-  },
-});
 
 export const DietStats: React.FC<DietStatsProps> = ({ period, plan, fact, rating }) => {
   const percent = (fact.fats + fact.proteins + fact.carb) / (plan.carb + plan.fats + plan.proteins);

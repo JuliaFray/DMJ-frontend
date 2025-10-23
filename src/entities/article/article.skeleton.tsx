@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
-export const ArticleSkeleton: React.FC = () => {
+export const ArticleSkeleton: FC = () => {
   return (
     <Stack spacing={1} height='234px'>
       <Stack spacing={1} direction='row' height='20%'>

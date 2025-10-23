@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { withErrorBoundary } from 'react-error-boundary';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { compose } from 'redux';
 
 import { ThemeProvider } from '@mui/material/styles';
 
-import { getSpinnerState, store } from 'shared/model';
+import { useAppSelector } from 'shared/hook';
+import { spinnerSelector, store } from 'shared/model';
 import { theme } from 'shared/themes';
 import { ErrorHandler, logError, Spinner, WS } from 'shared/ui';
 
@@ -20,7 +21,7 @@ const enhance = compose((component: React.ComponentType) =>
 );
 
 function GlobalSpinner() {
-  const display = useSelector(getSpinnerState);
+  const display = useAppSelector(spinnerSelector.getSpinnerDisplay);
 
   return <Spinner display={display} position='bottom-right' />;
 }

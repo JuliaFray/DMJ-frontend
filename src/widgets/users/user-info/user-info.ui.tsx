@@ -23,7 +23,7 @@ export const UserInfo: React.FC<IUserInfo> = ({ avatar, fullName, additionalText
     <div className={styles.root}>
       <Avatar className={styles.avatar} src={avatar} alt={fullName} />
       <div className={styles.userDetails}>
-        <Link to={pathKeys.users.byId({ id: userId })}>
+        <Link to={pathKeys.user.byId({ id: userId })}>
           <span className={styles.userName}>{fullName}</span>
         </Link>
         <Tooltip

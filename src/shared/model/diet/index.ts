@@ -1,2 +1,1 @@
-export { dietSlice, dietActions, dietSelectors } from './diet-slice';
-export * from './diet-selector';
+export { dietSlice, dietActions, dietSelector } from './diet-slice';

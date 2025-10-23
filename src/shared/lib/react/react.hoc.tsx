@@ -5,14 +5,15 @@ import React, {
   forwardRef,
   Suspense,
   SuspenseProps,
+  useContext,
 } from 'react';
 
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-import { pathKeys } from 'shared/lib';
-
-import { getIsAuth, RootState } from '../../model';
+import { ProfileContext } from '../../context';
+import { RootState } from '../../model';
+import { pathKeys } from '../react-router';
 
 export function withSuspense<Props extends object>(
   component: ComponentType<Props>,
@@ -43,7 +44,8 @@ export function withAuthRedirect<T extends NonNullable<unknown>>(
   Component: React.ComponentType<T>,
 ) {
   const RedirectComponent: React.FC = (props) => {
-    const isAuth = useSelector(getIsAuth);
+    const { isAuth } = useContext(ProfileContext);
+
     const { ...restProps } = props;
     if (!isAuth && !window.localStorage.getItem('token')) {
       return <Navigate to={pathKeys.login()} />;

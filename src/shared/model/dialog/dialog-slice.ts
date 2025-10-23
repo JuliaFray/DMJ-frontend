@@ -19,7 +19,7 @@ const initialState: InitialStateType = {
 };
 
 const dialogSlice = createSlice({
-  name: 'dialog',
+  name: 'dialogSlice',
   initialState,
   reducers: {
     addMsg: (state, payload) => {
@@ -53,9 +53,16 @@ const dialogSlice = createSlice({
       })
       .addCase(getUsersWithStatus.rejected, () => {});
   },
+  selectors: {
+    getDialogs: (state: InitialStateType) => state.dialogs,
+    getMessages: (state: InitialStateType) => state.messages,
+    getDialogUsers: (state: InitialStateType) => state.users,
+    getSelectedDialog: (state: InitialStateType) => state.selectedDialog,
+  },
 });
 
 const dialogActions = dialogSlice.actions;
 const dialogReducer = dialogSlice.reducer;
+const dialogSelector = dialogSlice.selectors;
 
-export { dialogSlice, dialogActions, dialogReducer };
+export { dialogSlice, dialogActions, dialogReducer, dialogSelector };

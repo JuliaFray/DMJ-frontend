@@ -11,29 +11,24 @@ import { compose } from 'redux';
 
 import { articlePageRoute } from 'pages/article';
 import { articleEditorPageRoute } from 'pages/article-editor';
-import { homePageRoute } from 'pages/article-feed';
+import { articleFeedPageRoute } from 'pages/article-feed';
+import { confirmationPageRoute } from 'pages/confirmation';
 import { dialogPageRoute } from 'pages/dialogs';
-import { dietPlanPageRoute } from 'pages/diet';
 import { dietDiaryPageRoute } from 'pages/diet-diary';
-import { dietPageRoute } from 'pages/diet-feed';
+import { dietPlanPageRoute } from 'pages/diet-plan';
+import { dietPlanFeedPageRoute } from 'pages/diet-plan-feed';
 import { loginPageRoute } from 'pages/login';
 import { measurePageRoute } from 'pages/measure';
 import { page404Router } from 'pages/page-404';
-import { profilePageRoute } from 'pages/profile';
 import { registerPageRoute } from 'pages/register';
-import { usersPageRoute } from 'pages/users';
+import { userPageRoute } from 'pages/user';
+import { usersPageRoute } from 'pages/user-feed';
 
+import { ProfileContext } from 'shared/context';
 import { useAppSelector } from 'shared/hook';
 import { pathKeys, withSuspense } from 'shared/lib';
-import { getIsAuth, getMyProfile } from 'shared/model';
-import { TUser } from 'shared/types';
+import { authSelector, profileSelector } from 'shared/model';
 import { Spinner } from 'shared/ui';
-
-const GenericLayout = lazy(() =>
-  import('../layouts').then((module) => ({
-    default: module.GenericLayout,
-  })),
-);
 
 const GuestLayout = lazy(() =>
   import('../layouts').then((module) => ({
@@ -50,7 +45,9 @@ const UserLayout = lazy(() =>
 function BubbleError() {
   const error = useRouteError();
 
-  if (error) throw error;
+  if (error) {
+    console.error(error);
+  }
   return null;
 }
 
@@ -61,37 +58,29 @@ function LayoutSkeleton() {
 const enhance = compose((component: React.ComponentType<object>) =>
   withSuspense(component, { FallbackComponent: LayoutSkeleton }),
 );
-type TProfileContext = {
-  isAuth: boolean;
-  me: null | TUser;
-};
-export const ProfileContext = React.createContext<TProfileContext>({
-  isAuth: false,
-  me: null,
-});
 
 const browserRouter = createBrowserRouter([
   {
     errorElement: <BubbleError />,
     children: [
       {
-        element: createElement(enhance(GenericLayout)),
-        children: [homePageRoute, articlePageRoute, profilePageRoute, usersPageRoute],
-      },
-      {
         element: createElement(enhance(UserLayout)),
         children: [
           dialogPageRoute,
           articleEditorPageRoute,
-          dietPageRoute,
+          dietPlanFeedPageRoute,
           dietPlanPageRoute,
           dietDiaryPageRoute,
           measurePageRoute,
+          articleFeedPageRoute,
+          articlePageRoute,
+          userPageRoute,
+          usersPageRoute,
         ],
       },
       {
         element: createElement(enhance(GuestLayout)),
-        children: [loginPageRoute, registerPageRoute],
+        children: [loginPageRoute, registerPageRoute, confirmationPageRoute],
       },
       {
         element: createElement(Outlet),
@@ -106,14 +95,15 @@ const browserRouter = createBrowserRouter([
 ]);
 
 export const BrowserRouting = () => {
-  const isAuth = useAppSelector(getIsAuth);
-  const me = useAppSelector(getMyProfile);
+  const isAuth = useAppSelector(authSelector.getIsAuth);
+  const authId = useAppSelector(authSelector.getAuthId);
+  const me = useAppSelector(profileSelector.getMyProfile);
 
   return useMemo(() => {
     return (
-      <ProfileContext.Provider value={{ isAuth, me }}>
+      <ProfileContext.Provider value={{ isAuth, authId, me }}>
         <RouterProvider router={browserRouter} />
       </ProfileContext.Provider>
     );
-  }, [isAuth, me]);
+  }, [authId, isAuth, me]);
 };

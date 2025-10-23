@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 import { v4 as uuidv4 } from 'uuid';
@@ -15,27 +14,109 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-import { useAppDispatch, useWebSocket } from 'shared/hook';
-import { pathKeys, SocketEvents } from 'shared/lib';
-import {
-  appActions,
-  getAppAllNotifications,
-  getAuthId,
-  getIsAuth,
-  toggleFriendProfile,
-} from 'shared/model';
-import { INotifications } from 'shared/types';
+import { ProfileContext } from '../../context';
+import { useAppDispatch, useAppSelector, useWebSocket } from '../../hook';
+import { pathKeys, SocketEvents } from '../../lib';
+import { appActions, appSelector, toggleFriendProfile } from '../../model';
+import { INotifications } from '../../types';
 
 import styles from './Header.module.scss';
 import HeaderMenu from './HeaderMenu';
+
+const NotificationTypes = {
+  FOLLOW: 'FOLLOW',
+  FRIEND: 'FRIEND',
+  MSG: 'MSG',
+};
+
+const NotificationItem: React.FC<{ item?: INotifications; text?: string }> = ({ item, text }) => {
+  const dispatch = useAppDispatch();
+  const { authId } = useContext(ProfileContext);
+
+  if (!item) {
+    return (
+      <>
+        <ListItem key={uuidv4()} className={styles.item}>
+          <ListItemText primary={text} />
+        </ListItem>
+        <Divider />
+      </>
+    );
+  }
+
+  const toggleAgree = (isAgree: boolean) => {
+    if (authId) {
+      dispatch(
+        toggleFriendProfile({
+          userId: authId,
+          query: `?fromId=${item.fromId}&isAgree=${isAgree}`,
+        }),
+      );
+    }
+  };
+
+  if (item.type === NotificationTypes.FOLLOW || item.type === NotificationTypes.MSG) {
+    return (
+      <>
+        <ListItem key={uuidv4()} className={styles.item}>
+          <ListItemText
+            primary={reactStringReplace(item.msg, '%s', (match, i) => (
+              <Link to={pathKeys.user.byId({ id: item.fromId })}>{item.from}</Link>
+            ))}
+          />
+        </ListItem>
+        <Divider />
+      </>
+    );
+  }
+
+  if (item.type === NotificationTypes.FRIEND) {
+    return (
+      <>
+        <ListItem key={uuidv4()} className={styles.item}>
+          <ListItemText
+            primary={reactStringReplace(item.msg, '%s', (match, i) => (
+              <Link to={pathKeys.user.byId({ id: item.fromId })}>{item.from}</Link>
+            ))}
+          />
+          <ListItem className={styles.subItem}>
+            <Button
+              size='small'
+              variant='outlined'
+              color='error'
+              onClick={() => toggleAgree(false)}
+            >
+              Отклонить
+            </Button>
+
+            <Button
+              size='small'
+              variant='outlined'
+              color='primary'
+              onClick={() => toggleAgree(true)}
+            >
+              Принять
+            </Button>
+          </ListItem>
+        </ListItem>
+        <Divider />
+      </>
+    );
+  }
+  return (
+    <ListItem key={uuidv4()} className={styles.item}>
+      Уведомлений нет
+    </ListItem>
+  );
+};
 
 const HeaderComponent: React.FC = () => {
   const [showNotification, setShowNotification] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const userId = useSelector(getAuthId);
-  const isAuth = useSelector(getIsAuth);
-  const notifications = useSelector(getAppAllNotifications);
+  const { authId, isAuth } = useContext(ProfileContext);
+
+  const notifications = useAppSelector(appSelector.getAppAllNotifications);
   const dispatch = useAppDispatch();
 
   const ws = useWebSocket();
@@ -66,7 +147,7 @@ const HeaderComponent: React.FC = () => {
           }),
         );
       }
-      if (type === SocketEvents.MSG_EVENT && data.from._id !== userId) {
+      if (type === SocketEvents.MSG_EVENT && data.from._id !== authId) {
         dispatch(
           appActions.addNotification({
             type: 'app/addNotification',
@@ -153,99 +234,11 @@ const HeaderComponent: React.FC = () => {
                   </Fade>
                 )}
               </Popper>
-              <HeaderMenu userId={userId} />
+              <HeaderMenu userId={authId} />
             </>
           )}
         </Toolbar>
       </AppBar>
     </Box>
-  );
-};
-
-const NotificationTypes = {
-  FOLLOW: 'FOLLOW',
-  FRIEND: 'FRIEND',
-  MSG: 'MSG',
-};
-
-const NotificationItem: React.FC<{ item?: INotifications; text?: string }> = (
-  { item, text },
-  context,
-) => {
-  const dispatch = useAppDispatch();
-  const userId = useSelector(getAuthId);
-
-  if (!item) {
-    return (
-      <>
-        <ListItem key={uuidv4()} className={styles.item}>
-          <ListItemText primary={text} />
-        </ListItem>
-        <Divider />
-      </>
-    );
-  }
-
-  const toggleAgree = (isAgree: boolean) => {
-    dispatch(
-      toggleFriendProfile({
-        userId,
-        query: `?fromId=${item.fromId}&isAgree=${isAgree}`,
-      }),
-    );
-  };
-
-  if (item.type === NotificationTypes.FOLLOW || item.type === NotificationTypes.MSG) {
-    return (
-      <>
-        <ListItem key={uuidv4()} className={styles.item}>
-          <ListItemText
-            primary={reactStringReplace(item.msg, '%s', (match, i) => (
-              <Link to={pathKeys.users.byId({ id: item.fromId })}>{item.from}</Link>
-            ))}
-          />
-        </ListItem>
-        <Divider />
-      </>
-    );
-  }
-
-  if (item.type === NotificationTypes.FRIEND) {
-    return (
-      <>
-        <ListItem key={uuidv4()} className={styles.item}>
-          <ListItemText
-            primary={reactStringReplace(item.msg, '%s', (match, i) => (
-              <Link to={pathKeys.users.byId({ id: item.fromId })}>{item.from}</Link>
-            ))}
-          />
-          <ListItem className={styles.subItem}>
-            <Button
-              size='small'
-              variant='outlined'
-              color='error'
-              onClick={() => toggleAgree(false)}
-            >
-              Отклонить
-            </Button>
-
-            <Button
-              size='small'
-              variant='outlined'
-              color='primary'
-              onClick={() => toggleAgree(true)}
-            >
-              Принять
-            </Button>
-          </ListItem>
-        </ListItem>
-        <Divider />
-      </>
-    );
-  }
-  return (
-    <ListItem key={uuidv4()} className={styles.item}>
-      Уведомлений нет
-    </ListItem>
   );
 };

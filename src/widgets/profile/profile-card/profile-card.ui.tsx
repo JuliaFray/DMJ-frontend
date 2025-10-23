@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
-
 import {
   Container,
   Dialog,
@@ -17,9 +15,9 @@ import Card from '@mui/material/Card';
 
 import { ProfileData } from 'widgets/profile';
 
-import { useAppDispatch, useWebSocket } from 'shared/hook';
+import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
 import { getFullName, SocketEvents } from 'shared/lib';
-import { appActions, getAppUserOnline, getAuthId, toggleFollowProfile } from 'shared/model';
+import { appActions, appSelector, authSelector, toggleFollowProfile } from 'shared/model';
 import { TUser } from 'shared/types';
 
 import styles from '../ProfileInfo.module.scss';
@@ -30,8 +28,8 @@ type TProfileMain = {
 };
 
 export const ProfileCard: React.FC<TProfileMain> = ({ isOwner, profile }) => {
-  const authId = useSelector(getAuthId);
-  const users = useSelector(getAppUserOnline);
+  const authId = useAppSelector(authSelector.getAuthId);
+  const users = useAppSelector(appSelector.getAppUserOnline);
 
   const [status, setStatus] = useState(false);
   const [isFollowed, setIsFollowed] = useState(profile.isFollowed);
@@ -69,14 +67,15 @@ export const ProfileCard: React.FC<TProfileMain> = ({ isOwner, profile }) => {
 
   const handleFollowClick = () => {
     setIsFollowed(!isFollowed);
-
-    dispatch(
-      toggleFollowProfile({
-        profileId: authId,
-        query: `?userId=${profile._id}&isFollow=${!isFollowed}`,
-        userId: profile._id,
-      }),
-    );
+    if (authId) {
+      dispatch(
+        toggleFollowProfile({
+          profileId: authId,
+          query: `?userId=${profile._id}&isFollow=${!isFollowed}`,
+          userId: profile._id,
+        }),
+      );
+    }
   };
 
   const isOnline = status || users.includes(profile._id);

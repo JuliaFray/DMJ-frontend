@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -6,22 +6,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { Direction, Grid } from '@mui/material';
 import List from '@mui/material/List';
 
+import { DialogHeader } from 'widgets/dialog';
+
+import { SendMsg } from 'features/create-message';
+
+import { ProfileContext } from 'shared/context';
 import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
-import {
-  appActions,
-  dialogActions,
-  getAuthId,
-  getDialogs,
-  getMessages,
-  getMessagesByDialogId,
-  getSelectedDialog,
-} from 'shared/model';
+import { appActions, dialogActions, dialogSelector, getMessagesByDialogId } from 'shared/model';
 import { TDialog, TMessage } from 'shared/types';
 import { SimpleMessage } from 'shared/ui';
-
-import { SendMsg } from 'features';
-import { DialogHeader } from 'widgets';
 
 import styles from '../dialog-page.module.scss';
 
@@ -31,12 +25,14 @@ function DialogMain() {
   const ws = useWebSocket();
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const authId = useAppSelector(getAuthId);
+
   const listRef = useRef(null);
 
-  const messages = useAppSelector(getMessages);
-  const dialogs = useAppSelector(getDialogs);
-  const selectedDialog = useAppSelector(getSelectedDialog);
+  const { authId } = useContext(ProfileContext);
+
+  const messages = useAppSelector(dialogSelector.getMessages);
+  const dialogs = useAppSelector(dialogSelector.getDialogs);
+  const selectedDialog = useAppSelector(dialogSelector.getSelectedDialog);
 
   useEffect(() => {
     if (id) {

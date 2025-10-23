@@ -8,13 +8,12 @@ import { Mutex } from 'async-mutex';
 
 import { pathKeys } from 'shared/lib';
 
-import { appActions, authActions, profileActions, RootState } from '../model';
+import { appActions, authActions, authSlice, profileActions, RootState } from '../model';
 
 import { BASE_URL } from './api';
 
 const baseUrl = BASE_URL;
 
-// Create a new mutex
 const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
@@ -34,7 +33,8 @@ const customFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryEr
   api,
   extraOptions,
 ) => {
-  const isAuth = (api.getState() as RootState)?.auth?.isAuth;
+  const rootState = api.getState() as RootState;
+  const isAuth = rootState[authSlice.reducerPath].isAuth;
 
   await mutex.waitForUnlock();
   let result;
@@ -54,9 +54,6 @@ const customFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryEr
 
           result = await baseQuery(args, api, extraOptions);
         } else {
-          // if ((result.error?.data as any)?.code === 404) {
-          //   window.location.href = "/404";
-          // }
           api.dispatch(authActions.logout());
           api.dispatch(appActions.setUninitialized());
           window.location.href = pathKeys.login();

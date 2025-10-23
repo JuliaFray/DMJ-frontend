@@ -1,5 +1,4 @@
-export { profileSlice, profileReducer, profileActions } from './profile-slice';
-export * from './profile-selectors';
+export { profileSlice, profileReducer, profileActions, profileSelector } from './profile-slice';
 export {
   getUserProfileStats,
   toggleFriendProfile,

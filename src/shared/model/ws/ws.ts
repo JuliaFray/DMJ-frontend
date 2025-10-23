@@ -3,7 +3,7 @@ import {
   WS_CONNECT_START,
   WS_CONNECTED,
   WS_SHOW_RECONNECT,
-} from '../../lib/DictConstants';
+} from '../../lib/constants';
 import { AppDispatch } from '../redux-store';
 
 interface OnNewSocket {
@@ -11,7 +11,7 @@ interface OnNewSocket {
 }
 
 export const wsConnect =
-  (onNewSocket: OnNewSocket, authId: string | undefined) => async (dispatch: AppDispatch, _) => {
+  (onNewSocket: OnNewSocket, authId?: string | null) => async (dispatch: AppDispatch, _) => {
     dispatch({ type: WS_CONNECT_START });
 
     try {

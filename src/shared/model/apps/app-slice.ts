@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { SocketEvents } from '../../lib';
 import { INotifications } from '../../types';
 
 type InitialStateType = {
@@ -18,7 +19,7 @@ const initialState: InitialStateType = {
 };
 
 const appSlice = createSlice({
-  name: 'app',
+  name: 'appSlice',
   initialState,
   reducers: {
     setInitialized: (state) => {
@@ -38,16 +39,24 @@ const appSlice = createSlice({
     removeNotification: (state) => {
       state.notifications = [];
     },
-    addNewMsgCounter: (state, payload) => {
+    addNewMsgCounter: (state) => {
       state.newMsgCounter += 1;
     },
     clearNewMsgCounter: (state) => {
       state.newMsgCounter = 0;
     },
   },
+  selectors: {
+    getAppUserOnline: (state: InitialStateType) => state.usersOnline,
+    getAppAllNotifications: (state: InitialStateType) => state.notifications,
+    getAppInfoNotifications: (state: InitialStateType) =>
+      state.notifications.filter((it) => it.type !== SocketEvents.MSG_EVENT),
+    getAppMsgNotifications: (state: InitialStateType) => state.newMsgCounter,
+  },
 });
 
 const appActions = appSlice.actions;
 const appReducer = appSlice.reducer;
+const appSelector = appSlice.selectors;
 
-export { appSlice, appActions, appReducer };
+export { appSlice, appActions, appReducer, appSelector };

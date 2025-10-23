@@ -1,3 +1,2 @@
-export { postsSlice, postsReducer, postsActions } from './posts-slice';
-export * from './posts-selectors';
+export { postsSlice, postsReducer, postsActions, postsSelector } from './posts-slice';
 export * from './posts-thunks';

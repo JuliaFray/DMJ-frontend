@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useContext } from 'react';
 
 import { NavLink } from 'react-router-dom';
 
@@ -7,9 +7,10 @@ import Login from '@mui/icons-material/Login';
 import { Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 
-import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
+import { ProfileContext } from 'shared/context';
+import { useAppDispatch, useWebSocket } from 'shared/hook';
 import { pathKeys, SocketEvents } from 'shared/lib';
-import { appActions, authActions, getAuthId } from 'shared/model';
+import { appActions, authActions } from 'shared/model';
 import { theme } from 'shared/themes';
 
 import styles from './layout.module.scss';
@@ -32,7 +33,7 @@ export function BrandLink() {
   );
 }
 
-export function SignInLink() {
+export const SignInLink: FC = (t) => {
   return (
     <NavLink to={pathKeys.login()}>
       <Tooltip title='Войти'>
@@ -40,11 +41,12 @@ export function SignInLink() {
       </Tooltip>
     </NavLink>
   );
-}
+};
 
-export function SignOutLink() {
+export const SignOutLink: FC = () => {
+  const { authId } = useContext(ProfileContext);
+
   const dispatch = useAppDispatch();
-  const authId = useAppSelector(getAuthId);
 
   const ws = useWebSocket();
 
@@ -61,4 +63,4 @@ export function SignOutLink() {
       </IconButton>
     </Tooltip>
   );
-}
+};

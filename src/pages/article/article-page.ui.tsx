@@ -1,36 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { Grid } from '@mui/material';
 
+import { CommentsBlock } from 'widgets/comments';
+import { Recommendations } from 'widgets/recommendations';
+
+import { CreateComment } from 'features/create-comment';
+
 import { Article } from 'entities/article';
 
-import { useAppDispatch, useMedia } from 'shared/hook';
-import {
-  getAuthId,
-  getIsAuth,
-  getOnePost,
-  getPost,
-  getPostsIsFetching,
-  getRecommendationPost,
-  getRecommendations,
-} from 'shared/model';
-
-import { CreateComment } from 'features';
-import { CommentsBlock, Recommendations } from 'widgets';
+import { ProfileContext } from 'shared/context';
+import { useAppDispatch, useAppSelector, useMedia } from 'shared/hook';
+import { getOnePost, getRecommendationPost, postsSelector } from 'shared/model';
 
 import styles from './article-page.module.scss';
 
 export const ArticlePage: React.FC = React.memo(() => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const isFetching = useSelector(getPostsIsFetching);
-  const post = useSelector(getPost);
-  const userId = useSelector(getAuthId);
-  const recommendations = useSelector(getRecommendations);
-  const isAuth = useSelector(getIsAuth);
+
+  const { authId, isAuth } = useContext(ProfileContext);
+
+  const isFetching = useAppSelector(postsSelector.getPostsIsFetching);
+  const post = useAppSelector(postsSelector.getPost);
+  const recommendations = useAppSelector(postsSelector.getRecommendations);
 
   const { mdMain, mdSide } = useMedia();
 
@@ -49,7 +44,7 @@ export const ArticlePage: React.FC = React.memo(() => {
             post={post}
             isFullPost
             isLoading={isFetching}
-            isEditable={post.author._id === userId}
+            isEditable={post.author._id === authId}
           />
         )}
 

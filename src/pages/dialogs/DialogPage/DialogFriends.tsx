@@ -1,18 +1,17 @@
 import React from 'react';
 
-import { useSelector } from 'react-redux';
-
 import { Divider, ListItem, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 
-import { getDialogUsers } from 'shared/model';
+import { useAppSelector } from 'shared/hook';
+import { dialogSelector } from 'shared/model';
 import { TDialogFriends } from 'shared/types';
 
 const DialogFriends: React.FC = () => {
-  const users = useSelector(getDialogUsers);
+  const users = useAppSelector(dialogSelector.getDialogUsers);
 
   return (
     <List sx={{ width: '100%', maxWidth: 360 }}>

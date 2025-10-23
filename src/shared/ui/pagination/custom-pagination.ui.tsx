@@ -10,7 +10,7 @@ type TPagination = {
   setCurrentPage: Dispatch<SetStateAction<number>>;
 };
 
-export const CustomPagination: React.FC<TPagination> = (props, context) => {
+export const CustomPagination: React.FC<TPagination> = (props) => {
   const count: number = Math.ceil(props.dataLength / 20);
 
   const handleOnPageChange = (event: React.ChangeEvent<unknown>, page: number) => {

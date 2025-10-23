@@ -4,14 +4,14 @@ import { RouteObject } from 'react-router-dom';
 
 import { compose, pathKeys, withSuspense } from 'shared/lib';
 
-import { DietPageSkeleton } from '../diet-feed/diet-page.skeleton';
+import { DietPlanFeedPageSkeleton } from '../diet-plan-feed/diet-plan-feed-page.skeleton';
 
 const DietDiaryPage = lazy(() =>
   import('./diet-diary-page.ui').then((module) => ({ default: module.DietDiaryPage })),
 );
 
 const enhance = compose((component) =>
-  withSuspense(component, { FallbackComponent: DietPageSkeleton }),
+  withSuspense(component, { FallbackComponent: DietPlanFeedPageSkeleton }),
 );
 
 export const dietDiaryPageRoute: RouteObject = {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 
 import moment from 'moment/moment';
 import { Link } from 'react-router-dom';
@@ -13,16 +13,17 @@ import ListItemText from '@mui/material/ListItemText';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
-import { useAppDispatch, useAppSelector } from 'shared/hook';
+import { ProfileContext } from 'shared/context';
+import { useAppDispatch } from 'shared/hook';
 import { getFullName, NO_AVATAR, pathKeys } from 'shared/lib';
-import { getIsAuth, toggleCommentRating } from 'shared/model';
+import { toggleCommentRating } from 'shared/model';
 import { TCommentType } from 'shared/types';
 
 import styles from './comment.module.scss';
 
-export const Comment: React.FC<TCommentType> = ({ item, isLoading }) => {
+export const Comment: FC<TCommentType> = ({ item, isLoading }) => {
   const dispatch = useAppDispatch();
-  const isAuth = useAppSelector(getIsAuth);
+  const { isAuth } = useContext(ProfileContext);
 
   const [rating, setRating] = useState(item?.rating || 0);
   const [userRating, setUserRating] = useState(item?.userRating || 0);
@@ -71,7 +72,7 @@ export const Comment: React.FC<TCommentType> = ({ item, isLoading }) => {
 
         {!isLoading && !!item.author && (
           <ListItemText secondary={item.text}>
-            <Link className={styles.name} to={pathKeys.users.byId({ id: item.author._id })}>
+            <Link className={styles.name} to={pathKeys.user.byId({ id: item.author._id })}>
               {getFullName(item.author)}
             </Link>
           </ListItemText>

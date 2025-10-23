@@ -1,17 +1,16 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
 
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Grid } from '@mui/material';
 
-import { useLazyGetAllUsersQuery } from 'shared/api';
-import { useAppDispatch } from 'shared/hook';
-import { getAuthId, getIsFetching, getUsers, toggleFollowProfile } from 'shared/model';
-import { TUser } from 'shared/types';
+import { UserRow, UserRowSkeleton } from 'widgets/users';
 
-import { UserRow, UserRowSkeleton } from 'widgets';
+import { useLazyGetAllUsersQuery } from 'shared/api';
+import { useAppDispatch, useAppSelector } from 'shared/hook';
+import { authSelector, toggleFollowProfile, usersSelector } from 'shared/model';
+import { TUser } from 'shared/types';
 
 type IUsersMain = {
   setCurrentPage: Dispatch<SetStateAction<number>>;
@@ -20,9 +19,9 @@ type IUsersMain = {
 };
 
 export const UsersFeed: React.FC<IUsersMain> = ({ currentPage, isFollowers }) => {
-  const users = useSelector(getUsers);
-  const isFetching = useSelector(getIsFetching);
-  const profileId = useSelector(getAuthId);
+  const users = useAppSelector(usersSelector.getUsers);
+  const isFetching = useAppSelector(usersSelector.getIsFetching);
+  const profileId = useAppSelector(authSelector.getAuthId);
 
   const dispatch = useAppDispatch();
 
@@ -34,9 +33,9 @@ export const UsersFeed: React.FC<IUsersMain> = ({ currentPage, isFollowers }) =>
     triggerGetAllUsers({
       currentPage,
       isFollowers,
-      userId: params.id || profileId,
+      userId: params.id || profileId || '',
     });
-  }, [dispatch, currentPage, isFollowers]);
+  }, [dispatch, currentPage, isFollowers, triggerGetAllUsers, params.id, profileId]);
 
   const toggleFollow = (userId: string, isFollow: boolean) => {
     if (profileId) {

@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -9,16 +8,18 @@ import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 
-import { useAppDispatch } from 'shared/hook';
+import { ProfileContext } from 'shared/context';
+import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { getFullName, getImage } from 'shared/lib';
-import { dialogActions, getAuthId, getDialogs } from 'shared/model';
+import { dialogActions, dialogSelector } from 'shared/model';
 import { TDialog } from 'shared/types';
 
 const DialogItems: React.FC = () => {
-  const items = useSelector(getDialogs);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const authId = useSelector(getAuthId);
+  const { authId } = useContext(ProfileContext);
+
+  const items = useAppSelector(dialogSelector.getDialogs);
 
   const onDialogSelect = (item: TDialog) => {
     dispatch(dialogActions.addSelectedDialog(item));

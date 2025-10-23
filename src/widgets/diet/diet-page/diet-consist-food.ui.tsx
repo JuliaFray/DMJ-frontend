@@ -1,6 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useMemo } from 'react';
-
-import { useSelector } from 'react-redux';
+import React, { Dispatch, FC, SetStateAction, useContext, useMemo } from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -21,11 +19,11 @@ import {
   Toolbar,
 } from '@mui/material';
 
-import { useAddFoodMutation, useRemoveFoodMutation } from 'shared/api';
+import { useRemoveFoodMutation } from 'shared/api';
+import { ProfileContext } from 'shared/context';
 import { useWebSocket } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
-import { getAuthId } from 'shared/model';
-import { Food, FoodList, Meal, TChipData, TDietPlan } from 'shared/types';
+import { Food, Meal, TChipData, TDietPlan } from 'shared/types';
 import { TabPanel } from 'shared/ui';
 
 import { DietStats } from './diet-stats.ui';
@@ -69,7 +67,8 @@ export const DietConsistFood: FC<Props> = ({
   setOpenDialog,
   filteredFoods,
 }) => {
-  const authId = useSelector(getAuthId);
+  const { authId } = useContext(ProfileContext);
+
   const ws = useWebSocket();
   const [removeFood] = useRemoveFoodMutation();
 

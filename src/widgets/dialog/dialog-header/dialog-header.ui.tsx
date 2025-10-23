@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,8 +11,9 @@ import IconButton from '@mui/material/IconButton';
 
 import { styles } from 'pages/dialogs';
 
+import { useAppSelector } from 'shared/hook';
 import { getFullName, getImage } from 'shared/lib';
-import { getAuthId } from 'shared/model';
+import { authSelector } from 'shared/model';
 import { TDialog } from 'shared/types';
 
 type IDialogHeader = {
@@ -21,7 +21,7 @@ type IDialogHeader = {
 };
 
 export const DialogHeader: React.FC<IDialogHeader> = ({ selectedDialog }) => {
-  const authId = useSelector(getAuthId);
+  const authId = useAppSelector(authSelector.getAuthId);
   const navigate = useNavigate();
 
   const handleBack = () => {

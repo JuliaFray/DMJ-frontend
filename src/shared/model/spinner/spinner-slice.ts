@@ -9,7 +9,7 @@ const initialState: TInitial = {
 };
 
 const spinnerSlice = createSlice({
-  name: 'spinner',
+  name: 'spinnerSlice',
   initialState,
   reducers: {
     show: (state) => {
@@ -19,8 +19,12 @@ const spinnerSlice = createSlice({
       state.display = false;
     },
   },
+  selectors: {
+    getSpinnerDisplay: (state: TInitial) => state.display,
+  },
 });
 const spinnerActions = spinnerSlice.actions;
 const spinnerReducer = spinnerSlice.reducer;
+const spinnerSelector = spinnerSlice.selectors;
 
-export { spinnerSlice, spinnerActions, spinnerReducer };
+export { spinnerSlice, spinnerActions, spinnerReducer, spinnerSelector };

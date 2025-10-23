@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { getDietsDataLength, getDietsIsFetching } from 'shared/model';
-
 import { dietApi } from '../../api/diet-api';
 import { TDietPlan } from '../../types';
 
@@ -76,6 +74,6 @@ const dietSlice = createSlice({
 
 const dietActions = dietSlice.actions;
 const dietReducer = dietSlice.reducer;
-const dietSelectors = dietSlice.selectors;
+const dietSelector = dietSlice.selectors;
 
-export { dietSlice, dietActions, dietReducer, dietSelectors };
+export { dietSlice, dietActions, dietReducer, dietSelector };

@@ -1,27 +1,30 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useContext } from 'react';
 
 import { Link } from 'react-router-dom';
 
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { Fab, Grid } from '@mui/material';
 
+import { ArticlesFeedSkeleton } from 'widgets/article';
+import { DietCard } from 'widgets/diet';
+
+import { ProfileContext } from 'shared/context';
 import { useAppSelector } from 'shared/hook';
 import { pathKeys } from 'shared/lib';
-import { dietSelectors, getIsAuth } from 'shared/model';
+import { dietSelector } from 'shared/model';
 import { TDietPlan } from 'shared/types';
 
-import { ArticlesFeedSkeleton, DietCard } from 'widgets';
-
-type TPostMain = {
+type DietFeedProps = {
   isFetching: boolean;
   isMainPage: boolean;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   currentPage: number;
 };
 
-export const DietsFeed: React.FC<TPostMain> = ({ isFetching }) => {
-  const diets = useAppSelector(dietSelectors.getDiets);
-  const isAuth = useAppSelector(getIsAuth);
+export const DietsFeed: React.FC<DietFeedProps> = ({ isFetching }) => {
+  const { isAuth } = useContext(ProfileContext);
+
+  const diets = useAppSelector(dietSelector.getDiets);
 
   return (
     <div style={{ position: 'relative' }}>

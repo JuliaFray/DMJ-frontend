@@ -1,10 +1,8 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
-
-import { useSelector } from 'react-redux';
+import React, { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 
 import { Container, Tab, Tabs } from '@mui/material';
 
-import { getIsAuth } from 'shared/model';
+import { ProfileContext } from 'shared/context';
 import { a11yProps } from 'shared/utils';
 
 interface Props {
@@ -13,7 +11,7 @@ interface Props {
 }
 
 export const HomeTabs: React.FC<Props> = ({ tabIndex, setTabIndex }) => {
-  const isAuth = useSelector(getIsAuth);
+  const { isAuth } = useContext(ProfileContext);
 
   useEffect(() => {
     setTabIndex(0);

@@ -1,29 +1,35 @@
 import React, { FC, useState } from 'react';
 
 import { Form, Formik } from 'formik';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { IconButton, InputAdornment, Stack } from '@mui/material';
+import { IconButton, InputAdornment, Snackbar, Stack } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
+import { useAppSelector } from 'shared/hook';
 import { pathKeys } from 'shared/lib';
-import { InputWrapper } from 'shared/ui';
+import { authSelector } from 'shared/model';
+import { InputWrapper, Spinner } from 'shared/ui';
 
 import { useRegister } from './register-page.hook';
 import styles from './register-page.module.scss';
 
-export type RegisterDataType = {
-  login: string;
-  email: string;
-  password: string;
-};
-
 export const RegisterPage: FC = () => {
-  const { initialData, validation, handleSubmit, isAuth, isFetching, globalError } = useRegister();
+  const {
+    initialData,
+    validation,
+    handleSubmit,
+    isFetching,
+    globalError,
+    handleOnChange,
+    handleClose,
+  } = useRegister();
+
+  const showSuccessSend = useAppSelector(authSelector.getSuccessSend);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -32,10 +38,6 @@ export const RegisterPage: FC = () => {
   const handleMousePassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
-
-  if (isAuth) {
-    return <Navigate to={pathKeys.home()} />;
-  }
 
   return (
     <Paper classes={{ root: styles.root }}>
@@ -47,14 +49,17 @@ export const RegisterPage: FC = () => {
           <Avatar sx={{ width: 100, height: 100 }} />
         </div>
 
+        <Spinner display={isFetching} />
+
         <Formik
           initialValues={{ ...initialData }}
           onSubmit={(values) => handleSubmit(values)}
+          validateOnChange
           validationSchema={validation}
           enableReinitialize
         >
           {({ isValid }) => (
-            <Form>
+            <Form onChange={handleOnChange}>
               <Stack spacing={1}>
                 <InputWrapper name='login' label='Логин' className={styles.field} />
                 <InputWrapper name='email' label='Email' className={styles.field} />
@@ -100,6 +105,17 @@ export const RegisterPage: FC = () => {
           Войти в аккаунт
         </Link>
       </Stack>
+
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={showSuccessSend}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message='Письмо отправлено на ваш адрес электронной почты'
+      />
     </Paper>
   );
 };

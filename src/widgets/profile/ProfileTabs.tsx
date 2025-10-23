@@ -5,9 +5,9 @@ import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import { Container, Tab, Tabs } from '@mui/material';
 
 // eslint-disable-next-line no-restricted-imports
-import { HomePage } from 'pages/article-feed/home-page.ui';
+import { HomePage } from 'pages/article-feed/article-feed-page.ui';
 // eslint-disable-next-line no-restricted-imports
-import { UsersPage } from 'pages/users/users-page.ui';
+import { UsersPage } from 'pages/user-feed/user-feed-page.ui';
 
 import { TabPanel } from 'shared/ui';
 import { a11yProps } from 'shared/utils';

@@ -1,21 +1,20 @@
 import React, { useEffect } from 'react';
 
-import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import List from '@mui/material/List';
 
+import { ArticleCard } from 'widgets/article';
+
 import { Comment } from 'entities/comment';
 
-import { useAppDispatch } from 'shared/hook';
-import { getPostComments, getUserPostComments } from 'shared/model';
+import { useAppDispatch, useAppSelector } from 'shared/hook';
+import { getUserPostComments, postsSelector } from 'shared/model';
 import { TArticle, TComment } from 'shared/types';
 
 // eslint-disable-next-line no-restricted-imports
-import { ArticleCard } from 'widgets';
-
 // eslint-disable-next-line no-restricted-imports
-import { CommonLayoutUi } from '../../../app/layouts';
+import { CommonLayout } from '../../../app/layouts';
 
 type IPostCommentPage = {
   userId: string;
@@ -43,14 +42,14 @@ const PostCommentItem: React.FC<{ item: TArticle }> = ({ item }) => {
 export const CommentsFeed: React.FC<IPostCommentPage> = ({ userId }) => {
   const dispatch = useAppDispatch();
 
-  const postComments = useSelector(getPostComments);
+  const postComments = useAppSelector(postsSelector.getPostComments);
 
   useEffect(() => {
     dispatch(getUserPostComments({ userId }));
   }, [dispatch, userId]);
 
   return (
-    <CommonLayoutUi
+    <CommonLayout
       isMainPage={false}
       mainChildren={
         <div>

@@ -1,15 +1,14 @@
 import React from 'react';
 
 import { isEmpty } from 'lodash';
-import { useSelector } from 'react-redux';
 
 import { Grid } from '@mui/material';
 
-import { useAppSelector } from 'shared/hook';
-import { getPosts, getPostsDataLength } from 'shared/model';
-import { TArticle, TChipData } from 'shared/types';
+import { ArticleCard, ArticlesFeedSkeleton } from 'widgets/article';
 
-import { ArticleCard, ArticlesFeedSkeleton } from 'widgets';
+import { useAppSelector } from 'shared/hook';
+import { postsSelector } from 'shared/model';
+import { TArticle, TChipData } from 'shared/types';
 
 type TPostMain = {
   isFetching: boolean;
@@ -18,8 +17,7 @@ type TPostMain = {
 };
 
 export const ArticlesFeed: React.FC<TPostMain> = ({ isFetching, allTags, handleAddTag }) => {
-  const posts = useAppSelector(getPosts);
-  const dataLength = useAppSelector(getPostsDataLength);
+  const posts = useAppSelector(postsSelector.getPosts);
 
   return (
     <Grid

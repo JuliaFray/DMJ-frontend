@@ -3,6 +3,16 @@
 .listItem {
   justify-content: space-between;
   padding: 0;
+
+  a {
+    text-decoration: none;
+    color: #000;
+
+    &:hover {
+      text-decoration: none;
+      color: #000;
+    }
+  }
 }
 
 .linkItem {

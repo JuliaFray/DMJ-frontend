@@ -52,11 +52,7 @@ export interface TDietPlan {
   /** Приемы пищи в плане */
   meals: Meal[];
   /** Статистика плана питания */
-  stat: {
-    /** Плановые показатели */
-    plan: TDietStat;
-    /** Фактические показатели */
-    fact: TDietStat;
+  stat: TDietStat & {
     /** Рейтинг плана */
     rating: number;
   };

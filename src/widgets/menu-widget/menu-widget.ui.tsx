@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -15,9 +14,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
+import { ProfileContext } from 'shared/context';
 import { useAppDispatch, useWebSocket } from 'shared/hook';
 import { pathKeys, SocketEvents } from 'shared/lib';
-import { appActions, getMyProfileShortName, getProfileEmail } from 'shared/model';
+import { appActions } from 'shared/model';
 import { theme } from 'shared/themes';
 
 import styles from './menu-widget.module.scss';
@@ -58,14 +58,13 @@ const items: IItem[] = [
   { name: 'Настройки', pathname: 'settings', link: pathKeys.root, icon: <SettingsIcon /> },
 ];
 
-export const MenuWidget: React.FC<{ userId: string }> = ({ userId }) => {
+export const MenuWidget: FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const [selected, setSelected] = useState<string | undefined>();
+  const { me, authId } = useContext(ProfileContext);
 
-  const shortName = useSelector(getMyProfileShortName);
-  const email = useSelector(getProfileEmail);
+  const [selected, setSelected] = useState<string | undefined>();
 
   useEffect(() => {
     setSelected(pathname?.replaceAll('/', ''));
@@ -101,16 +100,11 @@ export const MenuWidget: React.FC<{ userId: string }> = ({ userId }) => {
           }),
         );
       }
-      if (type === SocketEvents.MSG_EVENT && data.from._id !== userId) {
-        dispatch(
-          appActions.addNewMsgCounter({
-            type: 'app/addNewMsgCounter',
-            payload: {},
-          }),
-        );
+      if (type === SocketEvents.MSG_EVENT && data.from._id !== authId) {
+        dispatch(appActions.addNewMsgCounter());
       }
     },
-    [dispatch, userId],
+    [dispatch, authId],
   );
 
   useEffect(() => {
@@ -128,17 +122,17 @@ export const MenuWidget: React.FC<{ userId: string }> = ({ userId }) => {
         </ListItemIcon>
 
         <ListItemText>
-          {!userId && <Typography color={theme.palette.text.primary}>Гость</Typography>}
-          {!!userId && (
-            <>
-              <Typography color={theme.palette.text.primary}>{shortName}</Typography>
-              <Typography color={theme.palette.text.secondary}>{email}</Typography>
-            </>
+          {!authId && <Typography color={theme.palette.text.primary}>Гость</Typography>}
+          {!!authId && (
+            <Link to={pathKeys.user.byId({ id: authId })}>
+              <Typography color={theme.palette.text.primary}>{me?.login}</Typography>
+              <Typography color={theme.palette.text.secondary}>{me?.email}</Typography>
+            </Link>
           )}
         </ListItemText>
       </ListItem>
 
-      {!userId && (
+      {!authId && (
         <Button
           type='button'
           size='large'

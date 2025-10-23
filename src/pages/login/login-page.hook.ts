@@ -1,27 +1,24 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 import * as Yup from 'yup';
 
+import { useLoginMutation } from 'shared/api';
+import { ProfileContext } from 'shared/context';
 import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
-import {
-  authActions,
-  getAuthGlobalError,
-  getAuthId,
-  getIsAuth,
-  getIsFetching,
-  login,
-} from 'shared/model';
+import { authActions, authSelector } from 'shared/model';
 import { ILoginData } from 'shared/types';
 
 export const useLogin = () => {
-  const isAuth = useAppSelector(getIsAuth);
-  const isFetching = useAppSelector(getIsFetching);
-  const globalError = useAppSelector(getAuthGlobalError);
-  const authId = useAppSelector(getAuthId);
+  const { authId, isAuth } = useContext(ProfileContext);
+
+  const isFetching = useAppSelector(authSelector.getIsFetching);
+  const globalError = useAppSelector(authSelector.getAuthGlobalError);
 
   const ws = useWebSocket();
   const dispatch = useAppDispatch();
+
+  const [login] = useLoginMutation();
 
   useEffect(() => {
     if (authId) {
@@ -30,11 +27,11 @@ export const useLogin = () => {
   }, [authId, ws]);
 
   const handleSubmit = (formData: ILoginData) => {
-    dispatch(login({ userData: formData }));
+    login({ data: formData });
   };
 
   const handleChange = () => {
-    dispatch(authActions.setGlobalError(''));
+    dispatch(authActions.setGlobalError(null));
   };
 
   const initialData = { email: '', password: '' };
@@ -43,5 +40,5 @@ export const useLogin = () => {
     password: Yup.string().required('Обязательно для заполнения'),
   });
 
-  return { initialData, validation, isAuth, isFetching, globalError, handleSubmit };
+  return { initialData, validation, isAuth, isFetching, globalError, handleSubmit, handleChange };
 };

@@ -4,18 +4,12 @@ import { Row } from 'rsuite';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { Box, LinearProgress, Rating, Stack, styled, Typography } from '@mui/material';
+import { Box, LinearProgress, Stack, Typography } from '@mui/material';
 
-import { theme } from 'shared/themes';
 import { Food, TDietStat } from 'shared/types';
+import { StyledRating } from 'shared/ui';
 
 import styles from './diet.module.scss';
-
-const StyledRating = styled(Rating)({
-  '& .MuiRating-iconFilled': {
-    color: theme.palette.secondary.main,
-  },
-});
 
 const calcPercent = (planValue: number, factValue: number) => {
   return Math.round((factValue / planValue) * 100);

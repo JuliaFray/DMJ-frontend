@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import clsx from 'clsx';
 import moment from 'moment';
@@ -15,6 +15,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 
+import { CustomCardActions } from 'widgets/article';
+
 import { ArticleSkeleton } from 'entities/article';
 
 import { useAppDispatch } from 'shared/hook';
@@ -23,18 +25,16 @@ import { deletePost } from 'shared/model';
 import { palette, theme } from 'shared/themes';
 import { TArticle, TChipData } from 'shared/types';
 
-import { CustomCardActions } from 'widgets';
-
 import styles from './article.module.scss';
 
-export type PostPropsType = {
+type ArticleProps = {
   post: TArticle;
   isFullPost: boolean;
   isLoading: boolean;
   isEditable: boolean;
 };
 
-export const Article: React.FC<PostPropsType> = ({ post, isFullPost, isLoading, isEditable }) => {
+export const Article: FC<ArticleProps> = ({ post, isFullPost, isLoading, isEditable }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ export const Article: React.FC<PostPropsType> = ({ post, isFullPost, isLoading, 
           </Avatar>
         }
         title={
-          <Link to={pathKeys.users.byId({ id: post.author._id })}>
+          <Link to={pathKeys.user.byId({ id: post.author._id })}>
             <Typography fontWeight={400} variant='body1' color={theme.palette.text.primary}>
               {getFullName(post.author)}
             </Typography>

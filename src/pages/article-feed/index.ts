@@ -1,1 +1,1 @@
-export { homePageRoute } from './home-page.route';
+export { articleFeedPageRoute } from './article-feed-page.route';

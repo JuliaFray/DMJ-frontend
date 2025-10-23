@@ -15,7 +15,7 @@ import TextField from '@mui/material/TextField';
 
 import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { convertBase64ToBlob, pathKeys } from 'shared/lib';
-import { createPost, editPost, getOnePost, getPost, postsActions } from 'shared/model';
+import { createPost, editPost, getOnePost, postsActions, postsSelector } from 'shared/model';
 import { TChipData } from 'shared/types';
 import { AutocompleteField, InputFileUpload } from 'shared/ui';
 
@@ -24,7 +24,7 @@ import styles from './create-article.module.scss';
 export const CreateArticle: React.FC = () => {
   const { id } = useParams();
 
-  const post = useAppSelector(getPost);
+  const post = useAppSelector(postsSelector.getPost);
 
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');

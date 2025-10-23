@@ -7,13 +7,14 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Button, IconButton, InputAdornment, Paper, Stack, Typography } from '@mui/material';
 
 import { pathKeys } from 'shared/lib';
-import { InputWrapper } from 'shared/ui';
+import { InputWrapper, Spinner } from 'shared/ui';
 
 import { useLogin } from './login-page.hook';
 import styles from './login-page.module.scss';
 
 export const LoginPage: FC = () => {
-  const { initialData, validation, handleSubmit, isAuth, isFetching, globalError } = useLogin();
+  const { initialData, validation, handleSubmit, isAuth, isFetching, globalError, handleChange } =
+    useLogin();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -33,6 +34,8 @@ export const LoginPage: FC = () => {
           Войти в аккаунт
         </Typography>
 
+        <Spinner display={isFetching} />
+
         <Formik
           initialValues={{ ...initialData }}
           onSubmit={(values) => handleSubmit(values)}
@@ -40,7 +43,7 @@ export const LoginPage: FC = () => {
           enableReinitialize
         >
           {({ isValid }) => (
-            <Form>
+            <Form onChange={handleChange}>
               <Stack spacing={1}>
                 <InputWrapper name='email' label='Email' className={styles.field} />
                 <InputWrapper

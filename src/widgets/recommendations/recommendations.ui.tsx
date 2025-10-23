@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { TArticle } from 'shared/types';
+import { ArticleCard, ArticleCarousel } from 'widgets/article';
 
-import { ArticleCard, ArticleCarousel } from 'widgets';
+import { TArticle } from 'shared/types';
 
 export const Recommendations: React.FC<{ posts: TArticle[] }> = ({ posts }) => {
   return (

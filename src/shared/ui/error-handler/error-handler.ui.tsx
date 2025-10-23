@@ -9,12 +9,12 @@ type ErrorHandlerProps = {
 
 const isDevelopment = process.env.MODE === 'dev';
 
-export function ErrorHandler(props: ErrorHandlerProps) {
+export const ErrorHandler = (props: ErrorHandlerProps) => {
   const { error, resetErrorBoundary } = props;
 
   return (
     <div>
-      <h3>Something went wrong.</h3>
+      <h3>Что-то пошло не так :(</h3>
       {isDevelopment && (
         <>
           <ul className='error-messages'>
@@ -24,8 +24,8 @@ export function ErrorHandler(props: ErrorHandlerProps) {
         </>
       )}
       <Button type='button' onClick={resetErrorBoundary}>
-        Try again
+        Попробовать снова
       </Button>
     </div>
   );
-}
+};

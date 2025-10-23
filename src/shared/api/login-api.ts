@@ -21,4 +21,11 @@ export const loginAPI = {
       return response.data;
     });
   },
+  confirm({ email, token }) {
+    return instance
+      .get<GenericResponseType<void>>(`auth/confirmation/${email}/${token}`)
+      .then((response) => {
+        return response.data;
+      });
+  },
 };

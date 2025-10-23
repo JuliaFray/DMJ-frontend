@@ -1,43 +1,46 @@
 .root {
   width: 400px;
   padding: 50px;
-  border: 1px solid #dedede;
   margin: 50px auto;
-  border-radius: 15px !important;
-}
 
-.field:not(:last-of-type) {
-  margin-bottom: 25px !important;
-}
+  .title {
+    text-align: center !important;
+    font-weight: bold !important;
+    margin-bottom: 30px !important;
+  }
 
-.title {
-  text-align: center !important;
-  font-weight: bold !important;
-  margin-bottom: 30px !important;
-}
+  .field:not(:last-of-type) {
+    margin-bottom: 25px !important;
+  }
 
-.avatar {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
-}
 
-.link {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  color: #373a3c;
+  .avatar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
 
-  &:hover {
+  .link {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
     color: #373a3c;
+
+    &:hover {
+      color: #373a3c;
+    }
+  }
+
+  .error {
+    display: flex;
+    justify-content: center;
+    color: #f5a29d;
+    margin-bottom: 10px;
+    height: 20px;
+    padding-bottom: 20px;
   }
 }
 
-.error {
-  display: flex;
-  justify-content: center;
-  color: #f5a29d;
-  margin-bottom: 10px;
-  height: 20px;
-  padding-bottom: 20px;
+.snackbar {
+  color: #fff
 }

@@ -1,22 +1,20 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
-
-import { useAppDispatch } from '../hook';
+import { useAppDispatch, useAppSelector } from '../hook';
 import { SocketEvents } from '../lib';
-import { getAuthId } from '../model';
+import { authSelector } from '../model';
 import { wsConnect, wsShowReconnect } from '../model/ws/ws';
 
-import { Loader } from './Loader';
+import { Spinner } from './spinner';
 
 export const WebSocketContext = createContext<WebSocket | null>(null);
 
 export const WS = (props: React.PropsWithChildren<unknown>) => {
   const dispatch = useAppDispatch();
 
-  // @ts-ignore
-  const ws = useSelector((state) => state.ws);
-  const authId = useSelector(getAuthId);
+  const ws = useAppSelector((state) => state.ws);
+
+  const authId = useAppSelector(authSelector.getAuthId);
   const isAuth = !!authId || window.localStorage.getItem('token');
 
   const [conn, setConn] = useState<WebSocket | null>(null);
@@ -77,7 +75,7 @@ export const WS = (props: React.PropsWithChildren<unknown>) => {
 
   useEffect(() => {
     dispatch(wsConnect(onNewSocket, authId));
-  }, [authId]);
+  }, [authId, dispatch]);
 
   useEffect(() => {
     if (!conn) return;
@@ -115,7 +113,7 @@ export const WS = (props: React.PropsWithChildren<unknown>) => {
             </button>
           </div>
         )}
-        {!ws.error && <Loader />}
+        {!ws.error && <Spinner />}
       </div>
     );
   }

@@ -1,7 +1,6 @@
-import React, { Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -17,12 +16,10 @@ import {
   ListItemAvatar,
   ListItemIcon,
   ListItemText,
-  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   Typography,
 } from '@mui/material';
@@ -35,7 +32,7 @@ import InputBase from '@mui/material/InputBase';
 import { useAddFoodMutation, useLazyGetFoodListQuery } from 'shared/api';
 import { theme } from 'shared/themes';
 import { Meal, ProductItem } from 'shared/types';
-import { Loader } from 'shared/ui';
+import { Spinner } from 'shared/ui';
 
 import styles from './diet.module.scss';
 
@@ -151,7 +148,7 @@ export const AddFood: FC<Props> = ({ openDrawer, setOpenDrawer, day, meals }) =>
         </IconButton>
       </FormControl>
 
-      {isLoading && <Loader />}
+      {isLoading && <Spinner />}
 
       <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
         {foods.map((f) => (

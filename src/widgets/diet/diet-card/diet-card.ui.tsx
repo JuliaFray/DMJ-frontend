@@ -49,8 +49,8 @@ export const DietCard: React.FC<TDietCard> = ({ diet }) => {
 
       <CardContent style={{ height: '220px' }}>
         <DietStats
-          plan={diet.stat.plan}
-          fact={diet.stat.fact}
+          plan={diet.author.healthInfo.plan}
+          fact={diet.stat}
           period={diet.period}
           rating={diet.stat.rating}
         />

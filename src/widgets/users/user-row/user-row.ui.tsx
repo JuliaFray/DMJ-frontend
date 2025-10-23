@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { Chat, Loyalty } from '@mui/icons-material';
@@ -21,9 +20,9 @@ import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
-import { useAppDispatch, useWebSocket } from 'shared/hook';
+import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
 import { getFullName, NO_AVATAR, pathKeys, SocketEvents } from 'shared/lib';
-import { appActions, getAppUserOnline, getAuthId } from 'shared/model';
+import { appActions, appSelector, authSelector } from 'shared/model';
 import { TUser } from 'shared/types';
 
 import styles from './user-row.module.scss';
@@ -35,7 +34,7 @@ type TUSerRow = {
 
 export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
   const ws = useWebSocket();
-  const authId = useSelector(getAuthId);
+  const authId = useAppSelector(authSelector.getAuthId);
   const [isFollowed, setIsFollowed] = useState(user.isFollowed);
   const [open, setOpen] = React.useState(false);
 
@@ -96,7 +95,7 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
 
     handleClose();
   };
-  const users = useSelector(getAppUserOnline);
+  const users = useAppSelector(appSelector.getAppUserOnline);
   const isOnline = users.includes(user._id);
 
   return (
@@ -115,7 +114,7 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
         <div className={styles.userInfo}>
           <CardContent>
             <Typography component='div' variant='h5'>
-              <Link to={pathKeys.users.byId({ id: user._id })}>{getFullName(user)}</Link>
+              <Link to={pathKeys.user.byId({ id: user._id })}>{getFullName(user)}</Link>
             </Typography>
           </CardContent>
         </div>

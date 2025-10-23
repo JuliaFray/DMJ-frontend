@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 
-import { useSelector } from 'react-redux';
-
 import { ArrowDropDown, ArrowDropUp, Grade } from '@mui/icons-material';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
-import { BottomNavigation, BottomNavigationAction, Container, Tooltip } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Tooltip } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 
-import { useAppDispatch } from 'shared/hook';
-import { getIsAuth, markPostFavorite, togglePostRating } from 'shared/model';
+import { useAppDispatch, useAppSelector } from 'shared/hook';
+import { authSelector, markPostFavorite, togglePostRating } from 'shared/model';
 import { TArticle } from 'shared/types';
 
 export type ICardActions = {
@@ -17,8 +15,8 @@ export type ICardActions = {
   isCard: boolean;
 };
 
-export const CustomCardActions: React.FC<ICardActions> = ({ post, isCard }) => {
-  const isAuth = useSelector(getIsAuth);
+export const CustomCardActions: React.FC<ICardActions> = ({ post }) => {
+  const isAuth = useAppSelector(authSelector.getIsAuth);
   const [isFavorite, setIsFavorite] = useState(!!post.likes);
   const [rating, setRating] = useState(post.rating || 0);
   const [userRating, setUserRating] = useState(post.userRating || 0);

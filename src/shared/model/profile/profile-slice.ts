@@ -26,7 +26,7 @@ const initialState: InitialStateType = {
 };
 
 const profileSlice = createSlice({
-  name: 'profile',
+  name: 'profileSlice',
   initialState,
   reducers: {
     setProfile: (state: InitialStateType, action) => {
@@ -102,9 +102,18 @@ const profileSlice = createSlice({
         state.isFetching = false;
       });
   },
+  selectors: {
+    getProfile: (state: InitialStateType) => state.profile,
+    getMyProfile: (state: InitialStateType) => state.my,
+    getMyProfileAvatar: (state: InitialStateType) => state.my?.avatar,
+    getMyProfileFullName: (state: InitialStateType) => state.my?.login || '',
+    getMyProfileShortName: (state: InitialStateType) => state.my?.login || '',
+    getProfileEmail: (state: InitialStateType) => state.my?.email || '',
+  },
 });
 
 const profileActions = profileSlice.actions;
 const profileReducer = profileSlice.reducer;
+const profileSelector = profileSlice.selectors;
 
-export { profileSlice, profileActions, profileReducer };
+export { profileSlice, profileActions, profileReducer, profileSelector };

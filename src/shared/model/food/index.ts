@@ -1,0 +1,1 @@
+export { foodSlice } from './foodSlice';

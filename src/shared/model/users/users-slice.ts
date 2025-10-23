@@ -18,7 +18,7 @@ const initialState: TInitial = {
 };
 
 const usersSlice = createSlice({
-  name: 'users',
+  name: 'userSlice',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -46,9 +46,15 @@ const usersSlice = createSlice({
         },
       );
   },
+  selectors: {
+    getUsers: (state: TInitial) => state.users,
+    getTotalCount: (state: TInitial) => state.totalCount,
+    getIsFetching: (state: TInitial) => state.isFetching,
+  },
 });
 
 const usersActions = usersSlice.actions;
 const usersReducer = usersSlice.reducer;
+const usersSelector = usersSlice.selectors;
 
-export { usersSlice, usersActions, usersReducer };
+export { usersSlice, usersActions, usersReducer, usersSelector };

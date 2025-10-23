@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { AccountBox, ChatBubble, Groups, LibraryBooks } from '@mui/icons-material';
@@ -14,9 +13,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-import { useAppDispatch, useWebSocket } from 'shared/hook';
+import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
 import { NO_AVATAR, pathKeys, SocketEvents } from 'shared/lib';
-import { authActions, getMyProfileAvatar, getMyProfileFullName } from 'shared/model';
+import { authActions, profileSelector } from 'shared/model';
 
 import styles from './Header.module.scss';
 
@@ -26,9 +25,9 @@ type IItem = {
   icon: React.JSX.Element;
 };
 
-const HeaderMenu: React.FC<{ userId: string }> = (props, context) => {
-  const avatar = useSelector(getMyProfileAvatar);
-  const profileName = useSelector(getMyProfileFullName);
+const HeaderMenu: React.FC<{ userId: string | null }> = (props) => {
+  const avatar = useAppSelector(profileSelector.getMyProfileAvatar);
+  const profileName = useAppSelector(profileSelector.getMyProfileFullName);
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [showMenu, setShowMenu] = useState(false);
@@ -67,12 +66,12 @@ const HeaderMenu: React.FC<{ userId: string }> = (props, context) => {
   const items: IItem[] = [
     {
       name: 'Профиль',
-      link: pathKeys.users.byId({ id: props.userId }),
+      link: pathKeys.user.byId({ id: props.userId }),
       icon: <AccountBox />,
     },
     { name: 'Сообщения', link: pathKeys.dialogs(), icon: <ChatBubble /> },
     { name: 'Публикации', link: pathKeys.root, icon: <LibraryBooks /> },
-    { name: 'Все пользователи', link: pathKeys.users.root(), icon: <Groups /> },
+    { name: 'Все пользователи', link: pathKeys.user.root(), icon: <Groups /> },
   ];
 
   const list = () => (

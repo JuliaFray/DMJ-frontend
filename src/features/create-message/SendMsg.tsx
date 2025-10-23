@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { useForm } from 'react-hook-form';
 
@@ -8,9 +8,9 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 
-import { useAppSelector, useWebSocket } from 'shared/hook';
+import { ProfileContext } from 'shared/context';
+import { useWebSocket } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
-import { getAuthId } from 'shared/model';
 import { TDialog } from 'shared/types';
 
 import styles from './SendMsg.module.scss';
@@ -20,8 +20,7 @@ type ISendMsg = {
 };
 
 export const SendMsg: React.FC<ISendMsg> = (props) => {
-  const authId = useAppSelector(getAuthId);
-
+  const { authId } = useContext(ProfileContext);
   const ws = useWebSocket();
 
   const {

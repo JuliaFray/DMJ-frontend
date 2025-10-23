@@ -6,6 +6,14 @@ export const pathKeys = {
   login() {
     return pathKeys.root.concat('login/');
   },
+  confirm: {
+    root() {
+      return pathKeys.root.concat('confirm/');
+    },
+    byParams({ email, token }) {
+      return pathKeys.confirm.root().concat(email).concat('/').concat(token);
+    },
+  },
   register() {
     return pathKeys.root.concat('register/');
   },
@@ -22,54 +30,40 @@ export const pathKeys = {
     root() {
       return pathKeys.root.concat('planner/');
     },
-    byId({ id }: any) {
+    byId({ id }) {
       return pathKeys.planner.root().concat(id);
     },
     editor: {
       root() {
         return pathKeys.planner.root().concat('editor/');
       },
-      byId({ id }: any) {
+      byId({ id }) {
         return pathKeys.planner.editor.root().concat(id);
       },
-    },
-  },
-  users: {
-    root() {
-      return pathKeys.root.concat('users/');
-    },
-    byId({ id }: any) {
-      return pathKeys.root.concat(id);
     },
   },
   article: {
     root() {
       return pathKeys.root.concat('article/');
     },
-    byId({ id }: any) {
+    byId({ id }) {
       return pathKeys.article.root().concat(id);
     },
     editor: {
       root() {
         return pathKeys.article.root().concat('editor/');
       },
-      byId({ id }: any) {
+      byId({ id }) {
         return pathKeys.article.editor.root().concat(id);
       },
     },
   },
-  profile: {
+  user: {
     root() {
       return pathKeys.root.concat('user/');
     },
-    byUsername({ username }: any) {
-      return pathKeys.profile.root().concat(username, '/');
-    },
-    byUsernameFavorites({ username }: any) {
-      return pathKeys.profile.byUsername({ username }).concat('favorites/');
-    },
-    byId({ id }: any) {
-      return pathKeys.profile.root().concat(id);
+    byId({ id }) {
+      return pathKeys.user.root().concat(id);
     },
   },
   diary: {

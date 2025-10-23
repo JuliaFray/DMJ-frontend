@@ -1,21 +1,19 @@
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import { useAppDispatch } from 'shared/hook';
-import {
-  authActions,
-  getAuthFetching,
-  getAuthGlobalError,
-  getIsAuth,
-  registerUser,
-} from 'shared/model';
-
-import { RegisterDataType } from './register-page.ui';
+import { useRegisterMutation } from 'shared/api';
+import { useAppDispatch, useAppSelector } from 'shared/hook';
+import { pathKeys } from 'shared/lib';
+import { authActions, authSelector } from 'shared/model';
+import { RegisterDataType } from 'shared/types/profile.type';
 
 export const useRegister = () => {
-  const isAuth = useSelector(getIsAuth);
-  const isFetching = useSelector(getAuthFetching);
-  const globalError = useSelector(getAuthGlobalError);
+  const navigate = useNavigate();
+
+  const isFetching = useAppSelector(authSelector.getIsFetching);
+  const globalError = useAppSelector(authSelector.getAuthGlobalError);
+
+  const [registerUser] = useRegisterMutation();
 
   const dispatch = useAppDispatch();
 
@@ -26,14 +24,27 @@ export const useRegister = () => {
     password: Yup.string().required('Обязательно для заполнения'),
   });
 
-  // const handleOnChange = () => {
-  //   dispatch(authActions.setErrors({}));
-  //   dispatch(authActions.setGlobalError(''));
-  // };
-
-  const handleSubmit = (formData: RegisterDataType) => {
-    dispatch(registerUser({ userData: formData }));
+  const handleOnChange = () => {
+    dispatch(authActions.setErrors({}));
+    dispatch(authActions.setGlobalError(null));
   };
 
-  return { initialData, validation, isAuth, isFetching, globalError, handleSubmit };
+  const handleSubmit = (formData: RegisterDataType) => {
+    registerUser({ data: formData });
+  };
+
+  const handleClose = () => {
+    dispatch(authActions.setShowSuccessSend(false));
+    navigate(pathKeys.login());
+  };
+
+  return {
+    initialData,
+    validation,
+    isFetching,
+    globalError,
+    handleSubmit,
+    handleOnChange,
+    handleClose,
+  };
 };
