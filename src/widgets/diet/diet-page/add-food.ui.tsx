@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import {
   Box,
   Button,
   Collapse,
+  Container,
   Drawer,
   FormControl,
   List,
@@ -30,9 +31,10 @@ import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 
 import { useAddFoodMutation, useLazyGetFoodListQuery } from 'shared/api';
+import { NO_AVATAR } from 'shared/lib';
 import { theme } from 'shared/themes';
 import { Meal, ProductItem } from 'shared/types';
-import { Spinner } from 'shared/ui';
+import { CustomPagination, Spinner } from 'shared/ui';
 
 import styles from './diet.module.scss';
 
@@ -40,6 +42,7 @@ const drawerWidth = 600;
 
 // eslint-disable-next-line no-shadow
 enum Nutrients {
+  alcohol = 'Спирт',
   calcium_100g = 'Кальций',
   carbohydrates_100g = 'Углеводы',
   'energy-kcal_100g' = 'Калории',
@@ -47,7 +50,10 @@ enum Nutrients {
   'fruits-vegetables-legumes-estimate-from-ingredients_100g' = 'Фрукты / овощи / бобовые',
   proteins_100g = 'Белки',
   salt_100g = 'Соль',
+  'saturated-fat_100g' = 'Насыщенные жиры',
   sodium_100g = 'Кальций',
+  sugars_100g = 'Сахар',
+  erythritol_100g = '',
   'trans-fat_100g' = 'Трансжиры',
   'vitamin-b2_100g' = 'Витамин B2',
 }
@@ -66,7 +72,7 @@ export const AddFood: FC<Props> = ({ openDrawer, setOpenDrawer, day, meals }) =>
   const [selected, setSelected] = useState<{ id: string; name: string } | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [checked, setChecked] = useState<string[]>([]);
-
+  const [currentPage, setCurrentPage] = useState(1);
   const [getFoods, { data, isLoading }] = useLazyGetFoodListQuery();
   const [addFood] = useAddFoodMutation();
 
@@ -75,8 +81,14 @@ export const AddFood: FC<Props> = ({ openDrawer, setOpenDrawer, day, meals }) =>
     [data],
   );
 
+  useEffect(() => {
+    if (search) {
+      getFoods({ query: search, page: currentPage });
+    }
+  }, [currentPage, getFoods]);
+
   const handleSearch = () => {
-    getFoods({ query: search });
+    getFoods({ query: search, page: currentPage });
   };
 
   const handleClose = () => {
@@ -148,118 +160,127 @@ export const AddFood: FC<Props> = ({ openDrawer, setOpenDrawer, day, meals }) =>
         </IconButton>
       </FormControl>
 
-      {isLoading && <Spinner />}
+      <Spinner display={isLoading} />
 
-      <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-        {foods.map((f) => (
-          <React.Fragment key={f.id}>
-            <ListItem
-              alignItems='flex-start'
-              secondaryAction={
-                expanded && selected?.id === f.id ? (
-                  <ExpandLess
-                    onClick={() => {
-                      setExpanded(false);
-                      setSelected(null);
-                    }}
-                  />
-                ) : (
-                  <ExpandMore
-                    onClick={() => {
-                      setExpanded(true);
-                      setSelected({ id: f.id, name: f.product_name_ru || f.product_name });
-                    }}
-                  />
-                )
-              }
-            >
-              <ListItemIcon>
-                <Checkbox
-                  edge='start'
-                  checked={checked.includes(f.id)}
-                  tabIndex={-1}
-                  disableRipple
-                  onChange={() => {
-                    handleToggle(f.id);
-                  }}
-                />
-              </ListItemIcon>
-
-              <ListItemAvatar>
-                <Avatar src={f.image_front_thumb_url} alt='thumb' />
-              </ListItemAvatar>
-
-              <ListItemText
-                primary={f.product_name_ru || f.product_name || 'Без названия'}
-                secondary={
-                  f.serving_quantity
-                    ? `Порция ${f.serving_quantity}${f.serving_quantity_unit || 'g'}`
-                    : ''
+      <Container style={{ height: '100%', maxHeight: 'calc(100vh - 300px)', overflowY: 'scroll' }}>
+        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+          {foods.map((f) => (
+            <React.Fragment key={f.id}>
+              <ListItem
+                alignItems='flex-start'
+                dense
+                secondaryAction={
+                  expanded && selected?.id === f.id ? (
+                    <ExpandLess
+                      onClick={() => {
+                        setExpanded(false);
+                        setSelected(null);
+                      }}
+                    />
+                  ) : (
+                    <ExpandMore
+                      onClick={() => {
+                        setExpanded(true);
+                        setSelected({ id: f.id, name: f.product_name_ru || f.product_name });
+                      }}
+                    />
+                  )
                 }
-              />
-            </ListItem>
-            <Collapse
-              in={expanded && selected?.id === f.id}
-              timeout='auto'
-              unmountOnExit
-              sx={{ marginBottom: '10px' }}
-            >
-              <TableContainer sx={{ borderRadius: '10px' }}>
-                <Table aria-label='nutrients' className={styles.nutrients}>
-                  <TableBody>
-                    <TableRow sx={{ borderBottom: `3px solid ${theme.palette.secondary.main}` }}>
-                      <TableCell>Порция</TableCell>
-                      <TableCell align='right'>100g</TableCell>
-                    </TableRow>
+              >
+                <ListItemIcon>
+                  <Checkbox
+                    edge='start'
+                    checked={checked.includes(f.id)}
+                    tabIndex={-1}
+                    disableRipple
+                    onChange={() => {
+                      handleToggle(f.id);
+                    }}
+                  />
+                </ListItemIcon>
 
-                    <TableRow sx={{ borderBottom: `3px solid ${theme.palette.secondary.main}` }}>
-                      <TableCell>{Nutrients['energy-kcal_100g']}</TableCell>
-                      <TableCell align='right'>{f.nutriments['energy-kcal_100g']}kcal</TableCell>
-                    </TableRow>
+                <ListItemAvatar>
+                  <Avatar src={f.image_front_thumb_url} alt='thumb'>
+                    {f.product_name?.[0] || f.product_name_ru?.[0] || 'П'}
+                  </Avatar>
+                </ListItemAvatar>
 
-                    <TableRow sx={{ borderBottom: `3px solid ${theme.palette.secondary.main}` }}>
-                      <TableCell>{Nutrients.proteins_100g}</TableCell>
-                      <TableCell align='right'>{f.nutriments.proteins_100g}g</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>{Nutrients.fat_100g}</TableCell>
-                      <TableCell align='right'>{f.nutriments.fat_100g}g</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>{Nutrients.carbohydrates_100g}</TableCell>
-                      <TableCell align='right'>{f.nutriments.carbohydrates_100g}g</TableCell>
-                    </TableRow>
+                <ListItemText
+                  primary={f.product_name_ru || f.product_name || 'Без названия'}
+                  secondary={f.serving_size ? `Порция ${f.serving_size}` : ''}
+                />
+              </ListItem>
+              <Collapse
+                in={expanded && selected?.id === f.id}
+                timeout='auto'
+                unmountOnExit
+                sx={{ marginBottom: '10px' }}
+              >
+                <TableContainer sx={{ borderRadius: '10px' }}>
+                  <Table aria-label='nutrients' className={styles.nutrients}>
+                    <TableBody>
+                      <TableRow sx={{ borderBottom: `3px solid ${theme.palette.secondary.main}` }}>
+                        <TableCell>Порция</TableCell>
+                        <TableCell align='right'>100g</TableCell>
+                      </TableRow>
 
-                    {Object.keys(f.nutriments)
-                      .filter(
-                        (it) =>
-                          !!Nutrients[it] &&
-                          ![
-                            'proteins_100g',
-                            'fat_100g',
-                            'carbohydrates_100g',
-                            'energy-kcal_100g',
-                          ].includes(it),
-                      )
-                      .map((it) => (
-                        <TableRow
-                          key={it}
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                          <TableCell component='th' scope='row'>
-                            {Nutrients[it]}
-                          </TableCell>
-                          <TableCell align='right'>{f.nutriments[it]}g</TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Collapse>
-            <Divider variant='inset' component='li' />
-          </React.Fragment>
-        ))}
-      </List>
+                      <TableRow sx={{ borderBottom: `3px solid ${theme.palette.secondary.main}` }}>
+                        <TableCell>{Nutrients['energy-kcal_100g']}</TableCell>
+                        <TableCell align='right'>{f.nutriments['energy-kcal_100g']}kcal</TableCell>
+                      </TableRow>
+
+                      <TableRow>
+                        <TableCell>{Nutrients.proteins_100g}</TableCell>
+                        <TableCell align='right'>{f.nutriments.proteins_100g}g</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>{Nutrients.fat_100g}</TableCell>
+                        <TableCell align='right'>{f.nutriments.fat_100g}g</TableCell>
+                      </TableRow>
+                      <TableRow sx={{ borderBottom: `3px solid ${theme.palette.secondary.main}` }}>
+                        <TableCell>{Nutrients.carbohydrates_100g}</TableCell>
+                        <TableCell align='right'>{f.nutriments.carbohydrates_100g}g</TableCell>
+                      </TableRow>
+
+                      {Object.keys(f.nutriments)
+                        .filter(
+                          (it) =>
+                            !!Nutrients[it] &&
+                            ![
+                              'proteins_100g',
+                              'fat_100g',
+                              'carbohydrates_100g',
+                              'energy-kcal_100g',
+                            ].includes(it),
+                        )
+                        .map((it) => (
+                          <TableRow
+                            key={it}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                          >
+                            <TableCell component='th' scope='row'>
+                              {Nutrients[it]}
+                            </TableCell>
+                            <TableCell align='right'>{f.nutriments[it]}g</TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Collapse>
+              <Divider variant='inset' component='li' />
+            </React.Fragment>
+          ))}
+        </List>
+      </Container>
+
+      <Box sx={{ alignSelf: 'center', position: 'fixed', bottom: '50px' }}>
+        <CustomPagination
+          page={currentPage}
+          dataLength={data?.data.count ?? 0}
+          setCurrentPage={setCurrentPage}
+        />
+      </Box>
 
       <Box sx={{ alignSelf: 'end', position: 'fixed', bottom: '10px' }}>
         <Button onClick={handleClose}>Отмена</Button>

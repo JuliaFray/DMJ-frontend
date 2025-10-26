@@ -21,11 +21,26 @@ const dietSlice = createSlice({
   name: 'dietSlice',
   initialState,
   reducers: {
-    clearState: (state) => {
+    clearState: (state: TInitial) => {
       state.diets = [];
     },
-    updateDiet: (state, { payload }) => {
+    updateDiet: (state: TInitial, { payload }) => {
       state.diet = payload;
+    },
+    setDietDayRating: (state: TInitial, { payload }) => {
+      if (state.diet && state.diet.period && payload.day <= state.diet.period) {
+        if (!Object.hasOwn(state.diet.stat, 'dayRating')) {
+          state.diet.stat.dayRating = [];
+        }
+        const exists = state.diet.stat.dayRating?.find(
+          (dayRating) => dayRating.day === payload.day,
+        );
+        if (exists) {
+          exists.rating = payload.rating;
+        } else {
+          state.diet?.stat.dayRating?.push(payload);
+        }
+      }
     },
   },
   extraReducers: (builder) => {
@@ -35,14 +50,11 @@ const dietSlice = createSlice({
         state.diets = [];
         state.totalCount = 0;
       })
-      .addMatcher(
-        dietApi.endpoints.getAllDiet.matchFulfilled,
-        (state: TInitial, action: PayloadAction<any, string, any>) => {
-          state.isFetching = false;
-          state.diets = action.payload.data;
-          state.totalCount = action.payload.totalCount;
-        },
-      )
+      .addMatcher(dietApi.endpoints.getAllDiet.matchFulfilled, (state: TInitial, { payload }) => {
+        state.isFetching = false;
+        state.diets = payload.data;
+        state.totalCount = payload.totalCount;
+      })
       .addMatcher(dietApi.endpoints.getAllDiet.matchRejected, (state: TInitial) => {
         state.isFetching = false;
         state.diets = [];
@@ -52,13 +64,10 @@ const dietSlice = createSlice({
         state.isFetching = true;
         state.diet = null;
       })
-      .addMatcher(
-        dietApi.endpoints.getOneDiet.matchFulfilled,
-        (state: TInitial, action: PayloadAction<any, string, any>) => {
-          state.isFetching = false;
-          state.diet = action.payload.data;
-        },
-      )
+      .addMatcher(dietApi.endpoints.getOneDiet.matchFulfilled, (state: TInitial, { payload }) => {
+        state.isFetching = false;
+        state.diet = payload.data;
+      })
       .addMatcher(dietApi.endpoints.getOneDiet.matchRejected, (state: TInitial) => {
         state.isFetching = false;
         state.diet = null;
@@ -69,6 +78,7 @@ const dietSlice = createSlice({
     getDiets: (state: TInitial) => state.diets,
     getDietsDataLength: (state: TInitial) => state.totalCount,
     getDietsIsFetching: (state: TInitial) => state.isFetching,
+    getDietDayRating: (state: TInitial) => state.diet?.stat.dayRating,
   },
 });
 

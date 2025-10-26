@@ -41,8 +41,7 @@ export const InlineEditCell: FC<Props> = ({ initialValue, handleChange }) => {
                 // @ts-ignore
                 onChange(event, event);
               }}
-              width='50%'
-              style={{ textAlign: 'right' }}
+              style={{ textAlign: 'right', width: '100%' }}
             />
           );
         }

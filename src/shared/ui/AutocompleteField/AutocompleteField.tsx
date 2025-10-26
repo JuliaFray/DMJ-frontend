@@ -93,7 +93,7 @@ export const AutocompleteField: React.FC<IAutocompleteField> = (props) => {
           <TextField
             {...params}
             variant='outlined'
-            label='Тэги'
+            label='Темы'
             onKeyDown={handleKeyPress}
             value={currentTag}
             onChange={(e) => setCurrentTag(e.target.value)}

@@ -11,13 +11,21 @@ import { postsSelector } from 'shared/model';
 import { TArticle, TChipData } from 'shared/types';
 
 type TPostMain = {
-  isFetching: boolean;
   allTags: TChipData[];
   handleAddTag: (item: TChipData, isAuthor?: boolean) => void;
 };
 
-export const ArticlesFeed: React.FC<TPostMain> = ({ isFetching, allTags, handleAddTag }) => {
+export const ArticlesFeed: React.FC<TPostMain> = ({ allTags, handleAddTag }) => {
   const posts = useAppSelector(postsSelector.getPosts);
+  const isFetching = useAppSelector(postsSelector.getPostsIsFetching);
+
+  if (isFetching) {
+    return <ArticlesFeedSkeleton />;
+  }
+
+  if (isEmpty(posts)) {
+    return <div style={{ textAlign: 'center' }}>К сожалению, ничего не найдено</div>;
+  }
 
   return (
     <Grid
@@ -27,8 +35,6 @@ export const ArticlesFeed: React.FC<TPostMain> = ({ isFetching, allTags, handleA
       columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       style={{ marginTop: '-10px', marginBottom: '30px' }}
     >
-      {isFetching && <ArticlesFeedSkeleton />}
-      {!isFetching && isEmpty(posts) && <div>К сожалению ничего не найдено</div>}
       {!isFetching &&
         posts.map((el: TArticle) => (
           <Grid item xs={12} sm={12} md={12} key={el._id}>

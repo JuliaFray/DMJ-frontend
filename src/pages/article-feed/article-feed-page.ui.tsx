@@ -100,12 +100,12 @@ const HomePage: React.FC<TPostPage> = React.memo(
     ]);
 
     return (
-      <Grid container spacing={2}>
-        <Grid item md={mdMain}>
+      <Grid container spacing={2} width='100%' style={{ margin: 0, padding: 0 }}>
+        <Grid item md={mdMain} width='100%' style={{ margin: 0, padding: 0 }}>
           {isFeedPage && <HomeTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />}
           {isFeedPage && <ArticleFilter allTags={allTags} handleRemoveTag={handleRemoveTag} />}
 
-          <ArticlesFeed isFetching={isFetching} allTags={allTags} handleAddTag={handleAddTag} />
+          <ArticlesFeed allTags={allTags} handleAddTag={handleAddTag} />
 
           <CustomPagination
             page={currentPage}

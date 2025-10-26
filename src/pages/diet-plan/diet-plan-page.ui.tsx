@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Form, Formik } from 'formik';
 import { useParams } from 'react-router-dom';
@@ -53,7 +53,7 @@ export const DietPlanPage: FC = () => {
     return () => ws.removeEventListener('message', handleWS);
   }, [handleWS, ws]);
 
-  const { error, isLoading } = useGetOneDietQuery({ id: id! });
+  const { isLoading } = useGetOneDietQuery({ id: id! });
   const [updateDiet, { isLoading: isUpdateLoading }] = useUpdateDietMutation();
   const [deleteDiet] = useDeleteDietMutation();
 
@@ -69,22 +69,19 @@ export const DietPlanPage: FC = () => {
     deleteDiet({ id: id! });
   };
 
-  const handleTabChange = (formValues: any) => (event: React.SyntheticEvent, newValue: number) => {
-    setTabIndex(newValue);
-    updateDiet({ id: id!, body: formValues });
-  };
+  const handleTabChange =
+    (formValues: TDietPlan) => (event: React.SyntheticEvent, newValue: number) => {
+      setTabIndex(newValue);
+      updateDiet({ id: id!, body: formValues });
+    };
 
-  if (!diet || error) {
-    return <div>{'error' || ''}</div>;
-  }
-
-  if (isLoading || isUpdateLoading) {
-    return <Spinner />;
+  if (!diet || isLoading || isUpdateLoading) {
+    return <Spinner display />;
   }
 
   return (
-    <Grid container spacing={2}>
-      <Grid item md={mdMain}>
+    <Grid container spacing={2} width='100%' style={{ margin: 0, padding: 0 }}>
+      <Grid item md={mdMain} width='100%' style={{ margin: 0, padding: 0 }}>
         <Paper variant='elevation' elevation={4} sx={{ padding: '16px' }}>
           <Container sx={{ padding: '0!important' }}>
             <Formik
@@ -92,6 +89,7 @@ export const DietPlanPage: FC = () => {
               onSubmit={(v) => {
                 updateDiet({ id: id!, body: v });
               }}
+              enableReinitialize
             >
               {({ values }) => (
                 <>
@@ -106,7 +104,7 @@ export const DietPlanPage: FC = () => {
                     <Tab wrapped label='Итог' {...a11yProps(2)} />
                   </Tabs>
 
-                  <Form>
+                  <Form style={{ display: `${isLoading || isUpdateLoading ? 'none' : 'block'}` }}>
                     <TabPanel value={tabIndex} index={0}>
                       <DietParams diet={diet} />
                     </TabPanel>

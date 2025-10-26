@@ -20,21 +20,12 @@ import {
 } from '@mui/material';
 
 import { useRemoveFoodMutation } from 'shared/api';
-import { Food, TChipData, TDietPlan } from 'shared/types';
+import { dayOptions } from 'shared/constants';
+import { Food, TDietPlan } from 'shared/types';
 import { TabPanel } from 'shared/ui';
 
 import { DietStats } from './diet-stats.ui';
 import styles from './diet.module.scss';
-
-const dayOptions: TChipData[] = [
-  { _id: '1', value: 'День 1' },
-  { _id: '2', value: 'День 2' },
-  { _id: '3', value: 'День 3' },
-  { _id: '4', value: 'День 4' },
-  { _id: '5', value: 'День 5' },
-  { _id: '6', value: 'День 6' },
-  { _id: '7', value: 'День 7' },
-];
 
 const createListData = (food: Food, currentDay: number) => {
   const {

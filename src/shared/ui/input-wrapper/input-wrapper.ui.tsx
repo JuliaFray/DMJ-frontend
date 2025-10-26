@@ -8,6 +8,7 @@ import { TextFieldProps } from '@mui/material/TextField/TextField';
 interface Props {
   name: string;
 }
+
 export const InputWrapper: FC<Props & TextFieldProps> = ({ name, ...otherProps }) => {
   const [field, mata] = useField(name);
 

@@ -16,17 +16,18 @@ export const foodApi = createApi({
     },
   }),
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
-    getFoodList: build.query<GenericResponseType<FoodList>, { query: string }>({
-      query: ({ query }) => {
+    getFoodList: build.query<GenericResponseType<FoodList>, { query: string; page?: number }>({
+      query: ({ query, page }) => {
         const searchParams = new URLSearchParams();
         searchParams.append('search_expression', query);
+        if (page) {
+          searchParams.append('page', page.toString());
+        }
 
         return {
           url: 'list',
           method: 'GET',
-          params: {
-            search_expression: query,
-          },
+          params: searchParams,
         };
       },
     }),

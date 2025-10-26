@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import { Row } from 'rsuite';
 
@@ -6,6 +6,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Box, LinearProgress, Stack, Typography } from '@mui/material';
 
+import { useAppDispatch } from 'shared/hook';
+import { dietActions } from 'shared/model';
 import { Food, TDietStat } from 'shared/types';
 import { StyledRating } from 'shared/ui';
 
@@ -42,6 +44,8 @@ interface Props {
 }
 
 export const DietStats: FC<Props> = ({ plan, foodRows, currentDay }) => {
+  const dispatch = useAppDispatch();
+
   const fact = foodRows
     .map((it) => {
       const w =
@@ -71,6 +75,12 @@ export const DietStats: FC<Props> = ({ plan, foodRows, currentDay }) => {
         cal: 0,
       },
     );
+
+  const rating = calcRating(plan, fact);
+
+  useEffect(() => {
+    dispatch(dietActions.setDietDayRating({ day: currentDay, rating }));
+  }, [rating]);
 
   return (
     <Stack style={{ marginTop: '24px' }} className={styles.root}>

@@ -113,6 +113,7 @@ export interface ProductItem {
     zinc_100g: number;
   };
   serving_quantity: string;
+  serving_size: string;
   serving_quantity_unit: Unit;
 }
 

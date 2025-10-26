@@ -1,5 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useContext, useMemo } from 'react';
 
+import { useSelector } from 'react-redux';
+
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
@@ -20,25 +22,17 @@ import {
 } from '@mui/material';
 
 import { useRemoveFoodMutation } from 'shared/api';
+import { dayOptions } from 'shared/constants';
 import { ProfileContext } from 'shared/context';
-import { useWebSocket } from 'shared/hook';
+import { useAppSelector, useWebSocket } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
-import { Food, Meal, TChipData, TDietPlan } from 'shared/types';
+import { dietSelector } from 'shared/model';
+import { Food, Meal, TDietPlan } from 'shared/types';
 import { TabPanel } from 'shared/ui';
 
 import { DietStats } from './diet-stats.ui';
 import styles from './diet.module.scss';
 import { InlineEditCell } from './inline-edit-cell';
-
-const dayOptions: TChipData[] = [
-  { _id: '1', value: 'День 1' },
-  { _id: '2', value: 'День 2' },
-  { _id: '3', value: 'День 3' },
-  { _id: '4', value: 'День 4' },
-  { _id: '5', value: 'День 5' },
-  { _id: '6', value: 'День 6' },
-  { _id: '7', value: 'День 7' },
-];
 
 const createData = (food: Food, currentDay: number) => {
   const { _id, name, days } = food;
@@ -68,6 +62,7 @@ export const DietConsistFood: FC<Props> = ({
   filteredFoods,
 }) => {
   const { authId } = useContext(ProfileContext);
+  const dayRating = useSelector(dietSelector.getDietDayRating);
 
   const ws = useWebSocket();
   const [removeFood] = useRemoveFoodMutation();
@@ -78,7 +73,7 @@ export const DietConsistFood: FC<Props> = ({
     [data, currentDay],
   );
 
-  const handleUpdateWeight = (foodId: string, meal: string, newVal: number) => {
+  const handleUpdateWeight = (foodId: string, meal: string, newVal: number, stat: any) => {
     ws?.send(
       JSON.stringify({
         type: SocketEvents.CHANGE_WEIGHT_EVENT,
@@ -88,6 +83,7 @@ export const DietConsistFood: FC<Props> = ({
         meal,
         newVal,
         authId,
+        stat,
       }),
     );
   };
@@ -166,7 +162,9 @@ export const DietConsistFood: FC<Props> = ({
                   <TableCell align='right'>
                     <InlineEditCell
                       initialValue={row.meals.find((it) => it.mealName === meal)?.volume || 0}
-                      handleChange={(newVal) => handleUpdateWeight(row._id, meal, newVal)}
+                      handleChange={(newVal) =>
+                        handleUpdateWeight(row._id, meal, newVal, dayRating)
+                      }
                     />
                   </TableCell>
                 ))}

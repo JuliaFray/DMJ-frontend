@@ -38,7 +38,7 @@ export const DietStats: React.FC<DietStatsProps> = ({ period, plan, fact, rating
           <StyledRating
             emptyIcon={<FavoriteBorderIcon />}
             icon={<FavoriteIcon />}
-            value={Number(rating) / 20}
+            value={rating}
             precision={0.1}
             readOnly
           />

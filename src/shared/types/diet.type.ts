@@ -55,6 +55,11 @@ export interface TDietPlan {
   stat: TDietStat & {
     /** Рейтинг плана */
     rating: number;
+    /** Рейтинг каждого дня */
+    dayRating?: {
+      day: number;
+      rating: number;
+    }[];
   };
   /** Список продуктов в плане питания */
   foods?: Food[];

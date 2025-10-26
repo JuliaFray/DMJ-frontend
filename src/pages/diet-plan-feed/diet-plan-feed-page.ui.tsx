@@ -47,8 +47,8 @@ const DietPage: React.FC<TPostPage> = React.memo(({ isMainPage, userId, isOwner,
   }
 
   return (
-    <Grid container spacing={2} width='100%'>
-      <Grid item md={mdMain} width='100%'>
+    <Grid container spacing={2} width='100%' style={{ margin: 0, padding: 0 }}>
+      <Grid item md={mdMain} width='100%' style={{ margin: 0, padding: 0 }}>
         <DietsFeed
           isMainPage={isMainPage}
           isFetching={isFetching}

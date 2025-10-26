@@ -26,9 +26,9 @@ export const HomeTabs: React.FC<Props> = ({ tabIndex, setTabIndex }) => {
       <>
         {isAuth && (
           <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
-            <Tab label='Мои подписки' {...a11yProps(0)} />
-            <Tab label='Все' {...a11yProps(1)} />
-            <Tab label='Лучшие' {...a11yProps(2)} />
+            <Tab label='Все' {...a11yProps(0)} />
+            <Tab label='Лучшие' {...a11yProps(1)} />
+            <Tab label='Мои подписки' {...a11yProps(2)} />
           </Tabs>
         )}
         {!isAuth && (

@@ -37,8 +37,8 @@ export const ArticlePage: React.FC = React.memo(() => {
   }, [id, dispatch]);
 
   return (
-    <Grid container spacing={2}>
-      <Grid item md={mdMain}>
+    <Grid container spacing={2} width='100%' style={{ margin: 0, padding: 0 }}>
+      <Grid item md={mdMain} width='100%' style={{ margin: 0, padding: 0 }}>
         {post && (
           <Article
             post={post}

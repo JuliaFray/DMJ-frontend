@@ -203,58 +203,61 @@ export const MenuWidget: FC<Props> = ({ open, setOpen }) => {
       <Divider />
       <List>
         <ListItem className={styles.listItem} disablePadding sx={{ display: 'block' }}>
-          <ListItemButton
-            sx={[
-              {
-                minHeight: 48,
-                px: 2.5,
-              },
-              open
-                ? {
-                    justifyContent: 'initial',
-                  }
-                : {
-                    justifyContent: 'center',
-                  },
-            ]}
-          >
-            <ListItemIcon
+          <Link to={authId ? pathKeys.user.byId({ id: authId }) : pathKeys.login()}>
+            <ListItemButton
               sx={[
                 {
-                  minWidth: 0,
-                  justifyContent: 'center',
+                  minHeight: 48,
+                  px: 2.5,
                 },
                 open
                   ? {
-                      mr: 3,
+                      justifyContent: 'initial',
                     }
                   : {
-                      mr: 'auto',
+                      justifyContent: 'center',
                     },
               ]}
             >
-              <AccountCircleIcon />
-            </ListItemIcon>
-            <ListItemText
-              sx={[
-                open
-                  ? {
-                      opacity: 1,
-                    }
-                  : {
-                      opacity: 0,
-                    },
-              ]}
-            >
-              {!authId && <Typography color={theme.palette.text.primary}>Гость</Typography>}
-              {!!authId && (
-                <Link to={pathKeys.user.byId({ id: authId })}>
-                  <Typography color={theme.palette.text.primary}>{me?.login}</Typography>
-                  <Typography color={theme.palette.text.secondary}>{me?.email}</Typography>
-                </Link>
-              )}
-            </ListItemText>
-          </ListItemButton>
+              <ListItemIcon
+                sx={[
+                  {
+                    minWidth: 0,
+                    justifyContent: 'center',
+                  },
+                  open
+                    ? {
+                        mr: 3,
+                      }
+                    : {
+                        mr: 'auto',
+                      },
+                ]}
+              >
+                <AccountCircleIcon />
+              </ListItemIcon>
+
+              <ListItemText
+                sx={[
+                  open
+                    ? {
+                        opacity: 1,
+                      }
+                    : {
+                        opacity: 0,
+                      },
+                ]}
+              >
+                {!authId && <Typography color={theme.palette.text.primary}>Гость</Typography>}
+                {!!authId && (
+                  <>
+                    <Typography color={theme.palette.text.primary}>{me?.login}</Typography>
+                    <Typography color={theme.palette.text.secondary}>{me?.email}</Typography>
+                  </>
+                )}
+              </ListItemText>
+            </ListItemButton>
+          </Link>
 
           {!authId && open && (
             <Button
