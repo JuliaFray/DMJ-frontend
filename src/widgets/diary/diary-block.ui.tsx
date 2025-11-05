@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment } from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
 import {
+  Box,
   Button,
   Container,
   Table,
@@ -25,16 +26,16 @@ interface Props {
 }
 export const DiaryBlock: FC<Props> = ({ mealTitle, handleAddFood }) => {
   return (
-    <>
+    <Box style={{ marginBottom: '16px' }}>
       <Container sx={{ padding: '0!important' }}>
         <Toolbar style={{ justifyContent: 'space-between' }}>
           <Typography
-            variant='h6'
+            variant='body1'
             component='div'
             sx={{ flexGrow: 1 }}
-            color={theme.palette.primary.contrastText}
+            color={theme.palette.primary.main}
           >
-            Завтрак
+            {mealTitle}
           </Typography>
           <Button
             startIcon={<AddIcon />}
@@ -116,6 +117,6 @@ export const DiaryBlock: FC<Props> = ({ mealTitle, handleAddFood }) => {
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </Box>
   );
 };

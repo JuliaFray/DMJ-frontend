@@ -35,11 +35,11 @@ const DietPage: React.FC<TPostPage> = React.memo(({ isMainPage, userId, isOwner,
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getAllDietPlans({});
+    getAllDietPlans();
   }, [dispatch, isOwner, isFavorite, userId]);
 
   useEffect(() => {
-    getAllDietPlans({});
+    getAllDietPlans();
   }, [currentPage]);
 
   if (!isAuth) {

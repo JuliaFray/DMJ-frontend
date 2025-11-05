@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -6,18 +6,29 @@ import { Grid, Paper } from '@mui/material';
 
 import { DiaryBlock } from 'widgets/diary';
 
+import { useLazyGetDiaryByDayQuery } from 'shared/api/diary-api';
 import { useAppDispatch, useMedia } from 'shared/hook';
 import { Meal } from 'shared/types';
-import { Calendar } from 'shared/ui/calendar';
+import { WeekCalendar } from 'shared/ui/week-calendar';
+import { TODAY } from 'shared/ui/week-calendar/constants';
+import { DateType } from 'shared/ui/week-calendar/useWeekCalendar';
 
 import { AddFood } from '../../widgets/diet/diet-page/add-food.ui';
 
 export const DietDiaryPage = () => {
-  const { mdMain } = useMedia();
+  const { mdMain, mdSide } = useMedia();
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const [openDialog, setOpenDialog] = useState(false);
   const listRows = [];
+
+  const [date, setDate] = useState<DateType>(TODAY);
+
+  const [getDiaryData] = useLazyGetDiaryByDayQuery();
+
+  useEffect(() => {
+    getDiaryData({ date: new Date(date.year, date.month, date.date).toISOString() });
+  }, [date]);
 
   const handleRemoveFood = (foodId: string) => {
     // removeFood({ id: diet._id, foodId, day: currentDay });
@@ -28,21 +39,42 @@ export const DietDiaryPage = () => {
     setOpenDialog(true);
   };
 
+  const handleChangeDate = (val: DateType) => {
+    setDate(val);
+  };
+
   return (
     <Grid container spacing={2} width='100%' style={{ margin: 0, padding: 0 }}>
-      <Grid item md={mdMain} width='100%' style={{ margin: 0, padding: 0 }}>
+      <Grid item md={mdMain} width='100%' style={{ margin: 0, padding: '0 16px' }}>
+        {!mdSide && (
+          <Paper
+            variant='elevation'
+            elevation={4}
+            sx={{ marginBottom: '16px', paddingBottom: '16px' }}
+          >
+            <WeekCalendar isFull={false} onDayChange={handleChangeDate} />
+          </Paper>
+        )}
+
         <Paper variant='elevation' elevation={4} sx={{ padding: '16px' }}>
-          <Calendar />
           <DiaryBlock
             mealTitle={Meal.Breakfast}
             handleAddFood={() => handleAddFood(Meal.Breakfast)}
           />
           <DiaryBlock mealTitle={Meal.Lunch} handleAddFood={() => handleAddFood(Meal.Lunch)} />
+          <DiaryBlock mealTitle={Meal.Dinner} handleAddFood={() => handleAddFood(Meal.Dinner)} />
 
           <AddFood openDrawer={openDialog} setOpenDrawer={setOpenDialog} day={1} meals={[]} />
           {/* <DietStats plan={diet.author.healthInfo.plan} foodRows={listRows} currentDay={1} /> */}
         </Paper>
       </Grid>
+      {!!mdSide && (
+        <Grid item md={mdSide} width='100%' style={{ margin: 0, padding: '0 16px' }}>
+          <Paper variant='elevation' elevation={4}>
+            <WeekCalendar isFull onDayChange={handleChangeDate} />
+          </Paper>
+        </Grid>
+      )}
     </Grid>
   );
 };

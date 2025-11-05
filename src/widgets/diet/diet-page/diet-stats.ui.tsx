@@ -79,7 +79,7 @@ export const DietStats: FC<Props> = ({ plan, foodRows, currentDay }) => {
   const rating = calcRating(plan, fact);
 
   useEffect(() => {
-    dispatch(dietActions.setDietDayRating({ day: currentDay, rating }));
+    dispatch(dietActions.setDietDayRating({ dayName: currentDay, rating }));
   }, [rating]);
 
   return (

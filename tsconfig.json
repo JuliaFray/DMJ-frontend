@@ -34,13 +34,13 @@
       "pages": [
         "./pages/*"
       ],
-      "widgets": [
+      "widgets/*": [
         "./widgets/*"
       ],
       "features/*": [
         "./features/*"
       ],
-      "entities": [
+      "entities/*": [
         "./entities/*"
       ],
       "shared/*": [

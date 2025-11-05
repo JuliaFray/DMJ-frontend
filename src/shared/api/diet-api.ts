@@ -23,8 +23,8 @@ export const dietApi = createApi({
         };
       },
     }),
-    getAllDiet: build.query<CountResponseType<TDietPlan[]>, { searchParams?: string }>({
-      query: ({ searchParams }) => {
+    getAllDiet: build.query<CountResponseType<TDietPlan[]>, void>({
+      query: () => {
         return {
           url: `${baseUrl}`,
           method: 'GET',

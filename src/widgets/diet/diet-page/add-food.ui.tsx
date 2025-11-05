@@ -31,7 +31,6 @@ import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 
 import { useAddFoodMutation, useLazyGetFoodListQuery } from 'shared/api';
-import { NO_AVATAR } from 'shared/lib';
 import { theme } from 'shared/themes';
 import { Meal, ProductItem } from 'shared/types';
 import { CustomPagination, Spinner } from 'shared/ui';

@@ -2,10 +2,10 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/dist/query/react';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { GenericResponseType } from 'shared/api/api-types';
-import { FoodItem, FoodList } from 'shared/types';
+import { FoodItem, FoodList } from '../types';
 
 import { BASE_URL } from './api';
+import { GenericResponseType } from './api-types';
 
 export const foodApi = createApi({
   reducerPath: 'foodApi',

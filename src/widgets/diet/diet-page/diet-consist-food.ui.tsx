@@ -24,7 +24,7 @@ import {
 import { useRemoveFoodMutation } from 'shared/api';
 import { dayOptions } from 'shared/constants';
 import { ProfileContext } from 'shared/context';
-import { useAppSelector, useWebSocket } from 'shared/hook';
+import { useWebSocket } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
 import { dietSelector } from 'shared/model';
 import { Food, Meal, TDietPlan } from 'shared/types';

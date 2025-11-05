@@ -2,6 +2,8 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
+import { diaryApi } from 'shared/api/diary-api';
+
 import { articleApi, authApi, dietApi, foodApi, usersApi } from '../api';
 
 import { appSlice } from './apps';
@@ -31,6 +33,7 @@ const rootReducer = combineReducers({
   [usersApi.reducerPath]: usersApi.reducer,
   [dietApi.reducerPath]: dietApi.reducer,
   [authApi.reducerPath]: authApi.reducer,
+  [diaryApi.reducerPath]: diaryApi.reducer,
 });
 
 export const store = configureStore({
@@ -45,7 +48,8 @@ export const store = configureStore({
       .concat(articleApi.middleware)
       .concat(usersApi.middleware)
       .concat(dietApi.middleware)
-      .concat(authApi.middleware),
+      .concat(authApi.middleware)
+      .concat(diaryApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

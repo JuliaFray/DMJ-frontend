@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 import { dietApi } from '../../api/diet-api';
 import { TDietPlan } from '../../types';

@@ -23,28 +23,19 @@ const usersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addMatcher(
-        usersApi.endpoints.getAllUsers.matchPending,
-        (state: TInitial, action: PayloadAction<any, string, any>) => {
-          state.isFetching = true;
-        },
-      )
-      .addMatcher(
-        usersApi.endpoints.getAllUsers.matchFulfilled,
-        (state: TInitial, action: PayloadAction<any, string, any>) => {
-          state.users = action.payload.data;
-          state.totalCount = action.payload.totalCount;
-          state.isFetching = false;
-        },
-      )
-      .addMatcher(
-        usersApi.endpoints.getAllUsers.matchRejected,
-        (state: TInitial, action: PayloadAction<any, string, any>) => {
-          state.isFetching = false;
-          state.users = [];
-          state.totalCount = 0;
-        },
-      );
+      .addMatcher(usersApi.endpoints.getAllUsers.matchPending, (state: TInitial) => {
+        state.isFetching = true;
+      })
+      .addMatcher(usersApi.endpoints.getAllUsers.matchFulfilled, (state: TInitial, { payload }) => {
+        state.users = payload.data;
+        state.totalCount = payload.totalCount;
+        state.isFetching = false;
+      })
+      .addMatcher(usersApi.endpoints.getAllUsers.matchRejected, (state: TInitial) => {
+        state.isFetching = false;
+        state.users = [];
+        state.totalCount = 0;
+      });
   },
   selectors: {
     getUsers: (state: TInitial) => state.users,

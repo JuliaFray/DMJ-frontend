@@ -4,7 +4,7 @@ import { Row } from 'rsuite';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { Grid, Rating, styled } from '@mui/material';
+import { Grid } from '@mui/material';
 import { PieChart } from '@mui/x-charts/PieChart';
 
 import { theme } from 'shared/themes';
