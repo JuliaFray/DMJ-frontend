@@ -3,9 +3,10 @@ export {
   useAppSelector,
   useWebSocket,
   useLocalStorage,
-  useQueryParams,
   useQueryStringToObject,
   useCreateQueryString,
 } from './hooks';
 export { useMedia } from './useMedia';
 export { useTagFilter } from './useTagFilter';
+export { useQueryParams } from './useQueryParams';
+export { useSetTabToQuery } from './useSetTabToQuery';

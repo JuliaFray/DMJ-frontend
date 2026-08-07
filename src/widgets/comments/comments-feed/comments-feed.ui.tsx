@@ -10,7 +10,7 @@ import { Comment } from 'entities/comment';
 
 import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { getUserPostComments, postsSelector } from 'shared/model';
-import { TArticle, TComment } from 'shared/types';
+import { IPost, IComment } from 'shared/types';
 
 // eslint-disable-next-line no-restricted-imports
 // eslint-disable-next-line no-restricted-imports
@@ -20,7 +20,7 @@ type IPostCommentPage = {
   userId: string;
 };
 
-const PostCommentItem: React.FC<{ item: TArticle }> = ({ item }) => {
+const PostCommentItem: React.FC<{ item: IPost }> = ({ item }) => {
   return (
     <>
       <ArticleCard
@@ -28,10 +28,10 @@ const PostCommentItem: React.FC<{ item: TArticle }> = ({ item }) => {
         isOneArticlePage={false}
         isComments
         post={item}
-        avatarAbbr={item.author?.login?.substring(0, 1).toUpperCase() || 'U'}
+        avatarAbbr={item.userId?.login?.substring(0, 1).toUpperCase() || 'U'}
       />
       <List key={uuidv4()}>
-        {item.comments.map((obj: TComment) => (
+        {item.comments.map((obj: IComment) => (
           <Comment key={uuidv4()} item={obj} isLoading={false} />
         ))}
       </List>
@@ -53,7 +53,7 @@ export const CommentsFeed: React.FC<IPostCommentPage> = ({ userId }) => {
       isMainPage={false}
       mainChildren={
         <div>
-          {postComments.map((it: TArticle) => (
+          {postComments.map((it: IPost) => (
             <PostCommentItem key={uuidv4()} item={it} />
           ))}
         </div>

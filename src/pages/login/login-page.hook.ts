@@ -36,7 +36,7 @@ export const useLogin = () => {
 
   const initialData = { email: '', password: '' };
   const validation = Yup.object().shape({
-    email: Yup.string().required('Обязательно для заполнения').email('Неверный формат почты'),
+    email: Yup.string().required('Обязательно для заполнения'),
     password: Yup.string().required('Обязательно для заполнения'),
   });
 

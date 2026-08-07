@@ -8,18 +8,18 @@ import { Theme } from '@mui/material/styles';
 
 import { ProfileContext } from 'shared/context';
 import { getFullName, getImage } from 'shared/lib';
-import { TMessage } from 'shared/types';
+import { IMessage } from 'shared/types';
 
 import styles from './message.module.scss';
 
-export const Message: React.FC<TMessage> = ({ from, to, text }) => {
+export const Message: React.FC<IMessage> = ({ fromUserId, toUserId, text }) => {
   const { authId } = useContext(ProfileContext);
 
-  const user = from.userId === authId ? from : to;
+  const user = fromUserId.userId === authId ? fromUserId : toUserId;
   let sx: SxProps<Theme> = { my: 1 };
 
   sx =
-    from._id === authId
+    fromUserId._id === authId
       ? { ml: '55%', backgroundColor: `rgba(159, 237, 215, 0.2)`, ...sx }
       : { mr: '55%', backgroundColor: `rgba(2, 102, 112, 0.2)`, ...sx };
 

@@ -1,5 +1,6 @@
-import { TUser } from './profile.type';
+import { IUserWithTargets } from './profile.type';
 
+/** Приемы пищи */
 // eslint-disable-next-line no-shadow
 export enum Meal {
   Breakfast = 'Завтрак',
@@ -11,56 +12,58 @@ export enum Meal {
 }
 
 /** Статистика плана питания */
-export interface TDietStat {
+export interface IDietStat {
   cal: number;
   proteins: number;
   fats: number;
   carb: number;
-  otherNutrients?: any;
+  otherNutrients?: Record<string, number>;
 }
 
-export interface Food {
+/** Добавленное блюдо */
+export interface IFood {
   _id: string;
   name: string;
-  /** Распределение по дням */
-  days: {
-    /** Номер дня */
-    day: number;
-    /** Приемы пищи */
-    meals: {
-      /** Прием пищи */
-      meal: Meal;
-      /** Объем */
-      volume: number;
-    }[];
-    /** Рейтинг дня */
-    rating: number;
-  }[];
   /** Показатели на 100г */
-  stat: TDietStat;
+  statOn100: IDietStat;
+}
+
+export interface IPortion {
+  foodId: IFood;
+  meal: Meal;
+  weightG: number;
+}
+
+export interface IPlanByDay {
+  day: number;
+  /** Рейтинг каждого дня */
+  rating: number;
+  portions: IPortion[];
 }
 
 /** План питания */
-export interface TDietPlan {
+export interface IDietPlan {
   _id: string;
   /** Наименование плана питания */
   name: string;
   /** Количетсво дней */
   period: number;
   /** Создатель */
-  author: TUser & { healthInfo: { plan: TDietStat } };
+  userId: IUserWithTargets;
   /** Приемы пищи в плане */
   meals: Meal[];
   /** Статистика плана питания */
-  stat: TDietStat & {
+  statResult: IDietStat & {
     /** Рейтинг плана */
     rating: number;
-    /** Рейтинг каждого дня */
-    dayRating?: {
-      day: number;
-      rating: number;
-    }[];
   };
   /** Список продуктов в плане питания */
-  foods?: Food[];
+  planByDay: IPlanByDay[];
+}
+
+export interface IDiaryRecord {
+  /** Создатель */
+  userId: IUserWithTargets;
+  day: Date;
+  portions: IPortion[];
 }

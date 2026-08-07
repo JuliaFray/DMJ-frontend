@@ -40,7 +40,6 @@ const HomePage: React.FC<TPostPage> = React.memo(
 
     const { authId, isAuth } = useContext(ProfileContext);
 
-    const isFetching = useAppSelector(postsSelector.getPostsIsFetching);
     const popularTags = useAppSelector(postsSelector.getFetchedPopularTags);
     const popularAuthors = useAppSelector(postsSelector.getFetchedPopularAuthors);
     const dataLength = useAppSelector(postsSelector.getPostsDataLength);

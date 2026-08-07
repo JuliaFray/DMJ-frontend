@@ -1,4 +1,10 @@
-import { TImage } from './article.type';
+import { IDietStat } from './diet.type';
+import { IImage } from './post.type';
+
+type Theme = 'light' | 'dark';
+type Locale = 'ru';
+type Gender = 'male' | 'female';
+type ActivityLevel = 'low' | 'medium' | 'high';
 
 export type TProfileStats = {
   [posts: string]: number;
@@ -9,26 +15,45 @@ export type TProfileStats = {
   marks: number;
 };
 
-export interface TUser extends Record<string, unknown> {
+export interface IUser extends Record<string, unknown> {
   _id: string;
   userId: string;
   login: string;
   email: string;
   avatarId?: string;
-  avatar?: TImage;
+  avatar?: IImage;
   birthDate?: Date;
-  friends?: TUser[];
-  followers?: TUser[];
+  friends?: IUser[];
+  followers?: IUser[];
   isFollowed?: boolean;
   isFriend?: boolean;
   createdAt?: Date;
 }
 
+export interface IUserConfig {
+  // common config
+  theme: Theme;
+  locale: Locale;
+  // personal data
+  gender?: Gender;
+  weight?: number;
+  height?: number;
+  birthDate?: Date;
+  activityLevel: ActivityLevel;
+  // targets
+  targets: {
+    targetWeight: number;
+    targetDate: Date;
+    targetWater: number;
+    targetStat: IDietStat;
+  };
+}
+
+export type IUserWithTargets = IUser & IUserConfig['targets'];
+
 export type ILoginData = {
   email: string;
   password: string;
-  rememberMe?: boolean;
-  captcha?: string | null;
 };
 
 export type IFilter = {

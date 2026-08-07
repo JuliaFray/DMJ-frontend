@@ -10,7 +10,7 @@ import { UserRow, UserRowSkeleton } from 'widgets/users';
 import { useLazyGetAllUsersQuery } from 'shared/api';
 import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { authSelector, toggleFollowProfile, usersSelector } from 'shared/model';
-import { TUser } from 'shared/types';
+import { IUser } from 'shared/types';
 
 type IUsersMain = {
   setCurrentPage: Dispatch<SetStateAction<number>>;
@@ -64,7 +64,7 @@ export const UsersFeed: React.FC<IUsersMain> = ({ currentPage, isFollowers }) =>
                 <UserRowSkeleton />
               </Grid>
             ))
-          : users.map((u: TUser) => (
+          : users.map((u: IUser) => (
               <Grid item xs={6} key={u._id}>
                 <UserRow user={u} key={u._id} toggleFollow={toggleFollow} />
               </Grid>

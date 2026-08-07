@@ -1,13 +1,9 @@
-// eslint-disable-next-line import/no-unresolved
-import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/dist/query/react';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { BASE_URL } from 'shared/api/api';
-import { GenericResponseType, ResultCodes } from 'shared/api/api-types';
-import { profileActions } from 'shared/model';
-import { ILoginData, TUser } from 'shared/types';
-import { RegisterDataType } from 'shared/types/profile.type';
+import { ILoginData, IUser, RegisterDataType } from '../types';
+
+import { BASE_URL } from './api';
+import { GenericResponseType, ResultCodes } from './api-types';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -17,7 +13,7 @@ export const authApi = createApi({
       return headers;
     },
     validateStatus: (response: Response, body: GenericResponseType<unknown>) => {
-      if (body.resultCode === ResultCodes.Error) {
+      if (body.resultCode === ResultCodes.UndefinedError) {
         window.localStorage.removeItem('token');
       } else if ('token' in body) {
         window?.localStorage?.setItem('token', body.token);
@@ -26,7 +22,7 @@ export const authApi = createApi({
     },
   }),
   endpoints: (build) => ({
-    login: build.mutation<TUser, { data: ILoginData }>({
+    login: build.mutation<IUser, { data: ILoginData }>({
       query: ({ data }) => {
         return {
           url: `/login`,
@@ -34,11 +30,11 @@ export const authApi = createApi({
           body: data,
         };
       },
-      transformResponse: (response: GenericResponseType<TUser>): TUser => {
+      transformResponse: (response: GenericResponseType<IUser>): IUser => {
         return response.data;
       },
     }),
-    register: build.mutation<TUser, { data: RegisterDataType }>({
+    register: build.mutation<IUser, { data: RegisterDataType }>({
       query: ({ data }) => {
         return {
           url: `/register`,
@@ -46,7 +42,7 @@ export const authApi = createApi({
           body: data,
         };
       },
-      transformResponse: (response: GenericResponseType<TUser>): TUser => {
+      transformResponse: (response: GenericResponseType<IUser>): IUser => {
         return response.data;
       },
     }),

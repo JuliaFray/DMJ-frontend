@@ -1,7 +1,10 @@
+@import "shared/themes/palette.module";
+
 .root {
   width: 400px;
   padding: 50px;
-  margin: 50px auto;
+  margin: 10% auto;
+  background-color: $white;
 
   .title {
     text-align: center !important;
@@ -24,7 +27,7 @@
     margin-top: 20px;
     display: flex;
     justify-content: center;
-    color: #373a3c;
+    color: $grey;
 
     &:hover {
       color: #373a3c;
@@ -34,13 +37,13 @@
   .error {
     display: flex;
     justify-content: center;
-    color: #f5a29d;
     margin-bottom: 10px;
     height: 20px;
-    padding-bottom: 20px;
+    padding: 20px;
+    color: $error;
   }
 }
 
-.snackbar {
-  color: #fff
-}
+//.snackbar {
+//  color: #fff;
+//}

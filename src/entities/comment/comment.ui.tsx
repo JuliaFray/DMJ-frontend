@@ -17,11 +17,16 @@ import { ProfileContext } from 'shared/context';
 import { useAppDispatch } from 'shared/hook';
 import { getFullName, NO_AVATAR, pathKeys } from 'shared/lib';
 import { toggleCommentRating } from 'shared/model';
-import { TCommentType } from 'shared/types';
+import { IComment } from 'shared/types';
 
 import styles from './comment.module.scss';
 
-export const Comment: FC<TCommentType> = ({ item, isLoading }) => {
+interface CommentProps {
+  item: IComment;
+  isLoading: boolean;
+}
+
+export const Comment: FC<CommentProps> = ({ item, isLoading }) => {
   const dispatch = useAppDispatch();
   const { isAuth } = useContext(ProfileContext);
 
@@ -54,26 +59,26 @@ export const Comment: FC<TCommentType> = ({ item, isLoading }) => {
             <Skeleton variant='circular' width={40} height={40} />
           ) : (
             <Avatar
-              alt={item.author?.login ?? 'login'}
+              alt={item.userId?.login ?? 'login'}
               src={
-                (item.author?.avatar && `data:image/jpeg;base64,${item.author?.avatar.data}`) ||
+                (item.userId?.avatar && `data:image/jpeg;base64,${item.userId?.avatar.data}`) ||
                 NO_AVATAR
               }
             />
           )}
         </ListItemAvatar>
 
-        {(isLoading || !item.author) && (
+        {(isLoading || !item.userId) && (
           <Box style={{ display: 'flex', flexDirection: 'column' }}>
             <Skeleton variant='text' height={25} width={120} />
             <Skeleton variant='text' height={18} width={230} />
           </Box>
         )}
 
-        {!isLoading && !!item.author && (
+        {!isLoading && !!item.userId && (
           <ListItemText secondary={item.text}>
-            <Link className={styles.name} to={pathKeys.user.byId({ id: item.author._id })}>
-              {getFullName(item.author)}
+            <Link className={styles.name} to={pathKeys.user.byId({ id: item.userId._id })}>
+              {getFullName(item.userId)}
             </Link>
           </ListItemText>
         )}

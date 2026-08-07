@@ -10,13 +10,13 @@ import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 
 import { pathKeys } from 'shared/lib';
-import { TDietPlan } from 'shared/types';
+import { IDietPlan } from 'shared/types';
 import { DietStats } from 'shared/ui';
 
 import styles from './diet-card.module.scss';
 
 type TDietCard = {
-  diet: TDietPlan;
+  diet: IDietPlan;
 };
 export const DietCard: React.FC<TDietCard> = ({ diet }) => {
   return (
@@ -49,10 +49,10 @@ export const DietCard: React.FC<TDietCard> = ({ diet }) => {
 
       <CardContent style={{ height: '220px' }}>
         <DietStats
-          plan={diet.author.healthInfo.plan}
-          fact={diet.stat}
+          plan={diet.userId.targetStat}
+          fact={diet.statResult}
           period={diet.period}
-          rating={diet.stat.rating}
+          rating={diet.statResult.rating}
         />
       </CardContent>
     </Card>

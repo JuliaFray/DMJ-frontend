@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { TProfileStats, TUser } from '../../types';
+import { authApi } from '../../api';
+import { IUser, TProfileStats } from '../../types';
 
 import {
   createFriendProfile,
@@ -12,10 +13,10 @@ import {
 } from './profile-thunks';
 
 type InitialStateType = {
-  profile: TUser | null;
+  profile: IUser | null;
   isFetching?: boolean;
   stats: TProfileStats | null;
-  my: TUser | null;
+  my: IUser | null;
 };
 
 const initialState: InitialStateType = {
@@ -100,6 +101,20 @@ const profileSlice = createSlice({
       })
       .addCase(toggleFriendProfile.rejected, (state) => {
         state.isFetching = false;
+      });
+
+    builder
+      //= ====login=====//
+      .addMatcher(authApi.endpoints.login.matchPending, (state) => {
+        state.my = null;
+      })
+      .addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
+        if (payload) {
+          state.my = payload;
+        }
+      })
+      .addMatcher(authApi.endpoints.login.matchRejected, (state) => {
+        state.my = null;
       });
   },
   selectors: {

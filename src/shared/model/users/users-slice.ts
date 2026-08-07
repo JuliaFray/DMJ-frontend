@@ -1,10 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 import { usersApi } from '../../api';
-import { TUser } from '../../types';
+import { IUser } from '../../types';
 
 export type TInitial = {
-  users: TUser[];
+  users: IUser[];
   totalCount: number;
   isFetching: boolean;
   userId: string | null;

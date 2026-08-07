@@ -2,9 +2,9 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/dist/query/react';
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { AddFoodType, TDietPlan } from '../types';
+import { AddFoodType, IDietPlan } from '../types';
 
-import { CountResponseType, GenericResponseType } from './api-types';
+import { CountResponseType } from './api-types';
 import customFetchBase from './custom-fetch-base';
 
 const baseUrl = 'diary';
@@ -13,7 +13,7 @@ export const diaryApi = createApi({
   reducerPath: 'diaryApi',
   baseQuery: customFetchBase,
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
-    getDiaryByDay: build.query<CountResponseType<TDietPlan[]>, { date: string }>({
+    getDiaryByDay: build.query<CountResponseType<IDietPlan[]>, { date: string }>({
       query: ({ date }) => {
         const searchParams = new URLSearchParams();
         searchParams.append('date', date);
@@ -25,7 +25,7 @@ export const diaryApi = createApi({
         };
       },
     }),
-    addFood: build.mutation<void, AddFoodType>({
+    addFoodToDiary: build.mutation<void, AddFoodType>({
       query: ({ id, foods }) => {
         return {
           url: `${baseUrl}/add-food/${id}`,
@@ -34,7 +34,7 @@ export const diaryApi = createApi({
         };
       },
     }),
-    removeFood: build.mutation<
+    removeFoodFromDiary: build.mutation<
       void,
       {
         id: string;
@@ -53,4 +53,8 @@ export const diaryApi = createApi({
   }),
 });
 
-export const { useLazyGetDiaryByDayQuery, useAddFoodMutation, useRemoveFoodMutation } = diaryApi;
+export const {
+  useLazyGetDiaryByDayQuery,
+  useAddFoodToDiaryMutation,
+  useRemoveFoodFromDiaryMutation,
+} = diaryApi;

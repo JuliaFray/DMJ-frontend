@@ -1,18 +1,26 @@
+@font-face {
+  font-family: 'Gros Ventre Regular';
+  src: local('Gros Ventre Regular'), url("../public/fonts/Gros Ventre Regular.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html {
-  background-color: rgba(0, 100, 111, 0.05);
   height: auto;
+  background-image: url("../public/images/7e379550-0e9d-4f17-a757-964bc3d6ee2e.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  position: relative;
+  font-family: 'Gros Ventre Regular',  sans-serif;
 }
 
 body {
   height: 100%;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
-  font-size: 14px!important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: unset !important;
 }
 
 #root {
@@ -20,8 +28,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-  monospace;
+  font-family: 'Gros Ventre Regular',  sans-serif;
 }
 
 input::-webkit-outer-spin-button,

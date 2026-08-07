@@ -8,7 +8,7 @@ import ListItemText from '@mui/material/ListItemText';
 
 import { useAppSelector } from 'shared/hook';
 import { dialogSelector } from 'shared/model';
-import { TDialogFriends } from 'shared/types';
+import { IDialogFriends } from 'shared/types';
 
 const DialogFriends: React.FC = () => {
   const users = useAppSelector(dialogSelector.getDialogUsers);
@@ -16,7 +16,7 @@ const DialogFriends: React.FC = () => {
   return (
     <List sx={{ width: '100%', maxWidth: 360 }}>
       Участники
-      {users.map((item: TDialogFriends) => {
+      {users.map((item: IDialogFriends) => {
         return (
           <>
             <ListItem alignItems='flex-start'>

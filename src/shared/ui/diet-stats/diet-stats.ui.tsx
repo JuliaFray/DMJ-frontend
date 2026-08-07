@@ -10,19 +10,22 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import { theme } from 'shared/themes';
 import { StyledRating } from 'shared/ui';
 
-import { TDietStat } from '../../types';
+import { IDietStat } from '../../types';
 
 import styles from './diet-stats.module.scss';
 
 type DietStatsProps = {
-  plan: TDietStat;
+  plan?: IDietStat;
   period: number;
   rating: number;
-  fact: TDietStat;
+  fact?: IDietStat;
 };
 
 export const DietStats: React.FC<DietStatsProps> = ({ period, plan, fact, rating }) => {
-  const percent = (fact.fats + fact.proteins + fact.carb) / (plan.carb + plan.fats + plan.proteins);
+  const percent =
+    fact && plan
+      ? (fact.fats + fact.proteins + fact.carb) / (plan.carb + plan.fats + plan.proteins)
+      : 0;
 
   return (
     <Grid
@@ -45,34 +48,36 @@ export const DietStats: React.FC<DietStatsProps> = ({ period, plan, fact, rating
         </Row>
       </Grid>
 
-      <Grid item md={8} className={styles.container}>
-        <PieChart
-          width={360}
-          height={200}
-          series={[
-            {
-              data: [
-                {
-                  id: 1,
-                  value: fact.proteins,
-                  label: 'Белки',
-                  color: theme.palette.secondary.main,
-                },
-                { id: 3, value: fact.fats, label: 'Жиры', color: theme.palette.error.main },
-                { id: 5, value: fact.carb, label: 'Углеводы', color: theme.palette.warning.main },
-              ],
-              innerRadius: 60,
-              outerRadius: 100,
-              paddingAngle: 5,
-              cornerRadius: 5,
-              startAngle: 360 - percent * 360,
-              endAngle: 360,
-              cx: 120,
-              cy: '50%',
-            },
-          ]}
-        />
-      </Grid>
+      {fact && (
+        <Grid item md={8} className={styles.container}>
+          <PieChart
+            width={360}
+            height={200}
+            series={[
+              {
+                data: [
+                  {
+                    id: 1,
+                    value: fact.proteins,
+                    label: 'Белки',
+                    color: theme.palette.secondary.main,
+                  },
+                  { id: 3, value: fact.fats, label: 'Жиры', color: theme.palette.error.main },
+                  { id: 5, value: fact.carb, label: 'Углеводы', color: theme.palette.warning.main },
+                ],
+                innerRadius: 60,
+                outerRadius: 100,
+                paddingAngle: 5,
+                cornerRadius: 5,
+                startAngle: 360 - percent * 360,
+                endAngle: 360,
+                cx: 120,
+                cy: '50%',
+              },
+            ]}
+          />
+        </Grid>
+      )}
     </Grid>
   );
 };

@@ -13,7 +13,7 @@ const Page404 = lazy(() =>
 
 const enhance = compose((component: any) =>
   withSuspense(component, {
-    fallback: <Spinner display position='center' />,
+    fallback: <Spinner display />,
   }),
 );
 

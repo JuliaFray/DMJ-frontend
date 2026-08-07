@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { articleApi } from '../../api';
 import { GenericResponseType } from '../../api/api-types';
-import { TArticle, TChipData, TImage } from '../../types';
+import { IImage, IPost, Nullable, TChipData } from '../../types';
 
 import {
   createPost,
@@ -20,15 +20,15 @@ import {
 type TInitial = {
   isFetching: boolean;
   totalCount: number;
-  posts: TArticle[];
-  popularPosts: TArticle[];
-  recommendations: TArticle[];
-  post: TArticle | null;
+  posts: IPost[];
+  popularPosts: IPost[];
+  recommendations: IPost[];
+  post: Nullable<IPost>;
   popularTags: TChipData[];
   popularAuthors: TChipData[];
   allTags: TChipData[];
-  img: TImage | null;
-  postComments: TArticle[];
+  img: Nullable<IImage>;
+  postComments: IPost[];
 };
 
 const initialState: TInitial = {

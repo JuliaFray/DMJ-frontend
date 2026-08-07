@@ -1,7 +1,7 @@
 import { createTheme } from '@mui/material';
 
 // eslint-disable-next-line no-restricted-imports
-import palette from 'shared/themes/palette.module.scss';
+import palette from './palette.module.scss';
 
 export const theme = createTheme({
   palette: {
@@ -30,6 +30,7 @@ export const theme = createTheme({
   typography: {
     fontSize: 14,
     fontWeightRegular: 'normal',
+    fontFamily: 'Gros Ventre Regular',
   },
   transitions: {
     duration: {

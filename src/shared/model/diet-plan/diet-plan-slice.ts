@@ -1,45 +1,38 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { dietApi } from '../../api/diet-api';
-import { TDietPlan } from '../../types';
+import { IDietPlan } from '../../types';
+import { Nullable } from '../../types/general.type';
 
 type TInitial = {
-  diets: TDietPlan[];
+  dietPlans: IDietPlan[];
   totalCount: number;
   isFetching: boolean;
-  diet: TDietPlan | null;
+  dietPlan: Nullable<IDietPlan>;
 };
 
 const initialState: TInitial = {
-  diets: [],
+  dietPlans: [],
   totalCount: 0,
   isFetching: false,
-  diet: null,
+  dietPlan: null,
 };
 
-const dietSlice = createSlice({
-  name: 'dietSlice',
+const dietPlanSlice = createSlice({
+  name: 'dietPlanSlice',
   initialState,
   reducers: {
     clearState: (state: TInitial) => {
-      state.diets = [];
+      state.dietPlans = [];
     },
-    updateDiet: (state: TInitial, { payload }) => {
-      state.diet = payload;
+    updateDietPlan: (state: TInitial, { payload }) => {
+      state.dietPlan = payload;
     },
-    setDietDayRating: (state: TInitial, { payload }) => {
-      if (state.diet && state.diet.period && payload.day <= state.diet.period) {
-        if (!Object.hasOwn(state.diet.stat, 'dayRating')) {
-          state.diet.stat.dayRating = [];
-        }
-        const exists = state.diet.stat.dayRating?.find(
-          (dayRating) => dayRating.day === payload.day,
-        );
-        if (exists) {
-          exists.rating = payload.rating;
-        } else {
-          state.diet?.stat.dayRating?.push(payload);
-        }
+    setDayRating: (state: TInitial, { payload }) => {
+      const currentDayPlan = state.dietPlan?.planByDay.find(({ day }) => day === payload.day);
+
+      if (currentDayPlan) {
+        currentDayPlan.rating = payload.rating;
       }
     },
   },
@@ -47,43 +40,45 @@ const dietSlice = createSlice({
     builder
       .addMatcher(dietApi.endpoints.getAllDiet.matchPending, (state: TInitial) => {
         state.isFetching = true;
-        state.diets = [];
+        state.dietPlans = [];
         state.totalCount = 0;
       })
       .addMatcher(dietApi.endpoints.getAllDiet.matchFulfilled, (state: TInitial, { payload }) => {
         state.isFetching = false;
-        state.diets = payload.data;
+        state.dietPlans = payload.data;
         state.totalCount = payload.totalCount;
       })
       .addMatcher(dietApi.endpoints.getAllDiet.matchRejected, (state: TInitial) => {
         state.isFetching = false;
-        state.diets = [];
+        state.dietPlans = [];
         state.totalCount = 0;
       })
       .addMatcher(dietApi.endpoints.getOneDiet.matchPending, (state: TInitial) => {
         state.isFetching = true;
-        state.diet = null;
+        state.dietPlan = null;
       })
       .addMatcher(dietApi.endpoints.getOneDiet.matchFulfilled, (state: TInitial, { payload }) => {
         state.isFetching = false;
-        state.diet = payload.data;
+        state.dietPlan = payload.data;
       })
       .addMatcher(dietApi.endpoints.getOneDiet.matchRejected, (state: TInitial) => {
         state.isFetching = false;
-        state.diet = null;
+        state.dietPlan = null;
       });
   },
   selectors: {
-    getDiet: (state: TInitial) => state.diet,
-    getDiets: (state: TInitial) => state.diets,
+    getDiet: (state: TInitial) => state.dietPlan,
+    getDiets: (state: TInitial) => state.dietPlans,
     getDietsDataLength: (state: TInitial) => state.totalCount,
     getDietsIsFetching: (state: TInitial) => state.isFetching,
-    getDietDayRating: (state: TInitial) => state.diet?.stat.dayRating,
+    getDietPlanByDay: (state: TInitial) => state.dietPlan?.planByDay,
+    getDietDayRating: (state: TInitial) => (currentDay: number) =>
+      state.dietPlan?.planByDay.find(({ day }) => day === currentDay)?.rating,
   },
 });
 
-const dietActions = dietSlice.actions;
-const dietReducer = dietSlice.reducer;
-const dietSelector = dietSlice.selectors;
+const dietActions = dietPlanSlice.actions;
+const dietReducer = dietPlanSlice.reducer;
+const dietSelector = dietPlanSlice.selectors;
 
-export { dietSlice, dietActions, dietReducer, dietSelector };
+export { dietPlanSlice, dietActions, dietReducer, dietSelector };

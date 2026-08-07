@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { authApi } from '../../api';
 import { SocketEvents } from '../../lib';
 import { INotifications } from '../../types';
 
@@ -45,6 +46,11 @@ const appSlice = createSlice({
     clearNewMsgCounter: (state) => {
       state.newMsgCounter = 0;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(authApi.endpoints.login.matchRejected, (state) => {
+      state.initialized = false;
+    });
   },
   selectors: {
     getAppUserOnline: (state: InitialStateType) => state.usersOnline,

@@ -2,13 +2,13 @@ import React, { ChangeEvent, useRef } from 'react';
 
 import Avatar from '@mui/material/Avatar';
 
-import { TUser } from 'shared/types';
+import { IUser } from 'shared/types';
 import { ImageButton } from 'shared/ui';
 
 import styles from './ProfileInfo.module.scss';
 
 type IProfileAvatar = {
-  profile: TUser;
+  profile: IUser;
   isOwner: boolean;
   file: string;
   setFile: (file: File | string | null) => void;

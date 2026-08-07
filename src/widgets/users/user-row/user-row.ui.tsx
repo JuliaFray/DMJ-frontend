@@ -23,12 +23,12 @@ import CardContent from '@mui/material/CardContent';
 import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
 import { getFullName, NO_AVATAR, pathKeys, SocketEvents } from 'shared/lib';
 import { appActions, appSelector, authSelector } from 'shared/model';
-import { TUser } from 'shared/types';
+import { IUser } from 'shared/types';
 
 import styles from './user-row.module.scss';
 
 type TUSerRow = {
-  user: TUser;
+  user: IUser;
   toggleFollow: (userId: string, isFollow: boolean) => void;
 };
 
@@ -79,7 +79,7 @@ export const UserRow: React.FC<TUSerRow> = ({ user, toggleFollow }) => {
     toggleFollow(user._id, !isFollowed);
   };
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>, u: TUser) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>, u: IUser) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());

@@ -12,7 +12,7 @@ import { ProfileContext } from 'shared/context';
 import { useAppSelector } from 'shared/hook';
 import { pathKeys } from 'shared/lib';
 import { dietSelector } from 'shared/model';
-import { TDietPlan } from 'shared/types';
+import { IDietPlan } from 'shared/types';
 
 type DietFeedProps = {
   isFetching: boolean;
@@ -38,7 +38,7 @@ export const DietsFeed: React.FC<DietFeedProps> = ({ isFetching }) => {
         {isFetching ? (
           <ArticlesFeedSkeleton />
         ) : (
-          diets.map((el: TDietPlan) => (
+          diets.map((el: IDietPlan) => (
             <Grid item xs={12} sm={12} md={12} key={el._id}>
               <DietCard key={el._id} diet={el} />
             </Grid>

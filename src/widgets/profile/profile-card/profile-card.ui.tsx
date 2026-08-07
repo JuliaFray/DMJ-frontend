@@ -18,13 +18,13 @@ import { ProfileData } from 'widgets/profile';
 import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
 import { getFullName, SocketEvents } from 'shared/lib';
 import { appActions, appSelector, authSelector, toggleFollowProfile } from 'shared/model';
-import { TUser } from 'shared/types';
+import { IUser } from 'shared/types';
 
 import styles from '../ProfileInfo.module.scss';
 
 type TProfileMain = {
   isOwner: boolean;
-  profile: TUser;
+  profile: IUser;
 };
 
 export const ProfileCard: React.FC<TProfileMain> = ({ isOwner, profile }) => {
@@ -80,7 +80,7 @@ export const ProfileCard: React.FC<TProfileMain> = ({ isOwner, profile }) => {
 
   const isOnline = status || users.includes(profile._id);
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>, user: TUser) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>, user: IUser) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());

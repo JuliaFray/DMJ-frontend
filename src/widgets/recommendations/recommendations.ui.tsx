@@ -2,9 +2,9 @@ import React from 'react';
 
 import { ArticleCard, ArticleCarousel } from 'widgets/article';
 
-import { TArticle } from 'shared/types';
+import { IPost } from 'shared/types';
 
-export const Recommendations: React.FC<{ posts: TArticle[] }> = ({ posts }) => {
+export const Recommendations: React.FC<{ posts: IPost[] }> = ({ posts }) => {
   return (
     <ArticleCarousel posts={posts}>
       {posts.map((item) => (
@@ -12,7 +12,7 @@ export const Recommendations: React.FC<{ posts: TArticle[] }> = ({ posts }) => {
           isOneArticlePage
           key={item._id}
           post={item}
-          avatarAbbr={item.author?.login?.substring(0, 1).toUpperCase() || 'U'}
+          avatarAbbr={item.userId?.login?.substring(0, 1).toUpperCase() || 'U'}
         />
       ))}
     </ArticleCarousel>

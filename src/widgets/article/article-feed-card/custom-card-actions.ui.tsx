@@ -8,10 +8,10 @@ import IconButton from '@mui/material/IconButton';
 
 import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { authSelector, markPostFavorite, togglePostRating } from 'shared/model';
-import { TArticle } from 'shared/types';
+import { IPost } from 'shared/types';
 
 export type ICardActions = {
-  post: TArticle;
+  post: IPost;
   isCard: boolean;
 };
 

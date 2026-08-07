@@ -2,7 +2,7 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/dist/query/react';
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { AddFoodType, TDietPlan } from '../types';
+import { AddFoodType, IDietPlan } from '../types';
 
 import { CountResponseType, GenericResponseType } from './api-types';
 import customFetchBase from './custom-fetch-base';
@@ -14,7 +14,7 @@ export const dietApi = createApi({
   reducerPath: 'dietApi',
   baseQuery: customFetchBase,
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
-    createDiet: build.mutation<string, { body: TDietPlan }>({
+    createDiet: build.mutation<string, { body: IDietPlan }>({
       query: ({ body }) => {
         return {
           url: `${baseUrl}/create`,
@@ -23,7 +23,7 @@ export const dietApi = createApi({
         };
       },
     }),
-    getAllDiet: build.query<CountResponseType<TDietPlan[]>, void>({
+    getAllDiet: build.query<CountResponseType<IDietPlan[]>, void>({
       query: () => {
         return {
           url: `${baseUrl}`,
@@ -31,7 +31,7 @@ export const dietApi = createApi({
         };
       },
     }),
-    getOneDiet: build.query<GenericResponseType<TDietPlan>, { id: string }>({
+    getOneDiet: build.query<GenericResponseType<IDietPlan>, { id: string }>({
       query: ({ id }) => {
         return {
           url: `${baseUrl}/${id}`,
@@ -40,7 +40,7 @@ export const dietApi = createApi({
       },
       providesTags: [ONE_DIET],
     }),
-    updateDiet: build.mutation<string, { id: string; body: TDietPlan }>({
+    updateDiet: build.mutation<string, { id: string; body: IDietPlan }>({
       query: ({ id, body }) => {
         return {
           url: `${baseUrl}/${id}`,

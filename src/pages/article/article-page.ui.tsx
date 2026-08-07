@@ -44,7 +44,7 @@ export const ArticlePage: React.FC = React.memo(() => {
             post={post}
             isFullPost
             isLoading={isFetching}
-            isEditable={post.author._id === authId}
+            isEditable={post.userId._id === authId}
           />
         )}
 

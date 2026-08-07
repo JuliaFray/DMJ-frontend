@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import { useRegisterMutation } from 'shared/api';
+import { ErrorResponse, GenericResponseType } from 'shared/api/api-types';
 import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { pathKeys } from 'shared/lib';
 import { authActions, authSelector } from 'shared/model';
@@ -13,9 +16,20 @@ export const useRegister = () => {
   const isFetching = useAppSelector(authSelector.getIsFetching);
   const globalError = useAppSelector(authSelector.getAuthGlobalError);
 
-  const [registerUser] = useRegisterMutation();
+  const [registerUser, { error, data }] = useRegisterMutation();
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const err = error as GenericResponseType<ErrorResponse>;
+    if (err?.data?.message) {
+      dispatch(authActions.setGlobalError(err?.data?.message));
+    }
+
+    return () => {
+      dispatch(authActions.setGlobalError(null));
+    };
+  }, [dispatch, error]);
 
   const initialData = { login: '', email: '', password: '' };
   const validation = Yup.object().shape({

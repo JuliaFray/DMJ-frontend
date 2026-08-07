@@ -39,7 +39,7 @@ export const ConfirmationPage = () => {
           horizontal: 'center',
         }}
         open={!isFetching}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={handleClose}
         message='Ваш аккаунт успешно подтвержден'
       />

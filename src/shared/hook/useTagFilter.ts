@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import { TChipData } from 'shared/types';
+import { TChipData } from '../types';
 
 export const useTagFilter = () => {
   const [selectedTags, setSelectedTags] = useState<Set<TChipData>>(new Set());

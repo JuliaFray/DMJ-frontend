@@ -2,14 +2,12 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { diaryApi } from 'shared/api/diary-api';
-
-import { articleApi, authApi, dietApi, foodApi, usersApi } from '../api';
+import { articleApi, authApi, diaryApi, dietApi, foodApi, usersApi } from '../api';
 
 import { appSlice } from './apps';
 import { authSlice } from './auth';
 import { dialogSlice } from './dialog';
-import { dietSlice } from './diet';
+import { dietPlanSlice } from './diet-plan';
 import { foodSlice } from './food';
 import { postsSlice } from './posts';
 import { profileSlice } from './profile';
@@ -26,7 +24,7 @@ const rootReducer = combineReducers({
   [dialogSlice.reducerPath]: dialogSlice.reducer,
   [spinnerSlice.reducerPath]: spinnerSlice.reducer,
   [foodSlice.reducerPath]: foodSlice.reducer,
-  [dietSlice.reducerPath]: dietSlice.reducer,
+  [dietPlanSlice.reducerPath]: dietPlanSlice.reducer,
   ws: wsReducer.wsReducer,
   [foodApi.reducerPath]: foodApi.reducer,
   [articleApi.reducerPath]: articleApi.reducer,

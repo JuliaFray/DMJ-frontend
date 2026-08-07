@@ -1,11 +1,20 @@
-$primary: #2E958C;
-$secondary: #99D0D3;
-$info: #FFFCD9;
+//$primary: #2E958C;
+//$secondary: #99D0D3;
+//$info: #FFFCD9;
+//$warning: #FCE0D5;
+//$success: #C8C3C9;
+//$error: #B47EB2;
+//$grey: #9b9b9b;
+//$white: #FFF;
+
+$primary: #174d4f;
+$secondary: #82ab8f;
+$info: #d8e3df;
 $warning: #FCE0D5;
 $success: #C8C3C9;
-$error: #B47EB2;
-$grey: #BFBFBF;
-$white: #FFF;
+$error: #773452;
+$grey: #9b9b9b;
+$white: rgb(244, 246, 246);
 
 :export {
   primary: $primary;

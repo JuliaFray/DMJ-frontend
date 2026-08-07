@@ -4,16 +4,16 @@ import { AxiosError } from 'axios';
 import { ResultCodes } from '../../api/api-types';
 import { profileAPI } from '../../api/profile-api';
 import { ACCESS_DENIED } from '../../lib';
-import { TProfileStats, TUser } from '../../types';
+import { IUser, TProfileStats } from '../../types';
 import { appActions } from '../apps';
 import { authActions } from '../auth';
 
-export const getUserProfile = createAsyncThunk<TUser, { userId: string }, { rejectValue: string }>(
+export const getUserProfile = createAsyncThunk<IUser, { userId: string }, { rejectValue: string }>(
   'profile',
   async (data, thunkAPI) => {
     try {
       const response = await profileAPI.getProfile(data.userId);
-      if (response.resultCode === ResultCodes.Error) {
+      if (response.resultCode === ResultCodes.UndefinedError) {
         return thunkAPI.rejectWithValue(response.message);
       }
       return response?.data;
@@ -36,7 +36,7 @@ export const getUserProfileStats = createAsyncThunk<
 >('profile/stats', async (data, thunkAPI) => {
   try {
     const response = await profileAPI.getStats(data.userId);
-    if (response.resultCode === ResultCodes.Error) {
+    if (response.resultCode === ResultCodes.UndefinedError) {
       return thunkAPI.rejectWithValue(response.message);
     }
     return response?.data;
@@ -55,7 +55,7 @@ export const saveUserProfile = createAsyncThunk<
   try {
     const response = await profileAPI.saveProfile(data.profileId, data.file);
 
-    if (response.resultCode === ResultCodes.Error) {
+    if (response.resultCode === ResultCodes.UndefinedError) {
       return thunkAPI.rejectWithValue(response.message);
     }
     return response.data;
@@ -74,7 +74,7 @@ export const toggleFollowProfile = createAsyncThunk<
   try {
     const response = await profileAPI.toggleFollowUser(data.profileId, data.query);
 
-    if (response.resultCode === ResultCodes.Error) {
+    if (response.resultCode === ResultCodes.UndefinedError) {
       return thunkAPI.rejectWithValue(response.message);
     }
     thunkAPI.dispatch(getUserProfile({ userId: data.userId }));
@@ -94,7 +94,7 @@ export const createFriendProfile = createAsyncThunk<
   try {
     const response = await profileAPI.createFriendUser(data.profileId, data.query);
 
-    if (response.resultCode === ResultCodes.Error) {
+    if (response.resultCode === ResultCodes.UndefinedError) {
       return thunkAPI.rejectWithValue(response.message);
     }
     return response.data;
@@ -113,7 +113,7 @@ export const toggleFriendProfile = createAsyncThunk<
   try {
     const response = await profileAPI.toggleFriendUser(data.userId, data.query);
 
-    if (response.resultCode === ResultCodes.Error) {
+    if (response.resultCode === ResultCodes.UndefinedError) {
       return thunkAPI.rejectWithValue(response.message);
     }
     return response.data;
@@ -130,7 +130,7 @@ export const getNotifications = createAsyncThunk<void, { userId: string }, { rej
     try {
       const response = await profileAPI.getNotifications(data.userId);
 
-      if (response.resultCode === ResultCodes.Error) {
+      if (response.resultCode === ResultCodes.UndefinedError) {
         return thunkAPI.rejectWithValue(response.message);
       }
       return response.data;

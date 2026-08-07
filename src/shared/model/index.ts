@@ -6,6 +6,6 @@ export * from './dialog';
 export * from './posts';
 export * from './profile';
 export * from './ws';
-export * from './diet';
+export * from './diet-plan';
 export * from './users';
 export * from './spinner';

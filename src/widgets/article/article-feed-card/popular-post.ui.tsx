@@ -12,9 +12,9 @@ import { pathKeys } from 'shared/lib';
 import { theme } from 'shared/themes';
 // eslint-disable-next-line no-restricted-imports
 import palette from 'shared/themes/palette.module.scss';
-import { TArticle } from 'shared/types';
+import { IPost } from 'shared/types';
 
-export const PopularPost: React.FC<{ post: TArticle }> = ({ post }) => {
+export const PopularPost: React.FC<{ post: IPost }> = ({ post }) => {
   const cardSx = {
     height: 250,
     mx: 'auto',

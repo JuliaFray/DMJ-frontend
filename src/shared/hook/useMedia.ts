@@ -1,6 +1,6 @@
 import { useMediaQuery } from '@mui/material';
 
-import { theme } from 'shared/themes';
+import { theme } from '../themes';
 
 export const useMedia = (isMainPage = true) => {
   const isMore1200px = useMediaQuery(theme.breakpoints.up('lg'));

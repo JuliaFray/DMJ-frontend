@@ -11,7 +11,7 @@ import { Container, Typography } from '@mui/material';
 import { useAppDispatch } from 'shared/hook';
 import { convertBase64ToBlob, getFullName } from 'shared/lib';
 import { saveUserProfile } from 'shared/model';
-import { TUser } from 'shared/types';
+import { IUser } from 'shared/types';
 
 import { ProfileAvatar } from './ProfileAvatar';
 import styles from './ProfileInfo.module.scss';
@@ -19,7 +19,7 @@ import styles from './ProfileInfo.module.scss';
 dayjs.extend(customParseFormat);
 
 type IProfileData = {
-  profile: TUser;
+  profile: IUser;
   isOwner: boolean;
 };
 
@@ -36,7 +36,7 @@ export const ProfileData: React.FC<IProfileData> = React.memo(({ profile, isOwne
     const formData = new FormData();
 
     for (const key in initState) {
-      const val = getKeyValue<TUser, keyof TUser>(initState, key);
+      const val = getKeyValue<IUser, keyof IUser>(initState, key);
       formData.append(key, typeof val === 'string' ? val : JSON.stringify(val));
     }
 

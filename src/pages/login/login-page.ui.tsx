@@ -29,12 +29,12 @@ export const LoginPage: FC = () => {
 
   return (
     <Paper classes={{ root: styles.root }}>
-      <Stack spacing={1}>
+      <Stack spacing={2}>
         <Typography classes={{ root: styles.title }} variant='h5'>
           Войти в аккаунт
         </Typography>
 
-        <Spinner display={isFetching} />
+        <Spinner display={isFetching} position='over' />
 
         <Formik
           initialValues={{ ...initialData }}
@@ -45,7 +45,7 @@ export const LoginPage: FC = () => {
           {({ isValid }) => (
             <Form onChange={handleChange}>
               <Stack spacing={1}>
-                <InputWrapper name='email' label='Email' className={styles.field} />
+                <InputWrapper name='email' label='Логин или Email' className={styles.field} />
                 <InputWrapper
                   name='password'
                   label='Пароль'

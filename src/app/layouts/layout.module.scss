@@ -2,7 +2,7 @@
 
 .brandlink {
   position: fixed;
-  left: 37%;
+  left: calc(50% - 10em);
   color: $success;
   text-decoration: none;
 

@@ -21,36 +21,46 @@ import {
   Toolbar,
 } from '@mui/material';
 
+import { DIET_COMPOSITION_TABS } from 'widgets/diet/diet-page/diet.composition.ui';
+
 import { useRemoveFoodMutation } from 'shared/api';
 import { dayOptions } from 'shared/constants';
 import { ProfileContext } from 'shared/context';
-import { useWebSocket } from 'shared/hook';
+import { useQueryParams, useWebSocket } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
 import { dietSelector } from 'shared/model';
-import { Food, Meal, TDietPlan } from 'shared/types';
+import { IDietPlan, Meal } from 'shared/types';
+import { IPlanByDay, IPortion } from 'shared/types/diet.type';
 import { TabPanel } from 'shared/ui';
 
 import { DietStats } from './diet-stats.ui';
 import styles from './diet.module.scss';
 import { InlineEditCell } from './inline-edit-cell';
 
-const createData = (food: Food, currentDay: number) => {
-  const { _id, name, days } = food;
-  const meals = days.find((day) => day.day === currentDay)?.meals;
+interface ICompositionRow {
+  _id: string;
+  name: string;
+  meals: {
+    meal: string;
+    weightG: number;
+  }[];
+}
+
+const createData = (portion: IPortion): ICompositionRow => {
   return {
-    _id,
-    name,
-    meals: meals?.map((meal) => ({ mealName: meal.meal, volume: meal.volume })) || [],
+    _id: portion.foodId._id,
+    name: portion.foodId.name,
+    meals: [],
   };
 };
 
 interface Props {
-  tabIndex: number;
+  tabIndex: string;
   currentDay: number;
   setCurrentDay: Dispatch<SetStateAction<number>>;
-  diet: TDietPlan;
+  diet: IDietPlan;
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
-  filteredFoods: Food[];
+  portions: IPortion[];
 }
 
 export const DietConsistFood: FC<Props> = ({
@@ -59,18 +69,20 @@ export const DietConsistFood: FC<Props> = ({
   setCurrentDay,
   diet,
   setOpenDialog,
-  filteredFoods,
+  portions,
 }) => {
   const { authId } = useContext(ProfileContext);
-  const dayRating = useSelector(dietSelector.getDietDayRating);
+  const planByDays = useSelector(dietSelector.getDietPlanByDay);
+  const dayRating = planByDays?.find(({ day }) => day === currentDay)?.rating;
+
+  const { queryParams, setQueryParams } = useQueryParams();
 
   const ws = useWebSocket();
   const [removeFood] = useRemoveFoodMutation();
 
-  const data = [...filteredFoods];
   const rows = useMemo(
-    () => data?.map((food) => createData(food, currentDay)) || [],
-    [data, currentDay],
+    () => [...portions]?.map((portion) => createData(portion)) || [],
+    [portions],
   );
 
   const handleUpdateWeight = (foodId: string, meal: string, newVal: number, stat: any) => {
@@ -93,7 +105,7 @@ export const DietConsistFood: FC<Props> = ({
   };
 
   return (
-    <TabPanel value={tabIndex} index={0}>
+    <TabPanel value={tabIndex} index={DIET_COMPOSITION_TABS.DIET_COMPOSITION_FOOD}>
       <FormControl fullWidth>
         <InputLabel id='simple-select-label'>День плана</InputLabel>
         <Select
@@ -101,7 +113,10 @@ export const DietConsistFood: FC<Props> = ({
           id='simple-select'
           value={currentDay}
           label='День плана'
-          onChange={(e) => setCurrentDay(Number(e.target.value))}
+          onChange={(e) => {
+            setCurrentDay(Number(e.target.value));
+            setQueryParams({ ...queryParams, day: Number(e.target.value) });
+          }}
         >
           {dayOptions.slice(0, diet.period).map((opt) => (
             <MenuItem value={opt._id}>{opt.value}</MenuItem>
@@ -161,7 +176,7 @@ export const DietConsistFood: FC<Props> = ({
                 {diet?.meals.map((meal) => (
                   <TableCell align='right'>
                     <InlineEditCell
-                      initialValue={row.meals.find((it) => it.mealName === meal)?.volume || 0}
+                      initialValue={row.meals.find((it) => it.meal === meal)?.weightG || 0}
                       handleChange={(newVal) =>
                         handleUpdateWeight(row._id, meal, newVal, dayRating)
                       }
@@ -169,14 +184,14 @@ export const DietConsistFood: FC<Props> = ({
                   </TableCell>
                 ))}
                 <TableCell align='right' style={{ fontWeight: '600' }}>
-                  {row?.meals.reduce((acc, cur) => acc + cur.volume, 0)}
+                  {row?.meals.reduce((acc, cur) => acc + cur.weightG, 0)}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <DietStats plan={diet.author.healthInfo.plan} foodRows={data} currentDay={currentDay} />
+      <DietStats plan={diet.userId.targetStat} portions={portions} currentDay={currentDay} />
     </TabPanel>
   );
 };

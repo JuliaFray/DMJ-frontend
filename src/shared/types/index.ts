@@ -1,10 +1,9 @@
-export type { Food, TDietPlan, TDietStat } from './diet.type';
-export { Meal } from './diet.type';
-export type { INotifications } from './notification.type';
-export type { TArticle, TImage } from './article.type';
-export type { TDialog, TDialogFriends, TMessage } from './message.type';
-export type { TUser, ILoginData, IFilter, TProfileStats } from './profile.type';
-export type { TCommentType, TComment } from './comment.type';
-export type { TChipData } from './tag.type';
+export * from './diet.type';
+export * from './notification.type';
+export * from './post.type';
+export * from './message.type';
+export * from './profile.type';
+export * from './comment.type';
+export * from './tag.type';
 export * from './food.type';
-export type { WsType } from './general.type';
+export * from './general.type';

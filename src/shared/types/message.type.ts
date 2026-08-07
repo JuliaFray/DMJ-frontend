@@ -1,22 +1,22 @@
-import { TUser } from './profile.type';
+import { IUser } from './profile.type';
 
-export type TMessage = {
+export interface IMessage {
   id: number;
   text: string;
-  from: TUser;
-  to: TUser;
+  fromUserId: IUser;
+  toUserId: IUser;
   createdAt: Date;
-};
+}
 
-export type TDialog = {
+export interface IDialog {
   isPrivate: boolean;
-  users: TUser[];
+  users: IUser[];
   _id: string;
-  lastMsg: TMessage;
-};
+  lastMsg: IMessage;
+}
 
-export type TDialogFriends = {
+export interface IDialogFriends {
   name: string;
   avatar: string;
   status: string;
-};
+}

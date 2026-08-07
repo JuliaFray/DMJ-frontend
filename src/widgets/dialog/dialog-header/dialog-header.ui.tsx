@@ -14,10 +14,10 @@ import { styles } from 'pages/dialogs';
 import { useAppSelector } from 'shared/hook';
 import { getFullName, getImage } from 'shared/lib';
 import { authSelector } from 'shared/model';
-import { TDialog } from 'shared/types';
+import { IDialog } from 'shared/types';
 
 type IDialogHeader = {
-  selectedDialog: TDialog;
+  selectedDialog: IDialog;
 };
 
 export const DialogHeader: React.FC<IDialogHeader> = ({ selectedDialog }) => {

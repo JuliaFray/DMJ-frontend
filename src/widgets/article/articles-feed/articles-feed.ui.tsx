@@ -8,7 +8,7 @@ import { ArticleCard, ArticlesFeedSkeleton } from 'widgets/article';
 
 import { useAppSelector } from 'shared/hook';
 import { postsSelector } from 'shared/model';
-import { TArticle, TChipData } from 'shared/types';
+import { IPost, TChipData } from 'shared/types';
 
 type TPostMain = {
   allTags: TChipData[];
@@ -36,14 +36,14 @@ export const ArticlesFeed: React.FC<TPostMain> = ({ allTags, handleAddTag }) => 
       style={{ marginTop: '-10px', marginBottom: '30px' }}
     >
       {!isFetching &&
-        posts.map((el: TArticle) => (
+        posts.map((el: IPost) => (
           <Grid item xs={12} sm={12} md={12} key={el._id}>
-            {el.author && (
+            {el.userId && (
               <ArticleCard
                 key={el._id}
                 isOneArticlePage={false}
                 post={el}
-                avatarAbbr={el.author.login?.substring(0, 1).toUpperCase() || 'U'}
+                avatarAbbr={el.userId.login?.substring(0, 1).toUpperCase() || 'U'}
                 allTags={allTags}
                 handleAddTag={handleAddTag}
               />

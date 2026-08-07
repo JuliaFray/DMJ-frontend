@@ -23,7 +23,7 @@ const enhance = compose((component: React.ComponentType) =>
 function GlobalSpinner() {
   const display = useAppSelector(spinnerSelector.getSpinnerDisplay);
 
-  return <Spinner display={display} position='bottom-right' />;
+  return <Spinner display={display} />;
 }
 
 export const AppProvider = enhance(() => (

@@ -35,12 +35,12 @@ import { useAppDispatch } from 'shared/hook';
 import { getFullName, getImage, pathKeys } from 'shared/lib';
 import { deletePost } from 'shared/model';
 import { palette, theme } from 'shared/themes';
-import { TArticle, TChipData } from 'shared/types';
+import { IPost, TChipData } from 'shared/types';
 
 import styles from './article.module.scss';
 
 type ArticleProps = {
-  post: TArticle;
+  post: IPost;
   isFullPost: boolean;
   isLoading: boolean;
   isEditable: boolean;
@@ -69,17 +69,17 @@ export const Article: FC<ArticleProps> = ({ post, isFullPost, isLoading, isEdita
           avatar={
             <Avatar
               sx={{ bgcolor: palette.default.error }}
-              alt={post.author.login}
-              src={getImage(post.author.avatar, true)}
+              alt={post.userId.login}
+              src={getImage(post.userId.avatar, true)}
               aria-label='post-avatar'
             >
-              {post.author.login}
+              {post.userId.login}
             </Avatar>
           }
           title={
-            <Link to={pathKeys.user.byId({ id: post.author._id })}>
+            <Link to={pathKeys.user.byId({ id: post.userId._id })}>
               <Typography fontWeight={400} variant='body1' color={theme.palette.text.primary}>
-                {getFullName(post.author)}
+                {getFullName(post.userId)}
               </Typography>
             </Link>
           }

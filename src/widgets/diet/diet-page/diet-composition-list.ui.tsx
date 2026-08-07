@@ -19,23 +19,36 @@ import {
   Toolbar,
 } from '@mui/material';
 
+import { DIET_COMPOSITION_TABS } from 'widgets/diet/diet-page/diet.composition.ui';
+
 import { useRemoveFoodMutation } from 'shared/api';
 import { dayOptions } from 'shared/constants';
-import { Food, TDietPlan } from 'shared/types';
+import { IFood, IDietPlan } from 'shared/types';
+import { IPlanByDay, IPortion } from 'shared/types/diet.type';
 import { TabPanel } from 'shared/ui';
 
 import { DietStats } from './diet-stats.ui';
 import styles from './diet.module.scss';
 
-const createListData = (food: Food, currentDay: number) => {
+interface ICompositionRow {
+  _id: string;
+  name: string;
+  weight: number;
+  calories: number;
+  protein: number;
+  fat: number;
+  carbs: number;
+}
+
+const createListData = (portion: IPortion, summaryWeight: number): ICompositionRow => {
   const {
-    _id,
-    name,
-    days,
-    stat: { cal, proteins, carb, fats },
-  } = food;
-  const meals = days.find((day) => day.day === currentDay)?.meals;
-  const summaryWeight = meals?.reduce((acc, current) => acc + current.volume, 0) ?? 0;
+    foodId: {
+      _id,
+      name,
+      statOn100: { cal, proteins, carb, fats },
+    },
+  } = portion;
+
   const mult = summaryWeight / 100;
 
   return {
@@ -50,12 +63,12 @@ const createListData = (food: Food, currentDay: number) => {
 };
 
 interface Props {
-  tabIndex: number;
+  tabIndex: number | string;
   currentDay: number;
   setCurrentDay: Dispatch<SetStateAction<number>>;
-  diet: TDietPlan;
+  diet: IDietPlan;
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
-  filteredFoods: Food[];
+  portions: IPortion[];
 }
 
 export const DietConsistList: FC<Props> = ({
@@ -64,9 +77,11 @@ export const DietConsistList: FC<Props> = ({
   setCurrentDay,
   diet,
   setOpenDialog,
-  filteredFoods,
+  portions,
 }) => {
-  const listRows = filteredFoods?.map((food) => createListData(food, currentDay)) || [];
+  const summaryWeight = portions.reduce((acc, current) => acc + current.weightG, 0) ?? 0;
+
+  const listRows = portions?.map((portion) => createListData(portion, summaryWeight)) || [];
 
   const [removeFood] = useRemoveFoodMutation();
 
@@ -75,7 +90,7 @@ export const DietConsistList: FC<Props> = ({
   };
 
   return (
-    <TabPanel value={tabIndex} index={1}>
+    <TabPanel value={tabIndex} index={DIET_COMPOSITION_TABS.DIET_COMPOSITION_LIST}>
       <FormControl fullWidth>
         <InputLabel id='simple-select-label'>День плана</InputLabel>
         <Select
@@ -174,11 +189,7 @@ export const DietConsistList: FC<Props> = ({
           </TableBody>
         </Table>
       </TableContainer>
-      <DietStats
-        plan={diet.author.healthInfo.plan}
-        foodRows={filteredFoods}
-        currentDay={currentDay}
-      />
+      <DietStats plan={diet.userId.targetStat} portions={portions} currentDay={currentDay} />
     </TabPanel>
   );
 };

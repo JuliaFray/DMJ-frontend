@@ -1,6 +1,6 @@
 import { BaseQueryFn, createApi, EndpointBuilder } from '@reduxjs/toolkit/query/react';
 
-import { TArticle, TChipData, TComment } from '../types';
+import { IComment, IPost, TChipData } from '../types';
 
 import { instance } from './api';
 import { CountResponseType, GenericResponseType } from './api-types';
@@ -35,28 +35,28 @@ export const postAPI = {
   },
 
   getPopular() {
-    return instance.get<GenericResponseType<TArticle[]>>(`${baseUrl}/popular`).then((response) => {
+    return instance.get<GenericResponseType<IPost[]>>(`${baseUrl}/popular`).then((response) => {
       return response.data;
     });
   },
 
   getRecommendationPost(originPostId: string) {
     return instance
-      .get<GenericResponseType<TArticle[]>>(`${baseUrl}/recommendations?postId=${originPostId}`)
+      .get<GenericResponseType<IPost[]>>(`${baseUrl}/recommendations?postId=${originPostId}`)
       .then((response) => {
         return response.data;
       });
   },
 
   getOne(postId: string) {
-    return instance.get<GenericResponseType<TArticle>>(`${baseUrl}/${postId}`).then((response) => {
+    return instance.get<GenericResponseType<IPost>>(`${baseUrl}/${postId}`).then((response) => {
       return response.data;
     });
   },
 
   createPost(data: FormData) {
     return instance
-      .post<GenericResponseType<TArticle>>(`${baseUrl}`, data, {
+      .post<GenericResponseType<IPost>>(`${baseUrl}`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((response) => {
@@ -80,9 +80,9 @@ export const postAPI = {
     });
   },
 
-  createPostComment(comment: TComment, postId: string) {
+  createPostComment(comment: IComment, postId: string) {
     return instance
-      .post<GenericResponseType<TArticle>>(`${baseUrl}/${postId}/comment`, comment)
+      .post<GenericResponseType<IPost>>(`${baseUrl}/${postId}/comment`, comment)
       .then((response) => {
         return response.data;
       });
@@ -98,7 +98,7 @@ export const postAPI = {
 
   getUserPostComments(userId: string) {
     return instance
-      .get<GenericResponseType<TArticle[]>>(`${baseUrl}/post-comments?userId=${userId}`)
+      .get<GenericResponseType<IPost[]>>(`${baseUrl}/post-comments?userId=${userId}`)
       .then((response) => {
         return response.data;
       });
@@ -108,7 +108,7 @@ export const articleApi = createApi({
   reducerPath: 'articleApi',
   baseQuery: customFetchBase,
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
-    getAllArticles: build.query<CountResponseType<TArticle[]>, { searchParams: string }>({
+    getAllArticles: build.query<CountResponseType<IPost[]>, { searchParams: string }>({
       query: ({ searchParams }) => {
         return {
           url: `${baseUrl}${searchParams}`,

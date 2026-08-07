@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { TDialog, TMessage, TUser } from 'shared/types';
+import { IDialog, IMessage, IUser } from 'shared/types';
 
 import { CountResponseType, ResultCodes } from '../../api/api-types';
 import { dialogAPI } from '../../api/dialog-api';
@@ -10,12 +10,12 @@ import { authActions } from '../auth';
 
 const UNDEFINED_ERROR = 'Неизвестная ошибка';
 
-export const getAllDialogs = createAsyncThunk<CountResponseType<TDialog[]>, { query: string }>(
+export const getAllDialogs = createAsyncThunk<CountResponseType<IDialog[]>, { query: string }>(
   'dialogs',
   async (data, thunkAPI) => {
     try {
       const response = await dialogAPI.getAllDialogs(data.query);
-      if (response.resultCode === ResultCodes.Error) {
+      if (response.resultCode === ResultCodes.UndefinedError) {
         return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
       }
       return response;
@@ -28,12 +28,12 @@ export const getAllDialogs = createAsyncThunk<CountResponseType<TDialog[]>, { qu
 );
 
 export const getMessagesByDialogId = createAsyncThunk<
-  CountResponseType<TMessage[]>,
+  CountResponseType<IMessage[]>,
   { dialogId: string }
 >('messages', async (data, thunkAPI) => {
   try {
     const response = await dialogAPI.getMessagesByDialog(data.dialogId);
-    if (response.resultCode === ResultCodes.Error) {
+    if (response.resultCode === ResultCodes.UndefinedError) {
       return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
     }
     return response;
@@ -44,12 +44,12 @@ export const getMessagesByDialogId = createAsyncThunk<
   }
 });
 
-export const getUsersWithStatus = createAsyncThunk<CountResponseType<TUser[]>, { query: string }>(
+export const getUsersWithStatus = createAsyncThunk<CountResponseType<IUser[]>, { query: string }>(
   'users',
   async (data, thunkAPI) => {
     try {
       const response = await dialogAPI.getUsersWithStatus(data.query);
-      if (response.resultCode === ResultCodes.Error) {
+      if (response.resultCode === ResultCodes.UndefinedError) {
         return thunkAPI.rejectWithValue(UNDEFINED_ERROR);
       }
       return response;

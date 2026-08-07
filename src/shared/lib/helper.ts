@@ -1,16 +1,16 @@
-import { NO_AVATAR } from 'shared/lib';
+import { IImage, IUser } from '../types';
 
-import { TImage, TUser } from '../types';
+import { NO_AVATAR } from './constants';
 
-export const getImage = (img: TImage | undefined, isAvatar = false) => {
+export const getImage = (img: IImage | undefined, isAvatar = false) => {
   return img ? `data:image/jpeg;base64,${img.data}` : isAvatar ? NO_AVATAR : '';
 };
 
-export const hasImage = (arr: TImage | undefined) => {
+export const hasImage = (arr: IImage | undefined) => {
   return !!arr?.data;
 };
 
-export const getFullName = (user: TUser) => {
+export const getFullName = (user: IUser) => {
   return user.login;
 };
 

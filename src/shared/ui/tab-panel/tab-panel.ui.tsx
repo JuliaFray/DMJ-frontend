@@ -4,8 +4,8 @@ import { Box } from '@mui/material';
 
 type ITabPanel = {
   children?: React.ReactNode;
-  index: number;
-  value: number;
+  index: number | string;
+  value: number | string;
 };
 
 export const TabPanel: React.FC<ITabPanel> = ({ children, value, index, ...other }) => {

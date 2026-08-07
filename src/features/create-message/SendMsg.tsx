@@ -11,12 +11,12 @@ import TextField from '@mui/material/TextField';
 import { ProfileContext } from 'shared/context';
 import { useWebSocket } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
-import { TDialog } from 'shared/types';
+import { IDialog } from 'shared/types';
 
 import styles from './SendMsg.module.scss';
 
 type ISendMsg = {
-  selectedDialog: TDialog;
+  selectedDialog: IDialog;
 };
 
 export const SendMsg: React.FC<ISendMsg> = (props) => {

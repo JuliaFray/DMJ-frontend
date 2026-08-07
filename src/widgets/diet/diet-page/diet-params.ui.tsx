@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import { Container, Stack } from '@mui/material';
 
-import { Meal, TChipData, TDietPlan } from 'shared/types';
+import { Meal, TChipData, IDietPlan } from 'shared/types';
 import { InputWrapper, SelectWrapper } from 'shared/ui';
 
 const mealsOptions: TChipData[] = [
@@ -15,7 +15,7 @@ const mealsOptions: TChipData[] = [
 ];
 
 interface Props {
-  diet: TDietPlan;
+  diet: IDietPlan;
 }
 
 export const DietParams: FC<Props> = ({ diet }) => {

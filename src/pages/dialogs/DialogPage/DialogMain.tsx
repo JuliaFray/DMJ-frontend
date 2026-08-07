@@ -14,7 +14,7 @@ import { ProfileContext } from 'shared/context';
 import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
 import { appActions, dialogActions, dialogSelector, getMessagesByDialogId } from 'shared/model';
-import { TDialog, TMessage } from 'shared/types';
+import { IDialog, IMessage } from 'shared/types';
 import { SimpleMessage } from 'shared/ui';
 
 import styles from '../dialog-page.module.scss';
@@ -43,7 +43,7 @@ function DialogMain() {
 
   useEffect(() => {
     if (!selectedDialog && dialogs.length) {
-      dispatch(dialogActions.addSelectedDialog(dialogs.find((d: TDialog) => d._id === id)));
+      dispatch(dialogActions.addSelectedDialog(dialogs.find((d: IDialog) => d._id === id)));
     }
   }, [dialogs, dispatch, id, selectedDialog]);
 
@@ -83,9 +83,9 @@ function DialogMain() {
         {selectedDialog && <DialogHeader selectedDialog={selectedDialog} />}
 
         <List className={styles.dialogBox}>
-          {messages.map((el: TMessage, index: number, array: TMessage[]) => {
+          {messages.map((el: IMessage, index: number, array: IMessage[]) => {
             const sx =
-              el?.from._id === authId
+              el?.fromUserId._id === authId
                 ? {
                     direction: 'ltr' as Direction,
                     backgroundColor: `rgba(159, 237, 215, 0.2)`,
@@ -100,9 +100,9 @@ function DialogMain() {
                 key={uuidv4()}
                 sx={sx}
                 text={el?.text}
-                withNext={array[index + 1]?.from._id === array[index].from._id}
-                withPrev={array[index - 1]?.from._id === array[index].from._id}
-                user={el?.from.userId === authId ? el?.from : el?.to}
+                withNext={array[index + 1]?.fromUserId._id === array[index].fromUserId._id}
+                withPrev={array[index - 1]?.fromUserId._id === array[index].fromUserId._id}
+                user={el?.fromUserId.userId === authId ? el?.fromUserId : el?.toUserId}
               />
             );
           })}

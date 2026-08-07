@@ -1,19 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { GenericResponseType } from 'shared/api/api-types';
-import { appActions, profileActions } from 'shared/model';
-import { TUser } from 'shared/types';
-
 import { authApi } from '../../api';
+import { GenericResponseType } from '../../api/api-types';
+import { IUser, Nullable } from '../../types';
 
 type ValidationError = Record<string, any>;
 
 type InitialStateType = {
-  id: string | null;
+  id: Nullable<string>;
   isAuth: boolean;
   isFetching?: boolean;
   errors: ValidationError;
-  globalError: string | null;
+  globalError: Nullable<string>;
   showSuccessSend: boolean;
 };
 
@@ -64,21 +62,20 @@ const authSlice = createSlice({
       })
       .addMatcher(authApi.endpoints.login.matchFulfilled, (state, { payload }) => {
         state.isFetching = false;
+
         if (payload) {
           state.isAuth = true;
           state.id = payload._id;
           state.globalError = null;
           state.errors = [];
-          profileActions.setProfile(payload);
         }
       })
       .addMatcher(authApi.endpoints.login.matchRejected, (state, { payload }) => {
         state.isFetching = false;
-        state.globalError = (payload?.data as GenericResponseType<TUser>).message;
+        state.globalError = (payload?.data as GenericResponseType<IUser>).message;
         state.isAuth = false;
         state.id = null;
         window.localStorage.removeItem('token');
-        appActions.setUninitialized();
       })
       //= ===registerUser=====//
       .addMatcher(authApi.endpoints.register.matchPending, (state) => {

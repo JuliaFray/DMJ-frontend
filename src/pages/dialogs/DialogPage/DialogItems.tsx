@@ -12,7 +12,7 @@ import { ProfileContext } from 'shared/context';
 import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { getFullName, getImage } from 'shared/lib';
 import { dialogActions, dialogSelector } from 'shared/model';
-import { TDialog } from 'shared/types';
+import { IDialog } from 'shared/types';
 
 const DialogItems: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -21,16 +21,19 @@ const DialogItems: React.FC = () => {
 
   const items = useAppSelector(dialogSelector.getDialogs);
 
-  const onDialogSelect = (item: TDialog) => {
+  const onDialogSelect = (item: IDialog) => {
     dispatch(dialogActions.addSelectedDialog(item));
     navigate(`/dialogs/${item._id}`);
   };
 
   return (
     <List key={uuidv4()} sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      {items.map((item: TDialog) => {
+      {items.map((item: IDialog) => {
         const users = item.isPrivate ? item.users.filter((u) => u._id !== authId) : item.users;
-        const user = item.lastMsg.from.userId === authId ? item.lastMsg.from : item.lastMsg.to;
+        const user =
+          item.lastMsg.fromUserId.userId === authId
+            ? item.lastMsg.fromUserId
+            : item.lastMsg.toUserId;
         return (
           <ListItem alignItems='flex-start'>
             <ListItemButton key={uuidv4()} onClick={() => onDialogSelect(item)}>

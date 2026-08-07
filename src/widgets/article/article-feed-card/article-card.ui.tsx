@@ -18,12 +18,12 @@ import { styles } from 'entities/article';
 
 import { getFullName, NO_AVATAR, pathKeys } from 'shared/lib';
 import { palette, theme } from 'shared/themes';
-import { TArticle, TChipData } from 'shared/types';
+import { IPost, TChipData } from 'shared/types';
 
 import { CustomCardActions } from './custom-card-actions.ui';
 
 export type PostCardProps = {
-  post: TArticle;
+  post: IPost;
   avatarAbbr: string;
   isOneArticlePage: boolean;
   isComments?: boolean;
@@ -43,7 +43,7 @@ export const ArticleCard: React.FC<PostCardProps> = ({
   const titleRows = 2;
   const bodyRows = 2;
   const image =
-    (post.author.avatar && `data:image/jpeg;base64,${post.author.avatar?.data}`) || NO_AVATAR;
+    (post.userId.avatar && `data:image/jpeg;base64,${post.userId.avatar?.data}`) || NO_AVATAR;
 
   return (
     <Card
@@ -66,7 +66,7 @@ export const ArticleCard: React.FC<PostCardProps> = ({
           !isOneArticlePage && (
             <Avatar
               sx={{ bgcolor: palette.default.error }}
-              alt={post.author.login}
+              alt={post.userId.login}
               src={image}
               aria-label='post-avatar'
             >
@@ -75,9 +75,9 @@ export const ArticleCard: React.FC<PostCardProps> = ({
           )
         }
         title={
-          <Link to={pathKeys.user.byId({ id: post.author._id })}>
+          <Link to={pathKeys.user.byId({ id: post.userId._id })}>
             <Typography fontWeight={400} variant='body1' color={theme.palette.text.primary}>
-              {getFullName(post.author)}
+              {getFullName(post.userId)}
             </Typography>
           </Link>
         }

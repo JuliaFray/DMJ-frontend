@@ -6,8 +6,7 @@ import {
 } from '@reduxjs/toolkit/query';
 import { Mutex } from 'async-mutex';
 
-import { pathKeys } from 'shared/lib';
-
+import { pathKeys } from '../lib';
 import { appActions, authActions, authSlice, profileActions, RootState } from '../model';
 
 import { BASE_URL } from './api';

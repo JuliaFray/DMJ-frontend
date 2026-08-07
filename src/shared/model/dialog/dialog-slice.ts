@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { TDialog, TDialogFriends, TMessage } from '../../types';
+import { IDialog, IDialogFriends, IMessage } from '../../types';
 
 import { getAllDialogs, getMessagesByDialogId, getUsersWithStatus } from './dialog-thunks';
 
 type InitialStateType = {
-  messages: Array<TMessage>;
-  dialogs: Array<TDialog>;
-  users: TDialogFriends[];
-  selectedDialog: TDialog | null;
+  messages: Array<IMessage>;
+  dialogs: Array<IDialog>;
+  users: IDialogFriends[];
+  selectedDialog: IDialog | null;
 };
 
 const initialState: InitialStateType = {

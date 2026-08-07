@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { postAPI } from '../../api';
 import { ResultCodes } from '../../api/api-types';
 import { ACCESS_DENIED } from '../../lib';
-import { TArticle, TChipData, TComment } from '../../types';
+import { IComment, IPost, TChipData } from '../../types';
 import { appActions } from '../apps';
 import { authActions } from '../auth';
 
@@ -13,7 +13,7 @@ export const markPostFavorite = createAsyncThunk<void, { postId: string }, { rej
   async (data, thunkAPI) => {
     const response = await postAPI.markPostFavorite(data.postId);
     try {
-      if (response.resultCode === ResultCodes.Error) {
+      if (response.resultCode === ResultCodes.UndefinedError) {
         return thunkAPI.rejectWithValue(response.message);
       }
       return response.data;
@@ -32,7 +32,7 @@ export const togglePostRating = createAsyncThunk<
 >('posts/rating', async (data, thunkAPI) => {
   const response = await postAPI.toggleRating(data.postId, data.rating);
   try {
-    if (response.resultCode === ResultCodes.Error) {
+    if (response.resultCode === ResultCodes.UndefinedError) {
       return thunkAPI.rejectWithValue(response.message);
     }
     return response.data;
@@ -43,12 +43,12 @@ export const togglePostRating = createAsyncThunk<
   }
 });
 
-export const getPopularPost = createAsyncThunk<TArticle[], unknown, { rejectValue: string }>(
+export const getPopularPost = createAsyncThunk<IPost[], unknown, { rejectValue: string }>(
   'posts/popular',
   async (__, thunkAPI) => {
     const response = await postAPI.getPopular();
     try {
-      if (response.resultCode === ResultCodes.Error) {
+      if (response.resultCode === ResultCodes.UndefinedError) {
         return thunkAPI.rejectWithValue(response.message);
       }
       return response.data;
@@ -60,12 +60,12 @@ export const getPopularPost = createAsyncThunk<TArticle[], unknown, { rejectValu
   },
 );
 
-export const getOnePost = createAsyncThunk<TArticle, { postId: string }, { rejectValue: string }>(
+export const getOnePost = createAsyncThunk<IPost, { postId: string }, { rejectValue: string }>(
   'posts/one',
   async (data, thunkAPI) => {
     try {
       const response = await postAPI.getOne(data.postId);
-      if (response.resultCode === ResultCodes.Error) {
+      if (response.resultCode === ResultCodes.UndefinedError) {
         return thunkAPI.rejectWithValue(response.message);
       }
       return response.data;
@@ -88,7 +88,7 @@ export const editPost = createAsyncThunk<
 >('posts/edit', async (data, thunkAPI) => {
   try {
     const response = await postAPI.updatePost(data.file, data.id);
-    if (response.resultCode === ResultCodes.Error) {
+    if (response.resultCode === ResultCodes.UndefinedError) {
       return thunkAPI.rejectWithValue(response.message);
     }
     // thunkAPI.dispatch(getAllPosts({query: ''}));
@@ -100,12 +100,12 @@ export const editPost = createAsyncThunk<
   }
 });
 
-export const createPost = createAsyncThunk<TArticle, { file: FormData }, { rejectValue: string }>(
+export const createPost = createAsyncThunk<IPost, { file: FormData }, { rejectValue: string }>(
   'posts/create',
   async (data, thunkAPI) => {
     try {
       const response = await postAPI.createPost(data.file);
-      if (response.resultCode === ResultCodes.Error) {
+      if (response.resultCode === ResultCodes.UndefinedError) {
         return thunkAPI.rejectWithValue(response.message);
       }
       return response.data;
@@ -117,12 +117,12 @@ export const createPost = createAsyncThunk<TArticle, { file: FormData }, { rejec
   },
 );
 
-export const deletePost = createAsyncThunk<void, { payload: TArticle }, { rejectValue: string }>(
+export const deletePost = createAsyncThunk<void, { payload: IPost }, { rejectValue: string }>(
   'posts/delete',
   async (data, thunkAPI) => {
     try {
       const response = await postAPI.deletePost(data.payload._id);
-      if (response.resultCode === ResultCodes.Error) {
+      if (response.resultCode === ResultCodes.UndefinedError) {
         return thunkAPI.rejectWithValue(response.message);
       }
       return response.data;
@@ -139,7 +139,7 @@ export const getPopularTags = createAsyncThunk<TChipData[], unknown, { rejectVal
   async (__, thunkAPI) => {
     const response = await postAPI.getPopularTags();
     try {
-      if (response.resultCode === ResultCodes.Error) {
+      if (response.resultCode === ResultCodes.UndefinedError) {
         return thunkAPI.rejectWithValue(response.message);
       }
       return response.data;
@@ -156,7 +156,7 @@ export const getPopularAuthors = createAsyncThunk<TChipData[], unknown, { reject
   async (__, thunkAPI) => {
     const response = await postAPI.getPopularAuthors();
     try {
-      if (response.resultCode === ResultCodes.Error) {
+      if (response.resultCode === ResultCodes.UndefinedError) {
         return thunkAPI.rejectWithValue(response.message);
       }
       return response.data;
@@ -169,13 +169,13 @@ export const getPopularAuthors = createAsyncThunk<TChipData[], unknown, { reject
 );
 
 export const createPostComment = createAsyncThunk<
-  TArticle,
-  { comment: TComment; postId: string },
+  IPost,
+  { comment: IComment; postId: string },
   { rejectValue: string }
 >('comments/create', async (data, thunkAPI) => {
   try {
     const response = await postAPI.createPostComment(data.comment, data.postId);
-    if (response.resultCode === ResultCodes.Error) {
+    if (response.resultCode === ResultCodes.UndefinedError) {
       return thunkAPI.rejectWithValue(response.message);
     }
     thunkAPI.dispatch(getOnePost({ postId: data.postId }));
@@ -188,13 +188,13 @@ export const createPostComment = createAsyncThunk<
 });
 
 export const getRecommendationPost = createAsyncThunk<
-  TArticle[],
+  IPost[],
   { originPostId: string },
   { rejectValue: string }
 >('posts/recommendations', async (data, thunkAPI) => {
   const response = await postAPI.getRecommendationPost(data.originPostId);
   try {
-    if (response.resultCode === ResultCodes.Error) {
+    if (response.resultCode === ResultCodes.UndefinedError) {
       return thunkAPI.rejectWithValue(response.message);
     }
     return response.data;
@@ -212,7 +212,7 @@ export const toggleCommentRating = createAsyncThunk<
 >('posts/commentRating', async (data, thunkAPI) => {
   const response = await postAPI.toggleCommentRating(data.commentId, data.rating);
   try {
-    if (response.resultCode === ResultCodes.Error) {
+    if (response.resultCode === ResultCodes.UndefinedError) {
       return thunkAPI.rejectWithValue(response.message);
     }
     return response.data;
@@ -224,13 +224,13 @@ export const toggleCommentRating = createAsyncThunk<
 });
 
 export const getUserPostComments = createAsyncThunk<
-  TArticle[],
+  IPost[],
   { userId: string },
   { rejectValue: string }
 >('posts/comments', async (data, thunkAPI) => {
   const response = await postAPI.getUserPostComments(data.userId);
   try {
-    if (response.resultCode === ResultCodes.Error) {
+    if (response.resultCode === ResultCodes.UndefinedError) {
       return thunkAPI.rejectWithValue(response.message);
     }
     return response.data;

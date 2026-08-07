@@ -52,7 +52,7 @@ function BubbleError() {
 }
 
 function LayoutSkeleton() {
-  return <Spinner display position='center' />;
+  return <Spinner display />;
 }
 
 const enhance = compose((component: React.ComponentType<object>) =>
@@ -83,7 +83,7 @@ const browserRouter = createBrowserRouter([
         children: [loginPageRoute, registerPageRoute, confirmationPageRoute],
       },
       {
-        element: createElement(Outlet),
+        element: createElement(enhance(GuestLayout)),
         children: [page404Router],
       },
       {

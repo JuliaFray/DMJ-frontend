@@ -7,10 +7,12 @@ import { FoodItem, FoodList } from '../types';
 import { BASE_URL } from './api';
 import { GenericResponseType } from './api-types';
 
+const versionApi = 'v1';
+
 export const foodApi = createApi({
   reducerPath: 'foodApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${BASE_URL}/food`,
+    baseUrl: `${BASE_URL}/${versionApi}/food`,
     prepareHeaders: async (headers) => {
       return headers;
     },

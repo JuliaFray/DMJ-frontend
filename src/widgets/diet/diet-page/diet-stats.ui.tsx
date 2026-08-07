@@ -8,7 +8,8 @@ import { Box, LinearProgress, Stack, Typography } from '@mui/material';
 
 import { useAppDispatch } from 'shared/hook';
 import { dietActions } from 'shared/model';
-import { Food, TDietStat } from 'shared/types';
+import { IDietStat } from 'shared/types';
+import { IPortion } from 'shared/types/diet.type';
 import { StyledRating } from 'shared/ui';
 
 import styles from './diet.module.scss';
@@ -16,14 +17,15 @@ import styles from './diet.module.scss';
 const calcPercent = (planValue: number, factValue: number) => {
   return Math.round((factValue / planValue) * 100);
 };
+const MULT_COEF = 5 / 4;
 
-const calcRating = (plan: TDietStat, fact: TDietStat) => {
+const calcRating = (plan: IDietStat, fact: IDietStat) => {
   return (
     5 -
-    (((5 / 4) * Math.abs(plan.cal - fact.cal)) / plan.cal +
-      ((5 / 4) * Math.abs(plan.proteins - fact.proteins)) / plan.proteins +
-      ((5 / 4) * Math.abs(plan.carb - fact.carb)) / plan.carb +
-      ((5 / 4) * Math.abs(plan.fats - fact.fats)) / plan.fats)
+    ((MULT_COEF * Math.abs(plan.cal - fact.cal)) / plan.cal +
+      (MULT_COEF * Math.abs(plan.proteins - fact.proteins)) / plan.proteins +
+      (MULT_COEF * Math.abs(plan.carb - fact.carb)) / plan.carb +
+      (MULT_COEF * Math.abs(plan.fats - fact.fats)) / plan.fats)
   );
 };
 
@@ -38,28 +40,31 @@ const getColor = (mult: number) => {
 };
 
 interface Props {
-  plan: TDietStat;
-  foodRows: Food[];
+  plan: IDietStat;
+  portions: IPortion[];
   currentDay: number;
 }
 
-export const DietStats: FC<Props> = ({ plan, foodRows, currentDay }) => {
+export const DietStats: FC<Props> = ({ plan, portions, currentDay }) => {
   const dispatch = useAppDispatch();
+  const summaryWeight = portions.reduce((acc, current) => acc + current.weightG, 0) ?? 0;
 
-  const fact = foodRows
-    .map((it) => {
-      const w =
-        it.days
-          .find((day) => day.day === currentDay)
-          ?.meals.reduce((acc, current) => acc + current.volume, 0) ?? 0;
-      const m = w / 100;
-      return {
-        cal: m * it.stat.cal,
-        proteins: m * it.stat.proteins,
-        fats: m * it.stat.fats,
-        carb: m * it.stat.carb,
-      };
-    })
+  const fact = portions
+    .map(
+      ({
+        foodId: {
+          statOn100: { carb, fats, proteins, cal },
+        },
+      }) => {
+        const m = summaryWeight / 100;
+        return {
+          cal: m * cal,
+          proteins: m * proteins,
+          fats: m * fats,
+          carb: m * carb,
+        };
+      },
+    )
     .reduce(
       (acc, current) => ({
         ...acc,
@@ -79,8 +84,8 @@ export const DietStats: FC<Props> = ({ plan, foodRows, currentDay }) => {
   const rating = calcRating(plan, fact);
 
   useEffect(() => {
-    dispatch(dietActions.setDietDayRating({ dayName: currentDay, rating }));
-  }, [rating]);
+    dispatch(dietActions.setDayRating({ dayName: currentDay, rating }));
+  }, [currentDay, dispatch, rating]);
 
   return (
     <Stack style={{ marginTop: '24px' }} className={styles.root}>

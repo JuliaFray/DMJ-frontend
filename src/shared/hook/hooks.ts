@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 import { AppDispatch, RootState } from '../model';
 import { WebSocketContext } from '../ui/WebSocketContext';
@@ -46,6 +45,9 @@ export const useQueryStringToObject = (
             queryObject[itemKey] =
               typeof options[itemKey] === 'number' ? parseInt(itemValue, 10) : itemValue;
           }
+        } else {
+          queryObject[itemKey] =
+            typeof options[itemKey] === 'number' ? parseInt(itemValue, 10) : itemValue;
         }
       });
   }
@@ -70,23 +72,6 @@ export const useCreateQueryString = (
     })
     .join('&');
   return queryString ? `?${queryString}` : '';
-};
-
-export const useQueryParams = (options: Record<string, string[] | string | number>) => {
-  const { search } = useLocation();
-  const navigate = useNavigate();
-
-  // get query params
-  const queryParams = React.useMemo(() => useQueryStringToObject(search, options), [search]);
-
-  // updates the query params
-  const setQueryParams = (queryObj: Record<string, string[] | string | number>) => {
-    navigate({
-      search: useCreateQueryString(queryObj),
-    });
-  };
-
-  return { queryParams, setQueryParams };
 };
 
 export const useWebSocket = () => useContext(WebSocketContext);
