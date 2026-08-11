@@ -1,26 +1,22 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { ILoginData, IUser, RegisterDataType } from '../types';
 
-import { BASE_URL } from './api';
 import { GenericResponseType, ResultCodes } from './api-types';
+import customFetchBase from './custom-fetch-base';
+
+const validateStatus = (response: Response, body: GenericResponseType<unknown>) => {
+  if (response.status === ResultCodes.UndefinedError) {
+    window.localStorage.removeItem('token');
+  } else if ('token' in body) {
+    window?.localStorage?.setItem('token', body.token);
+  }
+  return response.status === ResultCodes.Success;
+};
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${BASE_URL}/auth`,
-    prepareHeaders: async (headers) => {
-      return headers;
-    },
-    validateStatus: (response: Response, body: GenericResponseType<unknown>) => {
-      if (body.resultCode === ResultCodes.UndefinedError) {
-        window.localStorage.removeItem('token');
-      } else if ('token' in body) {
-        window?.localStorage?.setItem('token', body.token);
-      }
-      return body.resultCode === ResultCodes.Success;
-    },
-  }),
+  baseQuery: customFetchBase(`/auth`, validateStatus),
   endpoints: (build) => ({
     login: build.mutation<IUser, { data: ILoginData }>({
       query: ({ data }) => {

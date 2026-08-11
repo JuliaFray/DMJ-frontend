@@ -12,55 +12,55 @@ const ONE_DIET = 'ONE_DIET';
 
 export const dietApi = createApi({
   reducerPath: 'dietApi',
-  baseQuery: customFetchBase,
+  baseQuery: customFetchBase(baseUrl),
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
-    createDiet: build.mutation<string, { body: IDietPlan }>({
+    createDietPlan: build.mutation<string, { body: IDietPlan }>({
       query: ({ body }) => {
         return {
-          url: `${baseUrl}/create`,
+          url: `/create`,
           method: 'POST',
           body,
         };
       },
     }),
-    getAllDiet: build.query<CountResponseType<IDietPlan[]>, void>({
+    getAllDietPlans: build.query<CountResponseType<IDietPlan[]>, void>({
       query: () => {
         return {
-          url: `${baseUrl}`,
+          url: ``,
           method: 'GET',
         };
       },
     }),
-    getOneDiet: build.query<GenericResponseType<IDietPlan>, { id: string }>({
+    getOneDietPlan: build.query<GenericResponseType<IDietPlan>, { id: string }>({
       query: ({ id }) => {
         return {
-          url: `${baseUrl}/${id}`,
+          url: `/${id}`,
           method: 'GET',
         };
       },
       providesTags: [ONE_DIET],
     }),
-    updateDiet: build.mutation<string, { id: string; body: IDietPlan }>({
+    updateDietPlan: build.mutation<string, { id: string; body: IDietPlan }>({
       query: ({ id, body }) => {
         return {
-          url: `${baseUrl}/${id}`,
+          url: `/${id}`,
           method: 'PUT',
           body,
         };
       },
       invalidatesTags: [ONE_DIET],
     }),
-    addFood: build.mutation<void, AddFoodType>({
+    addFoodToDietPlan: build.mutation<void, AddFoodType>({
       query: ({ id, foods }) => {
         return {
-          url: `${baseUrl}/add-food/${id}`,
+          url: `/add-food/${id}`,
           method: 'PUT',
           body: foods,
         };
       },
       invalidatesTags: [ONE_DIET],
     }),
-    removeFood: build.mutation<
+    removeFoodFromDietPlan: build.mutation<
       void,
       {
         id: string;
@@ -70,17 +70,17 @@ export const dietApi = createApi({
     >({
       query: ({ id, foodId, day }) => {
         return {
-          url: `${baseUrl}/remove-food/${id}`,
+          url: `/remove-food/${id}`,
           method: 'PUT',
           body: { foodId, day },
         };
       },
       invalidatesTags: [ONE_DIET],
     }),
-    deleteDiet: build.mutation<void, { id: string }>({
+    deleteDietPlan: build.mutation<void, { id: string }>({
       query: ({ id }) => {
         return {
-          url: `${baseUrl}/${id}`,
+          url: `/${id}`,
           method: 'DELETE',
         };
       },
@@ -89,10 +89,10 @@ export const dietApi = createApi({
 });
 
 export const {
-  useLazyGetAllDietQuery,
-  useGetOneDietQuery,
-  useUpdateDietMutation,
-  useAddFoodMutation,
-  useRemoveFoodMutation,
-  useDeleteDietMutation,
+  useLazyGetAllDietPlansQuery,
+  useGetOneDietPlanQuery,
+  useUpdateDietPlanMutation,
+  useAddFoodToDietPlanMutation,
+  useRemoveFoodFromDietPlanMutation,
+  useDeleteDietPlanMutation,
 } = dietApi;

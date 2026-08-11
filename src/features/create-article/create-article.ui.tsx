@@ -9,9 +9,10 @@ import SimpleMDE from 'react-simplemde-editor';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 
+import { useLazyGetOneArticleQuery } from 'shared/api';
 import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { pathKeys } from 'shared/lib';
-import { createPost, editPost, getOnePost, postsActions, postsSelector } from 'shared/model';
+import { createPost, editPost, postsActions, postsSelector } from 'shared/model';
 import { TChipData } from 'shared/types';
 import { AutocompleteField, InputWrapper } from 'shared/ui';
 
@@ -23,6 +24,7 @@ export const CreateArticle: React.FC = () => {
   const navigate = useNavigate();
 
   const post = useAppSelector(postsSelector.getPost);
+  const [getOnePost] = useLazyGetOneArticleQuery();
 
   const [text, setText] = useState('');
   const [tags, setTags] = useState<(string | TChipData)[]>([]);
@@ -36,7 +38,7 @@ export const CreateArticle: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      dispatch(getOnePost({ postId: id }));
+      getOnePost({ postId: id });
       if (post) {
         setText(post.text);
         setTags(post.tags);
@@ -93,7 +95,7 @@ export const CreateArticle: React.FC = () => {
         enableReinitialize
       >
         <Form>
-          <InputWrapper name='title' label='Заголовок' classes={{ root: styles.title }} />
+          <InputWrapper name='title' label='Заголовок' className={styles.title} />
 
           <AutocompleteField values={tags} onChange={(val) => setTags(val)} />
 

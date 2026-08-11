@@ -121,19 +121,6 @@ const postsSlice = createSlice({
         state.isFetching = false;
         state.recommendations = [];
       })
-      //= ====getOnePost=====//
-      .addCase(getOnePost.pending, (state) => {
-        state.isFetching = true;
-        state.post = null;
-      })
-      .addCase(getOnePost.fulfilled, (state, action) => {
-        state.isFetching = false;
-        state.post = action.payload;
-      })
-      .addCase(getOnePost.rejected, (state) => {
-        state.isFetching = false;
-        state.post = null;
-      })
       //= ====editPost=====//
       .addCase(editPost.pending, (state) => {
         state.isFetching = true;
@@ -164,16 +151,6 @@ const postsSlice = createSlice({
         state.posts = state.posts.filter((p) => p._id !== action.meta.arg.payload._id);
       })
       .addCase(deletePost.rejected, (state) => {
-        state.isFetching = false;
-      })
-      //= ====createPostComment=====//
-      .addCase(createPostComment.pending, (state) => {
-        state.isFetching = true;
-      })
-      .addCase(createPostComment.fulfilled, (state) => {
-        state.isFetching = false;
-      })
-      .addCase(createPostComment.rejected, (state) => {
         state.isFetching = false;
       })
       //= ====getUserPostComments=====//
@@ -224,6 +201,29 @@ const postsSlice = createSlice({
       .addMatcher(articleApi.endpoints.getAllTags.matchRejected, (state) => {
         state.isFetching = false;
         state.allTags = [];
+      })
+      //= ====getOnePost=====//
+      .addMatcher(articleApi.endpoints.getOneArticle.matchPending, (state) => {
+        state.isFetching = true;
+        state.post = null;
+      })
+      .addMatcher(articleApi.endpoints.getOneArticle.matchFulfilled, (state, action) => {
+        state.isFetching = false;
+        state.post = action.payload.data;
+      })
+      .addMatcher(articleApi.endpoints.getOneArticle.matchRejected, (state) => {
+        state.isFetching = false;
+        state.post = null;
+      })
+      //= ====createPostComment=====//
+      .addMatcher(articleApi.endpoints.createPostComment.matchPending, (state) => {
+        state.isFetching = true;
+      })
+      .addMatcher(articleApi.endpoints.createPostComment.matchFulfilled, (state) => {
+        state.isFetching = false;
+      })
+      .addMatcher(articleApi.endpoints.createPostComment.matchRejected, (state) => {
+        state.isFetching = false;
       });
   },
   selectors: {

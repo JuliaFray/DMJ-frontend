@@ -1,93 +1,78 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext } from 'react';
 
 import { Form, Formik } from 'formik';
 import { Link, Navigate } from 'react-router-dom';
 
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Button, IconButton, InputAdornment, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, LoadingOverlay, Paper, Stack, Title } from '@mantine/core';
 
+import { ProfileContext } from 'shared/context';
 import { pathKeys } from 'shared/lib';
-import { InputWrapper, Spinner } from 'shared/ui';
+import { ILoginData } from 'shared/types';
+import { InputWrapper } from 'shared/ui';
 
 import { useLogin } from './login-page.hook';
 import styles from './login-page.module.scss';
 
 export const LoginPage: FC = () => {
-  const { initialData, validation, handleSubmit, isAuth, isFetching, globalError, handleChange } =
-    useLogin();
-  const [showPassword, setShowPassword] = useState(false);
+  const { isAuth } = useContext(ProfileContext);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMousePassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
+  const { formikConfig, validationSchema, isFetching, handleSubmit, handleChange } = useLogin();
 
   if (isAuth) {
     return <Navigate to={pathKeys.home()} />;
   }
 
   return (
-    <Paper classes={{ root: styles.root }}>
-      <Stack spacing={2}>
-        <Typography classes={{ root: styles.title }} variant='h5'>
-          Войти в аккаунт
-        </Typography>
+    <Stack style={{ display: 'flex' }}>
+      <img
+        alt='logo'
+        style={{ width: 500, alignSelf: 'center', marginBlock: '-120px' }}
+        src={`${process.env.PUBLIC_URL}/TransparentLogo.png`}
+      />
 
-        <Spinner display={isFetching} position='over' />
+      <Paper classNames={{ root: styles.root }}>
+        <Box pos='relative'>
+          <LoadingOverlay
+            visible={isFetching}
+            zIndex={1000}
+            overlayProps={{ radius: 'sm', blur: 2 }}
+            loaderProps={{ color: 'teal', type: 'bars' }}
+          />
+          <Stack gap='lg'>
+            <Title classNames={{ root: styles.title }} order={3}>
+              Войти в аккаунт
+            </Title>
 
-        <Formik
-          initialValues={{ ...initialData }}
-          onSubmit={(values) => handleSubmit(values)}
-          validationSchema={validation}
-          enableReinitialize
-        >
-          {({ isValid }) => (
-            <Form onChange={handleChange}>
-              <Stack spacing={1}>
-                <InputWrapper name='email' label='Логин или Email' className={styles.field} />
-                <InputWrapper
-                  name='password'
-                  label='Пароль'
-                  className={styles.field}
-                  type={showPassword ? 'text' : 'password'}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position='end'>
-                        <IconButton
-                          aria-label={showPassword ? 'hide the password' : 'display the password'}
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMousePassword}
-                          onMouseUp={handleMousePassword}
-                          edge='end'
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Stack>
+            <Formik
+              onSubmit={(values: ILoginData) => handleSubmit(values)}
+              validationSchema={validationSchema}
+              {...formikConfig}
+            >
+              {({ isValid }) => (
+                <Form onChange={handleChange}>
+                  <Stack gap='xs'>
+                    <InputWrapper label='Логин или Email' name='email' />
+                    <InputWrapper label='Пароль' type='password' name='password' />
+                  </Stack>
 
-              <span className={styles.error}>{globalError}</span>
+                  <Button
+                    type='submit'
+                    size='compact-lg'
+                    disabled={!isValid || isFetching}
+                    fullWidth
+                  >
+                    Войти
+                  </Button>
+                </Form>
+              )}
+            </Formik>
 
-              <Button
-                type='submit'
-                size='large'
-                disabled={!isValid || isFetching}
-                variant='contained'
-                fullWidth
-              >
-                Войти
-              </Button>
-            </Form>
-          )}
-        </Formik>
-
-        <Link className={styles.link} to={pathKeys.register()}>
-          Создать аккаунт
-        </Link>
-      </Stack>
-    </Paper>
+            <Link className={styles.link} to={pathKeys.register()}>
+              Создать аккаунт
+            </Link>
+          </Stack>
+        </Box>
+      </Paper>
+    </Stack>
   );
 };

@@ -1,14 +1,18 @@
+import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
+
 import React from 'react';
 
 import { withErrorBoundary } from 'react-error-boundary';
 import { Provider } from 'react-redux';
 import { compose } from 'redux';
 
-import { ThemeProvider } from '@mui/material/styles';
+import { MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 
 import { useAppSelector } from 'shared/hook';
 import { spinnerSelector, store } from 'shared/model';
-import { theme } from 'shared/themes';
+import { mantineTheme } from 'shared/themes/mantineTheme';
 import { ErrorHandler, logError, Spinner, WS } from 'shared/ui';
 
 import { BrowserRouting } from './RouterProvider';
@@ -28,11 +32,12 @@ function GlobalSpinner() {
 
 export const AppProvider = enhance(() => (
   <Provider store={store}>
-    <ThemeProvider theme={theme}>
+    <MantineProvider theme={mantineTheme}>
       <WS>
+        <Notifications position='bottom-center' autoClose={10000} limit={5} />
         <GlobalSpinner />
         <BrowserRouting />
       </WS>
-    </ThemeProvider>
+    </MantineProvider>
   </Provider>
 ));

@@ -1,13 +1,11 @@
-import React, { FC, Fragment, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { Form, Formik } from 'formik';
 import { Link } from 'react-router-dom';
 
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, IconButton, InputAdornment, Snackbar, Stack } from '@mui/material';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
+import { Snackbar } from '@mui/material';
+
+import { Button, Paper, PasswordInput, Stack, Typography } from '@mantine/core';
 
 import { useAppSelector } from 'shared/hook';
 import { pathKeys } from 'shared/lib';
@@ -30,19 +28,11 @@ export const RegisterPage: FC = () => {
 
   const showSuccessSend = useAppSelector(authSelector.getSuccessSend);
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMousePassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
   return (
     <>
-      <Paper classes={{ root: styles.root }}>
-        <Stack spacing={1}>
-          <Typography classes={{ root: styles.title }} variant='h5'>
+      <Paper classNames={{ root: styles.root }}>
+        <Stack gap='sm'>
+          <Typography classNames={{ root: styles.title }} variant='h5'>
             Создать аккаунт
           </Typography>
 
@@ -57,30 +47,10 @@ export const RegisterPage: FC = () => {
           >
             {({ isValid }) => (
               <Form onChange={handleOnChange}>
-                <Stack spacing={1}>
+                <Stack gap='sm'>
                   <InputWrapper name='login' label='Логин' className={styles.field} />
                   <InputWrapper name='email' label='Email' className={styles.field} />
-                  <InputWrapper
-                    name='password'
-                    label='Пароль'
-                    className={styles.field}
-                    type={showPassword ? 'text' : 'password'}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position='end'>
-                          <IconButton
-                            aria-label={showPassword ? 'hide the password' : 'display the password'}
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMousePassword}
-                            onMouseUp={handleMousePassword}
-                            edge='end'
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+                  <PasswordInput name='password' label='Пароль' />
                 </Stack>
 
                 <span className={styles.error}>{globalError}</span>

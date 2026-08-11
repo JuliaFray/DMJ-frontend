@@ -1,4 +1,5 @@
 import {
+  BaseQueryApi,
   BaseQueryFn,
   FetchArgs,
   fetchBaseQuery,
@@ -6,74 +7,92 @@ import {
 } from '@reduxjs/toolkit/query';
 import { Mutex } from 'async-mutex';
 
+import { ToastLevel, useToast } from '../hook';
 import { pathKeys } from '../lib';
 import { appActions, authActions, authSlice, profileActions, RootState } from '../model';
 
 import { BASE_URL } from './api';
+import { ResultCodes } from './api-types';
 
 const baseUrl = BASE_URL;
 
 const mutex = new Mutex();
 
-const baseQuery = fetchBaseQuery({
-  baseUrl: `${baseUrl}`,
-  prepareHeaders: async (headers) => {
-    const token = window.localStorage.getItem('token');
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
-    }
-    headers.set('Access-Control-Allow-Origin', `*`);
-    return headers;
-  },
-});
+const baseQuery = (customBaseUrl?: string, validateStatus?: any) =>
+  fetchBaseQuery({
+    baseUrl: `${baseUrl}${customBaseUrl}`,
+    prepareHeaders: async (headers) => {
+      const token = window.localStorage.getItem('token');
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      headers.set('Access-Control-Allow-Origin', `*`);
+      return headers;
+    },
+    validateStatus,
+  });
 
-const customFetchBase: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
-  args,
-  api,
-  extraOptions,
-) => {
-  const rootState = api.getState() as RootState;
-  const isAuth = rootState[authSlice.reducerPath].isAuth;
+const logout = (api: BaseQueryApi) => {
+  api.dispatch(authActions.logout());
+  api.dispatch(appActions.setUninitialized());
+  window.location.href = pathKeys.login();
+};
 
-  await mutex.waitForUnlock();
-  let result;
+const customFetchBase =
+  (
+    customBaseUrl: string,
+    validateStatus?: any,
+  ): BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> =>
+  async (args, api, extraOptions) => {
+    const rootState = api.getState() as RootState;
+    const isAuth = rootState[authSlice.reducerPath].isAuth;
 
-  if (localStorage.getItem('token') && !isAuth) {
-    if (!mutex.isLocked()) {
-      const release = await mutex.acquire();
+    await mutex.waitForUnlock();
+    let result;
 
-      try {
-        const refreshResult: any = await baseQuery({ url: '/auth/status' }, api, extraOptions);
+    if (localStorage.getItem('token') && !isAuth) {
+      if (!mutex.isLocked()) {
+        const release = await mutex.acquire();
 
-        if (refreshResult.data) {
-          api.dispatch(appActions.setInitialized());
-          api.dispatch(profileActions.setProfile(refreshResult.data.data));
-          api.dispatch(authActions.setAuth(refreshResult.data.data));
-          window.localStorage.setItem('token', refreshResult.data.token);
+        try {
+          const refreshResult: any = await baseQuery(customBaseUrl, validateStatus)(
+            { url: '/auth/status' },
+            api,
+            extraOptions,
+          );
 
-          result = await baseQuery(args, api, extraOptions);
-        } else {
-          api.dispatch(authActions.logout());
-          api.dispatch(appActions.setUninitialized());
-          window.location.href = pathKeys.login();
+          if (refreshResult.data) {
+            api.dispatch(appActions.setInitialized());
+            api.dispatch(profileActions.setProfile(refreshResult.data.data));
+            api.dispatch(authActions.setAuth(refreshResult.data.data));
+            window.localStorage.setItem('token', refreshResult.data.token);
+
+            result = await baseQuery(customBaseUrl, validateStatus)(args, api, extraOptions);
+          } else {
+            logout(api);
+          }
+        } finally {
+          release();
         }
-      } finally {
-        release();
+      } else {
+        await mutex.waitForUnlock();
+        result = await baseQuery(customBaseUrl, validateStatus)(args, api, extraOptions);
       }
     } else {
-      await mutex.waitForUnlock();
-      result = await baseQuery(args, api, extraOptions);
+      result = await baseQuery(customBaseUrl, validateStatus)(args, api, extraOptions);
+      if (result.error && result.error.status === ResultCodes.AccessDenied) {
+        logout(api);
+      }
     }
-  } else {
-    result = await baseQuery(args, api, extraOptions);
-    if ((result.error?.data as any)?.message === 'Нет доступа') {
-      api.dispatch(authActions.logout());
-      api.dispatch(appActions.setUninitialized());
-      window.location.href = pathKeys.login();
-    }
-  }
 
-  return result;
-};
+    if (result && result.error && result.error.data?.message) {
+      useToast({
+        level: ToastLevel.ERROR,
+        message: result.error.data.message,
+      });
+    }
+
+    return result;
+  };
 
 export default customFetchBase;

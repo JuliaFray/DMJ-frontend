@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import { Form, Formik } from 'formik';
 import { useParams } from 'react-router-dom';
@@ -18,9 +18,13 @@ import {
 } from '@mui/material';
 import DialogContentText from '@mui/material/DialogContentText';
 
-import { DietPlanComposition, DietParams } from 'widgets/diet';
+import { DietParams, DietPlanComposition } from 'widgets/diet';
 
-import { useDeleteDietMutation, useGetOneDietQuery, useUpdateDietMutation } from 'shared/api';
+import {
+  useDeleteDietPlanMutation,
+  useGetOneDietPlanQuery,
+  useUpdateDietPlanMutation,
+} from 'shared/api';
 import {
   useAppDispatch,
   useAppSelector,
@@ -78,9 +82,9 @@ export const DietPlanPage: FC = () => {
     return () => ws.removeEventListener('message', handleWS);
   }, [handleWS, ws]);
 
-  const { isLoading } = useGetOneDietQuery({ id: id! });
-  const [updateDiet, { isLoading: isUpdateLoading }] = useUpdateDietMutation();
-  const [deleteDiet] = useDeleteDietMutation();
+  const { isLoading } = useGetOneDietPlanQuery({ id: id! });
+  const [updateDiet, { isLoading: isUpdateLoading }] = useUpdateDietPlanMutation();
+  const [deleteDiet] = useDeleteDietPlanMutation();
 
   const diet: IDietPlan | null = useAppSelector(dietSelector.getDiet);
 

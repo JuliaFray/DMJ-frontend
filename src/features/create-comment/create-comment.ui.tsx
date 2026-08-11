@@ -9,29 +9,24 @@ import TextField from '@mui/material/TextField';
 
 import { styles } from 'entities/comment';
 
-import { useAppDispatch } from 'shared/hook';
-import { createPostComment } from 'shared/model';
+import { useCreatePostCommentMutation } from 'shared/api';
 
 export type ICommentCreate = {
   postId: string;
 };
 
 export const CreateComment: React.FC<ICommentCreate> = ({ postId }) => {
-  const dispatch = useAppDispatch();
-
   const { register, handleSubmit, resetField } = useForm({
     mode: 'onChange',
   });
-
+  const [createPostComment] = useCreatePostCommentMutation();
   const onSubmit = (formData: FieldValues) => {
-    dispatch(
-      createPostComment({
-        comment: {
-          text: formData.text,
-        },
-        postId,
-      }),
-    );
+    createPostComment({
+      comment: {
+        text: formData.text,
+      },
+      postId,
+    });
     resetField('text');
   };
 

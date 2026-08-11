@@ -7,13 +7,24 @@
 
 html {
   height: auto;
+  position: relative;
+  font-family: 'Gros Ventre Regular',  sans-serif;
+}
+
+
+html::before {
+  content: "";
+  position: absolute;
+  inset: 0; /* Stretches the layer to fill the parent container */
+  z-index: -1; /* Pushes the background behind the text */
+
   background-image: url("../public/images/7e379550-0e9d-4f17-a757-964bc3d6ee2e.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
-  position: relative;
-  font-family: 'Gros Ventre Regular',  sans-serif;
+
+  opacity: 0.2;
 }
 
 body {

@@ -11,9 +11,10 @@ import { CreateComment } from 'features/create-comment';
 
 import { Article } from 'entities/article';
 
+import { useLazyGetOneArticleQuery } from 'shared/api';
 import { ProfileContext } from 'shared/context';
 import { useAppDispatch, useAppSelector, useMedia } from 'shared/hook';
-import { getOnePost, getRecommendationPost, postsSelector } from 'shared/model';
+import { getRecommendationPost, postsSelector } from 'shared/model';
 
 import styles from './article-page.module.scss';
 
@@ -26,15 +27,15 @@ export const ArticlePage: React.FC = React.memo(() => {
   const isFetching = useAppSelector(postsSelector.getPostsIsFetching);
   const post = useAppSelector(postsSelector.getPost);
   const recommendations = useAppSelector(postsSelector.getRecommendations);
-
+  const [getOnePost] = useLazyGetOneArticleQuery();
   const { mdMain, mdSide } = useMedia();
 
   useEffect(() => {
     if (id) {
-      dispatch(getOnePost({ postId: id }));
+      getOnePost({ postId: id });
       dispatch(getRecommendationPost({ originPostId: id }));
     }
-  }, [id, dispatch]);
+  }, [id, dispatch, getOnePost]);
 
   return (
     <Grid container spacing={2} width='100%' style={{ margin: 0, padding: 0 }}>

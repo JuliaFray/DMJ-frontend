@@ -7,7 +7,7 @@ export const WS_CONNECTED = 'WS_CONNECTED';
 export const WS_CONNECT_ERR = 'WS_CONNECT_ERR';
 export const WS_SHOW_RECONNECT = 'WS_SHOW_RECONNECT';
 
-export const SocketEvents = {
+export const SocketEvents: Record<string, string> = {
   USER_EVENT: 'USER_EVENT',
   LOGOUT_EVENT: 'LOGOUT_EVENT',
   AUTH_EVENT: 'AUTH_EVENT',

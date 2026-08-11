@@ -53,7 +53,7 @@ export function withAuthRedirect<T extends NonNullable<unknown>>(
     return <Component {...(restProps as T)} />;
   };
 
-  return connect<NonNullable<unknown>, NonNullable<unknown>, T, RootState>(
-    (state: RootState) => ({}),
-  )(RedirectComponent);
+  return connect<NonNullable<unknown>, NonNullable<unknown>, T, RootState>(() => ({}))(
+    RedirectComponent,
+  );
 }

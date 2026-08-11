@@ -19,15 +19,14 @@ import {
   Toolbar,
 } from '@mui/material';
 
-import { DIET_COMPOSITION_TABS } from 'widgets/diet/diet-page/diet.composition.ui';
-
-import { useRemoveFoodMutation } from 'shared/api';
+import { useRemoveFoodFromDietPlanMutation } from 'shared/api';
 import { dayOptions } from 'shared/constants';
-import { IFood, IDietPlan } from 'shared/types';
-import { IPlanByDay, IPortion } from 'shared/types/diet.type';
+import { IDietPlan } from 'shared/types';
+import { IPortion } from 'shared/types/diet.type';
 import { TabPanel } from 'shared/ui';
 
 import { DietStats } from './diet-stats.ui';
+import { DIET_COMPOSITION_TABS } from './diet.composition.ui';
 import styles from './diet.module.scss';
 
 interface ICompositionRow {
@@ -83,7 +82,7 @@ export const DietConsistList: FC<Props> = ({
 
   const listRows = portions?.map((portion) => createListData(portion, summaryWeight)) || [];
 
-  const [removeFood] = useRemoveFoodMutation();
+  const [removeFood] = useRemoveFoodFromDietPlanMutation();
 
   const handleRemoveFood = (foodId: string) => {
     removeFood({ id: diet._id, foodId, day: currentDay });

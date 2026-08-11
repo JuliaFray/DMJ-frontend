@@ -106,12 +106,12 @@ export const postAPI = {
 };
 export const articleApi = createApi({
   reducerPath: 'articleApi',
-  baseQuery: customFetchBase,
+  baseQuery: customFetchBase('/posts'),
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
     getAllArticles: build.query<CountResponseType<IPost[]>, { searchParams: string }>({
       query: ({ searchParams }) => {
         return {
-          url: `${baseUrl}${searchParams}`,
+          url: `${searchParams}`,
           method: 'GET',
         };
       },
@@ -124,7 +124,34 @@ export const articleApi = createApi({
         };
       },
     }),
+    getOneArticle: build.query<GenericResponseType<IPost>, { postId: string }>({
+      query: ({ postId }) => {
+        return {
+          url: `/${postId}`,
+          method: 'GET',
+        };
+      },
+      providesTags: (result, error, arg) => [{ type: 'getOneArticle', id: arg.postId }],
+    }),
+    createPostComment: build.mutation<
+      GenericResponseType<IPost>,
+      { comment: IComment; postId: string }
+    >({
+      query: ({ postId, comment }) => {
+        return {
+          url: `/${postId}/comment`,
+          method: 'POST',
+          body: comment,
+        };
+      },
+      invalidatesTags: (result, error, { postId }) => [{ type: 'getOneArticle', id: postId }],
+    }),
   }),
 });
 
-export const { useLazyGetAllArticlesQuery, useLazyGetAllTagsQuery } = articleApi;
+export const {
+  useLazyGetAllArticlesQuery,
+  useLazyGetAllTagsQuery,
+  useLazyGetOneArticleQuery,
+  useCreatePostCommentMutation,
+} = articleApi;

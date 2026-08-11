@@ -23,7 +23,7 @@ import {
 
 import { DIET_COMPOSITION_TABS } from 'widgets/diet/diet-page/diet.composition.ui';
 
-import { useRemoveFoodMutation } from 'shared/api';
+import { useRemoveFoodFromDietPlanMutation } from 'shared/api';
 import { dayOptions } from 'shared/constants';
 import { ProfileContext } from 'shared/context';
 import { useQueryParams, useWebSocket } from 'shared/hook';
@@ -78,7 +78,7 @@ export const DietConsistFood: FC<Props> = ({
   const { queryParams, setQueryParams } = useQueryParams();
 
   const ws = useWebSocket();
-  const [removeFood] = useRemoveFoodMutation();
+  const [removeFood] = useRemoveFoodFromDietPlanMutation();
 
   const rows = useMemo(
     () => [...portions]?.map((portion) => createData(portion)) || [],

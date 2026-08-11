@@ -25,7 +25,11 @@ export const BrandLink = () => {
         color={theme.palette.primary.contrastText}
       >
         <IconButton>
-          <img alt='logo' style={{ height: '40px' }} src={`${process.env.PUBLIC_URL}/logo.png`} />
+          <img
+            alt='logo'
+            style={{ height: '40px' }}
+            src={`${process.env.PUBLIC_URL}/TransparentMascotLight.png`}
+          />
         </IconButton>
         <span style={{ verticalAlign: 'middle' }}>HEALTH BALANCE</span>
       </Typography>

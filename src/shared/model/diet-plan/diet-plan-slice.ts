@@ -38,30 +38,36 @@ const dietPlanSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addMatcher(dietApi.endpoints.getAllDiet.matchPending, (state: TInitial) => {
+      .addMatcher(dietApi.endpoints.getAllDietPlans.matchPending, (state: TInitial) => {
         state.isFetching = true;
         state.dietPlans = [];
         state.totalCount = 0;
       })
-      .addMatcher(dietApi.endpoints.getAllDiet.matchFulfilled, (state: TInitial, { payload }) => {
-        state.isFetching = false;
-        state.dietPlans = payload.data;
-        state.totalCount = payload.totalCount;
-      })
-      .addMatcher(dietApi.endpoints.getAllDiet.matchRejected, (state: TInitial) => {
+      .addMatcher(
+        dietApi.endpoints.getAllDietPlans.matchFulfilled,
+        (state: TInitial, { payload }) => {
+          state.isFetching = false;
+          state.dietPlans = payload.data;
+          state.totalCount = payload.totalCount;
+        },
+      )
+      .addMatcher(dietApi.endpoints.getAllDietPlans.matchRejected, (state: TInitial) => {
         state.isFetching = false;
         state.dietPlans = [];
         state.totalCount = 0;
       })
-      .addMatcher(dietApi.endpoints.getOneDiet.matchPending, (state: TInitial) => {
+      .addMatcher(dietApi.endpoints.getOneDietPlan.matchPending, (state: TInitial) => {
         state.isFetching = true;
         state.dietPlan = null;
       })
-      .addMatcher(dietApi.endpoints.getOneDiet.matchFulfilled, (state: TInitial, { payload }) => {
-        state.isFetching = false;
-        state.dietPlan = payload.data;
-      })
-      .addMatcher(dietApi.endpoints.getOneDiet.matchRejected, (state: TInitial) => {
+      .addMatcher(
+        dietApi.endpoints.getOneDietPlan.matchFulfilled,
+        (state: TInitial, { payload }) => {
+          state.isFetching = false;
+          state.dietPlan = payload.data;
+        },
+      )
+      .addMatcher(dietApi.endpoints.getOneDietPlan.matchRejected, (state: TInitial) => {
         state.isFetching = false;
         state.dietPlan = null;
       });

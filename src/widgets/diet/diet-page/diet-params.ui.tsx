@@ -27,7 +27,7 @@ export const DietParams: FC<Props> = ({ diet }) => {
     <Container style={{ marginBottom: '24px', padding: '0' }}>
       <Stack spacing={4}>
         <InputWrapper name='name' label='Название плана' />
-        <InputWrapper name='period' label='Количество дней' type='number' />
+        <InputWrapper name='period' label='Количество дней' />
         <SelectWrapper name='meals' label='Приемы пищи' options={mealsOptions} multiple />
       </Stack>
     </Container>

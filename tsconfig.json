@@ -57,6 +57,7 @@
   "exclude": [
     "node_modules"
   ],
+  "include": ["declarations.d.ts", "webpack.config.js", "src/**/*"],
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"

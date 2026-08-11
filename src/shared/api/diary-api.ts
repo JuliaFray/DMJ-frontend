@@ -11,7 +11,7 @@ const baseUrl = 'diary';
 
 export const diaryApi = createApi({
   reducerPath: 'diaryApi',
-  baseQuery: customFetchBase,
+  baseQuery: customFetchBase(baseUrl),
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
     getDiaryByDay: build.query<CountResponseType<IDietPlan[]>, { date: string }>({
       query: ({ date }) => {
@@ -19,22 +19,22 @@ export const diaryApi = createApi({
         searchParams.append('date', date);
 
         return {
-          url: `${baseUrl}`,
+          url: ``,
           method: 'GET',
           params: searchParams,
         };
       },
     }),
-    addFoodToDiary: build.mutation<void, AddFoodType>({
+    addDiaryRecord: build.mutation<void, AddFoodType>({
       query: ({ id, foods }) => {
         return {
-          url: `${baseUrl}/add-food/${id}`,
+          url: `/add-food/${id}`,
           method: 'PUT',
           body: foods,
         };
       },
     }),
-    removeFoodFromDiary: build.mutation<
+    removeDiaryRecord: build.mutation<
       void,
       {
         id: string;
@@ -44,7 +44,7 @@ export const diaryApi = createApi({
     >({
       query: ({ id, foodId, day }) => {
         return {
-          url: `${baseUrl}/remove-food/${id}`,
+          url: `/remove-food/${id}`,
           method: 'PUT',
           body: { foodId, day },
         };
@@ -55,6 +55,6 @@ export const diaryApi = createApi({
 
 export const {
   useLazyGetDiaryByDayQuery,
-  useAddFoodToDiaryMutation,
-  useRemoveFoodFromDiaryMutation,
+  useAddDiaryRecordMutation,
+  useRemoveDiaryRecordMutation,
 } = diaryApi;

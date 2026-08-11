@@ -1,8 +1,8 @@
 @import "shared/themes/palette.module";
 
 .brandlink {
-  position: fixed;
-  left: calc(50% - 10em);
+  //position: fixed;
+  //left: calc(50% - 10em);
   color: $success;
   text-decoration: none;
 
@@ -50,7 +50,7 @@
   //}
 
   .toolbar {
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 }
 

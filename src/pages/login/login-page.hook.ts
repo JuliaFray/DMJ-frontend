@@ -1,44 +1,40 @@
-import { useContext, useEffect } from 'react';
-
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { useLoginMutation } from 'shared/api';
-import { ProfileContext } from 'shared/context';
-import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
-import { SocketEvents } from 'shared/lib';
+import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { authActions, authSelector } from 'shared/model';
 import { ILoginData } from 'shared/types';
 
 export const useLogin = () => {
-  const { authId, isAuth } = useContext(ProfileContext);
-
   const isFetching = useAppSelector(authSelector.getIsFetching);
-  const globalError = useAppSelector(authSelector.getAuthGlobalError);
 
-  const ws = useWebSocket();
   const dispatch = useAppDispatch();
 
   const [login] = useLoginMutation();
-
-  useEffect(() => {
-    if (authId) {
-      ws?.send(JSON.stringify({ type: SocketEvents.AUTH_EVENT, id: authId }));
-    }
-  }, [authId, ws]);
 
   const handleSubmit = (formData: ILoginData) => {
     login({ data: formData });
   };
 
-  const handleChange = () => {
-    dispatch(authActions.setGlobalError(null));
-  };
-
-  const initialData = { email: '', password: '' };
-  const validation = Yup.object().shape({
+  const validationSchema = Yup.object().shape({
     email: Yup.string().required('Обязательно для заполнения'),
     password: Yup.string().required('Обязательно для заполнения'),
   });
 
-  return { initialData, validation, isAuth, isFetching, globalError, handleSubmit, handleChange };
+  const formikConfig = useFormik({
+    initialValues: { email: '', password: '' } as ILoginData,
+    onSubmit: (formData: ILoginData) => handleSubmit(formData),
+    enableReinitialize: true,
+  });
+
+  return {
+    validationSchema,
+    isFetching,
+    handleSubmit,
+    handleChange: () => {
+      dispatch(authActions.setGlobalError(null));
+    },
+    formikConfig,
+  };
 };

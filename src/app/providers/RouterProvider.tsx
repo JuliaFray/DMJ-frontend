@@ -1,12 +1,6 @@
 import React, { createElement, lazy, useMemo } from 'react';
 
-import {
-  createBrowserRouter,
-  Outlet,
-  redirect,
-  RouterProvider,
-  useRouteError,
-} from 'react-router-dom';
+import { createBrowserRouter, redirect, RouterProvider, useRouteError } from 'react-router-dom';
 import { compose } from 'redux';
 
 import { articlePageRoute } from 'pages/article';
@@ -98,7 +92,7 @@ export const BrowserRouting = () => {
   const isAuth = useAppSelector(authSelector.getIsAuth);
   const authId = useAppSelector(authSelector.getAuthId);
   const me = useAppSelector(profileSelector.getMyProfile);
-
+  console.log(isAuth);
   return useMemo(() => {
     return (
       <ProfileContext.Provider value={{ isAuth, authId, me }}>

@@ -43,7 +43,8 @@
   },
   "ignorePatterns": [
     ".eslintrc",
-    "build"
+    "build",
+    "src/index.js"
   ],
   "extends": [
     "airbnb",
@@ -129,6 +130,11 @@
           },
           {
             "pattern": "@mui/**",
+            "group": "external",
+            "position": "after"
+          },
+          {
+            "pattern": "@mantine/**",
             "group": "external",
             "position": "after"
           },

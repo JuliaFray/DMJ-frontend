@@ -8,7 +8,7 @@ import customFetchBase from './custom-fetch-base';
 const baseUrl = 'users';
 export const usersApi = createApi({
   reducerPath: 'usersApi',
-  baseQuery: customFetchBase,
+  baseQuery: customFetchBase(baseUrl),
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
     getAllUsers: build.query<
       CountResponseType<IUser[]>,
@@ -25,7 +25,7 @@ export const usersApi = createApi({
         }
 
         return {
-          url: `${baseUrl}?${searchParams.size ? searchParams.toString() : ''}`,
+          url: `?${searchParams.size ? searchParams.toString() : ''}`,
           method: 'GET',
         };
       },

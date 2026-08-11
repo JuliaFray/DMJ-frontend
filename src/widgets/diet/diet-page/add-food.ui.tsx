@@ -30,7 +30,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 
-import { useAddFoodToDiaryMutation, useLazyGetFoodListQuery } from 'shared/api';
+import { useAddFoodToDietPlanMutation, useLazyGetFoodListQuery } from 'shared/api';
 import { theme } from 'shared/themes';
 import { Meal, ProductItem } from 'shared/types';
 import { CustomPagination, Spinner } from 'shared/ui';
@@ -73,7 +73,7 @@ export const AddFood: FC<Props> = ({ openDrawer, setOpenDrawer, day, meals }) =>
   const [checked, setChecked] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [getFoods, { data, isLoading }] = useLazyGetFoodListQuery();
-  const [addFood] = useAddFoodToDiaryMutation();
+  const [addFood] = useAddFoodToDietPlanMutation();
 
   const foods: ProductItem[] = useMemo(
     () => data?.data?.products?.filter((row) => !!Object.keys(row.nutriments).length) || [],

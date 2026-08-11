@@ -7,7 +7,7 @@ import { Alert, Grid } from '@mui/material';
 
 import { DietsFeed } from 'widgets/diet';
 
-import { useLazyGetAllDietQuery } from 'shared/api';
+import { useLazyGetAllDietPlansQuery } from 'shared/api';
 import { ProfileContext } from 'shared/context';
 import { useAppDispatch, useAppSelector, useMedia } from 'shared/hook';
 import { dietSelector } from 'shared/model';
@@ -30,7 +30,7 @@ const DietPage: React.FC<TPostPage> = React.memo(({ isMainPage, userId, isOwner,
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [getAllDietPlans] = useLazyGetAllDietQuery();
+  const [getAllDietPlans] = useLazyGetAllDietPlansQuery();
 
   const dispatch = useAppDispatch();
 
