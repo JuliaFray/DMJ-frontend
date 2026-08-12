@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import { PencilLineIcon } from '@phosphor-icons/react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 
-import EditIcon from '@mui/icons-material/Edit';
-import { Box, Fab, Grid } from '@mui/material';
+import { ActionIcon, Affix, Box, Grid } from '@mantine/core';
 
 import { ArticleFilter, ArticlesFeed } from 'widgets/article';
 import { HomeTabs } from 'widgets/home-tabs';
@@ -21,7 +21,7 @@ import {
   useTagFilter,
 } from 'shared/hook';
 import { pathKeys } from 'shared/lib';
-import { getPopularAuthors, getPopularTags, postsSelector, RootState } from 'shared/model';
+import { getPopularAuthors, getPopularTags, postsSelector } from 'shared/model';
 import { CustomPagination } from 'shared/ui';
 
 import styles from './article-feed-page.module.scss';
@@ -38,13 +38,13 @@ const HomePage: React.FC<TPostPage> = React.memo(
     const { mdMain, mdSide } = useMedia(isFeedPage);
     const { allTags, selectedTags, selectedAuthor, handleAddTag, handleRemoveTag } = useTagFilter();
 
-    const { authId, isAuth } = useContext(ProfileContext);
+    const { authId } = useContext(ProfileContext);
 
     const popularTags = useAppSelector(postsSelector.getFetchedPopularTags);
     const popularAuthors = useAppSelector(postsSelector.getFetchedPopularAuthors);
     const dataLength = useAppSelector(postsSelector.getPostsDataLength);
 
-    const [tabIndex, setTabIndex] = useState<number>(0);
+    const [tabIndex, setTabIndex] = useState<string>('all');
     const [currentPage, setCurrentPage] = useState(1);
 
     const [triggerGetAllArticles] = useLazyGetAllArticlesQuery();
@@ -79,7 +79,7 @@ const HomePage: React.FC<TPostPage> = React.memo(
       if (isFeedPage) {
         query = {
           ...query,
-          tabIndex: JSON.stringify(tabIndex),
+          tabIndex,
         };
       }
 
@@ -99,8 +99,8 @@ const HomePage: React.FC<TPostPage> = React.memo(
     ]);
 
     return (
-      <Grid container spacing={2} width='100%' style={{ margin: 0, padding: 0 }}>
-        <Grid item md={mdMain} width='100%' style={{ margin: 0, padding: 0 }}>
+      <Grid>
+        <Grid.Col span={mdMain}>
           {isFeedPage && <HomeTabs tabIndex={tabIndex} setTabIndex={setTabIndex} />}
           {isFeedPage && <ArticleFilter allTags={allTags} handleRemoveTag={handleRemoveTag} />}
 
@@ -111,9 +111,9 @@ const HomePage: React.FC<TPostPage> = React.memo(
             dataLength={dataLength}
             setCurrentPage={setCurrentPage}
           />
-        </Grid>
+        </Grid.Col>
 
-        <Grid item md={mdSide} className={styles.right}>
+        <Grid.Col span={mdSide} className={styles.right}>
           {isFeedPage && (
             <Box>
               <TagWidget
@@ -131,25 +131,23 @@ const HomePage: React.FC<TPostPage> = React.memo(
               />
             </Box>
           )}
-        </Grid>
+        </Grid.Col>
 
-        {isFeedPage && isAuth && (
-          <Link to={pathKeys.article.editor.root()}>
-            <Fab
-              color='primary'
-              aria-label='edit'
-              style={{ position: 'fixed', bottom: '20px', right: '20px' }}
-            >
-              <EditIcon />
-            </Fab>
-          </Link>
+        {isFeedPage && (
+          <Affix position={{ bottom: 20, right: '20px' }}>
+            <Link to={pathKeys.article.editor.root()}>
+              <ActionIcon style={{ borderRadius: '50%', height: '56px', width: '56px' }}>
+                <PencilLineIcon size={32} />
+              </ActionIcon>
+            </Link>
+          </Affix>
         )}
       </Grid>
     );
   },
 );
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = () => ({
   showMyPosts: false,
   isFeedPage: true,
   userId: '',

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { authApi } from '../../api';
-import { GenericResponseType } from '../../api/api-types';
+import { ErrorResponse, GenericResponseType } from '../../api/api-types';
 import { IUser, Nullable } from '../../types';
 
 type ValidationError = Record<string, any>;
@@ -94,8 +94,11 @@ const authSlice = createSlice({
           state.errors = [];
         }
       })
-      .addMatcher(authApi.endpoints.register.matchRejected, (state) => {
+      .addMatcher(authApi.endpoints.register.matchRejected, (state, { payload }) => {
         state.isFetching = false;
+        state.globalError = (payload?.data as ErrorResponse).message;
+        state.isAuth = false;
+        state.id = null;
         state.showSuccessSend = false;
       })
       //= ====confirmEmail=====//

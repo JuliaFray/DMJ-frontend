@@ -20,7 +20,7 @@ const mutex = new Mutex();
 
 const baseQuery = (customBaseUrl?: string, validateStatus?: any) =>
   fetchBaseQuery({
-    baseUrl: `${baseUrl}${customBaseUrl}`,
+    baseUrl: `${baseUrl}${customBaseUrl || ''}`,
     prepareHeaders: async (headers) => {
       const token = window.localStorage.getItem('token');
       if (token) {
@@ -55,7 +55,7 @@ const customFetchBase =
         const release = await mutex.acquire();
 
         try {
-          const refreshResult: any = await baseQuery(customBaseUrl, validateStatus)(
+          const refreshResult: any = await baseQuery(undefined, validateStatus)(
             { url: '/auth/status' },
             api,
             extraOptions,

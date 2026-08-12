@@ -1,42 +1,32 @@
 import { useEffect } from 'react';
 
+import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import { useRegisterMutation } from 'shared/api';
-import { ErrorResponse, GenericResponseType } from 'shared/api/api-types';
 import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { pathKeys } from 'shared/lib';
 import { authActions, authSelector } from 'shared/model';
-import { RegisterDataType } from 'shared/types/profile.type';
+import { RegisterDataType } from 'shared/types';
 
 export const useRegister = () => {
   const navigate = useNavigate();
 
   const isFetching = useAppSelector(authSelector.getIsFetching);
-  const globalError = useAppSelector(authSelector.getAuthGlobalError);
 
-  const [registerUser, { error, data }] = useRegisterMutation();
+  const [registerUser, { isSuccess }] = useRegisterMutation();
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const err = error as GenericResponseType<ErrorResponse>;
-    if (err?.data?.message) {
-      dispatch(authActions.setGlobalError(err?.data?.message));
+    if (isSuccess) {
+      navigate(pathKeys.login());
     }
-
     return () => {
-      dispatch(authActions.setGlobalError(null));
+      dispatch(authActions.setShowSuccessSend(false));
     };
-  }, [dispatch, error]);
-
-  const initialData = { login: '', email: '', password: '' };
-  const validation = Yup.object().shape({
-    login: Yup.string().required('Обязательно для заполнения'),
-    email: Yup.string().required('Обязательно для заполнения').email('Неверный формат почты'),
-    password: Yup.string().required('Обязательно для заполнения'),
-  });
+  }, [dispatch, isSuccess]);
 
   const handleOnChange = () => {
     dispatch(authActions.setErrors({}));
@@ -47,18 +37,23 @@ export const useRegister = () => {
     registerUser({ data: formData });
   };
 
-  const handleClose = () => {
-    dispatch(authActions.setShowSuccessSend(false));
-    navigate(pathKeys.login());
-  };
+  const formikConfig = useFormik({
+    initialValues: { login: '', email: '', password: '' } as RegisterDataType,
+    onSubmit: (formData: RegisterDataType) => handleSubmit(formData),
+    enableReinitialize: true,
+  });
+
+  const validationSchema = Yup.object().shape({
+    login: Yup.string().required('Обязательно для заполнения'),
+    email: Yup.string().required('Обязательно для заполнения').email('Неверный формат почты'),
+    password: Yup.string().required('Обязательно для заполнения'),
+  });
 
   return {
-    initialData,
-    validation,
+    formikConfig,
+    validationSchema,
     isFetching,
-    globalError,
     handleSubmit,
     handleOnChange,
-    handleClose,
   };
 };

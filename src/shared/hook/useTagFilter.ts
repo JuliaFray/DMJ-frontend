@@ -27,7 +27,15 @@ export const useTagFilter = () => {
     if (isAuthor) {
       setSelectedAuthor(item);
     } else {
-      setSelectedTags((prev) => new Set(prev).add(item));
+      setSelectedTags((prevSet) => {
+        const isDuplicate = Array.from(prevSet).some((it) => it._id === item._id);
+
+        if (isDuplicate) {
+          return prevSet;
+        }
+
+        return new Set([...prevSet, item]);
+      });
     }
   };
 

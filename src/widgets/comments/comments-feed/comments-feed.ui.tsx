@@ -10,9 +10,8 @@ import { Comment } from 'entities/comment';
 
 import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { getUserPostComments, postsSelector } from 'shared/model';
-import { IPost, IComment } from 'shared/types';
+import { IComment, IPost } from 'shared/types';
 
-// eslint-disable-next-line no-restricted-imports
 // eslint-disable-next-line no-restricted-imports
 import { CommonLayout } from '../../../app/layouts';
 
@@ -23,13 +22,7 @@ type IPostCommentPage = {
 const PostCommentItem: React.FC<{ item: IPost }> = ({ item }) => {
   return (
     <>
-      <ArticleCard
-        key={item._id}
-        isOneArticlePage={false}
-        isComments
-        post={item}
-        avatarAbbr={item.userId?.login?.substring(0, 1).toUpperCase() || 'U'}
-      />
+      <ArticleCard key={item._id} isOneArticlePage={false} post={item} />
       <List key={uuidv4()}>
         {item.comments.map((obj: IComment) => (
           <Comment key={uuidv4()} item={obj} isLoading={false} />

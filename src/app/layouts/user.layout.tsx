@@ -1,98 +1,59 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Outlet } from 'react-router-dom';
 
-import MenuIcon from '@mui/icons-material/Menu';
-import { Box, Container, Grid, IconButton, styled, Toolbar } from '@mui/material';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import { AppShell, Box, Burger, Container, Grid, Group } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 import { MenuWidget } from 'widgets/menu-widget';
 
 import { ProfileContext } from 'shared/context';
 import { ScrollToTop } from 'shared/ui';
 
-import styles from './layout.module.scss';
 import { BrandLink, SignInLink, SignOutLink } from './layout.ui';
 
-const drawerWidth = 25;
-
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  variants: [
-    {
-      props: ({ open }) => open,
-      style: {
-        marginLeft: `min(${drawerWidth}%, 400px)`,
-        width: `calc(100% - min(${drawerWidth}%, 400px))`,
-        transition: theme.transitions.create(['width', 'margin'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-      },
-    },
-  ],
-}));
-
 export const UserLayout = () => {
-  const [open, setOpen] = useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+  const [opened, { toggle, close }] = useDisclosure();
 
   return (
     <ProfileContext.Consumer>
       {({ isAuth }) => (
-        <Box display='flex'>
-          <AppBar
-            open={open}
-            position='fixed'
-            sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            className={styles.header}
+        <Box>
+          <AppShell
+            header={{ height: 60 }}
+            padding='md'
+            navbar={{
+              width: 300,
+              breakpoint: 'sm',
+              collapsed: { mobile: !opened },
+            }}
           >
-            <Toolbar className={styles.toolbar}>
-              <IconButton
-                color='inherit'
-                aria-label='open drawer'
-                onClick={handleDrawerOpen}
-                edge='start'
-                sx={[
-                  {
-                    marginRight: 5,
-                  },
-                  open && { display: 'none' },
-                ]}
-              >
-                <MenuIcon />
-              </IconButton>
+            {/* 1. Header Container */}
+            <AppShell.Header>
+              <Group h='100%' px='md' justify='space-between'>
+                <Burger opened={opened} onClick={toggle} hiddenFrom='sm' size='sm' />
+                <BrandLink />
+                {isAuth ? <SignOutLink /> : <SignInLink />}
+              </Group>
+            </AppShell.Header>
 
-              <BrandLink />
-              {isAuth ? <SignOutLink /> : <SignInLink />}
-            </Toolbar>
-          </AppBar>
+            {/* 2. Navbar area */}
+            <AppShell.Navbar>
+              <MenuWidget close={close} />
+            </AppShell.Navbar>
 
-          <Container fixed maxWidth='xl' sx={{ flexGrow: 1, marginTop: '80px' }}>
-            <Grid container spacing={2} className={styles.main}>
-              <Grid item md={3} className={styles.left}>
-                <MenuWidget open={open} setOpen={setOpen} />
-              </Grid>
-
-              <Grid item md={9} width='100%' style={{ minHeight: 'calc(100vh - 70px)' }}>
-                <Outlet />
-              </Grid>
-            </Grid>
-            <ScrollToTop />
-          </Container>
+            {/* 3. Main content area */}
+            <AppShell.Main>
+              <Container strategy='grid' size='90%'>
+                <Grid>
+                  <Grid.Col span={12}>
+                    <Outlet />
+                  </Grid.Col>
+                </Grid>
+                <ScrollToTop />
+              </Container>
+            </AppShell.Main>
+          </AppShell>
         </Box>
       )}
     </ProfileContext.Consumer>

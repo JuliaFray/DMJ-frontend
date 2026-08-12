@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { Chip, Container } from '@mui/material';
+import { Chip, Container, Group } from '@mantine/core';
 
 import { TChipData } from 'shared/types';
 
@@ -11,25 +11,16 @@ interface Props {
 
 export const ArticleFilter: FC<Props> = ({ allTags, handleRemoveTag }) => {
   return (
-    <Container
-      sx={{
-        display: 'flex',
-        justifyContent: 'start',
-        gap: '10px',
-        flexWrap: 'wrap',
-        margin: '12px',
-      }}
-    >
-      {Array.from(allTags).map((tag, index) => (
-        <Chip
-          key={index}
-          color='primary'
-          clickable
-          size='small'
-          label={tag.value}
-          onDelete={() => handleRemoveTag(tag)}
-        />
-      ))}
+    <Container h={50} mt='md'>
+      <Chip.Group multiple value={allTags.map((t) => t._id)}>
+        <Group>
+          {Array.from(allTags).map((tag, index) => (
+            <Chip variant='filled' key={index} value={tag._id} onClick={() => handleRemoveTag(tag)}>
+              {tag.value}
+            </Chip>
+          ))}
+        </Group>
+      </Chip.Group>
     </Container>
   );
 };

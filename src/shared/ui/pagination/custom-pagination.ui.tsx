@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
-import { Pagination } from '@mui/material';
+import { Pagination } from '@mantine/core';
 
 import style from './custom-pagination.module.scss';
 
@@ -13,24 +13,24 @@ type TPagination = {
 export const CustomPagination: React.FC<TPagination> = ({ page, dataLength, setCurrentPage }) => {
   const count: number = Math.ceil(dataLength / 20);
 
-  const handleOnPageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
+  const handleOnPageChange = (newPage: number) => {
     setCurrentPage(newPage);
   };
 
+  if (count < 2) {
+    return null;
+  }
+
   return (
-    <div className={style.paginationWrapper} style={{ display: count > 1 ? 'block' : 'none' }}>
-      {count > 1 && (
-        <Pagination
-          className={style.pagination}
-          siblingCount={1}
-          page={page}
-          onChange={handleOnPageChange}
-          boundaryCount={1}
-          count={count}
-          variant='outlined'
-          color='primary'
-        />
-      )}
-    </div>
+    <Pagination
+      className={style.pagination}
+      color='teal'
+      withEdges
+      siblings={1}
+      defaultValue={page}
+      onChange={handleOnPageChange}
+      boundaries={1}
+      total={count}
+    />
   );
 };

@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 
-import { ArrowDropDown, ArrowDropUp, Grade } from '@mui/icons-material';
-import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined';
-import { BottomNavigation, BottomNavigationAction, Tooltip } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+import {
+  BookmarkSimpleIcon,
+  ChatTextIcon,
+  EyeIcon,
+  ShareNetworkIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
+} from '@phosphor-icons/react';
 
-import { useAppDispatch, useAppSelector } from 'shared/hook';
-import { authSelector, markPostFavorite, togglePostRating } from 'shared/model';
+import { ActionIcon, Group, Indicator } from '@mantine/core';
+
+import { useAppDispatch } from 'shared/hook';
+import { markPostFavorite, togglePostRating } from 'shared/model';
 import { IPost } from 'shared/types';
 
 export type ICardActions = {
   post: IPost;
-  isCard: boolean;
 };
 
 export const CustomCardActions: React.FC<ICardActions> = ({ post }) => {
-  const isAuth = useAppSelector(authSelector.getIsAuth);
   const [isFavorite, setIsFavorite] = useState(!!post.likes);
   const [rating, setRating] = useState(post.rating || 0);
   const [userRating, setUserRating] = useState(post.userRating || 0);
@@ -29,58 +32,78 @@ export const CustomCardActions: React.FC<ICardActions> = ({ post }) => {
   };
 
   const onClickRating = (val: number) => {
-    setRating(rating + val);
+    setRating(+rating + val);
     setUserRating(userRating + val);
     dispatch(togglePostRating({ postId: post._id, rating: userRating + val }));
   };
 
   return (
-    <BottomNavigation showLabels sx={{ width: '100%', justifyContent: 'space-between' }}>
-      {isAuth && (
-        <>
-          <BottomNavigationAction
-            onClick={() => onClickRating(-1)}
-            disabled={userRating === -1}
-            icon={
-              <ArrowDropDown
-                style={{
-                  color: '#8d5676',
-                  opacity: userRating === -1 ? '0.4' : '1',
-                }}
-              />
-            }
+    <Group justify='space-between'>
+      <ActionIcon.Group>
+        <ActionIcon
+          onClick={() => (userRating === -1 ? null : onClickRating(-1))}
+          variant='subtle'
+          aria-label='Decrement value'
+        >
+          <ThumbsDownIcon
+            size={20}
+            color='var(--mantine-color-red-text)'
+            weight={userRating === -1 ? 'fill' : 'light'}
           />
-          <BottomNavigationAction showLabel label={rating.toString()} />
-          <BottomNavigationAction
-            onClick={() => onClickRating(1)}
-            disabled={userRating === 1}
-            icon={
-              <ArrowDropUp
-                style={{
-                  color: '#039a9a',
-                  opacity: userRating === 1 ? '0.4' : '1',
-                }}
-              />
-            }
+        </ActionIcon>
+
+        <ActionIcon.GroupSection
+          variant='subtle'
+          bg='var(--mantine-color-body)'
+          miw={60}
+          color={rating > 0 ? 'var(--mantine-color-teal-text)' : 'var(--mantine-color-red-text)'}
+        >
+          {rating.toString()}
+        </ActionIcon.GroupSection>
+
+        <ActionIcon
+          onClick={() => (userRating === 1 ? null : onClickRating(1))}
+          variant='subtle'
+          aria-label='Increment value'
+        >
+          <ThumbsUpIcon
+            size={20}
+            color='var(--mantine-color-teal-text)'
+            weight={userRating === 1 ? 'fill' : 'light'}
           />
-        </>
-      )}
-      <BottomNavigationAction key='viewsCount' label={post.viewsCount} icon={<EyeIcon />} />
-      <BottomNavigationAction key='comments' label={post.comments?.length} icon={<CommentIcon />} />
-      {isAuth && (
-        <BottomNavigationAction
-          showLabel
-          key='isFavorite'
-          label=' '
-          icon={
-            <Tooltip title='В избранное'>
-              <IconButton aria-label='add to favorites' onClick={onClickFavorite}>
-                <Grade color={isFavorite ? 'secondary' : 'disabled'} />
-              </IconButton>
-            </Tooltip>
-          }
-        />
-      )}
-    </BottomNavigation>
+        </ActionIcon>
+      </ActionIcon.Group>
+
+      <Group>
+        <Indicator inline label={post.viewsCount} size={16} color='var(--mantine-color-cyan-6)'>
+          <ActionIcon variant='subtle' color='gray' aria-label='View'>
+            <EyeIcon size={20} color='var(--mantine-color-cyan-6)' />
+          </ActionIcon>
+        </Indicator>
+
+        <Indicator
+          inline
+          label={post.comments.length}
+          size={16}
+          color='var(--mantine-color-violet-6)'
+        >
+          <ActionIcon variant='subtle' color='gray' aria-label='Comments'>
+            <ChatTextIcon size={20} color='var(--mantine-color-violet-6)' />
+          </ActionIcon>
+        </Indicator>
+
+        <ActionIcon variant='subtle' color='gray' aria-label='Share'>
+          <ShareNetworkIcon size={20} color='var(--mantine-color-blue-6)' />
+        </ActionIcon>
+
+        <ActionIcon onClick={onClickFavorite} variant='subtle' color='gray' aria-label='Bookmark'>
+          <BookmarkSimpleIcon
+            size={20}
+            color='var(--mantine-color-yellow-7)'
+            weight={isFavorite ? 'fill' : 'light'}
+          />
+        </ActionIcon>
+      </Group>
+    </Group>
   );
 };

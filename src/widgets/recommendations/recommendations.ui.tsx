@@ -8,12 +8,7 @@ export const Recommendations: React.FC<{ posts: IPost[] }> = ({ posts }) => {
   return (
     <ArticleCarousel posts={posts}>
       {posts.map((item) => (
-        <ArticleCard
-          isOneArticlePage
-          key={item._id}
-          post={item}
-          avatarAbbr={item.userId?.login?.substring(0, 1).toUpperCase() || 'U'}
-        />
+        <ArticleCard isOneArticlePage key={item._id} post={item} />
       ))}
     </ArticleCarousel>
   );

@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { Grid } from '@mui/material';
+import { Grid } from '@mantine/core';
 
 import { CommentsBlock } from 'widgets/comments';
 import { Recommendations } from 'widgets/recommendations';
@@ -38,8 +38,8 @@ export const ArticlePage: React.FC = React.memo(() => {
   }, [id, dispatch, getOnePost]);
 
   return (
-    <Grid container spacing={2} width='100%' style={{ margin: 0, padding: 0 }}>
-      <Grid item md={mdMain} width='100%' style={{ margin: 0, padding: 0 }}>
+    <Grid>
+      <Grid.Col span={mdMain}>
         {post && (
           <Article
             post={post}
@@ -54,11 +54,11 @@ export const ArticlePage: React.FC = React.memo(() => {
             {isAuth && <CreateComment postId={post._id} />}
           </CommentsBlock>
         )}
-      </Grid>
+      </Grid.Col>
 
-      <Grid item md={mdSide} className={styles.right}>
+      <Grid.Col span={mdSide} className={styles.right}>
         <Recommendations posts={recommendations} />
-      </Grid>
+      </Grid.Col>
     </Grid>
   );
 });

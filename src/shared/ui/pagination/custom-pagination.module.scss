@@ -1,14 +1,8 @@
-.paginationWrapper {
+.pagination {
+  display: flex;
   height: 50px;
   width: 100%;
-
-  .pagination {
-    display: flex;
-
-    ul {
-      margin: 0 auto;
-    }
-  }
+  justify-content: center;
 }
 
 

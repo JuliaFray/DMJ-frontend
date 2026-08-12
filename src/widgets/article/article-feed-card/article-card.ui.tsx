@@ -1,156 +1,80 @@
 import React from 'react';
 
 import moment from 'moment/moment';
-import { Link } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Box, Chip, Tooltip } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-
-import { styles } from 'entities/article';
+import { Avatar, Badge, Card, Group, Image, Text } from '@mantine/core';
 
 import { getFullName, NO_AVATAR, pathKeys } from 'shared/lib';
-import { palette, theme } from 'shared/themes';
 import { IPost, TChipData } from 'shared/types';
 
+import classes from './ArticleCardFooter.module.css';
 import { CustomCardActions } from './custom-card-actions.ui';
 
 export type PostCardProps = {
   post: IPost;
-  avatarAbbr: string;
   isOneArticlePage: boolean;
-  isComments?: boolean;
   allTags?: TChipData[];
   handleAddTag?: (item: TChipData, isAuthor?: boolean) => void;
 };
 
 export const ArticleCard: React.FC<PostCardProps> = ({
-  avatarAbbr,
   post,
   isOneArticlePage,
-  isComments,
   allTags,
   handleAddTag,
 }) => {
-  const height = isOneArticlePage ? '200px' : isComments ? '100px' : '300px';
-  const titleRows = 2;
-  const bodyRows = 2;
-  const image =
-    (post.userId.avatar && `data:image/jpeg;base64,${post.userId.avatar?.data}`) || NO_AVATAR;
+  const image = post.userId.avatar && `data:image/jpeg;base64,${post.userId.avatar?.data}`;
 
   return (
-    <Card
-      className={styles.default.card}
-      sx={{
-        height,
-      }}
-    >
-      <CardHeader
-        sx={{
-          height: '20%',
-          '& .MuiTypography-subtitle1': {
-            overflow: 'hidden',
-            display: '-webkit-box',
-            WebkitLineClamp: titleRows,
-            WebkitBoxOrient: 'vertical',
-          },
-        }}
-        avatar={
-          !isOneArticlePage && (
-            <Avatar
-              sx={{ bgcolor: palette.default.error }}
-              alt={post.userId.login}
-              src={image}
-              aria-label='post-avatar'
+    <Card withBorder padding='lg' radius='md' className={classes.card}>
+      {image && (
+        <Card.Section mb='lg'>
+          <Image src={image} alt={NO_AVATAR} height={180} />
+        </Card.Section>
+      )}
+
+      {!isOneArticlePage && (
+        <Group>
+          {post.tags?.map((tag) => (
+            <Badge
+              key={tag._id}
+              variant={allTags?.some((t) => t._id === tag._id) ? 'filled' : 'outline'}
+              onClick={() => handleAddTag?.(tag)}
+              style={{ cursor: 'pointer' }}
             >
-              {avatarAbbr}
-            </Avatar>
-          )
-        }
-        title={
-          <Link to={pathKeys.user.byId({ id: post.userId._id })}>
-            <Typography fontWeight={400} variant='body1' color={theme.palette.text.primary}>
-              {getFullName(post.userId)}
-            </Typography>
-          </Link>
-        }
-        subheader={
-          <Typography variant='body2' color={theme.palette.text.secondary}>
-            {moment(post.createdAt).locale('ru').fromNow()}
-          </Typography>
-        }
-        action={
-          <Link to={pathKeys.article.byId({ id: post._id })}>
-            <Tooltip title='Читать далее'>
-              <IconButton aria-label='forward'>
-                <ChevronRightIcon />
-              </IconButton>
-            </Tooltip>
-          </Link>
-        }
-      />
-      {!isComments && (
-        <>
-          <CardContent
-            className={styles.default.cardContent}
-            sx={{
-              '.MuiTypography-body1': {
-                overflow: 'hidden',
-                display: '-webkit-box',
-                WebkitLineClamp: bodyRows,
-                WebkitBoxOrient: 'vertical',
-                textAlign: 'justify',
-              },
-              '.MuiTypography-h6': {
-                overflow: 'hidden',
-                display: '-webkit-box',
-                WebkitLineClamp: titleRows,
-                WebkitBoxOrient: 'vertical',
-                textAlign: 'justify',
-              },
-            }}
-          >
-            <Typography fontWeight={500} variant='h6' style={{ marginBottom: '10px' }}>
-              <Link replace to={pathKeys.article.byId({ id: post._id })}>
-                {post.title}
-              </Link>
-            </Typography>
+              {tag.value}
+            </Badge>
+          ))}
+        </Group>
+      )}
 
-            <Typography variant='body1' color='text.secondary'>
-              {post.text}
-            </Typography>
-          </CardContent>
+      <Text
+        className={classes.title}
+        component='a'
+        href={pathKeys.article.byId({ id: post._id })}
+        target='_blank'
+        rel='noreferrer'
+      >
+        {post.title}
+      </Text>
 
-          {!isOneArticlePage && (
-            <Box className={styles.default.cardTags}>
-              {!!post.tags.length &&
-                post.tags.map((tag: TChipData) => (
-                  <Chip
-                    key={uuidv4()}
-                    color='primary'
-                    size='small'
-                    label={`${tag.value}`}
-                    className={styles.default.tag}
-                    variant={allTags?.some((t) => t._id === tag._id) ? 'filled' : 'outlined'}
-                    onClick={() => handleAddTag?.(tag)}
-                  />
-                ))}
-            </Box>
-          )}
+      <Group mt='lg'>
+        {!isOneArticlePage && (
+          <Avatar src={post.userId.login} radius='sm' alt={post.userId.login} />
+        )}
 
-          {!isOneArticlePage && (
-            <CardActions disableSpacing>
-              <CustomCardActions post={post} isCard />
-            </CardActions>
-          )}
-        </>
+        <div>
+          <Text c='bright' fw={500}>
+            {getFullName(post.userId)}
+          </Text>
+          <Text size='xs'>{moment(post.createdAt).locale('ru').fromNow()}</Text>
+        </div>
+      </Group>
+
+      {!isOneArticlePage && (
+        <Card.Section className={classes.footer}>
+          <CustomCardActions post={post} />
+        </Card.Section>
       )}
     </Card>
   );

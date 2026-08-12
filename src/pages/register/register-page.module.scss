@@ -4,18 +4,11 @@
   width: 400px;
   padding: 50px;
   margin: 10% auto;
-  background-color: $white;
 
   .title {
     text-align: center !important;
     font-weight: bold !important;
-    margin-bottom: 30px !important;
   }
-
-  .field:not(:last-of-type) {
-    margin-bottom: 25px !important;
-  }
-
 
   .avatar {
     display: flex;
@@ -28,6 +21,7 @@
     display: flex;
     justify-content: center;
     color: $grey;
+    text-decoration: none;
 
     &:hover {
       color: #373a3c;
@@ -43,7 +37,3 @@
     color: $error;
   }
 }
-
-//.snackbar {
-//  color: #fff;
-//}

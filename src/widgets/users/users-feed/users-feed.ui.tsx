@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Grid } from '@mui/material';
+import { Grid } from '@mantine/core';
 
 import { UserRow, UserRowSkeleton } from 'widgets/users';
 
@@ -50,26 +50,18 @@ export const UsersFeed: React.FC<IUsersMain> = ({ currentPage, isFollowers }) =>
   };
 
   return (
-    <div style={{ position: 'relative', margin: 0, padding: 0 }}>
-      <Grid
-        container
-        sx={{ margin: 0, padding: 0 }}
-        rowSpacing={{ xs: 1, sm: 2, md: 3 }}
-        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        style={{ marginBottom: '30px' }}
-      >
-        {isFetching
-          ? [...Array(5)].map(() => (
-              <Grid item xs={6} key={uuidv4()}>
-                <UserRowSkeleton />
-              </Grid>
-            ))
-          : users.map((u: IUser) => (
-              <Grid item xs={6} key={u._id}>
-                <UserRow user={u} key={u._id} toggleFollow={toggleFollow} />
-              </Grid>
-            ))}
-      </Grid>
-    </div>
+    <Grid style={{ marginBottom: '30px' }}>
+      {isFetching
+        ? [...Array(5)].map(() => (
+            <Grid.Col key={uuidv4()}>
+              <UserRowSkeleton />
+            </Grid.Col>
+          ))
+        : users.map((u: IUser) => (
+            <Grid.Col key={u._id}>
+              <UserRow user={u} key={u._id} toggleFollow={toggleFollow} />
+            </Grid.Col>
+          ))}
+    </Grid>
   );
 };

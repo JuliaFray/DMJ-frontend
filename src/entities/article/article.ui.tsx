@@ -27,7 +27,7 @@ import CardContent from '@mui/material/CardContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import IconButton from '@mui/material/IconButton';
 
-import { CustomCardActions } from 'widgets/article';
+import { ArticleCard, CustomCardActions } from 'widgets/article';
 
 import { ArticleSkeleton } from 'entities/article';
 
@@ -61,6 +61,8 @@ export const Article: FC<ArticleProps> = ({ post, isFullPost, isLoading, isEdita
   if (isLoading) {
     return <ArticleSkeleton />;
   }
+
+  // return <ArticleCard post={post} isOneArticlePage />;
 
   return (
     <>
@@ -138,7 +140,7 @@ export const Article: FC<ArticleProps> = ({ post, isFullPost, isLoading, isEdita
           </Box>
         )}
         <CardActions disableSpacing>
-          <CustomCardActions post={post} isCard={false} />
+          <CustomCardActions post={post} />
         </CardActions>
       </Card>
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>

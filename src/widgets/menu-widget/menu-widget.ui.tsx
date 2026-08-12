@@ -1,12 +1,4 @@
-import React, {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -14,14 +6,10 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ArticleIcon from '@mui/icons-material/Article';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import BallotIcon from '@mui/icons-material/Ballot';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
 import StraightenIcon from '@mui/icons-material/Straighten';
-import { Button, CSSObject, Divider, styled, Tooltip, Typography } from '@mui/material';
-import MuiDrawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
+import { Button, Divider, Tooltip, Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -35,62 +23,6 @@ import { appActions } from 'shared/model';
 import { theme } from 'shared/themes';
 
 import styles from './menu-widget.module.scss';
-
-const drawerWidth = 25;
-
-const openedMixin = (): CSSObject => ({
-  width: `min(${drawerWidth}%, 400px)`,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: 'hidden',
-});
-
-const closedMixin = (): CSSObject => ({
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
-
-const DrawerHeader = styled('div')(() => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  backgroundColor: theme.palette.primary.main,
-}));
-
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(() => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: 'nowrap',
-  boxSizing: 'border-box',
-  variants: [
-    {
-      props: ({ open }) => open,
-      style: {
-        ...openedMixin(),
-        '& .MuiDrawer-paper': openedMixin(),
-      },
-    },
-    {
-      props: ({ open }) => !open,
-      style: {
-        ...closedMixin(),
-        '& .MuiDrawer-paper': closedMixin(),
-      },
-    },
-  ],
-}));
 
 type IItem = {
   name: string;
@@ -128,12 +60,11 @@ const items: IItem[] = [
   { name: 'Настройки', pathname: 'settings', link: pathKeys.root, icon: <SettingsIcon /> },
 ];
 
-interface Props {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+interface MenuWidgetProps {
+  close: () => void;
 }
 
-export const MenuWidget: FC<Props> = ({ open, setOpen }) => {
+export const MenuWidget: FC<MenuWidgetProps> = ({ close }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -143,6 +74,7 @@ export const MenuWidget: FC<Props> = ({ open, setOpen }) => {
 
   useEffect(() => {
     setSelected(pathname?.replaceAll('/', ''));
+    close();
   }, [pathname]);
 
   const dispatch = useAppDispatch();
@@ -189,150 +121,110 @@ export const MenuWidget: FC<Props> = ({ open, setOpen }) => {
     return () => ws.removeEventListener('message', handleWS);
   }, [handleWS, ws]);
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
   return (
-    <Drawer variant='permanent' open={open}>
-      <DrawerHeader>
-        <IconButton onClick={handleDrawerClose}>
-          {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon color='info' />}
-        </IconButton>
-      </DrawerHeader>
-      <Divider />
-      <List>
-        <ListItem className={styles.listItem} disablePadding sx={{ display: 'block' }}>
-          <Link to={authId ? pathKeys.user.byId({ id: authId }) : pathKeys.login()}>
-            <ListItemButton
+    <List>
+      <ListItem className={styles.listItem} disablePadding sx={{ display: 'block' }}>
+        <Link to={authId ? pathKeys.user.byId({ id: authId }) : pathKeys.login()}>
+          <ListItemButton
+            sx={[
+              {
+                minHeight: 48,
+                px: 2.5,
+                justifyContent: 'initial',
+              },
+            ]}
+          >
+            <ListItemIcon
               sx={[
                 {
-                  minHeight: 48,
-                  px: 2.5,
+                  minWidth: 0,
+                  justifyContent: 'center',
+                  mr: 3,
                 },
-                open
-                  ? {
-                      justifyContent: 'initial',
-                    }
-                  : {
-                      justifyContent: 'center',
-                    },
               ]}
             >
-              <ListItemIcon
+              <AccountCircleIcon />
+            </ListItemIcon>
+
+            <ListItemText
+              sx={[
+                {
+                  opacity: 1,
+                },
+              ]}
+            >
+              {!authId && <Typography color={theme.palette.text.primary}>Гость</Typography>}
+              {!!authId && (
+                <>
+                  <Typography color={theme.palette.text.primary}>{me?.login}</Typography>
+                  <Typography color={theme.palette.text.secondary}>{me?.email}</Typography>
+                </>
+              )}
+            </ListItemText>
+          </ListItemButton>
+        </Link>
+
+        {!authId && (
+          <Button
+            type='button'
+            size='large'
+            variant='contained'
+            style={{ margin: '8px auto', width: '90%', display: 'block' }}
+            onClick={() => navigate(pathKeys.login())}
+          >
+            Войти
+          </Button>
+        )}
+      </ListItem>
+
+      <Divider />
+
+      {items.map((item, i) => (
+        <ListItem
+          key={i}
+          disablePadding
+          sx={{ display: 'block' }}
+          className={selected?.startsWith(item.pathname) ? `${styles.active}` : ``}
+        >
+          <Link key={i} className={styles.linkItem} to={item.link}>
+            <Tooltip title={item.name}>
+              <ListItemButton
                 sx={[
                   {
-                    minWidth: 0,
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    px: 2.5,
                   },
-                  open
-                    ? {
-                        mr: 3,
-                      }
-                    : {
-                        mr: 'auto',
-                      },
+                  {
+                    justifyContent: 'initial',
+                  },
                 ]}
               >
-                <AccountCircleIcon />
-              </ListItemIcon>
-
-              <ListItemText
-                sx={[
-                  open
-                    ? {
-                        opacity: 1,
-                      }
-                    : {
-                        opacity: 0,
-                      },
-                ]}
-              >
-                {!authId && <Typography color={theme.palette.text.primary}>Гость</Typography>}
-                {!!authId && (
-                  <>
-                    <Typography color={theme.palette.text.primary}>{me?.login}</Typography>
-                    <Typography color={theme.palette.text.secondary}>{me?.email}</Typography>
-                  </>
-                )}
-              </ListItemText>
-            </ListItemButton>
-          </Link>
-
-          {!authId && open && (
-            <Button
-              type='button'
-              size='large'
-              variant='contained'
-              style={{ margin: '8px auto', width: '90%', display: 'block' }}
-              onClick={() => navigate(pathKeys.login())}
-            >
-              Войти
-            </Button>
-          )}
-        </ListItem>
-
-        <Divider />
-
-        {items.map((item, i) => (
-          <ListItem
-            key={i}
-            disablePadding
-            sx={{ display: 'block' }}
-            className={selected?.startsWith(item.pathname) ? `${styles.active}` : ``}
-          >
-            <Link key={i} className={styles.linkItem} to={item.link}>
-              <Tooltip title={item.name}>
-                <ListItemButton
+                <ListItemIcon
                   sx={[
                     {
-                      minHeight: 48,
-                      px: 2.5,
+                      minWidth: 0,
+                      justifyContent: 'center',
                     },
-                    open
-                      ? {
-                          justifyContent: 'initial',
-                        }
-                      : {
-                          justifyContent: 'center',
-                        },
+                    {
+                      mr: 3,
+                    },
                   ]}
                 >
-                  <ListItemIcon
-                    sx={[
-                      {
-                        minWidth: 0,
-                        justifyContent: 'center',
-                      },
-                      open
-                        ? {
-                            mr: 3,
-                          }
-                        : {
-                            mr: 'auto',
-                          },
-                    ]}
-                  >
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={item.name}
-                    sx={[
-                      open
-                        ? {
-                            opacity: 1,
-                          }
-                        : {
-                            opacity: 0,
-                          },
-                    ]}
-                  />
-                </ListItemButton>
-              </Tooltip>
-            </Link>
-          </ListItem>
-        ))}
-      </List>
-    </Drawer>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.name}
+                  sx={[
+                    {
+                      opacity: 1,
+                    },
+                  ]}
+                />
+              </ListItemButton>
+            </Tooltip>
+          </Link>
+        </ListItem>
+      ))}
+    </List>
   );
 };

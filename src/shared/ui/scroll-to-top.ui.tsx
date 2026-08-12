@@ -1,44 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Fab } from '@mui/material';
+import { ArrowFatLinesUpIcon } from '@phosphor-icons/react';
+
+import { ActionIcon, Affix, Transition } from '@mantine/core';
+import { useWindowScroll } from '@mantine/hooks';
 
 export function ScrollToTop() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
-  useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.pageYOffset > 500) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    window.addEventListener('scroll', toggleVisibility);
-
-    return () => window.removeEventListener('scroll', toggleVisibility);
-  }, []);
+  const [scroll, scrollTo] = useWindowScroll();
 
   return (
-    <div>
-      {isVisible && (
-        <Fab
-          onClick={scrollToTop}
-          color='primary'
-          aria-label='edit'
-          style={{ position: 'fixed', bottom: '20px', right: '10%' }}
-        >
-          <KeyboardArrowUpIcon />
-        </Fab>
-      )}
-    </div>
+    <Affix position={{ bottom: 20, right: '15%' }}>
+      <Transition transition='slide-up' mounted={scroll.y > 500}>
+        {(transitionStyles) => (
+          <ActionIcon
+            style={{ ...transitionStyles, borderRadius: '50%', height: '56px', width: '56px' }}
+            onClick={() => scrollTo({ y: 0 })}
+          >
+            <ArrowFatLinesUpIcon size={32} />
+          </ActionIcon>
+        )}
+      </Transition>
+    </Affix>
   );
 }

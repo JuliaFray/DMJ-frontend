@@ -3,13 +3,12 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import { Grid, useMediaQuery } from '@mui/material';
+import { Grid } from '@mantine/core';
 
 import { UsersFeed } from 'widgets/users';
 
 import { useAppSelector } from 'shared/hook';
-import { RootState, usersSelector } from 'shared/model';
-import { theme } from 'shared/themes';
+import { usersSelector } from 'shared/model';
 import { CustomPagination } from 'shared/ui';
 
 export type IUsersPage = {
@@ -17,16 +16,13 @@ export type IUsersPage = {
   isFollowers: boolean;
 };
 
-const UsersPage: React.FC<IUsersPage> = React.memo((props, context) => {
-  const isMore1200px = useMediaQuery(theme.breakpoints.up('lg'));
-  const mdMain = props.isMainPage && isMore1200px ? 9 : 12;
-
+const UsersPage: React.FC<IUsersPage> = React.memo((props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const dataLength = useAppSelector(usersSelector.getTotalCount);
 
   return (
-    <Grid container spacing={2} width='100%' style={{ margin: 0, padding: 0 }}>
-      <Grid item md={mdMain} width='100%' style={{ margin: 0, padding: 0 }}>
+    <Grid>
+      <Grid.Col>
         <UsersFeed
           isFollowers={props.isFollowers}
           currentPage={currentPage}
@@ -37,12 +33,12 @@ const UsersPage: React.FC<IUsersPage> = React.memo((props, context) => {
           dataLength={dataLength}
           setCurrentPage={setCurrentPage}
         />
-      </Grid>
+      </Grid.Col>
     </Grid>
   );
 });
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = () => ({
   isMainPage: true,
   isFollowers: false,
 });
