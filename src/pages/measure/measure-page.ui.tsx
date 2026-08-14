@@ -1,11 +1,12 @@
 import React from 'react';
 
-import ConstructionIcon from '@mui/icons-material/Construction';
-import { Alert } from '@mui/material';
+import { HammerIcon } from '@phosphor-icons/react';
+
+import { Alert } from '@mantine/core';
 
 export const MeasurePage = () => {
   return (
-    <Alert icon={<ConstructionIcon />} severity='info'>
+    <Alert variant='light' color='blue' title='Ой' icon={<HammerIcon />}>
       Раздел находится в разработке
     </Alert>
   );

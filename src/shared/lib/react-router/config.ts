@@ -76,4 +76,9 @@ export const pathKeys = {
       return pathKeys.root.concat('measure');
     },
   },
+  training: {
+    root() {
+      return pathKeys.root.concat('training');
+    },
+  },
 };

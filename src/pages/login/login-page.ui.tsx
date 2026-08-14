@@ -1,11 +1,11 @@
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 
 import { Form, Formik } from 'formik';
 import { Link, Navigate } from 'react-router-dom';
 
 import { Box, Button, LoadingOverlay, Paper, Stack, Title } from '@mantine/core';
 
-import { ProfileContext } from 'shared/context';
+import { useAuth } from 'shared/context';
 import { pathKeys } from 'shared/lib';
 import { ILoginData } from 'shared/types';
 import { InputWrapper } from 'shared/ui';
@@ -14,7 +14,7 @@ import { useLogin } from './login-page.hook';
 import styles from './login-page.module.scss';
 
 export const LoginPage: FC = () => {
-  const { isAuth } = useContext(ProfileContext);
+  const { isAuth } = useAuth();
 
   const { formikConfig, validationSchema, isFetching, handleSubmit, handleChange } = useLogin();
 

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { Grid } from '@mantine/core';
+import { Grid, Skeleton } from '@mantine/core';
 
 import { CommentsBlock } from 'widgets/comments';
 import { Recommendations } from 'widgets/recommendations';
@@ -12,7 +12,7 @@ import { CreateComment } from 'features/create-comment';
 import { Article } from 'entities/article';
 
 import { useLazyGetOneArticleQuery } from 'shared/api';
-import { ProfileContext } from 'shared/context';
+import { useAuth } from 'shared/context';
 import { useAppDispatch, useAppSelector, useMedia } from 'shared/hook';
 import { getRecommendationPost, postsSelector } from 'shared/model';
 
@@ -22,7 +22,7 @@ export const ArticlePage: React.FC = React.memo(() => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
 
-  const { authId, isAuth } = useContext(ProfileContext);
+  const { authId } = useAuth();
 
   const isFetching = useAppSelector(postsSelector.getPostsIsFetching);
   const post = useAppSelector(postsSelector.getPost);
@@ -37,23 +37,22 @@ export const ArticlePage: React.FC = React.memo(() => {
     }
   }, [id, dispatch, getOnePost]);
 
+  if (!post) {
+    return null;
+  }
+
   return (
     <Grid>
       <Grid.Col span={mdMain}>
-        {post && (
-          <Article
-            post={post}
-            isFullPost
-            isLoading={isFetching}
-            isEditable={post.userId._id === authId}
-          />
-        )}
+        <Skeleton visible={isFetching}>
+          <Article post={post} isEditable={post.userId._id === authId} />
+        </Skeleton>
 
-        {post && (
-          <CommentsBlock items={post.comments} isLoading={isFetching}>
-            {isAuth && <CreateComment postId={post._id} />}
+        <Skeleton visible={isFetching}>
+          <CommentsBlock items={post.comments}>
+            <CreateComment postId={post._id} />
           </CommentsBlock>
-        )}
+        </Skeleton>
       </Grid.Col>
 
       <Grid.Col span={mdSide} className={styles.right}>

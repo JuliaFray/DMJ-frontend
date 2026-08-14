@@ -20,7 +20,8 @@ import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
-import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
+import { useWebSocket } from 'shared/context';
+import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { getFullName, NO_AVATAR, pathKeys, SocketEvents } from 'shared/lib';
 import { appActions, appSelector, authSelector } from 'shared/model';
 import { IUser } from 'shared/types';

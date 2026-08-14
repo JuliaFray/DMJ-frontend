@@ -1,26 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
-import { useParams } from 'react-router-dom';
-
 import { Grid, Paper } from '@mui/material';
 
 import { DiaryBlock } from 'widgets/diary';
+import { AddFood } from 'widgets/diet';
 
-import { useLazyGetDiaryByDayQuery } from 'shared/api/diary-api';
-import { useAppDispatch, useMedia } from 'shared/hook';
+import { useLazyGetDiaryByDayQuery } from 'shared/api';
+import { useMedia } from 'shared/hook';
 import { Meal } from 'shared/types';
-import { WeekCalendar } from 'shared/ui/week-calendar';
-import { TODAY } from 'shared/ui/week-calendar/constants';
-import { DateType } from 'shared/ui/week-calendar/useWeekCalendar';
-
-import { AddFood } from '../../widgets/diet/diet-page/add-food.ui';
+import { DateType, TODAY, WeekCalendar } from 'shared/ui';
 
 export const DietDiaryPage = () => {
   const { mdMain, mdSide } = useMedia();
-  const { id } = useParams();
-  const dispatch = useAppDispatch();
+  // const { id } = useParams();
+  // const dispatch = useAppDispatch();
   const [openDialog, setOpenDialog] = useState(false);
-  const listRows = [];
+  // const listRows = [];
 
   const [date, setDate] = useState<DateType>(TODAY);
 
@@ -28,14 +23,15 @@ export const DietDiaryPage = () => {
 
   useEffect(() => {
     getDiaryData({ date: new Date(date.year, date.month, date.date).toISOString() });
-  }, [date]);
+  }, [date, getDiaryData]);
 
-  const handleRemoveFood = (foodId: string) => {
-    // removeFood({ id: diet._id, foodId, day: currentDay });
-    console.log('remove');
-  };
+  // const handleRemoveFood = (foodId: string) => {
+  //   // removeFood({ id: diet._id, foodId, day: currentDay });
+  //   console.log('remove');
+  // };
 
   const handleAddFood = (meal: Meal) => {
+    console.log(meal);
     setOpenDialog(true);
   };
 

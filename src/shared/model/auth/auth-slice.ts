@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { profileSlice } from 'shared/model';
+
 import { authApi } from '../../api';
 import { ErrorResponse, GenericResponseType } from '../../api/api-types';
 import { IUser, Nullable } from '../../types';
@@ -68,6 +70,8 @@ const authSlice = createSlice({
           state.id = payload._id;
           state.globalError = null;
           state.errors = [];
+
+          profileSlice.actions.setProfile(payload);
 
           // useSendWebSocket({ type: SocketEvents.AUTH_EVENT, id: payload._id });
         }

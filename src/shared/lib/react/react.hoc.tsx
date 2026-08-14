@@ -5,13 +5,12 @@ import React, {
   forwardRef,
   Suspense,
   SuspenseProps,
-  useContext,
 } from 'react';
 
 import { connect } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
-import { ProfileContext } from '../../context';
+import { useAuth } from '../../context';
 import { RootState } from '../../model';
 import { pathKeys } from '../react-router';
 
@@ -44,7 +43,7 @@ export function withAuthRedirect<T extends NonNullable<unknown>>(
   Component: React.ComponentType<T>,
 ) {
   const RedirectComponent: React.FC = (props) => {
-    const { isAuth } = useContext(ProfileContext);
+    const { isAuth } = useAuth();
 
     const { ...restProps } = props;
     if (!isAuth && !window.localStorage.getItem('token')) {

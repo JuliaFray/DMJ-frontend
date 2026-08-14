@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import { Fab, Grid } from '@mui/material';
 import { ArticlesFeedSkeleton } from 'widgets/article';
 import { DietCard } from 'widgets/diet';
 
-import { ProfileContext } from 'shared/context';
+import { useAuth } from 'shared/context';
 import { useAppSelector } from 'shared/hook';
 import { pathKeys } from 'shared/lib';
 import { dietSelector } from 'shared/model';
@@ -22,7 +22,7 @@ type DietFeedProps = {
 };
 
 export const DietsFeed: React.FC<DietFeedProps> = ({ isFetching }) => {
-  const { isAuth } = useContext(ProfileContext);
+  const { isAuth } = useAuth();
 
   const diets = useAppSelector(dietSelector.getDiets);
 

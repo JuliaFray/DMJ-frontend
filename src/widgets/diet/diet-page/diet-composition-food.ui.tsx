@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useContext, useMemo } from 'react';
+import React, { Dispatch, FC, SetStateAction, useMemo } from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -25,12 +25,12 @@ import { DIET_COMPOSITION_TABS } from 'widgets/diet/diet-page/diet.composition.u
 
 import { useRemoveFoodFromDietPlanMutation } from 'shared/api';
 import { dayOptions } from 'shared/constants';
-import { ProfileContext } from 'shared/context';
-import { useQueryParams, useWebSocket } from 'shared/hook';
+import { useAuth, useWebSocket } from 'shared/context';
+import { useQueryParams } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
 import { dietSelector } from 'shared/model';
 import { IDietPlan, Meal } from 'shared/types';
-import { IPlanByDay, IPortion } from 'shared/types/diet.type';
+import { IPortion } from 'shared/types/diet.type';
 import { TabPanel } from 'shared/ui';
 
 import { DietStats } from './diet-stats.ui';
@@ -71,7 +71,7 @@ export const DietConsistFood: FC<Props> = ({
   setOpenDialog,
   portions,
 }) => {
-  const { authId } = useContext(ProfileContext);
+  const { authId } = useAuth();
   const planByDays = useSelector(dietSelector.getDietPlanByDay);
   const dayRating = planByDays?.find(({ day }) => day === currentDay)?.rating;
 

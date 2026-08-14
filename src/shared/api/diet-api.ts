@@ -7,12 +7,11 @@ import { AddFoodType, IDietPlan } from '../types';
 import { CountResponseType, GenericResponseType } from './api-types';
 import customFetchBase from './custom-fetch-base';
 
-const baseUrl = 'diet';
 const ONE_DIET = 'ONE_DIET';
 
 export const dietApi = createApi({
   reducerPath: 'dietApi',
-  baseQuery: customFetchBase(baseUrl),
+  baseQuery: customFetchBase('/diet'),
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
     createDietPlan: build.mutation<string, { body: IDietPlan }>({
       query: ({ body }) => {

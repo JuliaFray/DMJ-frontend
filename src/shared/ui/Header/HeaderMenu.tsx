@@ -13,9 +13,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
-import { NO_AVATAR, pathKeys, SocketEvents } from 'shared/lib';
-import { authActions, profileSelector } from 'shared/model';
+import { useWebSocket } from '../../context';
+import { useAppDispatch, useAppSelector } from '../../hook';
+import { NO_AVATAR, pathKeys, SocketEvents } from '../../lib';
+import { authActions, profileSelector } from '../../model';
 
 import styles from './Header.module.scss';
 

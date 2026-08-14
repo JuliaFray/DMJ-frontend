@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -8,7 +8,7 @@ import { Alert, Grid } from '@mui/material';
 import { DietsFeed } from 'widgets/diet';
 
 import { useLazyGetAllDietPlansQuery } from 'shared/api';
-import { ProfileContext } from 'shared/context';
+import { useAuth } from 'shared/context';
 import { useAppDispatch, useAppSelector, useMedia } from 'shared/hook';
 import { dietSelector } from 'shared/model';
 import { CustomPagination } from 'shared/ui';
@@ -23,7 +23,7 @@ type TPostPage = {
 const DietPage: React.FC<TPostPage> = React.memo(({ isMainPage, userId, isOwner, isFavorite }) => {
   const { mdMain } = useMedia(isMainPage);
 
-  const { isAuth } = useContext(ProfileContext);
+  const { isAuth } = useAuth();
 
   const isFetching = useAppSelector(dietSelector.getDietsIsFetching);
   const dataLength = useAppSelector(dietSelector.getDietsDataLength);

@@ -33,6 +33,11 @@ const profileSlice = createSlice({
     setProfile: (state: InitialStateType, action) => {
       state.my = action.payload;
     },
+    changeAvatar: (state: InitialStateType, action) => {
+      if (state.my) {
+        state.my.avatarId = action.payload;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder

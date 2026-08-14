@@ -25,7 +25,7 @@ const PostCommentItem: React.FC<{ item: IPost }> = ({ item }) => {
       <ArticleCard key={item._id} isOneArticlePage={false} post={item} />
       <List key={uuidv4()}>
         {item.comments.map((obj: IComment) => (
-          <Comment key={uuidv4()} item={obj} isLoading={false} />
+          <Comment key={uuidv4()} item={obj} />
         ))}
       </List>
     </>

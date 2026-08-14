@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useWebSocket } from './hooks';
+import { useWebSocket } from '../context';
 
 export const useSendWebSocket = (payload: Record<string, string>) => {
   const ws = useWebSocket();

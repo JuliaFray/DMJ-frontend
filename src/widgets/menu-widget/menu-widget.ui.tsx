@@ -1,33 +1,29 @@
-import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import {
+  ArticleIcon,
+  GearSixIcon,
+  ListChecksIcon,
+  NotePencilIcon,
+  RulerIcon,
+  SneakerMoveIcon,
+} from '@phosphor-icons/react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ArticleIcon from '@mui/icons-material/Article';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import BallotIcon from '@mui/icons-material/Ballot';
-import SettingsIcon from '@mui/icons-material/Settings';
-import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
-import StraightenIcon from '@mui/icons-material/Straighten';
-import { Button, Divider, Tooltip, Typography } from '@mui/material';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import { Group } from '@mantine/core';
 
-import { ProfileContext } from 'shared/context';
-import { useAppDispatch, useWebSocket } from 'shared/hook';
+import { useAuth, useWebSocket } from 'shared/context';
+import { useAppDispatch } from 'shared/hook';
 import { pathKeys, SocketEvents } from 'shared/lib';
 import { appActions } from 'shared/model';
-import { theme } from 'shared/themes';
+import { UserButton } from 'shared/ui';
 
-import styles from './menu-widget.module.scss';
+import classes from './NavbarSimple.module.css';
 
 type IItem = {
   name: string;
   link: string;
-  icon: React.JSX.Element;
+  icon: any;
   pathname: string;
 };
 
@@ -36,28 +32,28 @@ const items: IItem[] = [
     name: 'Дневник питания',
     pathname: 'diary',
     link: pathKeys.diary.root(),
-    icon: <AutoStoriesIcon />,
+    icon: NotePencilIcon,
   },
   {
     name: 'Планы питания',
     pathname: 'planner',
     link: pathKeys.planner.root(),
-    icon: <BallotIcon />,
+    icon: ListChecksIcon,
   },
-  { name: 'Тренировки', pathname: 'training', link: pathKeys.root, icon: <SportsGymnasticsIcon /> },
+  { name: 'Тренировки', pathname: 'training', link: pathKeys.root, icon: SneakerMoveIcon },
   {
     name: 'Вес и измерения',
     pathname: 'measure',
     link: pathKeys.measure.root(),
-    icon: <StraightenIcon />,
+    icon: RulerIcon,
   },
   {
     name: 'Общая лента',
     pathname: 'article',
     link: pathKeys.home(),
-    icon: <ArticleIcon />,
+    icon: ArticleIcon,
   },
-  { name: 'Настройки', pathname: 'settings', link: pathKeys.root, icon: <SettingsIcon /> },
+  { name: 'Настройки', pathname: 'settings', link: pathKeys.root, icon: GearSixIcon },
 ];
 
 interface MenuWidgetProps {
@@ -68,7 +64,7 @@ export const MenuWidget: FC<MenuWidgetProps> = ({ close }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const { me, authId } = useContext(ProfileContext);
+  const { me, authId } = useAuth();
 
   const [selected, setSelected] = useState<string | undefined>();
 
@@ -121,110 +117,30 @@ export const MenuWidget: FC<MenuWidgetProps> = ({ close }) => {
     return () => ws.removeEventListener('message', handleWS);
   }, [handleWS, ws]);
 
+  const links = items.map((item) => (
+    <a
+      className={classes.link}
+      data-active={selected?.startsWith(item.pathname) || undefined}
+      href={item.link}
+      key={item.pathname}
+      onClick={(event) => {
+        event.preventDefault();
+        navigate(item.pathname);
+      }}
+    >
+      <item.icon className={classes.linkIcon} stroke={1.5} />
+      <span>{item.name}</span>
+    </a>
+  ));
+
   return (
-    <List>
-      <ListItem className={styles.listItem} disablePadding sx={{ display: 'block' }}>
-        <Link to={authId ? pathKeys.user.byId({ id: authId }) : pathKeys.login()}>
-          <ListItemButton
-            sx={[
-              {
-                minHeight: 48,
-                px: 2.5,
-                justifyContent: 'initial',
-              },
-            ]}
-          >
-            <ListItemIcon
-              sx={[
-                {
-                  minWidth: 0,
-                  justifyContent: 'center',
-                  mr: 3,
-                },
-              ]}
-            >
-              <AccountCircleIcon />
-            </ListItemIcon>
-
-            <ListItemText
-              sx={[
-                {
-                  opacity: 1,
-                },
-              ]}
-            >
-              {!authId && <Typography color={theme.palette.text.primary}>Гость</Typography>}
-              {!!authId && (
-                <>
-                  <Typography color={theme.palette.text.primary}>{me?.login}</Typography>
-                  <Typography color={theme.palette.text.secondary}>{me?.email}</Typography>
-                </>
-              )}
-            </ListItemText>
-          </ListItemButton>
-        </Link>
-
-        {!authId && (
-          <Button
-            type='button'
-            size='large'
-            variant='contained'
-            style={{ margin: '8px auto', width: '90%', display: 'block' }}
-            onClick={() => navigate(pathKeys.login())}
-          >
-            Войти
-          </Button>
-        )}
-      </ListItem>
-
-      <Divider />
-
-      {items.map((item, i) => (
-        <ListItem
-          key={i}
-          disablePadding
-          sx={{ display: 'block' }}
-          className={selected?.startsWith(item.pathname) ? `${styles.active}` : ``}
-        >
-          <Link key={i} className={styles.linkItem} to={item.link}>
-            <Tooltip title={item.name}>
-              <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  {
-                    justifyContent: 'initial',
-                  },
-                ]}
-              >
-                <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: 'center',
-                    },
-                    {
-                      mr: 3,
-                    },
-                  ]}
-                >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.name}
-                  sx={[
-                    {
-                      opacity: 1,
-                    },
-                  ]}
-                />
-              </ListItemButton>
-            </Tooltip>
-          </Link>
-        </ListItem>
-      ))}
-    </List>
+    <nav className={classes.navbar}>
+      <div className={classes.navbarMain}>
+        <Group className={classes.header} justify='space-between'>
+          {me && <UserButton user={me} />}
+        </Group>
+        {links}
+      </div>
+    </nav>
   );
 };

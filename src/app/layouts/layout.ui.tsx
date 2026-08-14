@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 
 import { NavLink } from 'react-router-dom';
 
@@ -7,8 +7,8 @@ import Login from '@mui/icons-material/Login';
 import { Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 
-import { ProfileContext } from 'shared/context';
-import { useAppDispatch, useWebSocket } from 'shared/hook';
+import { useAuth, useWebSocket } from 'shared/context';
+import { useAppDispatch } from 'shared/hook';
 import { pathKeys, SocketEvents } from 'shared/lib';
 import { appActions, authActions } from 'shared/model';
 import { theme } from 'shared/themes';
@@ -48,7 +48,7 @@ export const SignInLink: FC = () => {
 };
 
 export const SignOutLink: FC = () => {
-  const { authId } = useContext(ProfileContext);
+  const { authId } = useAuth();
 
   const dispatch = useAppDispatch();
 

@@ -1,3 +1,8 @@
+import { BaseQueryFn, createApi, EndpointBuilder } from '@reduxjs/toolkit/query/react';
+
+import customFetchBase from 'shared/api/custom-fetch-base';
+import { usersApi } from 'shared/api/users-api';
+
 import { IUser, TProfileStats } from '../types';
 
 import { instance } from './api';
@@ -69,3 +74,21 @@ export const profileAPI = {
       });
   },
 };
+
+export const profileApi = createApi({
+  reducerPath: 'usersApi',
+  baseQuery: customFetchBase('/users'),
+  endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
+    changeAvatar: build.mutation<void, { userId: string; avatarId: string }>({
+      query: ({ userId, avatarId }) => {
+        return {
+          url: `/${userId}/change-avatar`,
+          method: 'PUT',
+          body: { avatarId },
+        };
+      },
+    }),
+  }),
+});
+
+export const { useChangeAvatarMutation } = profileApi;

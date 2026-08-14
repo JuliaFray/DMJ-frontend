@@ -1,6 +1,13 @@
-import React, { createElement, lazy, useMemo } from 'react';
+import React, { createElement, lazy } from 'react';
 
-import { createBrowserRouter, redirect, RouterProvider, useRouteError } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  Navigate,
+  Outlet,
+  redirect,
+  RouterProvider,
+  useRouteError,
+} from 'react-router-dom';
 import { compose } from 'redux';
 
 import { articlePageRoute } from 'pages/article';
@@ -15,13 +22,13 @@ import { loginPageRoute } from 'pages/login';
 import { measurePageRoute } from 'pages/measure';
 import { page404Router } from 'pages/page-404';
 import { registerPageRoute } from 'pages/register';
+import { settingsPageRoute } from 'pages/settings';
+import { trainingPageRoute } from 'pages/training';
 import { userPageRoute } from 'pages/user';
 import { usersPageRoute } from 'pages/user-feed';
 
-import { ProfileContext } from 'shared/context';
-import { useAppSelector } from 'shared/hook';
+import { AuthProvider, useAuth } from 'shared/context';
 import { pathKeys, withSuspense } from 'shared/lib';
-import { authSelector, profileSelector } from 'shared/model';
 import { Spinner } from 'shared/ui';
 
 const GuestLayout = lazy(() =>
@@ -53,23 +60,40 @@ const enhance = compose((component: React.ComponentType<object>) =>
   withSuspense(component, { FallbackComponent: LayoutSkeleton }),
 );
 
+const GlobalAuthGuard = () => {
+  const { isAuth, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <Spinner display />; // Show a loader while checking auth token
+  }
+
+  return isAuth ? <Outlet /> : <Navigate to={pathKeys.login()} replace />;
+};
+
 const browserRouter = createBrowserRouter([
   {
     errorElement: <BubbleError />,
     children: [
       {
-        element: createElement(enhance(UserLayout)),
+        element: <GlobalAuthGuard />,
         children: [
-          dialogPageRoute,
-          articleEditorPageRoute,
-          dietPlanFeedPageRoute,
-          dietPlanPageRoute,
-          dietDiaryPageRoute,
-          measurePageRoute,
-          articleFeedPageRoute,
-          articlePageRoute,
-          userPageRoute,
-          usersPageRoute,
+          {
+            element: createElement(enhance(UserLayout)),
+            children: [
+              dialogPageRoute,
+              articleEditorPageRoute,
+              dietPlanFeedPageRoute,
+              dietPlanPageRoute,
+              dietDiaryPageRoute,
+              measurePageRoute,
+              articleFeedPageRoute,
+              articlePageRoute,
+              userPageRoute,
+              usersPageRoute,
+              trainingPageRoute,
+              settingsPageRoute,
+            ],
+          },
         ],
       },
       {
@@ -89,15 +113,9 @@ const browserRouter = createBrowserRouter([
 ]);
 
 export const BrowserRouting = () => {
-  const isAuth = useAppSelector(authSelector.getIsAuth);
-  const authId = useAppSelector(authSelector.getAuthId);
-  const me = useAppSelector(profileSelector.getMyProfile);
-  console.log(isAuth);
-  return useMemo(() => {
-    return (
-      <ProfileContext.Provider value={{ isAuth, authId, me }}>
-        <RouterProvider router={browserRouter} />
-      </ProfileContext.Provider>
-    );
-  }, [authId, isAuth, me]);
+  return (
+    <AuthProvider>
+      <RouterProvider router={browserRouter} />
+    </AuthProvider>
+  );
 };

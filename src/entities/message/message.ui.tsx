@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -6,14 +6,14 @@ import { Avatar, SxProps, Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { Theme } from '@mui/material/styles';
 
-import { ProfileContext } from 'shared/context';
+import { useAuth } from 'shared/context';
 import { getFullName, getImage } from 'shared/lib';
 import { IMessage } from 'shared/types';
 
 import styles from './message.module.scss';
 
 export const Message: React.FC<IMessage> = ({ fromUserId, toUserId, text }) => {
-  const { authId } = useContext(ProfileContext);
+  const { authId } = useAuth();
 
   const user = fromUserId.userId === authId ? fromUserId : toUserId;
   let sx: SxProps<Theme> = { my: 1 };

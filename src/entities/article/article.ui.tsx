@@ -1,52 +1,33 @@
 import React, { FC, useState } from 'react';
 
+import { DotsThreeIcon, TrashIcon } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import moment from 'moment';
 import ReactMarkdown from 'react-markdown';
-import { Link, useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
-import { Delete } from '@mui/icons-material';
-import EditIcon from '@mui/icons-material/Edit';
-import {
-  Box,
-  Button,
-  CardHeader,
-  Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-import Avatar from '@mui/material/Avatar';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import DialogContentText from '@mui/material/DialogContentText';
-import IconButton from '@mui/material/IconButton';
 
-import { ArticleCard, CustomCardActions } from 'widgets/article';
+import { ActionIcon, Badge, Button, Card, Group, Menu, Text } from '@mantine/core';
 
-import { ArticleSkeleton } from 'entities/article';
+import { CustomCardActions } from 'widgets/article';
 
 import { useAppDispatch } from 'shared/hook';
-import { getFullName, getImage, pathKeys } from 'shared/lib';
+import { pathKeys } from 'shared/lib';
 import { deletePost } from 'shared/model';
-import { palette, theme } from 'shared/themes';
-import { IPost, TChipData } from 'shared/types';
+import { IPost } from 'shared/types';
+import { UserButton } from 'shared/ui';
 
+import classes from './ArticleCardFooter.module.css';
 import styles from './article.module.scss';
 
 type ArticleProps = {
   post: IPost;
-  isFullPost: boolean;
-  isLoading: boolean;
   isEditable: boolean;
 };
 
-export const Article: FC<ArticleProps> = ({ post, isFullPost, isLoading, isEditable }) => {
+export const Article: FC<ArticleProps> = ({ post, isEditable }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -58,91 +39,63 @@ export const Article: FC<ArticleProps> = ({ post, isFullPost, isLoading, isEdita
     navigate(pathKeys.article.root());
   };
 
-  if (isLoading) {
-    return <ArticleSkeleton />;
-  }
-
-  // return <ArticleCard post={post} isOneArticlePage />;
-
   return (
     <>
-      <Card>
-        <CardHeader
-          avatar={
-            <Avatar
-              sx={{ bgcolor: palette.default.error }}
-              alt={post.userId.login}
-              src={getImage(post.userId.avatar, true)}
-              aria-label='post-avatar'
-            >
-              {post.userId.login}
-            </Avatar>
-          }
-          title={
-            <Link to={pathKeys.user.byId({ id: post.userId._id })}>
-              <Typography fontWeight={400} variant='body1' color={theme.palette.text.primary}>
-                {getFullName(post.userId)}
-              </Typography>
-            </Link>
-          }
-          subheader={
-            <Typography variant='body2' color={theme.palette.text.secondary}>
-              {moment(post.createdAt).locale('ru').fromNow()}
-            </Typography>
-          }
-          action={
-            isEditable && (
-              <div>
-                <Link to={pathKeys.article.editor.byId({ id: post._id })}>
-                  <Tooltip title='Редактировать'>
-                    <IconButton color='primary'>
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Link>
-                <IconButton onClick={() => setOpenDialog(true)} color='error'>
-                  <Tooltip title='Удалить'>
-                    <Delete />
-                  </Tooltip>
-                </IconButton>
-              </div>
-            )
-          }
-        />
+      <Card withBorder padding='lg' radius='md'>
+        {/* {image && ( */}
+        {/*   <Card.Section mb='lg'> */}
+        {/*     <Image src={image} alt={NO_AVATAR} height={180} /> */}
+        {/*   </Card.Section> */}
+        {/* )} */}
+        <UserButton user={post.userId} created={moment(post.createdAt).locale('ru').fromNow()} />
 
-        <CardContent>
-          <Typography fontWeight={500} variant='h6' style={{ marginBottom: '10px' }}>
-            {isFullPost ? (
-              post.title
-            ) : (
-              <Link key={post._id} to={pathKeys.article.byId({ id: post._id })}>
-                {post.title}
-              </Link>
+        <Card.Section inheritPadding py='xs'>
+          <Group justify='space-between'>
+            <Text fw={500} className={classes.title} style={{ width: '80%' }}>
+              {post.title}
+            </Text>
+            {isEditable && (
+              <Menu withinPortal position='right-end' shadow='sm'>
+                <Menu.Target>
+                  <ActionIcon variant='subtle' color='gray'>
+                    <DotsThreeIcon size={16} />
+                  </ActionIcon>
+                </Menu.Target>
+
+                <Menu.Dropdown>
+                  {/* <Menu.Item leftSection={<FileZipIcon size={14} />}>Download zip</Menu.Item> */}
+                  {/* <Menu.Item leftSection={<EyeIcon size={14} />}>Preview all</Menu.Item> */}
+                  <Menu.Item
+                    onClick={handleDelete}
+                    leftSection={<TrashIcon size={14} />}
+                    color='red'
+                  >
+                    Delete
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
             )}
-          </Typography>
+          </Group>
+        </Card.Section>
 
-          <ReactMarkdown className={clsx(styles.text)}>{post.text}</ReactMarkdown>
-        </CardContent>
+        <ReactMarkdown className={clsx(styles.text)}>{post.text}</ReactMarkdown>
 
-        {!!post.tags?.length && (
-          <Box className={styles.tags}>
-            {post.tags.length &&
-              post.tags.map((tag: TChipData) => (
-                <Chip
-                  key={uuidv4()}
-                  color='primary'
-                  size='small'
-                  label={`${tag.value}`}
-                  className={styles.tag}
-                  variant='outlined'
-                />
-              ))}
-          </Box>
-        )}
-        <CardActions disableSpacing>
+        <Group>
+          {post.tags?.map((tag) => (
+            <Badge
+              key={tag._id}
+              variant={post.tags?.some((t) => t._id === tag._id) ? 'filled' : 'outline'}
+            >
+              {tag.value}
+            </Badge>
+          ))}
+        </Group>
+
+        <Card.Section className={classes.footer}>
           <CustomCardActions post={post} />
-        </CardActions>
+        </Card.Section>
       </Card>
+
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>Внимание</DialogTitle>
         <DialogContent>

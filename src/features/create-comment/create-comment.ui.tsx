@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { FieldValues, useForm } from 'react-hook-form';
+import { PaperPlaneRightIcon } from '@phosphor-icons/react';
 
-import SendIcon from '@mui/icons-material/Send';
-import { Paper } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
+import { ActionIcon, Group, Paper, TextInput } from '@mantine/core';
 
 import { styles } from 'entities/comment';
 
@@ -16,35 +13,37 @@ export type ICommentCreate = {
 };
 
 export const CreateComment: React.FC<ICommentCreate> = ({ postId }) => {
-  const { register, handleSubmit, resetField } = useForm({
-    mode: 'onChange',
-  });
+  const [value, setValue] = useState<string>('');
+
   const [createPostComment] = useCreatePostCommentMutation();
-  const onSubmit = (formData: FieldValues) => {
-    createPostComment({
-      comment: {
-        text: formData.text,
-      },
-      postId,
-    });
-    resetField('text');
+  const onSubmit = () => {
+    if (value.trim()) {
+      createPostComment({
+        comment: {
+          text: value.trim(),
+        },
+        postId,
+      });
+      setValue('');
+    }
   };
 
   return (
-    <Paper className={styles.default.root}>
-      <form className={styles.default.form} onSubmit={handleSubmit((values) => onSubmit(values))}>
-        <TextField
-          label='Написать комментарий'
-          variant='outlined'
-          maxRows={10}
-          multiline
-          fullWidth
-          {...register('text')}
+    <Paper withBorder radius='md' className={styles.default.comment}>
+      <Group
+        style={{ alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'nowrap' }}
+      >
+        <TextInput
+          label='Комментарий'
+          value={value}
+          onChange={(event) => setValue(event.currentTarget.value)}
+          style={{ width: '100%' }}
         />
-        <IconButton className={styles.default.btn} type='submit' color='primary'>
-          <SendIcon />
-        </IconButton>
-      </form>
+
+        <ActionIcon variant='default' size='input-sm' onClick={onSubmit}>
+          <PaperPlaneRightIcon />
+        </ActionIcon>
+      </Group>
     </Paper>
   );
 };

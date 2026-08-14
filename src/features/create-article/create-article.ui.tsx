@@ -33,7 +33,7 @@ export const CreateArticle: React.FC = () => {
     () => ({
       title: post?.title || '',
     }),
-    [],
+    [post?.title],
   );
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export const CreateArticle: React.FC = () => {
         setTags(post.tags);
       }
     }
-  }, [dispatch, id]);
+  }, [dispatch, getOnePost, id, post]);
 
   const onChange = useCallback((value: React.SetStateAction<string>) => {
     setText(value);

@@ -13,13 +13,13 @@ import {
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 
-import { ProfileData } from 'widgets/profile';
-
-import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
+import { useWebSocket } from 'shared/context';
+import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { getFullName, SocketEvents } from 'shared/lib';
 import { appActions, appSelector, authSelector, toggleFollowProfile } from 'shared/model';
 import { IUser } from 'shared/types';
 
+import { ProfileData } from '../ProfileData';
 import styles from '../ProfileInfo.module.scss';
 
 type TProfileMain = {

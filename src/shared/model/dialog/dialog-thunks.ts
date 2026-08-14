@@ -1,10 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { IDialog, IMessage, IUser } from 'shared/types';
-
 import { CountResponseType, ResultCodes } from '../../api/api-types';
 import { dialogAPI } from '../../api/dialog-api';
 import { ACCESS_DENIED } from '../../lib';
+import { IDialog, IMessage, IUser } from '../../types';
 import { appActions } from '../apps';
 import { authActions } from '../auth';
 

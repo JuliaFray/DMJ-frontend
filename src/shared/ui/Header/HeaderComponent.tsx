@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
@@ -14,8 +14,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-import { ProfileContext } from '../../context';
-import { useAppDispatch, useAppSelector, useWebSocket } from '../../hook';
+import { useAuth, useWebSocket } from '../../context';
+import { useAppDispatch, useAppSelector } from '../../hook';
 import { pathKeys, SocketEvents } from '../../lib';
 import { appActions, appSelector, toggleFriendProfile } from '../../model';
 import { INotifications } from '../../types';
@@ -31,7 +31,7 @@ const NotificationTypes = {
 
 const NotificationItem: React.FC<{ item?: INotifications; text?: string }> = ({ item, text }) => {
   const dispatch = useAppDispatch();
-  const { authId } = useContext(ProfileContext);
+  const { authId } = useAuth();
 
   if (!item) {
     return (
@@ -114,7 +114,7 @@ const HeaderComponent: React.FC = () => {
   const [showNotification, setShowNotification] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const { authId, isAuth } = useContext(ProfileContext);
+  const { authId, isAuth } = useAuth();
 
   const notifications = useAppSelector(appSelector.getAppAllNotifications);
   const dispatch = useAppDispatch();

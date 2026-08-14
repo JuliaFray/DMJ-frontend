@@ -8,9 +8,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 
-import { useAppSelector } from 'shared/hook';
-
 import { useLazyGetAllTagsQuery } from '../../api';
+import { useAppSelector } from '../../hook';
 import { postsSelector } from '../../model';
 import { TChipData } from '../../types';
 

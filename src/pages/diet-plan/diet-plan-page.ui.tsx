@@ -25,13 +25,13 @@ import {
   useGetOneDietPlanQuery,
   useUpdateDietPlanMutation,
 } from 'shared/api';
+import { useWebSocket } from 'shared/context';
 import {
   useAppDispatch,
   useAppSelector,
   useMedia,
   useQueryParams,
   useSetTabToQuery,
-  useWebSocket,
 } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
 import { dietActions, dietSelector } from 'shared/model';

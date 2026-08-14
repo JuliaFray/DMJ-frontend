@@ -5,10 +5,9 @@ import { IUser } from '../types';
 import { CountResponseType } from './api-types';
 import customFetchBase from './custom-fetch-base';
 
-const baseUrl = 'users';
 export const usersApi = createApi({
   reducerPath: 'usersApi',
-  baseQuery: customFetchBase(baseUrl),
+  baseQuery: customFetchBase('/users'),
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
     getAllUsers: build.query<
       CountResponseType<IUser[]>,
@@ -27,6 +26,15 @@ export const usersApi = createApi({
         return {
           url: `?${searchParams.size ? searchParams.toString() : ''}`,
           method: 'GET',
+        };
+      },
+    }),
+    changeAvatar: build.mutation<void, { userId: string; avatarId: string }>({
+      query: ({ userId, avatarId }) => {
+        return {
+          url: `/${userId}/change-avatar`,
+          method: 'PUT',
+          body: { avatarId },
         };
       },
     }),

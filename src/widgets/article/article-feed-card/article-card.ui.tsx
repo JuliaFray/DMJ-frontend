@@ -1,11 +1,13 @@
 import React from 'react';
 
 import moment from 'moment/moment';
+import { useNavigate } from 'react-router-dom';
 
 import { Avatar, Badge, Card, Group, Image, Text } from '@mantine/core';
 
 import { getFullName, NO_AVATAR, pathKeys } from 'shared/lib';
 import { IPost, TChipData } from 'shared/types';
+import { getAvatarSrc } from 'shared/utils';
 
 import classes from './ArticleCardFooter.module.css';
 import { CustomCardActions } from './custom-card-actions.ui';
@@ -23,6 +25,8 @@ export const ArticleCard: React.FC<PostCardProps> = ({
   allTags,
   handleAddTag,
 }) => {
+  const navigate = useNavigate();
+
   const image = post.userId.avatar && `data:image/jpeg;base64,${post.userId.avatar?.data}`;
 
   return (
@@ -49,18 +53,20 @@ export const ArticleCard: React.FC<PostCardProps> = ({
       )}
 
       <Text
+        style={{ cursor: 'pointer' }}
         className={classes.title}
-        component='a'
-        href={pathKeys.article.byId({ id: post._id })}
-        target='_blank'
-        rel='noreferrer'
+        onClick={() => navigate(pathKeys.article.byId({ id: post._id }))}
       >
         {post.title}
       </Text>
 
-      <Group mt='lg'>
+      <Group
+        className={classes.avatar}
+        mt='lg'
+        onClick={() => navigate(pathKeys.user.byId({ id: post.userId._id }))}
+      >
         {!isOneArticlePage && (
-          <Avatar src={post.userId.login} radius='sm' alt={post.userId.login} />
+          <Avatar src={getAvatarSrc(post.userId.avatarId)} radius='sm' alt={post.userId.login} />
         )}
 
         <div>

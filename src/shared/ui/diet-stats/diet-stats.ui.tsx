@@ -7,10 +7,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Grid } from '@mui/material';
 import { PieChart } from '@mui/x-charts/PieChart';
 
-import { theme } from 'shared/themes';
-import { StyledRating } from 'shared/ui';
-
+import { theme } from '../../themes';
 import { IDietStat } from '../../types';
+import { StyledRating } from '../styled-rating.ui';
 
 import styles from './diet-stats.module.scss';
 

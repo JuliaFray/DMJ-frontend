@@ -1,12 +1,11 @@
-import React, { createContext, useCallback, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../hook';
 import { SocketEvents } from '../lib';
 import { authSelector } from '../model';
 import { wsConnect, wsShowReconnect } from '../model/ws/ws';
 import { Nullable } from '../types';
-
-import { Spinner } from './spinner';
+import { Spinner } from '../ui';
 
 export const WebSocketContext = createContext<WebSocket | null>(null);
 
@@ -125,3 +124,5 @@ export const WS = (props: React.PropsWithChildren<unknown>) => {
 
   return <div>Техническое обслуживание</div>;
 };
+
+export const useWebSocket = () => useContext(WebSocketContext);

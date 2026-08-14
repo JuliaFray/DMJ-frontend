@@ -7,7 +7,7 @@ import { AppShell, Box, Container, Grid } from '@mantine/core';
 export const GuestLayout: FC = () => {
   return (
     <Box>
-      <AppShell header={{ height: 60 }} padding='md'>
+      <AppShell padding='md'>
         {/* 1. Main content area */}
         <AppShell.Main>
           <Container strategy='grid'>

@@ -8,3 +8,4 @@ export { UserRow, UserInfo, UserRowSkeleton, UsersFeed } from './users';
 export * from './diet';
 export * from './dialog';
 export { MenuWidget } from './menu-widget';
+export * from './settings';

@@ -1,7 +1,6 @@
 export {
   useAppDispatch,
   useAppSelector,
-  useWebSocket,
   useLocalStorage,
   useQueryStringToObject,
   useCreateQueryString,

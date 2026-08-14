@@ -1,6 +1,3 @@
-import '@mantine/core/styles.css';
-import '@mantine/notifications/styles.css';
-
 import React from 'react';
 
 import { withErrorBoundary } from 'react-error-boundary';
@@ -8,12 +5,15 @@ import { Provider } from 'react-redux';
 import { compose } from 'redux';
 
 import { MantineProvider } from '@mantine/core';
+import '@mantine/core/styles.css';
 import { Notifications } from '@mantine/notifications';
+import '@mantine/notifications/styles.css';
 
+import { WS } from 'shared/context';
 import { useAppSelector } from 'shared/hook';
 import { spinnerSelector, store } from 'shared/model';
-import { mantineTheme } from 'shared/themes/mantineTheme';
-import { ErrorHandler, logError, Spinner, WS } from 'shared/ui';
+import { mantineTheme } from 'shared/themes';
+import { ErrorHandler, logError, Spinner } from 'shared/ui';
 
 import { BrowserRouting } from './RouterProvider';
 

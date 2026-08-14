@@ -1,5 +1,16 @@
 @import "shared/themes/palette.module";
 
+.navbar {
+  &-mobile {
+    background-color: white;
+  }
+  background-color: transparent;
+}
+
+.header {
+  background-color: var(--mantine-color-teal-9);
+}
+
 .brandlink {
   color: $success;
   text-decoration: none;
@@ -15,8 +26,6 @@
 }
 
 .sign {
-  position: fixed;
-  right: 2%;
   color: $success;
   text-decoration: none;
 

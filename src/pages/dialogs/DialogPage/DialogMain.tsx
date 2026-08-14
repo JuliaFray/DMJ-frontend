@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,8 +10,8 @@ import { DialogHeader } from 'widgets/dialog';
 
 import { SendMsg } from 'features/create-message';
 
-import { ProfileContext } from 'shared/context';
-import { useAppDispatch, useAppSelector, useWebSocket } from 'shared/hook';
+import { useAuth, useWebSocket } from 'shared/context';
+import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
 import { appActions, dialogActions, dialogSelector, getMessagesByDialogId } from 'shared/model';
 import { IDialog, IMessage } from 'shared/types';
@@ -28,7 +28,7 @@ function DialogMain() {
 
   const listRef = useRef(null);
 
-  const { authId } = useContext(ProfileContext);
+  const { authId } = useAuth();
 
   const messages = useAppSelector(dialogSelector.getMessages);
   const dialogs = useAppSelector(dialogSelector.getDialogs);

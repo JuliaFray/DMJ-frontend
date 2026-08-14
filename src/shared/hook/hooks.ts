@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
+import { WebSocketContext } from '../context/web-socket-context';
 import { AppDispatch, RootState } from '../model';
-import { WebSocketContext } from '../ui/WebSocketContext';
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
@@ -73,7 +73,3 @@ export const useCreateQueryString = (
     .join('&');
   return queryString ? `?${queryString}` : '';
 };
-
-export const useWebSocket = () => useContext(WebSocketContext);
-
-export default useWebSocket;

@@ -4,11 +4,13 @@ import { isEmpty } from 'lodash';
 
 import { Grid } from '@mantine/core';
 
-import { ArticleCard, ArticlesFeedSkeleton } from 'widgets/article';
-
 import { useAppSelector } from 'shared/hook';
 import { postsSelector } from 'shared/model';
 import { IPost, TChipData } from 'shared/types';
+
+import { ArticleCard } from '../article-feed-card/article-card.ui';
+
+import { ArticlesFeedSkeleton } from './articles-feed.skeleton';
 
 type TPostMain = {
   allTags: TChipData[];

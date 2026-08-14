@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { PencilLineIcon } from '@phosphor-icons/react';
 import { connect } from 'react-redux';
@@ -12,7 +12,7 @@ import { HomeTabs } from 'widgets/home-tabs';
 import { TagWidget } from 'widgets/tag-widget';
 
 import { useLazyGetAllArticlesQuery, useLazyGetAllTagsQuery } from 'shared/api';
-import { ProfileContext } from 'shared/context';
+import { useAuth } from 'shared/context';
 import {
   useAppDispatch,
   useAppSelector,
@@ -38,7 +38,7 @@ const HomePage: React.FC<TPostPage> = React.memo(
     const { mdMain, mdSide } = useMedia(isFeedPage);
     const { allTags, selectedTags, selectedAuthor, handleAddTag, handleRemoveTag } = useTagFilter();
 
-    const { authId } = useContext(ProfileContext);
+    const { authId } = useAuth();
 
     const popularTags = useAppSelector(postsSelector.getFetchedPopularTags);
     const popularAuthors = useAppSelector(postsSelector.getFetchedPopularAuthors);

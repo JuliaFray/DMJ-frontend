@@ -40,7 +40,7 @@ const logout = (api: BaseQueryApi) => {
 
 const customFetchBase =
   (
-    customBaseUrl: string,
+    customBaseUrl?: string,
     validateStatus?: any,
   ): BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> =>
   async (args, api, extraOptions) => {
