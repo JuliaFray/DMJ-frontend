@@ -1,16 +1,18 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, ReactNode, SetStateAction, useEffect } from 'react';
 
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Grid } from '@mantine/core';
+import { Button, Grid } from '@mantine/core';
 
-import { UserRow, UserRowSkeleton } from 'widgets/users';
+import { UserRowSkeleton } from 'widgets/users';
 
 import { useLazyGetAllUsersQuery } from 'shared/api';
+import { useAuth } from 'shared/context';
 import { useAppDispatch, useAppSelector } from 'shared/hook';
 import { authSelector, toggleFollowProfile, usersSelector } from 'shared/model';
 import { IUser } from 'shared/types';
+import { UserButton } from 'shared/ui';
 
 type IUsersMain = {
   setCurrentPage: Dispatch<SetStateAction<number>>;
@@ -19,6 +21,8 @@ type IUsersMain = {
 };
 
 export const UsersFeed: React.FC<IUsersMain> = ({ currentPage, isFollowers }) => {
+  const { authId } = useAuth();
+
   const users = useAppSelector(usersSelector.getUsers);
   const isFetching = useAppSelector(usersSelector.getIsFetching);
   const profileId = useAppSelector(authSelector.getAuthId);
@@ -37,20 +41,33 @@ export const UsersFeed: React.FC<IUsersMain> = ({ currentPage, isFollowers }) =>
     });
   }, [dispatch, currentPage, isFollowers, triggerGetAllUsers, params.id, profileId]);
 
-  const toggleFollow = (userId: string, isFollow: boolean) => {
-    if (profileId) {
+  const handleFollowClick = (user: IUser) => {
+    if (authId) {
       dispatch(
         toggleFollowProfile({
-          profileId,
-          query: `?userId=${userId}&isFollow=${isFollow}`,
-          userId,
+          profileId: authId,
+          query: `?userId=${user._id}&isFollow=${!user.isFollowed}`,
+          userId: user._id,
         }),
       );
     }
   };
 
+  const customActions = (user: IUser): ReactNode => {
+    return (
+      <Button
+        onClick={() => handleFollowClick(user)}
+        radius='md'
+        size='md'
+        variant={user.isFollowed ? 'default' : 'filled'}
+      >
+        {user.isFollowed ? 'Отписаться' : 'Подписаться'}
+      </Button>
+    );
+  };
+
   return (
-    <Grid style={{ marginBottom: '30px' }}>
+    <Grid mb={30}>
       {isFetching
         ? [...Array(5)].map(() => (
             <Grid.Col key={uuidv4()}>
@@ -58,8 +75,8 @@ export const UsersFeed: React.FC<IUsersMain> = ({ currentPage, isFollowers }) =>
             </Grid.Col>
           ))
         : users.map((u: IUser) => (
-            <Grid.Col key={u._id}>
-              <UserRow user={u} key={u._id} toggleFollow={toggleFollow} />
+            <Grid.Col key={u._id} mb={10}>
+              <UserButton user={u} key={u._id} customActions={customActions(u)} />
             </Grid.Col>
           ))}
     </Grid>

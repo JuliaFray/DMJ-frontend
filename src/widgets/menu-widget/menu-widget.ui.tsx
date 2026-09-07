@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import {
   ArticleIcon,
@@ -12,13 +12,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Group } from '@mantine/core';
 
-import { useAuth, useWebSocket } from 'shared/context';
-import { useAppDispatch } from 'shared/hook';
-import { pathKeys, SocketEvents } from 'shared/lib';
-import { appActions } from 'shared/model';
+import { useAuth } from 'shared/context';
+import { pathKeys } from 'shared/lib';
 import { UserButton } from 'shared/ui';
 
-import classes from './NavbarSimple.module.css';
+import classes from './NavbarSimple.module.scss';
 
 type IItem = {
   name: string;
@@ -64,7 +62,7 @@ export const MenuWidget: FC<MenuWidgetProps> = ({ close }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const { me, authId } = useAuth();
+  const { me } = useAuth();
 
   const [selected, setSelected] = useState<string | undefined>();
 
@@ -72,50 +70,6 @@ export const MenuWidget: FC<MenuWidgetProps> = ({ close }) => {
     setSelected(pathname?.replaceAll('/', ''));
     close();
   }, [pathname]);
-
-  const dispatch = useAppDispatch();
-
-  const ws = useWebSocket();
-  const handleWS = useCallback(
-    (e: MessageEvent<string>) => {
-      const { type, data, msg } = JSON.parse(e.data);
-      if (type === SocketEvents.FOLLOW_EVENT) {
-        dispatch(
-          appActions.addNotification({
-            type: 'app/addNotification',
-            payload: msg,
-          }),
-        );
-      }
-      if (type === SocketEvents.AUTH_EVENT) {
-        dispatch(
-          appActions.setUsersOnline({
-            type: 'app/addUserOnline',
-            payload: data,
-          }),
-        );
-      }
-      if (type === SocketEvents.FRIEND_EVENT) {
-        dispatch(
-          appActions.addNotification({
-            type: 'app/addNotification',
-            payload: msg,
-          }),
-        );
-      }
-      if (type === SocketEvents.MSG_EVENT && data.from._id !== authId) {
-        dispatch(appActions.addNewMsgCounter());
-      }
-    },
-    [dispatch, authId],
-  );
-
-  useEffect(() => {
-    if (!ws) return;
-
-    ws.addEventListener('message', handleWS);
-    return () => ws.removeEventListener('message', handleWS);
-  }, [handleWS, ws]);
 
   const links = items.map((item) => (
     <a

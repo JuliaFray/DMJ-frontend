@@ -1,27 +1,20 @@
 import React, { FC } from 'react';
 
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
+import { v4 as uuidv4 } from 'uuid';
 
-const RGBA = 'rgba(246, 246, 246, 0.7)';
+import { Skeleton, Paper, Stack } from '@mantine/core';
 
 export const ArticleSkeleton: FC = () => {
   return (
-    <Stack spacing={2} height='316px'>
-      <Stack spacing={1} direction='row' height='20%'>
-        <Skeleton
-          variant='circular'
-          width={40}
-          height={40}
-          style={{ backgroundColor: RGBA, margin: '10px auto' }}
-        />
-        <Stack spacing={1} width='90%' height='100%' sx={{ justifyContent: 'center' }}>
-          <Skeleton variant='rounded' width='30%' height={10} style={{ backgroundColor: RGBA }} />
-          <Skeleton variant='rounded' width='20%' height={10} style={{ backgroundColor: RGBA }} />
-        </Stack>
+    <Paper key={uuidv4()} withBorder radius='md' p='md' mb='md'>
+      <Skeleton height={8} radius='xl' />
+      <Skeleton height={8} mt={6} width='70%' radius='xl' mb='md' />
+      <Stack mb='md' style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <Skeleton height={50} mt={6} circle />
+        <Skeleton height={8} mt={6} width='70%' radius='xl' />
       </Stack>
 
-      <Skeleton variant='rounded' width='100%' height='60%' style={{ backgroundColor: RGBA }} />
-    </Stack>
+      <Skeleton height={8} mt={6} radius='xl' />
+    </Paper>
   );
 };

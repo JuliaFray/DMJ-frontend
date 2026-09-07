@@ -11,6 +11,14 @@ export enum Meal {
   EveningSnack = 'Вечерний перекус',
 }
 
+export interface IDietRingStat {
+  label: string;
+  stat: string;
+  progress: number;
+  color: string;
+  icon?: string;
+}
+
 /** Статистика плана питания */
 export interface IDietStat {
   cal: number;
@@ -37,7 +45,7 @@ export interface IPortion {
 export interface IPlanByDay {
   day: number;
   /** Рейтинг каждого дня */
-  rating: number;
+  dayRating: number;
   portions: IPortion[];
 }
 
@@ -55,7 +63,7 @@ export interface IDietPlan {
   /** Статистика плана питания */
   statResult: IDietStat & {
     /** Рейтинг плана */
-    rating: number;
+    planRating: number;
   };
   /** Список продуктов в плане питания */
   planByDay: IPlanByDay[];

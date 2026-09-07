@@ -1,23 +1,17 @@
 import React from 'react';
 
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
+import { Grid } from '@mantine/core';
 
-import { ArticlesFeedSkeleton } from 'widgets/article';
+import { ArticleSkeleton } from 'entities/article';
 
 export function UserPageSkeleton() {
   return (
-    <div className='home-page'>
-      <Stack direction='row' alignItems='center' spacing={10}>
-        <Skeleton variant='circular' width={150} height={150} />
-
-        <Stack>
-          <Skeleton variant='text' width={200} height={50} />
-          <Skeleton variant='text' width={200} height={50} />
-        </Stack>
-      </Stack>
-
-      <ArticlesFeedSkeleton />
-    </div>
+    <Grid>
+      {new Array(10).fill(0).map((__, index) => (
+        <Grid.Col key={index}>
+          <ArticleSkeleton />
+        </Grid.Col>
+      ))}
+    </Grid>
   );
 }

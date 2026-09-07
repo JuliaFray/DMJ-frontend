@@ -18,6 +18,7 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { MenuWidget } from 'widgets/menu-widget';
 
 import { ScrollToTop } from 'shared/ui';
+import { NotificationBlock } from 'shared/ui/notification-block';
 
 import classes from './layout.module.scss';
 import { BrandLink, SignOutLink } from './layout.ui';
@@ -43,8 +44,8 @@ export const UserLayout = () => {
         <AppShell.Header className={classes.header}>
           <Group h='100%' px='md' justify='space-between'>
             <Burger opened={opened} onClick={toggle} hiddenFrom='sm' size='sm' color='white' />
-            <BrandLink />
-
+            {matches && <BrandLink />}
+            <NotificationBlock />
             <Switch
               size='md'
               color='dark.4'
@@ -63,6 +64,7 @@ export const UserLayout = () => {
                 />
               }
               onClick={toggleColorScheme}
+              style={{ right: '10em', position: 'absolute' }}
             />
 
             <SignOutLink />

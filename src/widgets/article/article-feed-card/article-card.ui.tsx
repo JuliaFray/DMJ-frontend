@@ -9,7 +9,7 @@ import { getFullName, NO_AVATAR, pathKeys } from 'shared/lib';
 import { IPost, TChipData } from 'shared/types';
 import { getAvatarSrc } from 'shared/utils';
 
-import classes from './ArticleCardFooter.module.css';
+import classes from './ArticleCardFooter.module.scss';
 import { CustomCardActions } from './custom-card-actions.ui';
 
 export type PostCardProps = {
@@ -45,6 +45,7 @@ export const ArticleCard: React.FC<PostCardProps> = ({
               variant={allTags?.some((t) => t._id === tag._id) ? 'filled' : 'outline'}
               onClick={() => handleAddTag?.(tag)}
               style={{ cursor: 'pointer' }}
+              className={classes.badge}
             >
               {tag.value}
             </Badge>

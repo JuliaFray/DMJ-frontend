@@ -14,3 +14,5 @@ export { SelectWrapper } from './sleect-wrapper';
 export { StyledRating } from './styled-rating.ui';
 export { UserButton } from './user-button';
 export * from './week-calendar';
+export * from './avatar-with-indicator';
+export * from './notification-block';

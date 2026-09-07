@@ -18,7 +18,7 @@ import { useChangeAvatarMutation } from 'shared/api';
 import { useAuth } from 'shared/context';
 import { useAppDispatch } from 'shared/hook';
 import { profileActions } from 'shared/model';
-import classes from 'shared/ui/user-card-modal/user-card-modal.module.css';
+import classes from 'shared/ui/user-card-modal/user-card-modal.module.scss';
 import { getAvatarSrc } from 'shared/utils';
 
 export const AvatarSelection = () => {

@@ -15,18 +15,20 @@ import { StyledRating } from 'shared/ui';
 import styles from './diet.module.scss';
 
 const calcPercent = (planValue: number, factValue: number) => {
-  return Math.round((factValue / planValue) * 100);
+  return 20;
+  // return Math.round((factValue / planValue) * 100);
 };
 const MULT_COEF = 5 / 4;
 
 const calcRating = (plan: IDietStat, fact: IDietStat) => {
-  return (
-    5 -
-    ((MULT_COEF * Math.abs(plan.cal - fact.cal)) / plan.cal +
-      (MULT_COEF * Math.abs(plan.proteins - fact.proteins)) / plan.proteins +
-      (MULT_COEF * Math.abs(plan.carb - fact.carb)) / plan.carb +
-      (MULT_COEF * Math.abs(plan.fats - fact.fats)) / plan.fats)
-  );
+  return 1;
+  // return (
+  //   5 -
+  //   ((MULT_COEF * Math.abs(plan.cal - fact.cal)) / plan.cal +
+  //     (MULT_COEF * Math.abs(plan.proteins - fact.proteins)) / plan.proteins +
+  //     (MULT_COEF * Math.abs(plan.carb - fact.carb)) / plan.carb +
+  //     (MULT_COEF * Math.abs(plan.fats - fact.fats)) / plan.fats)
+  // );
 };
 
 const getColor = (mult: number) => {
@@ -40,12 +42,15 @@ const getColor = (mult: number) => {
 };
 
 interface Props {
-  plan: IDietStat;
+  plan?: IDietStat;
   portions: IPortion[];
   currentDay: number;
 }
 
 export const DietStats: FC<Props> = ({ plan, portions, currentDay }) => {
+  if (!plan) {
+    return null;
+  }
   const dispatch = useAppDispatch();
   const summaryWeight = portions.reduce((acc, current) => acc + current.weightG, 0) ?? 0;
 

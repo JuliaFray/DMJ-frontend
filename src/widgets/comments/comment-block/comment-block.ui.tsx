@@ -15,7 +15,7 @@ interface Props {
 
 export const CommentsBlock: FC<Props> = ({ items, children }) => {
   return (
-    <Grid>
+    <Grid mt='md'>
       <Grid.Col>{items?.map((obj: IComment) => <Comment key={uuidv4()} item={obj} />)}</Grid.Col>
       <Grid.Col>{children}</Grid.Col>
     </Grid>

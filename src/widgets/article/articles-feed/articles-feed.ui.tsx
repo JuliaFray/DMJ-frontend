@@ -31,20 +31,19 @@ export const ArticlesFeed: React.FC<TPostMain> = ({ allTags, handleAddTag }) => 
 
   return (
     <Grid>
-      {!isFetching &&
-        posts.map((el: IPost) => (
-          <Grid.Col key={el._id}>
-            {el.userId && (
-              <ArticleCard
-                key={el._id}
-                isOneArticlePage={false}
-                post={el}
-                allTags={allTags}
-                handleAddTag={handleAddTag}
-              />
-            )}
-          </Grid.Col>
-        ))}
+      {posts.map((el: IPost) => (
+        <Grid.Col key={el._id}>
+          {el.userId && (
+            <ArticleCard
+              key={el._id}
+              isOneArticlePage={false}
+              post={el}
+              allTags={allTags}
+              handleAddTag={handleAddTag}
+            />
+          )}
+        </Grid.Col>
+      ))}
     </Grid>
   );
 };

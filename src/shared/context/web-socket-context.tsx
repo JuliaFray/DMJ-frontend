@@ -2,20 +2,21 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 
 import { useAppDispatch, useAppSelector } from '../hook';
 import { SocketEvents } from '../lib';
-import { authSelector } from '../model';
+import { appActions } from '../model';
 import { wsConnect, wsShowReconnect } from '../model/ws/ws';
 import { Nullable } from '../types';
 import { Spinner } from '../ui';
 
+import { useAuth } from '.';
+
 export const WebSocketContext = createContext<WebSocket | null>(null);
 
-export const WS = (props: React.PropsWithChildren<unknown>) => {
+export const WebSocketProvider = ({ children }) => {
   const dispatch = useAppDispatch();
 
   const ws = useAppSelector((state) => state.ws);
 
-  const authId = useAppSelector(authSelector.getAuthId);
-  const isAuth = !!authId || window.localStorage.getItem('token');
+  const { authId, isAuth } = useAuth();
 
   const [conn, setConn] = useState<Nullable<WebSocket>>(null);
   const [tryingAgainIn, setTryingAgainIn] = useState(5);
@@ -73,19 +74,67 @@ export const WS = (props: React.PropsWithChildren<unknown>) => {
     }
   }, [intervalID, retry, tryingAgainIn]);
 
+  const handleWS = useCallback((e: MessageEvent<string>) => {
+    const { type, data, msg } = JSON.parse(e.data);
+    if (type === SocketEvents.LOGOUT_EVENT) {
+      dispatch(
+        appActions.setUsersOnline({
+          type: 'app/setUserOnline',
+          payload: data,
+        }),
+      );
+    }
+    if (type === SocketEvents.FOLLOW_EVENT) {
+      dispatch(
+        appActions.addNotification({
+          type: 'app/addNotification',
+          payload: msg,
+        }),
+      );
+    }
+    if (type === SocketEvents.AUTH_EVENT) {
+      dispatch(
+        appActions.setUsersOnline({
+          type: 'app/setUserOnline',
+          payload: data,
+        }),
+      );
+    }
+    if (type === SocketEvents.FRIEND_EVENT) {
+      dispatch(
+        appActions.addNotification({
+          type: 'app/addNotification',
+          payload: msg,
+        }),
+      );
+    }
+    if (type === SocketEvents.MSG_EVENT && data.from._id !== authId) {
+      dispatch(
+        appActions.addNotification({
+          type: 'app/addNotification',
+          payload: msg,
+        }),
+      );
+    }
+  }, []);
+
   useEffect(() => {
-    dispatch(wsConnect(onNewSocket, authId));
-  }, [authId, dispatch]);
+    if (isAuth) {
+      dispatch(wsConnect(onNewSocket, authId));
+    }
+  }, [authId, dispatch, isAuth]);
 
   useEffect(() => {
     if (!conn) return;
 
     conn.addEventListener('open', handleOpen);
     conn.addEventListener('close', handleClose);
+    conn.addEventListener('message', handleWS);
 
     return () => {
       conn.removeEventListener('open', handleOpen);
       conn.removeEventListener('close', handleClose);
+      conn.removeEventListener('message', handleWS);
     };
   }, [conn, handleClose, handleOpen]);
 
@@ -93,7 +142,7 @@ export const WS = (props: React.PropsWithChildren<unknown>) => {
     if (!isAuth || !conn) return;
     const payload = { type: SocketEvents.AUTH_EVENT, id: authId };
     conn.send(JSON.stringify(payload));
-  }, [isAuth, conn]);
+  }, [isAuth, conn, authId]);
 
   if (!silentConnect && (ws.connecting || ws.error)) {
     return (
@@ -119,7 +168,7 @@ export const WS = (props: React.PropsWithChildren<unknown>) => {
   }
 
   if ((ws.connected && !ws.error) || silentConnect) {
-    return <WebSocketContext.Provider value={conn}>{props.children}</WebSocketContext.Provider>;
+    return <WebSocketContext.Provider value={conn}>{children}</WebSocketContext.Provider>;
   }
 
   return <div>Техническое обслуживание</div>;

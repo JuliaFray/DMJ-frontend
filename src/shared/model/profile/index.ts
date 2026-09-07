@@ -5,6 +5,5 @@ export {
   createFriendProfile,
   saveUserProfile,
   toggleFollowProfile,
-  getUserProfile,
   getNotifications,
 } from './profile-thunks';

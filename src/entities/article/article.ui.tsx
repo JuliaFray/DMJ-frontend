@@ -19,7 +19,7 @@ import { deletePost } from 'shared/model';
 import { IPost } from 'shared/types';
 import { UserButton } from 'shared/ui';
 
-import classes from './ArticleCardFooter.module.css';
+import classes from './ArticleCardFooter.module.scss';
 import styles from './article.module.scss';
 
 type ArticleProps = {

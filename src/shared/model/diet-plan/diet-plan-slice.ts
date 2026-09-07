@@ -32,7 +32,7 @@ const dietPlanSlice = createSlice({
       const currentDayPlan = state.dietPlan?.planByDay.find(({ day }) => day === payload.day);
 
       if (currentDayPlan) {
-        currentDayPlan.rating = payload.rating;
+        currentDayPlan.dayRating = payload.rating;
       }
     },
   },
@@ -79,7 +79,7 @@ const dietPlanSlice = createSlice({
     getDietsIsFetching: (state: TInitial) => state.isFetching,
     getDietPlanByDay: (state: TInitial) => state.dietPlan?.planByDay,
     getDietDayRating: (state: TInitial) => (currentDay: number) =>
-      state.dietPlan?.planByDay.find(({ day }) => day === currentDay)?.rating,
+      state.dietPlan?.planByDay.find(({ day }) => day === currentDay)?.dayRating,
   },
 });
 

@@ -1,60 +1,49 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { Tooltip } from '@mui/material';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import IconButton from '@mui/material/IconButton';
+import { Card, Group, Rating, SimpleGrid, Title } from '@mantine/core';
 
 import { pathKeys } from 'shared/lib';
 import { IDietPlan } from 'shared/types';
-import { DietStats } from 'shared/ui';
 
-import styles from './diet-card.module.scss';
+import { StatsRing } from '../stats-ring';
+
+import { calculateStats } from './diet-card.utils';
 
 type TDietCard = {
   diet: IDietPlan;
 };
-export const DietCard: React.FC<TDietCard> = ({ diet }) => {
-  return (
-    <Card>
-      <CardHeader
-        sx={{
-          height: '20%',
-          '& .MuiTypography-subtitle1': {
-            overflow: 'hidden',
-            display: '-webkit-box',
-            WebkitLineClamp: 1,
-            WebkitBoxOrient: 'vertical',
-          },
-        }}
-        title={
-          <Link className={styles.title} to={pathKeys.planner.byId({ id: diet._id })}>
-            {diet.name}
-          </Link>
-        }
-        action={
-          <Link to={pathKeys.planner.byId({ id: diet._id })}>
-            <Tooltip title='Открыть план'>
-              <IconButton aria-label='forward'>
-                <ChevronRightIcon />
-              </IconButton>
-            </Tooltip>
-          </Link>
-        }
-      />
 
-      <CardContent style={{ height: '220px' }}>
-        <DietStats
-          plan={diet.userId.targetStat}
-          fact={diet.statResult}
-          period={diet.period}
-          rating={diet.statResult.rating}
-        />
-      </CardContent>
+export const DietCard: React.FC<TDietCard> = ({ diet }) => {
+  const navigate = useNavigate();
+
+  const statData = calculateStats(diet.userId.targetStat, diet.statResult);
+
+  return (
+    <Card withBorder padding='lg' radius='md'>
+      <Group mb='md' justify='space-between'>
+        <Title
+          order={5}
+          style={{ cursor: 'pointer' }}
+          onClick={() => navigate(pathKeys.planner.byId({ id: diet._id }))}
+        >
+          {diet.name}
+        </Title>
+        <Rating value={diet.statResult.planRating} fractions={2} readOnly color='teal' />
+      </Group>
+
+      <SimpleGrid cols={{ base: 2, sm: 4 }}>
+        {statData.map((it) => (
+          <StatsRing
+            label={it.label}
+            stat={it.stat}
+            progress={it.progress}
+            color={it.color}
+            icon={it.icon}
+          />
+        ))}
+      </SimpleGrid>
     </Card>
   );
 };

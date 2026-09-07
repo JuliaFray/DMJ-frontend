@@ -1,20 +1,20 @@
 import React from 'react';
 
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
+import { v4 as uuidv4 } from 'uuid';
+
+import { Paper, Skeleton, Stack } from '@mantine/core';
 
 export function ArticlePageSkeleton() {
   return (
-    <div>
-      <Stack direction='column' alignItems='center'>
-        <Skeleton variant='text' width='100%' height={100} />
-        <Skeleton variant='text' width='100%' height={50} />
-        <Skeleton variant='text' width='100%' height={300} />
+    <Paper key={uuidv4()} withBorder radius='md' p='md' mb='md'>
+      <Skeleton height={8} radius='xl' />
+      <Skeleton height={8} mt={6} width='70%' radius='xl' mb='md' />
+      <Stack mb='md' style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <Skeleton height={50} mt={6} circle />
+        <Skeleton height={8} mt={6} width='70%' radius='xl' />
       </Stack>
 
-      <Skeleton width='100%' height={180} />
-      <Skeleton width='100%' height={180} />
-      <Skeleton width='100%' height={180} />
-    </div>
+      <Skeleton height={8} mt={6} radius='xl' />
+    </Paper>
   );
 }

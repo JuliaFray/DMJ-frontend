@@ -2,8 +2,7 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
-import { Container } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import { Container, Text } from '@mantine/core';
 
 import styles from './side-block.module.scss';
 
@@ -15,22 +14,18 @@ type TSideBlock = {
 };
 export const SideBlock: React.FC<TSideBlock> = ({ title, icon, link, children }) => {
   return (
-    <Container classes={{ root: styles.root }}>
+    <Container classNames={{ root: styles.root }}>
       {link && (
         <Link className={styles.link} to={link}>
           {icon}
-          <Typography variant='h6' classes={{ root: styles.title }}>
-            {title}
-          </Typography>
+          <Text classNames={{ root: styles.title }}>{title}</Text>
         </Link>
       )}
 
       {!link && (
         <>
           {icon}
-          <Typography variant='h6' classes={{ root: styles.title }}>
-            {title}
-          </Typography>
+          <Text classNames={{ root: styles.title }}>{title}</Text>
         </>
       )}
 

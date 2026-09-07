@@ -3,20 +3,8 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Form, Formik } from 'formik';
 import { useParams } from 'react-router-dom';
 
-import {
-  Box,
-  Button,
-  Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  Paper,
-  Tab,
-  Tabs,
-} from '@mui/material';
-import DialogContentText from '@mui/material/DialogContentText';
+import { Button, Container, Grid, Group, Modal, Paper, Text, Title } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 
 import { DietParams, DietPlanComposition } from 'widgets/diet';
 
@@ -35,9 +23,8 @@ import {
 } from 'shared/hook';
 import { SocketEvents } from 'shared/lib';
 import { dietActions, dietSelector } from 'shared/model';
-import { IDietPlan } from 'shared/types';
-import { Spinner, TabPanel } from 'shared/ui';
-import { a11yProps } from 'shared/utils';
+import { IDietPlan, Nullable } from 'shared/types';
+import { Spinner } from 'shared/ui';
 
 // eslint-disable-next-line no-shadow
 enum DIET_TABS {
@@ -49,7 +36,8 @@ export const DietPlanPage: FC = () => {
   const { mdMain } = useMedia();
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const [openDialog, setOpenDialog] = useState(false);
+
+  const [opened, { toggle, close }] = useDisclosure(false);
 
   const [tabIndex, setTabIndex] = useState<string>(DIET_TABS.DIET_PARAMS);
 
@@ -89,27 +77,28 @@ export const DietPlanPage: FC = () => {
   const diet: IDietPlan | null = useAppSelector(dietSelector.getDiet);
 
   const handleDelete = () => {
-    setOpenDialog(false);
+    close();
     deleteDiet({ id: id! });
   };
 
-  const handleTabChange =
-    (formValues: IDietPlan) => (event: React.SyntheticEvent, newValue: string) => {
+  const handleTabChange = (formValues: IDietPlan) => (newValue: Nullable<string>) => {
+    if (newValue) {
       const tab = Object.values(DIET_TABS)[newValue];
       setTabIndex(tab);
       updateDiet({ id: id!, body: formValues });
       setQueryParams({ diet: tab });
-    };
+    }
+  };
 
   if (!diet || isLoading || isUpdateLoading) {
     return <Spinner display />;
   }
 
   return (
-    <Grid container spacing={2} width='100%' style={{ margin: 0, padding: 0 }}>
-      <Grid item md={mdMain} width='100%' style={{ margin: 0, padding: 0 }}>
-        <Paper variant='elevation' elevation={4} sx={{ padding: '16px' }}>
-          <Container sx={{ padding: '0!important' }}>
+    <Grid style={{ margin: 0, padding: 0 }}>
+      <Grid.Col span={mdMain} style={{ margin: 0, padding: 0 }}>
+        <Paper withBorder radius='md' p='xs'>
+          <Container>
             <Formik
               initialValues={diet}
               onSubmit={(v) => {
@@ -117,76 +106,47 @@ export const DietPlanPage: FC = () => {
               }}
               enableReinitialize
             >
-              {({ values }) => (
-                <>
-                  <Tabs
-                    value={tabIndex}
-                    onChange={handleTabChange(values)}
-                    centered
-                    variant='fullWidth'
-                  >
-                    <Tab wrapped label='Основные параметры' {...a11yProps(DIET_TABS.DIET_PARAMS)} />
-                    <Tab wrapped label='Состав' {...a11yProps(DIET_TABS.DIET_COMPOSITION)} />
-                    {/* <Tab wrapped label='Итог' {...a11yProps(2)} /> */}
-                  </Tabs>
+              {() => (
+                <Form style={{ display: `${isLoading || isUpdateLoading ? 'none' : 'block'}` }}>
+                  <Title mb='md' order={3}>
+                    Основные параметры
+                  </Title>
+                  <DietParams />
 
-                  <Form style={{ display: `${isLoading || isUpdateLoading ? 'none' : 'block'}` }}>
-                    <TabPanel value={tabIndex} index={DIET_TABS.DIET_PARAMS}>
-                      <DietParams diet={diet} />
-                    </TabPanel>
-                    <TabPanel value={tabIndex} index={DIET_TABS.DIET_COMPOSITION}>
-                      <DietPlanComposition diet={diet} />
-                    </TabPanel>
+                  <Group justify='flex-end' mb='lg'>
+                    <Button size='compact-lg' variant='outline' onClick={toggle}>
+                      Удалить план
+                    </Button>
+                    <Button type='submit' size='compact-lg' variant='filled'>
+                      Сохранить
+                    </Button>
+                  </Group>
 
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'end',
-                        gap: '20px',
-                        marginTop: '24px',
-                      }}
-                    >
-                      <Button
-                        type='button'
-                        size='large'
-                        variant='outlined'
-                        onClick={() => setOpenDialog(true)}
-                      >
-                        Удалить
-                      </Button>
-                      <Button type='submit' size='large' variant='contained'>
-                        Сохранить
-                      </Button>
-                    </Box>
-                  </Form>
-                </>
+                  <Title mb='md' order={3}>
+                    Состав
+                  </Title>
+                  <DietPlanComposition diet={diet} />
+                </Form>
               )}
             </Formik>
           </Container>
         </Paper>
 
-        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-          <DialogTitle>Внимание</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Вы уверены, что хотите удалить план питания навсегда?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              type='button'
-              size='large'
-              variant='outlined'
-              onClick={() => setOpenDialog(false)}
-            >
+        <Modal opened={opened} withCloseButton size='lg' onClose={close} centered title='Внимание'>
+          <Text size='sm' mb='xs' fw={500}>
+            Вы уверены, что хотите удалить план питания навсегда?
+          </Text>
+
+          <Group justify='flex-end' mt='lg'>
+            <Button size='compact-lg' variant='outline' onClick={close}>
               Отмена
             </Button>
-            <Button type='button' size='large' variant='contained' onClick={handleDelete}>
+            <Button size='compact-lg' variant='filled' onClick={handleDelete}>
               Удалить
             </Button>
-          </DialogActions>
-        </Dialog>
-      </Grid>
+          </Group>
+        </Modal>
+      </Grid.Col>
     </Grid>
   );
 };

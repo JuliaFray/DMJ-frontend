@@ -53,7 +53,7 @@ const appSlice = createSlice({
     });
   },
   selectors: {
-    getAppUserOnline: (state: InitialStateType) => state.usersOnline,
+    getAppUserOnline: (state: InitialStateType) => state.usersOnline || [],
     getAppAllNotifications: (state: InitialStateType) => state.notifications,
     getAppInfoNotifications: (state: InitialStateType) =>
       state.notifications.filter((it) => it.type !== SocketEvents.MSG_EVENT),

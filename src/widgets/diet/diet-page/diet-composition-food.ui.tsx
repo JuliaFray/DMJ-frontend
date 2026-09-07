@@ -73,7 +73,7 @@ export const DietConsistFood: FC<Props> = ({
 }) => {
   const { authId } = useAuth();
   const planByDays = useSelector(dietSelector.getDietPlanByDay);
-  const dayRating = planByDays?.find(({ day }) => day === currentDay)?.rating;
+  const dayRating = planByDays?.find(({ day }) => day === currentDay)?.dayRating;
 
   const { queryParams, setQueryParams } = useQueryParams();
 

@@ -31,11 +31,10 @@ type TPostPage = {
   isFeedPage: boolean;
   userId: string;
   isFavorite: boolean;
-  isLoad: boolean;
 };
 const HomePage: React.FC<TPostPage> = React.memo(
   ({ showMyPosts, isFeedPage, userId, isFavorite }) => {
-    const { mdMain, mdSide } = useMedia(isFeedPage);
+    const { mdMain, mdSide } = useMedia();
     const { allTags, selectedTags, selectedAuthor, handleAddTag, handleRemoveTag } = useTagFilter();
 
     const { authId } = useAuth();

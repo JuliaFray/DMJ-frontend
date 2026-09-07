@@ -1,13 +1,17 @@
 import React from 'react';
 
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
+import { Paper, Skeleton, Stack } from '@mantine/core';
 
 export const UserRowSkeleton: React.FC = () => {
   return (
-    <Stack direction='row' spacing={1} height={200} sx={{ alignItems: 'center' }}>
-      <Skeleton variant='circular' width={80} height={80} />
-      <Skeleton variant='rounded' width='80%' height={100} />
-    </Stack>
+    <Paper withBorder radius='md' p='md'>
+      <Stack mb='md' style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <Skeleton height={50} mt={6} circle />
+        <Stack mb='md' style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <Skeleton height={8} mt={6} width='70%' radius='xl' />
+          <Skeleton height={8} mt={6} width='70%' radius='xl' />
+        </Stack>
+      </Stack>
+    </Paper>
   );
 };

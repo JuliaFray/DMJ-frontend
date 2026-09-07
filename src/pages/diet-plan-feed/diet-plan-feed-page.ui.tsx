@@ -21,7 +21,7 @@ type TPostPage = {
   isLoad: boolean;
 };
 const DietPage: React.FC<TPostPage> = React.memo(({ isMainPage, userId, isOwner, isFavorite }) => {
-  const { mdMain } = useMedia(isMainPage);
+  const { mdMain } = useMedia();
 
   const { isAuth } = useAuth();
 

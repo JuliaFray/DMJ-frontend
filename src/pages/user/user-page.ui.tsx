@@ -1,42 +1,45 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { Grid, useMediaQuery } from '@mui/material';
+import { Grid, LoadingOverlay, Box } from '@mantine/core';
 
-import { ProfileCard, ProfileTabs } from 'widgets/profile';
+import { UserCard, ProfileTabs } from 'widgets/users';
 
-import { useAppDispatch, useAppSelector } from 'shared/hook';
-import { authSelector, getUserProfile, getUserProfileStats, profileSelector } from 'shared/model';
-import { theme } from 'shared/themes';
+import { useGetUserByIdQuery, useGetUserStatsByIdQuery } from 'shared/api';
+import { useMedia } from 'shared/hook';
 
 import styles from './user-page.module.scss';
 
-export const ProfilePage: React.FC = React.memo(() => {
-  const isMore1200px = useMediaQuery(theme.breakpoints.up('lg'));
-
-  const profile = useAppSelector(profileSelector.getProfile);
-  const authorizeUserId = useAppSelector(authSelector.getAuthId);
-
+export const UserPage: React.FC = React.memo(() => {
+  const { mdMain, mdSide } = useMedia();
   const params = useParams();
-  const dispatch = useAppDispatch();
 
-  const isOwner = params.id === authorizeUserId;
-  const userId: string = params.id || authorizeUserId || profile?.userId || '';
+  const userId: string = params.id || '';
+  const { data: profile, isLoading: isLoadingProfile } = useGetUserByIdQuery({ userId });
+  const { data: stats, isLoading: isLoadingStats } = useGetUserStatsByIdQuery({ userId });
 
-  useEffect(() => {
-    dispatch(getUserProfile({ userId }));
-    dispatch(getUserProfileStats({ userId }));
-  }, [userId]);
+  if (!profile || !profile.data) {
+    return null;
+  }
 
   return (
-    <Grid container spacing={2} width='100%'>
-      <Grid item md={isMore1200px ? 9 : 12} width='100%'>
-        {!!profile && <ProfileCard isOwner={isOwner} profile={profile} />}
-        {!!profile && <ProfileTabs isOwner={isOwner} userId={profile._id} />}
-      </Grid>
+    <Grid>
+      <Grid.Col span={mdMain}>
+        <Box pos='relative'>
+          <LoadingOverlay
+            visible={isLoadingProfile || isLoadingStats}
+            zIndex={1000}
+            overlayProps={{ radius: 'sm', blur: 2 }}
+            loaderProps={{ color: 'teal', type: 'bars' }}
+          />
+          <UserCard profile={profile.data} />
+        </Box>
 
-      <Grid item md={3} className={styles.right} />
+        <ProfileTabs userId={userId} stats={stats} />
+      </Grid.Col>
+
+      <Grid.Col span={mdSide} className={styles.right} />
     </Grid>
   );
 });

@@ -72,8 +72,6 @@ const authSlice = createSlice({
           state.errors = [];
 
           profileSlice.actions.setProfile(payload);
-
-          // useSendWebSocket({ type: SocketEvents.AUTH_EVENT, id: payload._id });
         }
       })
       .addMatcher(authApi.endpoints.login.matchRejected, (state, { payload }) => {

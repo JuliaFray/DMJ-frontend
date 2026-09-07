@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     checkAuth();
-  }, []);
+  }, [dispatch, token]);
 
   useEffect(() => {
     if (token && isAuth) {

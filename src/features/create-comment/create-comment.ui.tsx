@@ -7,12 +7,15 @@ import { ActionIcon, Group, Paper, TextInput } from '@mantine/core';
 import { styles } from 'entities/comment';
 
 import { useCreatePostCommentMutation } from 'shared/api';
+import { useAuth } from 'shared/context';
+import { UserButton } from 'shared/ui';
 
 export type ICommentCreate = {
   postId: string;
 };
 
 export const CreateComment: React.FC<ICommentCreate> = ({ postId }) => {
+  const { me } = useAuth();
   const [value, setValue] = useState<string>('');
 
   const [createPostComment] = useCreatePostCommentMutation();
@@ -33,14 +36,14 @@ export const CreateComment: React.FC<ICommentCreate> = ({ postId }) => {
       <Group
         style={{ alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'nowrap' }}
       >
+        {me && <UserButton user={me} onlyAvatar />}
         <TextInput
-          label='Комментарий'
           value={value}
           onChange={(event) => setValue(event.currentTarget.value)}
           style={{ width: '100%' }}
         />
 
-        <ActionIcon variant='default' size='input-sm' onClick={onSubmit}>
+        <ActionIcon variant='filled' size='input-sm' onClick={onSubmit}>
           <PaperPlaneRightIcon />
         </ActionIcon>
       </Group>

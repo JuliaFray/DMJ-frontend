@@ -1,35 +1,34 @@
 import React, { FC } from 'react';
 
-import { Container, Stack } from '@mui/material';
+import { Stack } from '@mantine/core';
 
-import { Meal, TChipData, IDietPlan } from 'shared/types';
-import { InputWrapper, SelectWrapper } from 'shared/ui';
+import { Meal } from 'shared/types';
+import { InputWrapper } from 'shared/ui';
+//
+// const mealsOptions: TChipData[] = [
+//   { _id: 'Breakfast', value: Meal.Breakfast },
+//   { _id: 'MorningSnack', value: Meal.MorningSnack },
+//   { _id: 'Lunch', value: Meal.Lunch },
+//   { _id: 'AfterNoonSnack', value: Meal.AfterNoonSnack },
+//   { _id: 'Dinner', value: Meal.Dinner },
+//   { _id: 'EveningSnack', value: Meal.EveningSnack },
+// ];
 
-const mealsOptions: TChipData[] = [
-  { _id: 'Breakfast', value: Meal.Breakfast },
-  { _id: 'MorningSnack', value: Meal.MorningSnack },
-  { _id: 'Lunch', value: Meal.Lunch },
-  { _id: 'AfterNoonSnack', value: Meal.AfterNoonSnack },
-  { _id: 'Dinner', value: Meal.Dinner },
-  { _id: 'EveningSnack', value: Meal.EveningSnack },
+const mealsOptions: string[] = [
+  Meal.Breakfast,
+  Meal.MorningSnack,
+  Meal.Lunch,
+  Meal.AfterNoonSnack,
+  Meal.Dinner,
+  Meal.EveningSnack,
 ];
 
-interface Props {
-  diet: IDietPlan;
-}
-
-export const DietParams: FC<Props> = ({ diet }) => {
-  if (!diet) {
-    return null;
-  }
-
+export const DietParams: FC = () => {
   return (
-    <Container style={{ marginBottom: '24px', padding: '0' }}>
-      <Stack spacing={4}>
-        <InputWrapper name='name' label='Название плана' />
-        <InputWrapper name='period' label='Количество дней' />
-        <SelectWrapper name='meals' label='Приемы пищи' options={mealsOptions} multiple />
-      </Stack>
-    </Container>
+    <Stack gap='sm'>
+      <InputWrapper name='name' label='Название плана' />
+      <InputWrapper name='period' label='Количество дней' type='number' />
+      <InputWrapper name='meals' label='Приемы пищи' type='multiselect' data={mealsOptions} />
+    </Stack>
   );
 };

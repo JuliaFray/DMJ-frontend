@@ -113,9 +113,5 @@ const browserRouter = createBrowserRouter([
 ]);
 
 export const BrowserRouting = () => {
-  return (
-    <AuthProvider>
-      <RouterProvider router={browserRouter} />
-    </AuthProvider>
-  );
+  return <RouterProvider router={browserRouter} />;
 };

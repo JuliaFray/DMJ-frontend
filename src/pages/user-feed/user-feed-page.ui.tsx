@@ -12,7 +12,6 @@ import { usersSelector } from 'shared/model';
 import { CustomPagination } from 'shared/ui';
 
 export type IUsersPage = {
-  isMainPage: boolean;
   isFollowers: boolean;
 };
 
@@ -39,7 +38,6 @@ const UsersPage: React.FC<IUsersPage> = React.memo((props) => {
 });
 
 const mapStateToProps = () => ({
-  isMainPage: true,
   isFollowers: false,
 });
 

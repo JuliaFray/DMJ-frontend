@@ -8,7 +8,7 @@ import { IUser, TProfileStats } from '../types';
 import { instance } from './api';
 import { GenericResponseType } from './api-types';
 
-const baseUrl = 'profile';
+const baseUrl = 'users';
 export const profileAPI = {
   getProfile(userId: string) {
     return instance.get<GenericResponseType<IUser>>(`${baseUrl}/${userId}`).then((response) => {
@@ -74,21 +74,3 @@ export const profileAPI = {
       });
   },
 };
-
-export const profileApi = createApi({
-  reducerPath: 'usersApi',
-  baseQuery: customFetchBase('/users'),
-  endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
-    changeAvatar: build.mutation<void, { userId: string; avatarId: string }>({
-      query: ({ userId, avatarId }) => {
-        return {
-          url: `/${userId}/change-avatar`,
-          method: 'PUT',
-          body: { avatarId },
-        };
-      },
-    }),
-  }),
-});
-
-export const { useChangeAvatarMutation } = profileApi;

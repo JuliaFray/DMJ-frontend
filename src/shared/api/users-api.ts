@@ -1,8 +1,8 @@
 import { BaseQueryFn, createApi, EndpointBuilder } from '@reduxjs/toolkit/query/react';
 
-import { IUser } from '../types';
+import { IUser, IUserStats, TProfileStats } from '../types';
 
-import { CountResponseType } from './api-types';
+import { CountResponseType, GenericResponseType } from './api-types';
 import customFetchBase from './custom-fetch-base';
 
 export const usersApi = createApi({
@@ -29,6 +29,29 @@ export const usersApi = createApi({
         };
       },
     }),
+    getUserById: build.query<GenericResponseType<IUser>, { userId: string }>({
+      query: ({ userId }) => {
+        return {
+          url: `/${userId}`,
+          method: 'GET',
+        };
+      },
+      providesTags: (result, error, arg) => [{ type: 'getUserById', id: arg.userId }],
+    }),
+    getUserStatsById: build.query<TProfileStats & IUserStats, { userId: string }>({
+      query: ({ userId }) => {
+        return {
+          url: `/${userId}/stats`,
+          method: 'GET',
+        };
+      },
+      providesTags: (result, error, arg) => [{ type: 'getUserStatsById', id: arg.userId }],
+      transformResponse: (
+        response: GenericResponseType<TProfileStats & IUserStats>,
+      ): TProfileStats & IUserStats => {
+        return response.data;
+      },
+    }),
     changeAvatar: build.mutation<void, { userId: string; avatarId: string }>({
       query: ({ userId, avatarId }) => {
         return {
@@ -41,4 +64,9 @@ export const usersApi = createApi({
   }),
 });
 
-export const { useLazyGetAllUsersQuery } = usersApi;
+export const {
+  useLazyGetAllUsersQuery,
+  useChangeAvatarMutation,
+  useGetUserByIdQuery,
+  useGetUserStatsByIdQuery,
+} = usersApi;

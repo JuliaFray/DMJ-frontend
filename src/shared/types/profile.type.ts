@@ -15,10 +15,11 @@ export type TProfileStats = {
   marks: number;
 };
 
-interface IUserStats {
+export interface IUserStats {
   followersCount?: number;
   folowsCount?: number;
   postCount?: number;
+  isFollowed: boolean;
 }
 
 export interface IUser extends Record<string, unknown> {

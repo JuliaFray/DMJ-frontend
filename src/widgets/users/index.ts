@@ -1,3 +1,4 @@
-export { UserInfo } from './user-info';
-export { UserRow, UserRowSkeleton } from './user-row';
+export { UserRowSkeleton } from './user-row';
 export { UsersFeed } from './users-feed';
+export { ProfileTabs } from './profile-tabs';
+export { UserCard } from './user-card';

@@ -9,7 +9,7 @@ import '@mantine/core/styles.css';
 import { Notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
 
-import { WS } from 'shared/context';
+import { AuthProvider, WebSocketProvider } from 'shared/context';
 import { useAppSelector } from 'shared/hook';
 import { spinnerSelector, store } from 'shared/model';
 import { mantineTheme } from 'shared/themes';
@@ -33,11 +33,13 @@ function GlobalSpinner() {
 export const AppProvider = enhance(() => (
   <Provider store={store}>
     <MantineProvider theme={mantineTheme}>
-      <WS>
-        <Notifications position='bottom-center' autoClose={10000} limit={5} />
-        <GlobalSpinner />
-        <BrowserRouting />
-      </WS>
+      <AuthProvider>
+        <WebSocketProvider>
+          <Notifications position='bottom-center' autoClose={10000} limit={5} />
+          <GlobalSpinner />
+          <BrowserRouting />
+        </WebSocketProvider>
+      </AuthProvider>
     </MantineProvider>
   </Provider>
 ));
