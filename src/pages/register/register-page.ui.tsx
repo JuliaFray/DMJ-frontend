@@ -60,7 +60,7 @@ export const RegisterPage: FC = () => {
                   <Stack gap='sm'>
                     <InputWrapper name='login' label='Логин' />
                     <InputWrapper name='email' label='Email' />
-                    <InputWrapper name='password' label='Пароль' type='password' />
+                    <InputWrapper name='password' label='Пароль' mode='password' />
                   </Stack>
 
                   <Button

@@ -2,9 +2,11 @@ import React from 'react';
 
 import { HammerIcon } from '@phosphor-icons/react';
 
-import { Alert } from '@mantine/core';
+import { Alert, Container } from '@mantine/core';
 
-import { AvatarSelection } from 'widgets/settings/avatar-selection';
+import { SettingsAccordion } from 'widgets/settings';
+
+import classes from './settings.module.scss';
 
 const show = true;
 
@@ -16,5 +18,10 @@ export const SettingsPage = () => {
       </Alert>
     );
   }
-  return <AvatarSelection />;
+
+  return (
+    <Container size='sm' className={classes.wrapper}>
+      <SettingsAccordion />
+    </Container>
+  );
 };

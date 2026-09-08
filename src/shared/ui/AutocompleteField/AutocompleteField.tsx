@@ -53,6 +53,7 @@ export const AutocompleteField: React.FC<IAutocompleteField> = (props) => {
       const v = {
         _id: uuidv4().replaceAll('-', '').slice(0, 24),
         value: currentTag,
+        label: currentTag,
       };
       setOptions([...options, v]);
       setCurrentTag('');

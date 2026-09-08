@@ -18,7 +18,7 @@ type TDietCard = {
 export const DietCard: React.FC<TDietCard> = ({ diet }) => {
   const navigate = useNavigate();
 
-  const statData = calculateStats(diet.userId.targetStat, diet.statResult);
+  const statData = calculateStats(diet.userId.config.targets.targetStat, diet.statResult);
 
   return (
     <Card withBorder padding='lg' radius='md'>

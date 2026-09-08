@@ -36,6 +36,11 @@ const profileSlice = createSlice({
         state.me.avatarId = action.payload;
       }
     },
+    changeLogin: (state: InitialStateType, action) => {
+      if (state.me) {
+        state.me.login = action.payload;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder

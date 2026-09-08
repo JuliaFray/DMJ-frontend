@@ -61,7 +61,7 @@
     "yup": "1.0.0"
   },
   "scripts": {
-    "start": "react-scripts --max_old_space_size=8192 start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

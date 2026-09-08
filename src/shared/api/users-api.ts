@@ -1,6 +1,6 @@
 import { BaseQueryFn, createApi, EndpointBuilder } from '@reduxjs/toolkit/query/react';
 
-import { IUser, IUserStats, TProfileStats } from '../types';
+import { IUser, IUserStats, IUserWithTargets, TProfileStats } from '../types';
 
 import { CountResponseType, GenericResponseType } from './api-types';
 import customFetchBase from './custom-fetch-base';
@@ -61,6 +61,16 @@ export const usersApi = createApi({
         };
       },
     }),
+    changeProfile: build.mutation<void, { user: Partial<IUserWithTargets> }>({
+      query: ({ user }) => {
+        return {
+          url: `/${user._id}/change-profile`,
+          method: 'PUT',
+          body: { user },
+        };
+      },
+      invalidatesTags: (result, error, arg) => [{ type: 'getUserById', id: arg.user._id }],
+    }),
   }),
 });
 
@@ -69,4 +79,5 @@ export const {
   useChangeAvatarMutation,
   useGetUserByIdQuery,
   useGetUserStatsByIdQuery,
+  useChangeProfileMutation,
 } = usersApi;

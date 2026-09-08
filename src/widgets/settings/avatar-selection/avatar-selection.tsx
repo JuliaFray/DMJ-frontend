@@ -1,29 +1,20 @@
 import React, { useState } from 'react';
 
-import {
-  Avatar,
-  Button,
-  Card,
-  Divider,
-  Group,
-  Modal,
-  Paper,
-  Stack,
-  TextInput,
-  Title,
-} from '@mantine/core';
+import { Form, Formik, useFormikContext } from 'formik';
+
+import { Avatar, Button, Card, Divider, Group, Modal, Paper, Stack, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import { useChangeAvatarMutation } from 'shared/api';
-import { useAuth } from 'shared/context';
 import { useAppDispatch } from 'shared/hook';
 import { profileActions } from 'shared/model';
+import { IUserWithTargets } from 'shared/types';
+import { InputWrapper } from 'shared/ui';
 import classes from 'shared/ui/user-card-modal/user-card-modal.module.scss';
 import { getAvatarSrc } from 'shared/utils';
 
 export const AvatarSelection = () => {
-  const { me } = useAuth();
-  const user = me;
+  const { values } = useFormikContext<IUserWithTargets>();
 
   const dispatch = useAppDispatch();
 
@@ -39,8 +30,8 @@ export const AvatarSelection = () => {
   const [changeAvatar] = useChangeAvatarMutation();
 
   const handleSaveAvatar = () => {
-    if (user && selected) {
-      changeAvatar({ userId: user._id, avatarId: selected.toString() });
+    if (values && selected) {
+      changeAvatar({ userId: values._id, avatarId: selected.toString() });
       dispatch(profileActions.changeAvatar(selected));
       close();
     }
@@ -49,16 +40,11 @@ export const AvatarSelection = () => {
   return (
     <>
       <Stack gap='xl'>
-        <Paper
-          withBorder
-          p='2.5rem'
-          radius='lg'
-          style={{ background: 'var(--orcha-panel)', borderColor: 'var(--orcha-border)' }}
-        >
-          <Stack gap='2.5rem'>
-            <Group align='flex-start' gap='2rem'>
+        <Paper p='0.5rem' style={{ background: 'var(--orcha-panel)' }}>
+          <Stack gap='0.5rem'>
+            <Group align='flex-start' gap='1rem'>
               <Avatar
-                src={getAvatarSrc(user?.avatarId)}
+                src={getAvatarSrc(values?.avatarId)}
                 size={100}
                 radius='xl'
                 style={{ border: '2px solid rgba(147,51,234,0.3)' }}
@@ -69,10 +55,16 @@ export const AvatarSelection = () => {
                 </Title>
 
                 <Group mt='md'>
-                  <Button onClick={open} variant='light' color='violet' size='xs' radius='md'>
+                  <Button
+                    onClick={open}
+                    variant='light'
+                    color='violet'
+                    size='compact-md'
+                    radius='md'
+                  >
                     Изменить аватар
                   </Button>
-                  <Button variant='subtle' color='red' size='xs'>
+                  <Button variant='subtle' color='red' size='compact-md'>
                     Удалить аватар
                   </Button>
                 </Group>
@@ -80,19 +72,26 @@ export const AvatarSelection = () => {
             </Group>
 
             <Divider color='var(--orcha-border)' />
+            <Formik
+              initialValues={{ login: values?.login || '', email: values?.email || '' }}
+              onSubmit={(data) => console.log(data)}
+              enableReinitialize
+            >
+              {() => (
+                <Form>
+                  <Stack gap='sm'>
+                    <InputWrapper name='login' label='Логин' />
+                    <InputWrapper name='email' label='Email' disabled />
+                  </Stack>
 
-            <Stack gap='md'>
-              <Group grow>
-                <TextInput label='Логин' defaultValue={user?.login || ''} />
-              </Group>
-              <TextInput label='Email' defaultValue={user?.email || ''} disabled />
-            </Stack>
-
-            <Group justify='flex-end'>
-              <Button color='violet' radius='md' size='md'>
-                Сохранить изменения
-              </Button>
-            </Group>
+                  <Group justify='flex-end'>
+                    <Button color='violet' radius='md' size='md'>
+                      Сохранить изменения
+                    </Button>
+                  </Group>
+                </Form>
+              )}
+            </Formik>
           </Stack>
         </Paper>
       </Stack>

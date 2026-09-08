@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 
-import { Container, Tab, Tabs } from '@mui/material';
+import { Container, Tabs } from '@mantine/core';
 
 import { useQueryParams, useSetTabToQuery } from 'shared/hook';
-import { IDietPlan } from 'shared/types';
+import { IDietPlan, Nullable } from 'shared/types';
 import { a11yProps } from 'shared/utils';
 
 import { AddFood } from './add-food.ui';
@@ -28,10 +28,18 @@ export const DietPlanComposition: FC<Props> = ({ diet }) => {
 
   const { queryParams, setQueryParams } = useQueryParams();
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    const tab = Object.values(DIET_COMPOSITION_TABS)[newValue];
-    setTabIndex(tab);
-    setQueryParams({ ...queryParams, view: tab });
+  const handleTabChange = (newValue: Nullable<string>) => {
+    if (newValue) {
+      setTabIndex(newValue);
+      setQueryParams({ ...queryParams, view: newValue });
+    }
+  };
+
+  const handleDayChange = (newValue: Nullable<string>) => {
+    if (newValue) {
+      setCurrentDay(Number(newValue));
+      setQueryParams({ ...queryParams, day: newValue });
+    }
   };
 
   useSetTabToQuery([
@@ -48,31 +56,38 @@ export const DietPlanComposition: FC<Props> = ({ diet }) => {
   ]);
 
   const { planByDay } = diet;
-  const portions = planByDay?.find((food) => food.day === currentDay)?.portions || [];
+  const portions = planByDay?.find((food) => food.day === Number(currentDay))?.portions || [];
 
   return (
-    <Container style={{ padding: '0' }}>
-      <Tabs value={tabIndex} onChange={handleTabChange} centered variant='fullWidth'>
-        <Tab label='Приемы пищи' {...a11yProps(DIET_COMPOSITION_TABS.DIET_COMPOSITION_FOOD)} />
-        <Tab label='Список' {...a11yProps(DIET_COMPOSITION_TABS.DIET_COMPOSITION_LIST)} />
-      </Tabs>
+    <Container>
+      <Tabs value={tabIndex} onChange={handleTabChange}>
+        <Tabs.List grow>
+          <Tabs.Tab {...a11yProps(DIET_COMPOSITION_TABS.DIET_COMPOSITION_FOOD)}>
+            Приемы пищи
+          </Tabs.Tab>
+          <Tabs.Tab {...a11yProps(DIET_COMPOSITION_TABS.DIET_COMPOSITION_LIST)}>Нутриенты</Tabs.Tab>
+        </Tabs.List>
 
-      <DietConsistFood
-        diet={diet}
-        currentDay={currentDay}
-        setCurrentDay={setCurrentDay}
-        tabIndex={tabIndex}
-        setOpenDialog={setOpenDialog}
-        portions={portions}
-      />
-      <DietConsistList
-        tabIndex={tabIndex}
-        currentDay={currentDay}
-        setCurrentDay={setCurrentDay}
-        diet={diet}
-        setOpenDialog={setOpenDialog}
-        portions={portions}
-      />
+        <Tabs.Panel value={DIET_COMPOSITION_TABS.DIET_COMPOSITION_FOOD}>
+          <DietConsistFood
+            diet={diet}
+            currentDay={currentDay}
+            setCurrentDay={handleDayChange}
+            setOpenDialog={setOpenDialog}
+            portions={portions}
+          />
+        </Tabs.Panel>
+
+        <Tabs.Panel value={DIET_COMPOSITION_TABS.DIET_COMPOSITION_LIST}>
+          <DietConsistList
+            currentDay={currentDay}
+            setCurrentDay={handleDayChange}
+            diet={diet}
+            setOpenDialog={setOpenDialog}
+            portions={portions}
+          />
+        </Tabs.Panel>
+      </Tabs>
 
       <AddFood
         openDrawer={openDialog}

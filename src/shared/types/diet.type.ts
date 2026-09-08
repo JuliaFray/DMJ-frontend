@@ -1,4 +1,4 @@
-import { IUserWithTargets } from './profile.type';
+import { IUser, IUserWithTargets } from './profile.type';
 
 /** Приемы пищи */
 // eslint-disable-next-line no-shadow
@@ -10,6 +10,14 @@ export enum Meal {
   Dinner = 'Ужин',
   EveningSnack = 'Вечерний перекус',
 }
+
+export type MealsOptions =
+  | 'Breakfast'
+  | 'MorningSnack'
+  | 'Lunch'
+  | 'AfterNoonSnack'
+  | 'Dinner'
+  | 'EveningSnack';
 
 export interface IDietRingStat {
   label: string;
@@ -38,7 +46,7 @@ export interface IFood {
 
 export interface IPortion {
   foodId: IFood;
-  meal: Meal;
+  meal: MealsOptions;
   weightG: number;
 }
 
@@ -57,9 +65,9 @@ export interface IDietPlan {
   /** Количетсво дней */
   period: number;
   /** Создатель */
-  userId: IUserWithTargets;
+  userId: IUser;
   /** Приемы пищи в плане */
-  meals: Meal[];
+  meals: MealsOptions[];
   /** Статистика плана питания */
   statResult: IDietStat & {
     /** Рейтинг плана */
@@ -71,7 +79,7 @@ export interface IDietPlan {
 
 export interface IDiaryRecord {
   /** Создатель */
-  userId: IUserWithTargets;
+  userId: IUser;
   day: Date;
   portions: IPortion[];
 }

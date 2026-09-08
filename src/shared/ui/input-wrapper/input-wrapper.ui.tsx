@@ -13,7 +13,7 @@ import { SelectProps } from '@mantine/core/lib/components/Select/Select';
 interface Props {
   name: string;
   label: string;
-  type?: 'string' | 'password' | 'number' | 'select' | 'multiselect';
+  mode?: 'string' | 'password' | 'number' | 'select' | 'multiselect';
 }
 
 type CustomInputProps =
@@ -26,10 +26,10 @@ type CustomInputProps =
 export const InputWrapper: FC<Props & CustomInputProps> = ({
   name,
   label,
-  type = 'string',
+  mode = 'string',
   ...otherProps
 }) => {
-  const [field, meta] = useField(name);
+  const [field, meta, helpers] = useField(name);
 
   const fieldConfig = {
     ...field,
@@ -47,11 +47,25 @@ export const InputWrapper: FC<Props & CustomInputProps> = ({
       label={label}
       error={meta.error}
     >
-      {type === 'string' && <Input {...field} {...(otherProps as InputProps)} />}
-      {type === 'number' && <NumberInput {...field} {...(otherProps as NumberInputProps)} />}
-      {type === 'password' && <PasswordInput {...field} {...(otherProps as PasswordInputProps)} />}
-      {type === 'select' && <Select {...field} {...(otherProps as SelectProps)} />}
-      {type === 'multiselect' && <MultiSelect {...field} {...(otherProps as MultiSelectProps)} />}
+      {mode === 'string' && <Input {...field} {...(otherProps as InputProps)} />}
+      {mode === 'number' && (
+        <NumberInput
+          {...field}
+          {...(otherProps as NumberInputProps)}
+          hideControls
+          onChange={(e) => helpers.setValue(e)}
+          value={field.value}
+        />
+      )}
+      {mode === 'password' && <PasswordInput {...field} {...(otherProps as PasswordInputProps)} />}
+      {mode === 'select' && <Select {...field} {...(otherProps as SelectProps)} />}
+      {mode === 'multiselect' && (
+        <MultiSelect
+          {...field}
+          {...(otherProps as MultiSelectProps)}
+          onChange={(e) => helpers.setValue(e)}
+        />
+      )}
     </Input.Wrapper>
   );
 };

@@ -32,7 +32,7 @@ import InputBase from '@mui/material/InputBase';
 
 import { useAddFoodToDietPlanMutation, useLazyGetFoodListQuery } from 'shared/api';
 import { theme } from 'shared/themes';
-import { Meal, ProductItem } from 'shared/types';
+import { Meal, MealsOptions, ProductItem } from 'shared/types';
 import { CustomPagination, Spinner } from 'shared/ui';
 
 import styles from './diet.module.scss';
@@ -61,7 +61,7 @@ interface Props {
   openDrawer: boolean;
   setOpenDrawer: Dispatch<SetStateAction<boolean>>;
   day: number;
-  meals: Meal[];
+  meals: MealsOptions[];
 }
 
 export const AddFood: FC<Props> = ({ openDrawer, setOpenDrawer, day, meals }) => {

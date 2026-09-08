@@ -52,7 +52,7 @@ export const LoginPage: FC = () => {
                 <Form onChange={handleChange}>
                   <Stack gap='xs'>
                     <InputWrapper label='Логин или Email' name='email' />
-                    <InputWrapper label='Пароль' type='password' name='password' />
+                    <InputWrapper label='Пароль' mode='password' name='password' />
                   </Stack>
 
                   <Button

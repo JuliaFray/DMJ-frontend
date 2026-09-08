@@ -1,4 +1,4 @@
-import { Meal } from './diet.type';
+import { Meal, MealsOptions } from './diet.type';
 
 export type Unit = 'g' | 'kcal' | 'kJ';
 
@@ -142,6 +142,6 @@ export interface AddFoodType {
     carb: number;
     otherNutrients: Nutrients;
     day: number;
-    meals: Meal[];
+    meals: MealsOptions[];
   }[];
 }
