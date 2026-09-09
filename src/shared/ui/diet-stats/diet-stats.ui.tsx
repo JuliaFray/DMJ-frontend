@@ -37,13 +37,7 @@ export const DietStats: React.FC<DietStatsProps> = ({ period, plan, fact, rating
       <Grid item md={4} className={styles.stat}>
         <Row className={styles.period}>{period} дней</Row>
         <Row>
-          <StyledRating
-            emptyIcon={<FavoriteBorderIcon />}
-            icon={<FavoriteIcon />}
-            value={rating}
-            precision={0.1}
-            readOnly
-          />
+          <StyledRating value={rating} />
         </Row>
       </Grid>
 

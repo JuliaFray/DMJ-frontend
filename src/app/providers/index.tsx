@@ -10,7 +10,7 @@ import { Notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
 
 import { AuthProvider, WebSocketProvider } from 'shared/context';
-import { useAppSelector } from 'shared/hook';
+import { useAppSelector, useLastLocation } from 'shared/hook';
 import { spinnerSelector, store } from 'shared/model';
 import { mantineTheme } from 'shared/themes';
 import { ErrorHandler, logError, Spinner } from 'shared/ui';

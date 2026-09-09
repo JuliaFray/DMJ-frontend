@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import { Container, Tabs } from '@mantine/core';
 
@@ -55,11 +55,15 @@ export const DietPlanComposition: FC<Props> = ({ diet }) => {
     },
   ]);
 
+  useEffect(() => {
+    setCurrentDay(queryParams.day as number);
+  }, []);
+
   const { planByDay } = diet;
   const portions = planByDay?.find((food) => food.day === Number(currentDay))?.portions || [];
 
   return (
-    <Container>
+    <Container p={0}>
       <Tabs value={tabIndex} onChange={handleTabChange}>
         <Tabs.List grow>
           <Tabs.Tab {...a11yProps(DIET_COMPOSITION_TABS.DIET_COMPOSITION_FOOD)}>

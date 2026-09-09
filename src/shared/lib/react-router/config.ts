@@ -1,7 +1,7 @@
 export const pathKeys = {
   root: '/',
   home() {
-    return pathKeys.article.root();
+    return pathKeys.diary.root();
   },
   login() {
     return pathKeys.root.concat('login/');

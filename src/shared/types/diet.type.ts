@@ -46,8 +46,7 @@ export interface IFood {
 
 export interface IPortion {
   foodId: IFood;
-  meal: MealsOptions;
-  weightG: number;
+  portion: { meal: MealsOptions; weightG: number }[];
 }
 
 export interface IPlanByDay {

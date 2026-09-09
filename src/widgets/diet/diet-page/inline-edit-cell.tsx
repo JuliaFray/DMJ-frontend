@@ -11,7 +11,7 @@ export const InlineEditCell: FC<Props> = ({ initialValue, handleChange }) => {
   const [val, setVal] = useState(initialValue);
   return (
     <InlineEdit
-      size='sm'
+      size='xs'
       showControls={false}
       stateOnBlur='save'
       onSave={() => {

@@ -1,9 +1,11 @@
-import { Rating, styled } from '@mui/material';
+import React, { FC } from 'react';
 
-import { theme } from '../themes';
+import { Rating } from '@mantine/core';
 
-export const StyledRating = styled(Rating)({
-  '& .MuiRating-iconFilled': {
-    color: theme.palette.secondary.main,
-  },
-});
+interface Props {
+  value: number;
+}
+
+export const StyledRating: FC<Props> = ({ value }) => {
+  return <Rating value={value} fractions={3} readOnly color='teal' size='lg' />;
+};

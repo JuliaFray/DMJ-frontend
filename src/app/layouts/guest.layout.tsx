@@ -4,7 +4,10 @@ import { Outlet } from 'react-router-dom';
 
 import { AppShell, Box, Container, Grid } from '@mantine/core';
 
+import { useLastLocation } from 'shared/hook';
+
 export const GuestLayout: FC = () => {
+  useLastLocation();
   return (
     <Box>
       <AppShell padding='md'>

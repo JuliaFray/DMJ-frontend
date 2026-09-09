@@ -17,6 +17,7 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 
 import { MenuWidget } from 'widgets/menu-widget';
 
+import { useLastLocation } from 'shared/hook';
 import { ScrollToTop } from 'shared/ui';
 import { NotificationBlock } from 'shared/ui/notification-block';
 
@@ -27,6 +28,8 @@ export const UserLayout = () => {
   const [opened, { toggle, close }] = useDisclosure();
   const matches = useMediaQuery('(min-width: 48em)');
   const { toggleColorScheme } = useMantineColorScheme();
+
+  useLastLocation();
 
   return (
     <Box>

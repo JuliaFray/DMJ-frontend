@@ -2,6 +2,8 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/dist/query/react';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+import customFetchBase from 'shared/api/custom-fetch-base';
+
 import { FoodItem, FoodList } from '../types';
 
 import { BASE_URL } from './api';
@@ -11,12 +13,7 @@ const versionApi = 'v1';
 
 export const foodApi = createApi({
   reducerPath: 'foodApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${BASE_URL}/${versionApi}/food`,
-    prepareHeaders: async (headers) => {
-      return headers;
-    },
-  }),
+  baseQuery: customFetchBase(`/${versionApi}/food`),
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
     getFoodList: build.query<GenericResponseType<FoodList>, { query: string; page?: number }>({
       query: ({ query, page }) => {

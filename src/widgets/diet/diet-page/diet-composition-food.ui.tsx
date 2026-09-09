@@ -1,12 +1,9 @@
 import React, { Dispatch, FC, SetStateAction, useMemo } from 'react';
 
+import { MagnifyingGlassIcon, PlusIcon, TrashIcon } from '@phosphor-icons/react';
 import { useSelector } from 'react-redux';
 
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Button, FormControl, IconButton, Toolbar } from '@mui/material';
-
-import { Container, Table } from '@mantine/core';
+import { ActionIcon, Box, Button, Group, Input, Select, Table } from '@mantine/core';
 
 import { useRemoveFoodFromDietPlanMutation } from 'shared/api';
 import { dayOptions } from 'shared/constants';
@@ -15,7 +12,6 @@ import { SocketEvents } from 'shared/lib';
 import { dietSelector } from 'shared/model';
 import { IDietPlan, Meal } from 'shared/types';
 import { IPortion } from 'shared/types/diet.type';
-import { InputWrapper } from 'shared/ui';
 
 import { DietStats } from './diet-stats.ui';
 import { InlineEditCell } from './inline-edit-cell';
@@ -29,11 +25,11 @@ interface ICompositionRow {
   }[];
 }
 
-const createData = (portion: IPortion): ICompositionRow => {
+const createData = (foodPortionRec: IPortion): ICompositionRow => {
   return {
-    _id: portion.foodId._id,
-    name: portion.foodId.name,
-    meals: [],
+    _id: foodPortionRec.foodId._id,
+    name: foodPortionRec.foodId.name,
+    meals: foodPortionRec.portion,
   };
 };
 
@@ -54,7 +50,7 @@ export const DietConsistFood: FC<Props> = ({
 }) => {
   const { authId } = useAuth();
   const planByDays = useSelector(dietSelector.getDietPlanByDay);
-  const dayRating = planByDays?.find(({ day }) => day === currentDay)?.dayRating;
+  const dayRating = planByDays?.find(({ day }) => day === Number(currentDay))?.dayRating;
 
   const ws = useWebSocket();
   const [removeFood] = useRemoveFoodFromDietPlanMutation();
@@ -84,87 +80,85 @@ export const DietConsistFood: FC<Props> = ({
   };
 
   return (
-    <>
-      <FormControl fullWidth>
-        <InputWrapper
-          name='currentDay'
-          label='День плана'
-          mode='select'
-          data={dayOptions.slice(0, diet.period)}
-          onChange={(e) => setCurrentDay(e)}
-        />
-      </FormControl>
+    <Box pt={10}>
+      <Group justify='space-between'>
+        <Input.Wrapper style={{ height: '80px', width: '80%' }} label='День плана'>
+          <Select
+            value={currentDay?.toString()}
+            data={dayOptions.slice(0, diet.period)}
+            onChange={(e) => (e ? setCurrentDay(e) : null)}
+          />
+        </Input.Wrapper>
 
-      <Container>
-        <Toolbar style={{ justifyContent: 'end' }}>
-          <Button
-            startIcon={<AddIcon />}
-            type='button'
-            size='large'
-            variant='text'
-            onClick={() => setOpenDialog(true)}
-          >
-            Добавить продукт
-          </Button>
-        </Toolbar>
-      </Container>
+        <ActionIcon variant='light' onClick={() => setOpenDialog(true)}>
+          <PlusIcon size={24} weight='light' />
+        </ActionIcon>
+      </Group>
 
-      <Table verticalSpacing='sm' highlightOnHover>
-        <Table.Thead>
-          <Table.Tr key='header'>
-            <Table.Th style={{ width: '5%' }} />
-            <Table.Th style={{ width: '40%' }} />
-            {diet?.meals.map((meal) => (
+      <Table.ScrollContainer minWidth={500}>
+        <Table verticalSpacing='sm' highlightOnHover>
+          <Table.Thead>
+            <Table.Tr key='header'>
+              <Table.Th style={{ width: '5%' }} />
+              <Table.Th style={{ width: '40%' }} />
+              {diet?.meals.map((meal) => (
+                <Table.Th
+                  variant='head'
+                  align='right'
+                  style={{ fontWeight: '600', width: `${55 / (diet.meals.length + 1)}%` }}
+                >
+                  {Meal[meal]}
+                </Table.Th>
+              ))}
               <Table.Th
                 variant='head'
                 align='right'
                 style={{ fontWeight: '600', width: `${55 / (diet.meals.length + 1)}%` }}
               >
-                {Meal[meal]}
+                Итого
               </Table.Th>
-            ))}
-            <Table.Th
-              variant='head'
-              align='right'
-              style={{ fontWeight: '600', width: `${55 / (diet.meals.length + 1)}%` }}
-            >
-              Итого
-            </Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-
-        <Table.Tbody>
-          {rows.map((row) => (
-            <Table.Tr key={row.name}>
-              <Table.Td>
-                <IconButton onClick={() => handleRemoveFood(row._id)}>
-                  <DeleteIcon color='error' />
-                </IconButton>
-              </Table.Td>
-              <Table.Td component='th' scope='row'>
-                {row.name}
-              </Table.Td>
-              {diet?.meals.map((meal) => (
-                <Table.Td align='right'>
-                  <InlineEditCell
-                    initialValue={row.meals.find((it) => it.meal === meal)?.weightG || 0}
-                    handleChange={(newVal) => handleUpdateWeight(row._id, meal, newVal, dayRating)}
-                  />
-                </Table.Td>
-              ))}
-              <Table.Td align='right' style={{ fontWeight: '600' }}>
-                {row?.meals.reduce((acc, cur) => acc + cur.weightG, 0)}
-              </Table.Td>
             </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
+          </Table.Thead>
+
+          <Table.Tbody>
+            {rows.map((row) => (
+              <Table.Tr key={row.name}>
+                <Table.Td>
+                  <ActionIcon
+                    variant='transparent'
+                    onClick={() => handleRemoveFood(row._id)}
+                    color='red'
+                  >
+                    <TrashIcon size={24} weight='light' />
+                  </ActionIcon>
+                </Table.Td>
+                <Table.Td component='th' scope='row'>
+                  {row.name}
+                </Table.Td>
+                {diet?.meals.map((meal) => (
+                  <Table.Td align='right'>
+                    <InlineEditCell
+                      initialValue={row.meals.find((it) => it.meal === meal)?.weightG || 0}
+                      handleChange={(newVal) =>
+                        handleUpdateWeight(row._id, meal, newVal, dayRating)
+                      }
+                    />
+                  </Table.Td>
+                ))}
+                <Table.Td align='right' style={{ fontWeight: '600' }}>
+                  {row?.meals.reduce((acc, cur) => acc + cur.weightG, 0)}
+                </Table.Td>
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table>
+      </Table.ScrollContainer>
 
       <DietStats
         plan={diet.userId.config.targets.targetStat}
         portions={portions}
         currentDay={currentDay}
       />
-    </>
+    </Box>
   );
 };

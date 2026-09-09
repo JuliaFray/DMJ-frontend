@@ -1,8 +1,6 @@
 @import "shared/themes/palette.module";
 
 .root {
-  color: rgba(0, 0, 0, 0.6);
-
   .row {
     display: flex;
     justify-content: space-between;
@@ -25,6 +23,18 @@
       }
     }
   }
+}
+
+.stat {
+  height: 20px !important;
+  border-radius: 4px;
+  width: 100%;
+  margin-right: 8px;
+}
+
+.percent {
+  width: 20%;
+  text-align: end;
 }
 
 .MuiDrawer-anchorRight {

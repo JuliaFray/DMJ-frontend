@@ -74,7 +74,7 @@ export const DietPlanPage: FC = () => {
     <Grid>
       <Grid.Col span={mdMain}>
         <Paper withBorder radius='md' p='xs'>
-          <Container pos='relative'>
+          <Container pos='relative' p={5}>
             <LoadingOverlay
               visible={isLoading || isUpdateLoading}
               zIndex={1000}

@@ -7,3 +7,4 @@ export { useToast, ToastLevel } from './useToast';
 export { useSendWebSocket } from './useSendWebSocket';
 export { useRandomColor } from './useRandomColor';
 export { useOnline } from './useOnline';
+export { useLastLocation } from './useLastLocation';

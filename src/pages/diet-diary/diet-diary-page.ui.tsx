@@ -31,7 +31,6 @@ export const DietDiaryPage = () => {
   // };
 
   const handleAddFood = (meal: Meal) => {
-    console.log(meal);
     setOpenDialog(true);
   };
 

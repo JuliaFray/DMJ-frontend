@@ -28,6 +28,7 @@ import { userPageRoute } from 'pages/user';
 import { usersPageRoute } from 'pages/user-feed';
 
 import { AuthProvider, useAuth } from 'shared/context';
+import { useLastLocation } from 'shared/hook';
 import { pathKeys, withSuspense } from 'shared/lib';
 import { Spinner } from 'shared/ui';
 
