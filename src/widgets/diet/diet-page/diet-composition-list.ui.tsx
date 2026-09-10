@@ -2,12 +2,11 @@ import React, { Dispatch, FC, SetStateAction } from 'react';
 
 import { PlusIcon, TrashIcon } from '@phosphor-icons/react';
 
-import { ActionIcon, Box, Button, Group, Input, Select, Table } from '@mantine/core';
+import { ActionIcon, Box, Group, Input, Select, Table } from '@mantine/core';
 
 import { useRemoveFoodFromDietPlanMutation } from 'shared/api';
 import { dayOptions } from 'shared/constants';
-import { IDietPlan } from 'shared/types';
-import { IPortion } from 'shared/types/diet.type';
+import { IDietPlan, IPortion } from 'shared/types';
 
 import { DietStats } from './diet-stats.ui';
 
@@ -23,10 +22,10 @@ interface ICompositionRow {
 
 const createListData = (portion: IPortion, summaryWeight: number): ICompositionRow => {
   const {
-    foodId: { _id, name, statOn100 },
+    foodId: { _id, name, nutrients },
   } = portion;
 
-  const { cal, proteins, carb, fats } = statOn100 || {};
+  const { calories, proteins, carbs, fats } = nutrients || {};
 
   const mult = summaryWeight / 100;
 
@@ -34,9 +33,9 @@ const createListData = (portion: IPortion, summaryWeight: number): ICompositionR
     _id,
     name,
     weight: summaryWeight,
-    calories: cal * mult,
+    calories: calories * mult,
     fat: fats * mult,
-    carbs: carb * mult,
+    carbs: carbs * mult,
     protein: proteins * mult,
   };
 };
@@ -47,6 +46,7 @@ interface Props {
   diet: IDietPlan;
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
   portions: IPortion[];
+  rating: number;
 }
 
 export const DietConsistList: FC<Props> = ({
@@ -55,6 +55,7 @@ export const DietConsistList: FC<Props> = ({
   diet,
   setOpenDialog,
   portions,
+  rating,
 }) => {
   const getSummaryWeight = (p: IPortion) => {
     return p.portion.reduce((acc, current) => acc + current.weightG, 0) ?? 0;
@@ -128,6 +129,7 @@ export const DietConsistList: FC<Props> = ({
         plan={diet.userId.config.targets.targetStat}
         portions={portions}
         currentDay={currentDay}
+        rating={rating}
       />
     </Box>
   );

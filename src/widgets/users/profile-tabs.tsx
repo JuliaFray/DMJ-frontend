@@ -7,17 +7,15 @@ import { HomePage } from 'pages/article-feed/article-feed-page.ui';
 import { UsersPage } from 'pages/user-feed/user-feed-page.ui';
 
 import { useAuth } from 'shared/context';
-import { TProfileStats } from 'shared/types';
 import { a11yProps } from 'shared/utils';
 
 import { CommentsFeed } from '../comments/comments-feed';
 
 export type IProfileTabs = {
   userId: string;
-  stats?: TProfileStats;
 };
 
-export const ProfileTabs: React.FC<IProfileTabs> = ({ userId, stats }) => {
+export const ProfileTabs: React.FC<IProfileTabs> = ({ userId }) => {
   const { authId } = useAuth();
 
   const isMe = authId === userId;

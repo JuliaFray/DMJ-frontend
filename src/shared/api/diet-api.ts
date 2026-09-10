@@ -2,7 +2,7 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/dist/query/react';
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { AddFoodType, IDietPlan } from '../types';
+import { AddFoodType, IDietPlan, ProductItem } from '../types';
 
 import { CountResponseType, GenericResponseType } from './api-types';
 import customFetchBase from './custom-fetch-base';
@@ -50,11 +50,11 @@ export const dietApi = createApi({
       invalidatesTags: [ONE_DIET],
     }),
     addFoodToDietPlan: build.mutation<void, AddFoodType>({
-      query: ({ id, foods }) => {
+      query: (data) => {
         return {
-          url: `/add-food/${id}`,
+          url: `/add-food/${data.id}`,
           method: 'PUT',
-          body: foods,
+          body: data,
         };
       },
       invalidatesTags: [ONE_DIET],

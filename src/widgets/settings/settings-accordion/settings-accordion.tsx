@@ -37,7 +37,7 @@ export const SettingsAccordion = () => {
         height: user.config.height || null,
         weight: user.config.weight || null,
         targetWeight: user.config.targets.targetWeight || null,
-        targetCalories: user.config.targets.targetCalories || null,
+        calories: user.config.targets.targetStat.calories || null,
         age: user.config.age || null,
         gender: (user.config.gender || 'other') as Gender,
         activityLevel: (user.config.activityLevel || 'sedentary') as ActivityLevel,

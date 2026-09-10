@@ -8,7 +8,7 @@ type TSpinner = {
 };
 
 export const Spinner = forwardRef<MantineLoaderComponent, TSpinner>(
-  ({ display, position, ...others }, ref) => {
+  ({ display, position, ...others }) => {
     const defaultStyle = {
       height: '50px',
       width: '50px',

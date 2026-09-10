@@ -36,7 +36,7 @@ export const UserPage: React.FC = React.memo(() => {
           <UserCard profile={profile.data} />
         </Box>
 
-        <ProfileTabs userId={userId} stats={stats} />
+        <ProfileTabs userId={userId} />
       </Grid.Col>
 
       <Grid.Col span={mdSide} className={styles.right} />

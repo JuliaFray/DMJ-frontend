@@ -1,9 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 
+import { round } from 'lodash';
+
 import { Container, Tabs } from '@mantine/core';
 
 import { useQueryParams, useSetTabToQuery } from 'shared/hook';
-import { IDietPlan, Nullable } from 'shared/types';
+import { IDietPlan, IPortion, Nullable, Nutrients } from 'shared/types';
 import { a11yProps } from 'shared/utils';
 
 import { AddFood } from './add-food.ui';
@@ -19,6 +21,19 @@ export enum DIET_COMPOSITION_TABS {
   DIET_COMPOSITION_FOOD = 'food',
   DIET_COMPOSITION_LIST = 'list',
 }
+
+const MULT_COEF = 5 / 4;
+
+const calcRating = (plan: Nutrients, fact: Nutrients) => {
+  return round(
+    5 -
+      ((MULT_COEF * Math.abs(plan.calories - fact.calories)) / plan.calories +
+        (MULT_COEF * Math.abs(plan.proteins - fact.proteins)) / plan.proteins +
+        (MULT_COEF * Math.abs(plan.carbs - fact.carbs)) / plan.carbs +
+        (MULT_COEF * Math.abs(plan.fats - fact.fats)) / plan.fats),
+    2,
+  );
+};
 
 export const DietPlanComposition: FC<Props> = ({ diet }) => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -62,6 +77,45 @@ export const DietPlanComposition: FC<Props> = ({ diet }) => {
   const { planByDay } = diet;
   const portions = planByDay?.find((food) => food.day === Number(currentDay))?.portions || [];
 
+  const getSummaryWeight = (p: IPortion) => {
+    return p.portion.reduce((acc, current) => acc + current.weightG, 0) ?? 0;
+  };
+
+  const fact = portions
+    .map((p) => {
+      const {
+        foodId: { nutrients },
+      } = p;
+
+      const { calories, proteins, carbs, fats } = nutrients || {};
+
+      const m = getSummaryWeight(p) / 100;
+
+      return {
+        calories: m * calories,
+        proteins: m * proteins,
+        fats: m * fats,
+        carbs: m * carbs,
+      };
+    })
+    .reduce(
+      (acc, current) => ({
+        ...acc,
+        proteins: acc.proteins + current.proteins,
+        fats: acc.fats + current.fats,
+        carbs: acc.carbs + current.carbs,
+        calories: acc.calories + current.calories,
+      }),
+      {
+        proteins: 0,
+        fats: 0,
+        carbs: 0,
+        calories: 0,
+      },
+    );
+
+  const rating = calcRating(diet.userId.config.targets.targetStat, fact);
+
   return (
     <Container p={0}>
       <Tabs value={tabIndex} onChange={handleTabChange}>
@@ -79,6 +133,7 @@ export const DietPlanComposition: FC<Props> = ({ diet }) => {
             setCurrentDay={handleDayChange}
             setOpenDialog={setOpenDialog}
             portions={portions}
+            rating={rating}
           />
         </Tabs.Panel>
 
@@ -89,6 +144,7 @@ export const DietPlanComposition: FC<Props> = ({ diet }) => {
             diet={diet}
             setOpenDialog={setOpenDialog}
             portions={portions}
+            rating={rating}
           />
         </Tabs.Panel>
       </Tabs>

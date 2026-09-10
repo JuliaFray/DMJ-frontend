@@ -1,34 +1,16 @@
 import React, { FC, useEffect } from 'react';
 
-import { round } from 'lodash';
-import { Row } from 'rsuite';
-
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-
-import { Box, Grid, Group, Progress, Stack, Text } from '@mantine/core';
+import { Grid, Group, Progress, Stack, Text } from '@mantine/core';
 
 import { useAppDispatch } from 'shared/hook';
 import { dietActions } from 'shared/model';
-import { IDietStat, IPortion } from 'shared/types';
+import { IPortion, Nutrients } from 'shared/types';
 import { StyledRating } from 'shared/ui';
 
 import styles from './diet.module.scss';
 
 const calcPercent = (planValue: number, factValue: number): number => {
   return Math.round((factValue / planValue) * 100);
-};
-const MULT_COEF = 5 / 4;
-
-const calcRating = (plan: IDietStat, fact: IDietStat) => {
-  return round(
-    5 -
-      ((MULT_COEF * Math.abs(plan.cal - fact.cal)) / plan.cal +
-        (MULT_COEF * Math.abs(plan.proteins - fact.proteins)) / plan.proteins +
-        (MULT_COEF * Math.abs(plan.carb - fact.carb)) / plan.carb +
-        (MULT_COEF * Math.abs(plan.fats - fact.fats)) / plan.fats),
-    2,
-  );
 };
 
 const getColor = (mult: number) => {
@@ -42,12 +24,13 @@ const getColor = (mult: number) => {
 };
 
 interface Props {
-  plan?: IDietStat;
+  plan?: Nutrients;
   portions: IPortion[];
   currentDay: number;
+  rating: number;
 }
 
-export const DietStats: FC<Props> = ({ plan, portions, currentDay }) => {
+export const DietStats: FC<Props> = ({ plan, portions, currentDay, rating }) => {
   if (!plan) {
     return null;
   }
@@ -60,18 +43,18 @@ export const DietStats: FC<Props> = ({ plan, portions, currentDay }) => {
   const fact = portions
     .map((p) => {
       const {
-        foodId: { statOn100 },
+        foodId: { nutrients },
       } = p;
 
-      const { cal, proteins, carb, fats } = statOn100 || {};
+      const { calories, proteins, carbs, fats } = nutrients || {};
 
       const m = getSummaryWeight(p) / 100;
 
       return {
-        cal: m * cal,
+        calories: m * calories,
         proteins: m * proteins,
         fats: m * fats,
-        carb: m * carb,
+        carbs: m * carbs,
       };
     })
     .reduce(
@@ -79,18 +62,16 @@ export const DietStats: FC<Props> = ({ plan, portions, currentDay }) => {
         ...acc,
         proteins: acc.proteins + current.proteins,
         fats: acc.fats + current.fats,
-        carb: acc.carb + current.carb,
-        cal: acc.cal + current.cal,
+        carbs: acc.carbs + current.carbs,
+        calories: acc.calories + current.calories,
       }),
       {
         proteins: 0,
         fats: 0,
-        carb: 0,
-        cal: 0,
+        carbs: 0,
+        calories: 0,
       },
     );
-
-  const rating = calcRating(plan, fact);
 
   useEffect(() => {
     dispatch(dietActions.setDayRating({ dayName: currentDay, rating }));
@@ -105,11 +86,11 @@ export const DietStats: FC<Props> = ({ plan, portions, currentDay }) => {
         <Grid.Col span={8}>
           <Group wrap='nowrap'>
             <Progress
-              value={calcPercent(plan.cal, fact.cal)}
-              color={getColor(fact.cal / plan.cal)}
+              value={calcPercent(plan.calories, fact.calories)}
+              color={getColor(fact.calories / plan.calories)}
               className={styles.stat}
             />
-            <Text className={styles.percent}>{calcPercent(plan.cal, fact.cal)} %</Text>
+            <Text className={styles.percent}>{calcPercent(plan.calories, fact.calories)} %</Text>
           </Group>
         </Grid.Col>
       </Grid>
@@ -153,11 +134,11 @@ export const DietStats: FC<Props> = ({ plan, portions, currentDay }) => {
         <Grid.Col span={8}>
           <Group wrap='nowrap'>
             <Progress
-              value={calcPercent(plan.carb, fact.carb)}
-              color={getColor(fact.carb / plan.carb)}
+              value={calcPercent(plan.carbs, fact.carbs)}
+              color={getColor(fact.carbs / plan.carbs)}
               className={styles.stat}
             />
-            <Text className={styles.percent}>{calcPercent(plan.carb, fact.carb)} %</Text>
+            <Text className={styles.percent}>{calcPercent(plan.carbs, fact.carbs)} %</Text>
           </Group>
         </Grid.Col>
       </Grid>
@@ -167,7 +148,7 @@ export const DietStats: FC<Props> = ({ plan, portions, currentDay }) => {
           <Text>Рейтинг</Text>
         </Grid.Col>
         <Grid.Col span={8}>
-          <StyledRating value={calcRating(plan, fact)} />
+          <StyledRating value={rating} />
         </Grid.Col>
       </Grid>
     </Stack>

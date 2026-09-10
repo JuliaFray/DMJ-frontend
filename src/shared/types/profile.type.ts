@@ -1,6 +1,6 @@
+import { Nutrients } from 'shared/types/food.type';
 import { Nullable } from 'shared/types/general.type';
 
-import { IDietStat } from './diet.type';
 import { IImage } from './post.type';
 
 type Theme = 'light' | 'dark';
@@ -46,8 +46,7 @@ export interface IUserConfig {
     targetWeight: number;
     targetDate: Date;
     targetWater: number;
-    targetStat: IDietStat;
-    targetCalories: number;
+    targetStat: Nutrients;
   };
 }
 

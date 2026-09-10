@@ -31,6 +31,7 @@ export const CustomPagination: React.FC<TPagination> = ({ page, dataLength, setC
       onChange={handleOnPageChange}
       boundaries={1}
       total={count}
+      gap={6}
     />
   );
 };

@@ -1,20 +1,20 @@
-import { IDietRingStat, IDietStat } from 'shared/types';
+import { IDietRingStat, Nutrients } from 'shared/types';
 
 const statLabel = {
-  cal: 'ккал',
+  calories: 'ккал',
   proteins: 'Белки',
   fats: 'Жиры',
-  carb: 'Углеводы',
+  carbs: 'Углеводы',
 };
 
 const statColor = {
-  cal: 'teal',
+  calories: 'teal',
   proteins: 'blue',
   fats: 'red',
-  carb: 'violet',
+  carbs: 'violet',
 };
 
-export const calculateStats = (target: IDietStat, fact: IDietStat): IDietRingStat[] => {
+export const calculateStats = (target: Nutrients, fact: Nutrients): IDietRingStat[] => {
   if (!target || !fact) {
     return Object.keys(statLabel).map((tk) => ({
       label: statLabel[tk],

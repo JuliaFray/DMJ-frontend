@@ -1,21 +1,19 @@
 // eslint-disable-next-line import/no-unresolved
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/dist/query/react';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 
-import customFetchBase from 'shared/api/custom-fetch-base';
+import { ProductItem } from '../types';
 
-import { FoodItem, FoodList } from '../types';
+import { CountResponseType, GenericResponseType } from './api-types';
+import customFetchBase from './custom-fetch-base';
 
-import { BASE_URL } from './api';
-import { GenericResponseType } from './api-types';
-
-const versionApi = 'v1';
+const versionApi = 'v3';
 
 export const foodApi = createApi({
   reducerPath: 'foodApi',
   baseQuery: customFetchBase(`/${versionApi}/food`),
   endpoints: (build: EndpointBuilder<BaseQueryFn, string, string>) => ({
-    getFoodList: build.query<GenericResponseType<FoodList>, { query: string; page?: number }>({
+    getFoodList: build.query<CountResponseType<ProductItem[]>, { query: string; page?: number }>({
       query: ({ query, page }) => {
         const searchParams = new URLSearchParams();
         searchParams.append('search_expression', query);
@@ -30,7 +28,7 @@ export const foodApi = createApi({
         };
       },
     }),
-    getFoodById: build.query<GenericResponseType<FoodItem>, { id: string }>({
+    getFoodById: build.query<GenericResponseType<ProductItem>, { id: string }>({
       query: ({ id }) => {
         return {
           url: `${id}`,

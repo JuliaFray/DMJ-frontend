@@ -1,16 +1,17 @@
 import React, { Dispatch, FC, SetStateAction, useMemo } from 'react';
 
-import { MagnifyingGlassIcon, PlusIcon, TrashIcon } from '@phosphor-icons/react';
+import { PlusIcon, TrashIcon } from '@phosphor-icons/react';
+import { round } from 'lodash';
 import { useSelector } from 'react-redux';
 
-import { ActionIcon, Box, Button, Group, Input, Select, Table } from '@mantine/core';
+import { ActionIcon, Box, Group, Input, Select, Table } from '@mantine/core';
 
 import { useRemoveFoodFromDietPlanMutation } from 'shared/api';
 import { dayOptions } from 'shared/constants';
 import { useAuth, useWebSocket } from 'shared/context';
 import { SocketEvents } from 'shared/lib';
 import { dietSelector } from 'shared/model';
-import { IDietPlan, Meal } from 'shared/types';
+import { IDietPlan, Meal, Nutrients } from 'shared/types';
 import { IPortion } from 'shared/types/diet.type';
 
 import { DietStats } from './diet-stats.ui';
@@ -39,6 +40,7 @@ interface Props {
   diet: IDietPlan;
   setOpenDialog: Dispatch<SetStateAction<boolean>>;
   portions: IPortion[];
+  rating: number;
 }
 
 export const DietConsistFood: FC<Props> = ({
@@ -47,6 +49,7 @@ export const DietConsistFood: FC<Props> = ({
   diet,
   setOpenDialog,
   portions,
+  rating,
 }) => {
   const { authId } = useAuth();
   const planByDays = useSelector(dietSelector.getDietPlanByDay);
@@ -71,6 +74,7 @@ export const DietConsistFood: FC<Props> = ({
         newVal,
         authId,
         stat,
+        rating,
       }),
     );
   };
@@ -158,6 +162,7 @@ export const DietConsistFood: FC<Props> = ({
         plan={diet.userId.config.targets.targetStat}
         portions={portions}
         currentDay={currentDay}
+        rating={rating}
       />
     </Box>
   );

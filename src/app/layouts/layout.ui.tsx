@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 
-import { BellIcon, BellRingingIcon } from '@phosphor-icons/react';
 import { NavLink } from 'react-router-dom';
 
 import { Logout } from '@mui/icons-material';
@@ -8,12 +7,10 @@ import Login from '@mui/icons-material/Login';
 import { Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 
-import { Indicator } from '@mantine/core';
-
 import { useAuth, useWebSocket } from 'shared/context';
-import { useAppDispatch, useAppSelector } from 'shared/hook';
+import { useAppDispatch } from 'shared/hook';
 import { pathKeys, SocketEvents } from 'shared/lib';
-import { appActions, appSelector, authActions } from 'shared/model';
+import { appActions, authActions } from 'shared/model';
 import { theme } from 'shared/themes';
 
 import styles from './layout.module.scss';

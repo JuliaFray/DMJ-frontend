@@ -2,28 +2,26 @@ import React from 'react';
 
 import { Row } from 'rsuite';
 
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Grid } from '@mui/material';
 import { PieChart } from '@mui/x-charts/PieChart';
 
 import { theme } from '../../themes';
-import { IDietStat } from '../../types';
+import { Nutrients } from '../../types';
 import { StyledRating } from '../styled-rating.ui';
 
 import styles from './diet-stats.module.scss';
 
 type DietStatsProps = {
-  plan?: IDietStat;
+  plan?: Nutrients;
   period: number;
   rating: number;
-  fact?: IDietStat;
+  fact?: Nutrients;
 };
 
 export const DietStats: React.FC<DietStatsProps> = ({ period, plan, fact, rating }) => {
   const percent =
     fact && plan
-      ? (fact.fats + fact.proteins + fact.carb) / (plan.carb + plan.fats + plan.proteins)
+      ? (fact.fats + fact.proteins + fact.carbs) / (plan.carbs + plan.fats + plan.proteins)
       : 0;
 
   return (
@@ -56,7 +54,12 @@ export const DietStats: React.FC<DietStatsProps> = ({ period, plan, fact, rating
                     color: theme.palette.secondary.main,
                   },
                   { id: 3, value: fact.fats, label: 'Жиры', color: theme.palette.error.main },
-                  { id: 5, value: fact.carb, label: 'Углеводы', color: theme.palette.warning.main },
+                  {
+                    id: 5,
+                    value: fact.carbs,
+                    label: 'Углеводы',
+                    color: theme.palette.warning.main,
+                  },
                 ],
                 innerRadius: 60,
                 outerRadius: 100,

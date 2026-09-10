@@ -2,7 +2,7 @@
 import { BaseQueryFn, EndpointBuilder } from '@reduxjs/toolkit/dist/query/react';
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { AddFoodType, IDietPlan } from '../types';
+import { IDietPlan, ProductItem } from '../types';
 
 import { CountResponseType } from './api-types';
 import customFetchBase from './custom-fetch-base';
@@ -25,12 +25,12 @@ export const diaryApi = createApi({
         };
       },
     }),
-    addDiaryRecord: build.mutation<void, AddFoodType>({
-      query: ({ id, foods }) => {
+    addDiaryRecord: build.mutation<void, ProductItem>({
+      query: (data) => {
         return {
-          url: `/add-food/${id}`,
+          url: `/add-food/${data.id}`,
           method: 'PUT',
-          body: foods,
+          body: data,
         };
       },
     }),

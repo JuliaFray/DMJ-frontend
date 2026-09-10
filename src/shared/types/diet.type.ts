@@ -1,4 +1,6 @@
-import { IUser, IUserWithTargets } from './profile.type';
+import { Nutrients, ProductItem } from 'shared/types/food.type';
+
+import { IUser } from './profile.type';
 
 /** Приемы пищи */
 // eslint-disable-next-line no-shadow
@@ -27,25 +29,25 @@ export interface IDietRingStat {
   icon?: string;
 }
 
-/** Статистика плана питания */
-export interface IDietStat {
-  cal: number;
-  proteins: number;
-  fats: number;
-  carb: number;
-  otherNutrients?: Record<string, number>;
-}
-
-/** Добавленное блюдо */
-export interface IFood {
-  _id: string;
-  name: string;
-  /** Показатели на 100г */
-  statOn100: IDietStat;
-}
+// /** Статистика плана питания */
+// export interface IDietStat {
+//   calories: number;
+//   proteins: number;
+//   fats: number;
+//   carbs: number;
+//   otherNutrients?: Record<string, number>;
+// }
+//
+// /** Добавленное блюдо */
+// export interface IFood {
+//   _id: string;
+//   name: string;
+//   /** Показатели на 100г */
+//   statOn100: IDietStat;
+// }
 
 export interface IPortion {
-  foodId: IFood;
+  foodId: ProductItem;
   portion: { meal: MealsOptions; weightG: number }[];
 }
 
@@ -68,7 +70,7 @@ export interface IDietPlan {
   /** Приемы пищи в плане */
   meals: MealsOptions[];
   /** Статистика плана питания */
-  statResult: IDietStat & {
+  statResult: Nutrients & {
     /** Рейтинг плана */
     planRating: number;
   };
